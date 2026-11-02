@@ -53,12 +53,4 @@ export default buildConfig({
     }),
   ],
   sharp,
-  // First deploy: with SEED_ON_EMPTY=true and no brands yet, load stand-in content once. Remove the env var after.
-  onInit: async (payload) => {
-    if (process.env.SEED_ON_EMPTY !== 'true') return
-    const { totalDocs } = await payload.count({ collection: 'brands' })
-    if (totalDocs) return
-    const { seedStandIn } = await import('./seed/standin')
-    await seedStandIn(payload).catch((e) => payload.logger.error({ err: e }, 'seed failed'))
-  },
 })
