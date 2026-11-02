@@ -13,9 +13,11 @@ import { Brands, CtaImages, Founders, Locations } from './collections/network'
 import { Episodes, Shows, Speakers, Tags } from './collections/podcast'
 import { Departments, Team } from './collections/team'
 import { Users } from './collections/Users'
+import { migrations } from './migrations'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
-const DB = process.env.DATABASE_URL || 'file:./alpha.db'
+// Neon on Vercel sets POSTGRES_URL / DATABASE_URL; locally fall back to a SQLite file
+const DB = process.env.DATABASE_URL || process.env.POSTGRES_URL || 'file:./alpha.db'
 
 export default buildConfig({
   admin: {
@@ -41,7 +43,7 @@ export default buildConfig({
   typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },
   // Postgres (Neon via Vercel) in production, SQLite file locally.
   db: DB.startsWith('postgres')
-    ? postgresAdapter({ pool: { connectionString: DB } })
+    ? postgresAdapter({ pool: { connectionString: DB }, migrationDir: path.resolve(dirname, 'migrations'), prodMigrations: migrations })
     : sqliteAdapter({ client: { url: DB } }),
   plugins: [
     vercelBlobStorage({
@@ -51,4 +53,12 @@ export default buildConfig({
     }),
   ],
   sharp,
+  // First deploy: with SEED_ON_EMPTY=true and no brands yet, load stand-in content once. Remove the env var after.
+  onInit: async (payload) => {
+    if (process.env.SEED_ON_EMPTY !== 'true') return
+    const { totalDocs } = await payload.count({ collection: 'brands' })
+    if (totalDocs) return
+    const { seedStandIn } = await import('./seed/standin')
+    await seedStandIn(payload).catch((e) => payload.logger.error({ err: e }, 'seed failed'))
+  },
 })

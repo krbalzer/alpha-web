@@ -18,9 +18,10 @@ Locally the database is a SQLite file (`alpha.db`). In production it is Postgres
 1. Import the repo in Vercel.
 2. Storage tab: add **Neon Postgres** (sets `DATABASE_URL`) and **Blob** (sets `BLOB_READ_WRITE_TOKEN`).
 3. Add `PAYLOAD_SECRET` and `NEXT_PUBLIC_SITE_URL`.
-4. Deploy. Every branch and PR gets its own preview URL.
+4. First deploy only: add `SEED_ON_EMPTY=true` to load stand-in content into the empty database. Remove it after.
+5. Deploy. Every branch and PR gets its own preview URL. Visit `/admin` to create the first CMS login.
 
-First production run: `pnpm payload migrate:create` locally against Postgres, commit the migration, and Vercel applies it on build.
+Schema changes: `pnpm payload migrate:create <name>` against a Postgres URL, commit the file in `src/migrations`, and the next deploy applies it.
 
 ## Where things live
 
