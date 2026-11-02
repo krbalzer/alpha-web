@@ -1,0 +1,1205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Alpha Aesthetics Partners / Home</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"NHD";src:url(/_blob/bf901fbfee077add5b8fbd5af7b4b4a7) format("woff2");font-weight:900;font-display:swap;ascent-override:85.7%;descent-override:14.3%;line-gap-override:0%}@font-face{font-family:"NHD";src:url(/_blob/630fc1e4ee22b0eecfe2535aceaaad9c) format("woff2");font-weight:700;font-display:swap;ascent-override:85.7%;descent-override:14.3%;line-gap-override:0%}
+@font-face{font-family:"Diatype Mono";src:url(/_blob/bad569f2d2757d8e40320972d9f13e4b) format("opentype");font-weight:400;font-display:swap}
+@font-face{font-family:"Diatype Mono";src:url(/_blob/888f2a0a7a1517cff04dd7bb1810c18d) format("opentype");font-weight:700;font-display:swap}
+:root{--bone:#DEDAD1;--bone-2:#D3CFC5;--ink:#0E0E0D;--ink-2:#171715;--paper:#E8E4DA;--muted:#5C5952;--muted-d:#9B978E;--line:rgba(14,14,13,.16);--line-d:rgba(232,228,218,.14);--gold:#C9A26B;--sf:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue",Arial,sans-serif;--mono:"Diatype Mono",ui-monospace,Menlo,monospace;--disp:"NHD","Helvetica Neue",Arial,sans-serif;--h3:"NHD","Helvetica Neue","HelveticaNeue",Helvetica,Arial,sans-serif;--ease:cubic-bezier(.22,.66,.16,1)}
+body{margin:0;background:var(--bone);color:var(--ink);font-family:var(--sf);-webkit-font-smoothing:antialiased}
+a{color:inherit}a:hover{color:inherit;opacity:.75}
+*{box-sizing:border-box}
+button{font:inherit;color:inherit}
+.wrap{max-width:1280px;margin:0 auto;padding:0 clamp(16px,4.5vw,64px)}
+.mono{font-family:var(--mono);text-transform:uppercase;letter-spacing:.03em}
+.display{font-family:var(--disp);font-weight:900;text-transform:uppercase;line-height:.9;letter-spacing:-.005em;margin:0}
+.h2{font-size:clamp(30px,2.95vw,42px)}
+.eyebrow{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;margin:0 0 14px}
+.lede{font-size:15px;line-height:1.55;color:var(--muted);max-width:450px;margin:18px 0 0}
+.on-dark .lede{color:var(--muted-d)}
+.btn{position:relative;display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 16px;border:1px solid currentColor;border-radius:999px;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.05em;text-decoration:none;background:transparent;cursor:pointer;white-space:nowrap;transition:background .2s,color .2s}
+.btn::before{content:"";position:absolute;inset:-6px -2px}
+.btn:hover{background:var(--ink);color:var(--bone);opacity:1}
+.on-dark .btn:hover,.btn-light:hover{background:var(--paper);color:var(--ink)}
+.ulink{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.05em;text-decoration:none;border-bottom:1px solid currentColor;padding:10px 0 3px}
+.rule{border:0;border-top:1px solid var(--line);margin:0}
+.ph{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.06em;line-height:1.6}
+.arrows{display:flex;gap:6px}
+.arrow{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:transparent;display:grid;place-items:center;cursor:pointer;position:relative}
+.arrow::before{content:"";position:absolute;inset:-8px}
+.arrow:hover{background:var(--ink);color:var(--bone)}
+.arrow:disabled{opacity:.3;cursor:default;background:transparent;color:inherit}
+.av{width:44px;height:44px;border-radius:50%;background:#C6C1B6;border:2px solid var(--bone);display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:var(--muted);overflow:hidden;flex:0 0 auto}
+.av img{width:100%;height:100%;object-fit:cover}
+
+/* nav */
+.nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:92px}
+.nav_menu{width:44px;height:44px;margin-left:-10px;border:0;background:none;cursor:pointer;display:flex;flex-direction:column;justify-content:center;gap:7px;padding:0 10px}
+.nav_menu span{display:block;height:1.5px;background:currentColor;width:26px}
+.nav_logo{display:block;line-height:0;padding:8px 0}
+.nav_logo img{display:block;height:clamp(22px,1.5vw,29px);width:auto}
+.nav_cta{justify-self:end}
+
+/* hero */
+.hero_grid{display:grid;grid-template-columns:max-content minmax(0,33rem) minmax(0,1fr) max-content;column-gap:clamp(16px,1.2vw,24px);align-items:stretch;padding:clamp(56px,5.6vw,108px) 0 clamp(32px,2.6vw,50px)}
+.hero_title{font-size:clamp(56px,4.45vw,86px);line-height:.86;text-box:trim-both cap alphabetic}
+.hero_body{display:flex;flex-direction:column;justify-content:space-between;gap:22px;min-width:0}
+.hero_copy{font-family:var(--mono);font-size:clamp(11px,.66vw,12.5px);line-height:1.52;text-transform:uppercase;letter-spacing:.02em;margin:0;text-box:trim-both cap alphabetic}
+.hero_copy b{font-weight:700}
+.hero_ctas{display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+.stats{display:flex}
+.stat{padding:0 26px;border-left:1px solid var(--line);text-decoration:none;display:block}
+.stat:first-child{border-left:0;padding-left:0}
+.stat:last-child{padding-right:0}
+.stat_num{font-family:var(--disp);font-weight:900;font-size:40px;line-height:1;display:flex;gap:3px;align-items:flex-start}
+.stat_num svg{margin-top:4px}
+.stat_label{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.06em;margin-top:6px;text-align:center}
+.hero_grid .stats{grid-column:4;align-self:start}
+.hero_grid .stat_num{display:block;position:relative;font-size:clamp(32px,2.15vw,42px);text-box:trim-both cap alphabetic}
+.hero_grid .stat_num svg{position:absolute;top:0;right:-13px;margin:0}
+.hero_grid .stat_label{margin-top:12px}
+@supports not (text-box:trim-both cap alphabetic){.hero_title{margin:-.07em 0 -.13em}.hero_copy{margin-top:-.28em}.hero_grid .stat_num{margin-top:-.12em}}
+@media (max-width:1180px){.hero_grid{grid-template-columns:max-content minmax(0,1fr);row-gap:44px}.hero_grid .stats{grid-column:1/-1}}
+@media (max-width:760px){.hero_grid{grid-template-columns:1fr;row-gap:28px}.hero_title{font-size:clamp(48px,13vw,72px)}.hero_grid .stats{justify-content:space-between}.stat{padding:0 14px}}
+
+.reel{position:relative;height:clamp(440px,54vw,860px);background:#2A2723;color:var(--paper);overflow:hidden}
+.reel_spec{position:absolute;left:clamp(16px,4.5vw,64px);top:clamp(24px,3vw,48px);max-width:360px;color:rgba(232,228,218,.7)}
+.reel_unmute{position:absolute;left:50%;top:28px;transform:translateX(-50%)}
+.reel_hud{position:absolute;left:0;right:0;bottom:0;padding:22px clamp(16px,4.5vw,64px);display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end;background:linear-gradient(transparent,rgba(0,0,0,.35))}
+.reel_cut{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;display:flex;gap:18px;flex-wrap:wrap}
+.reel_cut b{font-weight:700;color:#fff}
+.reel_ticks{display:flex;gap:4px}
+.tick{width:14px;height:2px;background:rgba(232,228,218,.25)}
+.tick.is-on{background:var(--paper)}
+.tick.is-past{background:rgba(232,228,218,.6)}
+@media (max-width:720px){.reel_hud{grid-template-columns:1fr}.reel_ticks{display:none}}
+
+/* ============ network: the week, replayed ============ */
+.net{background:#0B0B0A;color:var(--paper);padding:clamp(72px,8vw,120px) 0 clamp(48px,5vw,72px);overflow:hidden}
+.net_head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(26px,4vw,68px);align-items:start}
+.net_head .lede{margin:clamp(18px,1.8vw,28px) 0 0;max-width:34rem}
+.net_stats{display:grid;grid-template-columns:repeat(4,auto);justify-content:end;column-gap:clamp(20px,2.4vw,40px);padding-top:6px}
+.net_stat.clk .net_num{min-width:8.2ch}
+.net_stat .net_days{margin-top:9px}
+.net_stat .net_num{display:block;font-family:var(--disp);font-weight:900;font-size:clamp(18px,1.45vw,24px);line-height:1;font-variant-numeric:tabular-nums}
+.net_stat .net_lab{margin-top:7px;font-size:9px;max-width:14ch;line-height:1.35}
+.net_stage{position:relative;aspect-ratio:1200/720;margin-top:clamp(20px,3vw,40px)}
+.net_dots{position:absolute;inset:0;width:100%;height:100%;opacity:.55}
+.net_cv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.node{position:absolute;width:7px;height:7px;border-radius:50%;background:rgba(232,228,218,.55);transform:translate(-50%,-50%);transition:background .5s ease,box-shadow .5s ease}
+.node.flash{background:#fff}
+.node.sso{background:var(--gold);box-shadow:0 0 0 5px rgba(201,162,107,.16)}
+
+.chip{position:absolute;width:23%;min-width:230px;background:rgba(18,18,16,.94);border:1px solid rgba(232,228,218,.16);padding:10px 12px 11px;pointer-events:none;opacity:0;transform:translateY(6px);transition:opacity .45s var(--ease),transform .45s var(--ease);z-index:4}
+.chip.is-on{opacity:1;transform:none}
+.chip.team{border-color:rgba(201,162,107,.42)}
+.chip_t{display:flex;justify-content:space-between;gap:10px;font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-d)}
+.chip_t b{font-weight:400;color:var(--paper);display:flex;align-items:center;gap:7px}
+.chip.team .chip_t b{color:var(--gold)}
+.chip_t .fast{color:var(--paper)}
+.mk{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--paper)}
+.mk.q{background:transparent;border:1px solid var(--paper)}
+.mk.a{border-radius:0;width:8px;height:1px}
+.mk.t{background:var(--gold);border-radius:0;width:12px;height:1.5px}
+.chip_row{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;margin-top:8px}
+.chip_row p{font-size:13px;line-height:1.38;color:rgba(232,228,218,.92);margin:0}
+.chip_who{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-d);margin-top:7px}
+.chip_who b{color:var(--paper);font-weight:400}
+.chip_thread{border-top:1px solid rgba(232,228,218,.14);margin-top:10px;padding-top:9px}
+.mav{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-family:var(--sf);font-weight:600;font-size:11px;color:rgba(20,20,18,.78);box-shadow:0 0 0 2px #121210;flex:0 0 auto}
+.mav.team{box-shadow:0 0 0 2px #121210,0 0 0 3.5px var(--gold)}
+.pile{display:flex}
+.pile .mav{width:25px;height:25px;font-size:9.5px;margin-left:-8px}
+.pile .mav:first-child{margin-left:0}
+
+.snap{position:absolute;width:10.5%;min-width:108px;background:#161614;padding:5px 5px 0;pointer-events:none;opacity:0;transform:scale(.94);transition:opacity .5s var(--ease),transform .5s var(--ease);z-index:3}
+.snap.is-on{opacity:1;transform:none}
+.snap_img{aspect-ratio:1/0.92;display:grid;place-items:center;color:rgba(232,228,218,.45)}
+.snap_cap{display:block;font-family:var(--mono);font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-d);padding:6px 1px 7px;line-height:1.35}
+.moment{position:absolute;width:21%;min-width:200px;pointer-events:none;opacity:0;transform:translateY(8px);transition:opacity .7s var(--ease),transform .7s var(--ease);z-index:5;background:#161614}
+.moment.is-on{opacity:1;transform:none}
+.moment_img{margin:6px 6px 0;aspect-ratio:16/10;display:grid;place-items:center;color:rgba(232,228,218,.45)}
+.moment_cap{padding:9px 9px 11px}
+.moment_cap b{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--paper);font-weight:400}
+.moment_cap span{display:block;font-size:12.5px;line-height:1.4;color:var(--muted-d);margin-top:5px}
+
+.net_stack{display:none}
+.net_base{display:flex;justify-content:space-between;flex-wrap:wrap;gap:18px clamp(18px,3vw,48px);align-items:end;border-top:1px solid var(--line-d);margin-top:clamp(14px,2vw,24px);padding-top:16px}
+.net_base .legend{margin-top:0}
+.net_big{display:block;font-family:var(--disp);font-weight:900;font-size:clamp(22px,2.3vw,32px);line-height:1;font-variant-numeric:tabular-nums;letter-spacing:.005em}
+.net_clock .net_big{min-width:9ch}
+.net_lab{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-d);display:block;margin-top:8px}
+.net_days{display:flex;gap:4px;margin-top:10px}
+.net_days i{flex:1;height:2px;background:rgba(232,228,218,.14)}
+.net_days i.on{background:var(--paper)}
+.net_days i.now{background:rgba(232,228,218,.55)}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:16px;font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted-d)}
+.legend span{display:flex;align-items:center;gap:8px}
+@media (max-width:900px){.net_head{grid-template-columns:1fr;gap:28px}.net_stats{justify-content:start;grid-template-columns:repeat(2,auto);row-gap:22px}}
+@media (max-width:820px){.net_stage .chip,.net_stage .snap,.net_stage .moment{display:none}.net_stack{display:flex;flex-direction:column;gap:8px;margin-top:14px;min-height:240px}.net_stack .chip{position:relative;width:auto;min-width:0;opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.arc,.ring{animation:none!important}}
+
+/* ============ partners: roster + theater ============ */
+.partners{padding:clamp(96px,9vw,140px) 0 clamp(64px,6vw,96px)}
+.p_grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:clamp(28px,5vw,72px);margin-top:clamp(30px,4vw,48px);align-items:start}
+.p_row{display:grid;grid-template-columns:34px minmax(0,1fr) 150px 44px;gap:12px;align-items:baseline;width:100%;padding:11px 0;border:0;border-top:1px solid var(--line);background:none;text-align:left;cursor:pointer;color:#8E8A81;transition:color .15s ease,padding-left .2s var(--ease);font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase}
+.p_list{border-bottom:1px solid var(--line)}
+.p_row .nm{font-size:11px;font-weight:700;color:var(--muted);transition:color .15s ease}
+.p_row .yr{text-align:right}
+.p_row:hover,.p_row.is-on{color:var(--ink);padding-left:6px}
+.p_row:hover .nm,.p_row.is-on .nm{color:var(--ink)}
+.p_row:focus-visible{outline:1px solid var(--ink);outline-offset:2px}
+.p_viewer{position:sticky;top:28px}
+.p_frame{position:relative;display:block;width:100%;aspect-ratio:16/9;overflow:hidden;background:#1B1916;cursor:pointer;border:0;padding:0}
+.p_poster{position:absolute;inset:0;opacity:0;transition:opacity .18s ease}
+.p_poster.is-on{opacity:1}
+.p_poster img{width:100%;height:100%;object-fit:cover;display:block}
+.p_frame.is-preview .p_poster.is-on{animation:drift 3.2s ease-in-out forwards}
+@keyframes drift{from{transform:scale(1)}to{transform:scale(1.05) translateX(-1%)}}
+.tcard{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;text-align:center;padding:24px}
+.tcard_name{font-family:var(--disp);font-weight:900;text-transform:uppercase;font-size:clamp(26px,3.4vw,52px);line-height:.92;letter-spacing:.01em}
+.tcard_rule{width:62%;height:1px;background:rgba(255,255,255,.7);margin:12px 0 10px}
+.p_pv{position:absolute;left:12px;top:12px;font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.9);opacity:0;transition:opacity .2s ease;display:flex;gap:7px;align-items:center}
+.p_pv i{width:6px;height:6px;border-radius:50%;background:#fff;animation:blink 1.2s ease infinite}
+@keyframes blink{50%{opacity:.25}}
+.p_frame.is-preview .p_pv{opacity:1}
+.p_play{position:absolute;left:50%;top:50%;width:78px;height:78px;border-radius:50%;transform:translate(-50%,-50%);background:rgba(20,20,18,.45);backdrop-filter:blur(6px);display:grid;place-items:center;transition:transform .2s var(--ease),background .2s ease;color:#fff}
+.p_frame:hover .p_play{transform:translate(-50%,-50%) scale(1.07);background:rgba(20,20,18,.62)}
+.p_dur{position:absolute;right:12px;bottom:12px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:#fff;background:rgba(0,0,0,.45);padding:3px 8px}
+.p_meta{display:flex;justify-content:space-between;gap:16px;margin-top:14px;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase}
+.p_meta b{font-weight:700}
+.p_bar{display:flex;justify-content:space-between;align-items:center;gap:16px;border-top:1px solid var(--line);margin-top:14px;padding-top:14px}
+.p_who{display:flex;align-items:center;gap:12px;text-decoration:none}
+.p_who .av{width:40px;height:40px;border-color:var(--bone-2)}
+.p_who b{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:700}
+.p_who span{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.p_pile{display:flex}
+.p_pile i{width:30px;height:30px;border-radius:50%;border:2px solid var(--bone);margin-left:-9px;background:#C6C1B6;display:block}
+.p_pile i:first-child{margin-left:0}
+@media (max-width:900px){.p_grid{grid-template-columns:1fr}.p_viewer{position:static;order:-1}.p_row{grid-template-columns:30px 1fr 40px}.p_row .ct{display:none}}
+
+.theater{position:fixed;inset:0;z-index:70;background:#0A0A09;color:#F3F0E9;display:flex;flex-direction:column;outline:none;animation:thIn .2s ease}
+@keyframes thIn{from{opacity:0}to{opacity:1}}
+.th_bar{display:flex;justify-content:space-between;align-items:center;padding:14px clamp(18px,3vw,36px);font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(243,240,233,.6)}
+.th_close{border:0;background:none;color:rgba(243,240,233,.85);font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;display:flex;gap:10px;align-items:center;cursor:pointer;min-height:44px}
+.th_close:hover{color:#fff}
+.th_stage{flex:1;display:grid;grid-template-columns:64px minmax(0,1fr) 64px;align-items:center;padding:0 clamp(8px,2vw,24px);min-height:0}
+.th_arrow{width:52px;height:52px;border-radius:50%;border:1px solid rgba(243,240,233,.25);display:grid;place-items:center;color:#F3F0E9;background:none;justify-self:center;cursor:pointer;transition:background .15s ease,border-color .15s ease}
+.th_arrow:hover{background:rgba(243,240,233,.1);border-color:rgba(243,240,233,.6)}
+.th_screen{position:relative;width:min(100%,calc((100vh - 210px) * 16 / 9));aspect-ratio:16/9;justify-self:center;overflow:hidden;background:#000}
+.th_poster{position:absolute;inset:0}
+.th_poster img{width:100%;height:100%;object-fit:cover;display:block}
+.th_poster.kbA{animation:kbA 90s linear forwards}.th_poster.kbB{animation:kbB 90s linear forwards}
+@keyframes kbA{from{transform:scale(1)}to{transform:scale(1.12)}}
+@keyframes kbB{from{transform:scale(1)}to{transform:scale(1.12)}}
+.th_cap{position:absolute;left:50%;bottom:9%;transform:translateX(-50%);max-width:70%;text-align:center;font-size:clamp(14px,1.3vw,18px);background:rgba(0,0,0,.55);padding:6px 12px;transition:opacity .3s ease}
+.th_ctrl{position:absolute;left:0;right:0;bottom:0;padding:8px 14px;display:flex;align-items:center;gap:12px;background:linear-gradient(to top,rgba(0,0,0,.6),transparent)}
+.th_pp{width:40px;height:40px;border:0;background:none;color:#fff;display:grid;place-items:center;cursor:pointer}
+.th_track{flex:1;height:3px;background:rgba(255,255,255,.25);position:relative}
+.th_track i{position:absolute;left:0;top:0;bottom:0;background:#fff;display:block}
+.th_time{font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:rgba(255,255,255,.85);min-width:74px;text-align:right}
+.th_foot{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;padding:14px clamp(18px,3vw,36px) 20px;border-top:1px solid rgba(243,240,233,.12);margin:10px auto 0;width:min(100%,calc((100vh - 210px) * 16 / 9 + 150px))}
+.th_foot_l{display:flex;gap:18px;align-items:baseline;flex-wrap:wrap}
+.th_foot_l b{font-family:var(--disp);font-weight:900;text-transform:uppercase;font-size:17px;letter-spacing:.01em}
+.th_foot_l span,.th_keys{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(243,240,233,.55)}
+@media (max-width:900px){.th_stage{grid-template-columns:1fr}.th_arrow{display:none}.th_screen{width:100%}.th_keys{display:none}}
+
+/* rails */
+.rail{overflow:hidden;margin-right:calc(50% - 50vw)}
+.track{display:flex;gap:14px;transition:transform .7s cubic-bezier(.3,.7,.2,1)}
+.sec_head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+.people{padding:clamp(80px,8vw,120px) 0 clamp(64px,6vw,96px)}
+.dept{flex:0 0 clamp(260px,22vw,300px);border:1px solid var(--line);padding:22px 20px 56px;position:relative;margin-bottom:30px;min-height:240px;display:flex;flex-direction:column}
+.dept_line{font-family:var(--h3);font-weight:700;font-size:17px;line-height:1.22;margin:18px 0 18px;text-transform:none;letter-spacing:.005em}
+.dept_avs{position:absolute;left:12px;bottom:-24px;display:flex;gap:4px}
+.dept_avs .av{width:48px;height:48px}
+.dept_count{position:absolute;right:16px;bottom:14px;font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.06em}
+.stories{padding:clamp(64px,6vw,96px) 0 clamp(80px,8vw,120px)}
+.story{flex:0 0 clamp(200px,15.5vw,224px)}
+.story_media{position:relative;aspect-ratio:3/4.1;background:#BDB8AD;overflow:hidden}
+.story_ph{position:absolute;left:14px;top:14px;color:rgba(14,14,13,.55)}
+.story_quote{position:absolute;left:14px;right:14px;bottom:14px;font-family:var(--mono);font-size:11px;line-height:1.45;color:#fff;margin:0;text-shadow:0 1px 8px rgba(0,0,0,.35)}
+.story_play{position:absolute;right:12px;top:12px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.88);display:grid;place-items:center;color:var(--ink)}
+.story_meta{display:flex;justify-content:space-between;align-items:flex-start;margin-top:10px;gap:8px}
+.story_name{font-family:var(--mono);font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.story_role{font-family:var(--mono);font-size:10px;text-transform:uppercase;color:var(--muted);letter-spacing:.04em;margin-top:2px}
+.story_brand{font-family:var(--disp);font-weight:900;font-size:13px;text-transform:uppercase;letter-spacing:.02em}
+
+/* practice band */
+.practice{position:relative;min-height:clamp(500px,46vw,720px);background:#ACA89E;color:#fff;display:flex;align-items:center;overflow:hidden}
+.practice_grid{display:flex;justify-content:space-between;align-items:center;gap:40px;width:100%;flex-wrap:wrap}
+.practice_lock{display:flex;align-items:center;gap:22px}
+.practice_mark{display:grid;grid-template-columns:repeat(3,14px);gap:3px}
+.practice_mark i{width:14px;height:14px;border-radius:50%;background:#fff;display:block}
+.practice_word{font-family:Georgia,"Times New Roman",serif;font-size:clamp(48px,5.4vw,80px);line-height:1;letter-spacing:-.01em}
+.practice_sub{font-family:Georgia,serif;font-size:17px;margin-top:6px}
+.practice_tag{font-family:Georgia,serif;font-style:italic;font-weight:700;font-size:clamp(24px,2.3vw,32px);line-height:1.15;margin:0 0 20px}
+.practice_ph{position:absolute;left:clamp(16px,4.5vw,64px);bottom:24px;color:rgba(255,255,255,.75)}
+
+/* podcasts */
+.pods{padding:clamp(80px,8vw,120px) 0 clamp(56px,5vw,80px)}
+.cover{flex:0 0 clamp(220px,18.6vw,262px)}
+.cover_art{aspect-ratio:1;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:18px}
+.cover_t{font-family:var(--disp);font-weight:900;text-transform:uppercase;line-height:.9}
+.cover_s{font-family:Georgia,serif;font-style:italic}
+.cover_brand{font-family:var(--disp);font-weight:900;font-size:10px;letter-spacing:.12em}
+.cover_meta{display:flex;align-items:center;gap:10px;margin-top:12px}
+.cover_meta .av{width:34px;height:34px}
+.start{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:clamp(32px,4vw,64px);padding:clamp(56px,5vw,80px) 0 clamp(96px,9vw,140px)}
+.ep{display:grid;grid-template-columns:44px 64px minmax(0,1fr) auto;gap:16px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.ep_play{width:44px;height:44px;border-radius:50%;border:1px solid var(--ink);background:transparent;display:grid;place-items:center;cursor:pointer}
+.ep_play:hover,.ep_play.is-on{background:var(--ink);color:var(--bone)}
+.ep_art{width:64px;height:64px}
+.ep_title{font-family:var(--h3);font-weight:700;font-size:17px;margin:0;letter-spacing:.005em}
+.ep_show{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-top:4px}
+.ep_len{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em}
+@media (max-width:900px){.start{grid-template-columns:1fr}}
+.player{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);width:min(720px,calc(100% - 24px));background:var(--ink);color:var(--paper);display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:14px;align-items:center;padding:10px 12px 10px 10px;z-index:40;box-shadow:0 18px 40px rgba(0,0,0,.25)}
+.player_art{width:48px;height:48px}
+.player_bar{height:2px;background:rgba(232,228,218,.2);margin-top:8px;position:relative;overflow:hidden}
+.player_bar i{position:absolute;left:0;top:0;bottom:0;background:var(--gold);animation:prog 48s linear both}
+@keyframes prog{from{width:0}to{width:100%}}
+.player_btns{display:flex;gap:4px}
+.ibtn{width:40px;height:40px;border:0;background:none;color:inherit;display:grid;place-items:center;cursor:pointer;border-radius:50%}
+.ibtn:hover{background:rgba(232,228,218,.1)}
+
+/* qualify */
+.qual{background:var(--ink);color:var(--paper);padding:clamp(96px,9vw,140px) 0}
+.qual_grid{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:clamp(32px,4vw,64px);align-items:start}
+.form{border:1px solid rgba(232,228,218,.22);padding:clamp(24px,3vw,44px);min-height:460px;display:flex;flex-direction:column}
+.form_top{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-d)}
+.form_prog{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;margin:14px 0 40px}
+.form_prog i{height:2px;background:rgba(232,228,218,.18);display:block}
+.form_prog i.is-on{background:var(--gold)}
+.form_q{font-family:var(--h3);font-weight:700;font-size:clamp(24px,2.4vw,34px);line-height:1.05;margin:0 0 8px;text-transform:none}
+.form_hint{color:var(--muted-d);font-size:14px;margin:0 0 28px}
+.opts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.opt{min-height:64px;border:1px solid rgba(232,228,218,.25);background:transparent;text-align:left;padding:14px 16px;cursor:pointer;font-family:var(--mono);font-size:12px;letter-spacing:.04em;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.opt:hover{border-color:var(--paper)}
+.opt.is-on{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.opt_dot{width:10px;height:10px;border-radius:50%;border:1px solid currentColor;flex:0 0 auto}
+.opt.is-on .opt_dot{background:var(--ink)}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.field label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-d);margin-bottom:8px}
+.field input{width:100%;height:46px;background:transparent;border:0;border-bottom:1px solid rgba(232,228,218,.35);color:var(--paper);font:15px var(--sf);padding:0}
+.field input:focus{outline:none;border-bottom-color:var(--gold)}
+.form_nav{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:40px}
+.btn-fill{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.btn-fill:hover{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+@media (max-width:900px){.qual_grid{grid-template-columns:1fr}.opts{grid-template-columns:1fr}.fields{grid-template-columns:1fr}}
+
+/* closer + footer */
+.closer{position:relative;min-height:clamp(560px,54vw,820px);background:#4A4740;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden}
+.closer_t{font-family:var(--disp);font-weight:900;font-size:clamp(36px,3.8vw,56px);line-height:1;margin:0 0 22px;letter-spacing:-.005em}
+.closer_lock{position:absolute;bottom:clamp(28px,4vw,56px);left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px}
+.closer_lock_a{font-family:var(--disp);font-weight:900;font-size:40px;line-height:1}
+.badge{width:62px;height:40px;border:1.5px solid #fff;border-radius:50%;display:grid;place-items:center;font-family:Georgia,serif;font-weight:700;font-size:15px}
+.closer_lock_w{font-family:Georgia,serif;font-weight:900;font-size:15px;line-height:.95;letter-spacing:.06em;text-align:left}
+.closer_ph{position:absolute;left:clamp(16px,4.5vw,64px);top:28px;color:rgba(255,255,255,.7);text-align:left}
+.foot{background:var(--ink);color:var(--paper);padding:72px 0 0;overflow:hidden}
+.foot_links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;padding-bottom:64px}
+.foot_links h3{font-family:var(--mono);font-size:10px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-d);margin:0 0 14px}
+.foot_links a{display:block;font-size:14px;text-decoration:none;padding:5px 0}
+.mark{padding:0 clamp(16px,3vw,48px)}
+.mark img{display:block;width:100%;height:auto}
+.tags{display:flex;justify-content:space-between;padding:18px clamp(16px,3vw,48px) 30px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;flex-wrap:wrap;gap:8px 20px}
+@media (max-width:720px){.foot_links{grid-template-columns:1fr 1fr}.tags span:nth-child(n+3){display:none}}
+
+/* menu */
+.menu{position:fixed;inset:0;background:var(--ink);color:var(--paper);z-index:60;display:flex;flex-direction:column;overflow:auto}
+.menu .nav{color:var(--paper)}
+.menu_list{list-style:none;margin:24px 0 0;padding:0}
+.menu_list li{border-top:1px solid var(--line-d)}
+.menu_list a{display:grid;grid-template-columns:56px minmax(0,1fr) auto;align-items:baseline;gap:16px;padding:16px 0;text-decoration:none}
+.menu_n{font-family:var(--mono);font-size:11px;color:var(--muted-d)}
+.menu_t{font-family:var(--disp);font-weight:900;text-transform:uppercase;font-size:clamp(34px,4.6vw,64px);line-height:.95}
+.menu_d{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted-d)}
+.menu_foot{display:flex;justify-content:space-between;padding:40px 0 48px;margin-top:auto;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted-d);flex-wrap:wrap;gap:12px}
+@media (max-width:720px){.menu_d{display:none}.menu_list a{grid-template-columns:40px 1fr}}
+
+/* site menu (shared, see Menu board) */
+.nav_menu{position:relative;color:inherit}
+.nav_menu span{transition:width .35s var(--ease),transform .35s var(--ease)}
+.nav_menu:hover span:last-child{width:16px}
+.nav_menu:hover span:first-child{transform:translateX(4px);width:22px}
+/* overlay: absolute inside this frame, position:fixed in production */
+.mn{position:fixed;inset:0;z-index:200;background:#0B0B0A;color:var(--paper);display:grid;grid-template-rows:92px minmax(0,1fr);visibility:hidden;clip-path:inset(0 0 100% 0);transition:clip-path .45s cubic-bezier(.7,0,.3,1),visibility 0s linear .45s}
+.mn.is-on{visibility:visible;clip-path:inset(0 0 0 0);transition:clip-path .75s cubic-bezier(.7,0,.2,1),visibility 0s}
+.mn>.wrap{width:100%;box-sizing:border-box}
+.mn_top{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:92px}
+.mn_x{justify-self:start;margin-left:-10px;height:44px;padding:0 10px;border:0;background:none;color:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase}
+.mn_x svg{transition:transform .5s var(--ease)}
+.mn_x:hover svg{transform:rotate(90deg)}
+.mn_x em{font-style:normal;color:var(--muted-d);border:1px solid var(--line-d);border-radius:3px;padding:1px 4px;font-size:9px}
+.mn_top .nav_logo img{height:clamp(22px,1.5vw,29px)}
+.mn_top .btn{justify-self:end;color:var(--paper)}
+.mn_top .btn:hover{background:var(--paper);color:var(--ink)}
+.mn_body{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:48px;padding-bottom:44px;min-height:0}
+.mn_list{align-self:end;list-style:none;margin:0;padding:0}
+.mn_i{display:grid;grid-template-columns:48px auto minmax(0,1fr);align-items:center;gap:0 22px;text-decoration:none;color:inherit;transition:opacity .35s var(--ease)}
+.mn_i:hover{opacity:1}
+.mn_list:hover .mn_i,.mn_list:focus-within .mn_i{opacity:.2}
+.mn_list .mn_i:hover,.mn_list .mn_i:focus-visible{opacity:1;outline:0}
+.mn_n{font-family:var(--mono);font-size:10px;color:var(--muted-d);align-self:center;opacity:0;transition:opacity .4s}
+.mn_w{display:block;overflow:hidden;line-height:.9;padding-top:.04em}
+.mn_w span{display:block;font-family:var(--disp);font-weight:900;text-transform:uppercase;font-size:clamp(56px,6.6vw,104px);letter-spacing:-.005em;transform:translateY(105%);transition:transform .35s cubic-bezier(.7,0,.3,1)}
+.mn_p{font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--paper);opacity:0;transform:translateX(-10px);transition:opacity .3s var(--ease),transform .4s var(--ease);display:flex;flex-direction:column;gap:4px;white-space:nowrap}
+.mn_p b{font-weight:400;color:var(--muted-d)}
+.mn_i:hover .mn_p,.mn_i:focus-visible .mn_p{opacity:1;transform:none}
+.mn.is-on .mn_w span{transform:none;transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+.mn.is-on .mn_n{opacity:1;transition:opacity .6s .7s}
+.mn_side{display:flex;flex-direction:column;justify-content:space-between;min-height:0;opacity:0;transform:translateY(12px);transition:opacity .25s,transform .25s}
+.mn.is-on .mn_side{opacity:1;transform:none;transition:opacity .7s .65s,transform .9s .65s var(--ease)}
+.mn_k{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-d);margin:0 0 12px;display:flex;justify-content:space-between}
+.mn_k i{font-style:normal;display:inline-flex;align-items:center;gap:6px}
+.mn_k i:before{content:"";width:6px;height:6px;border-radius:50%;background:#7FB37A;box-shadow:0 0 0 0 rgba(127,179,122,.6);animation:mnPulse 2s infinite}
+@keyframes mnPulse{70%{box-shadow:0 0 0 6px rgba(127,179,122,0)}100%{box-shadow:0 0 0 0 rgba(127,179,122,0)}}
+.mn_live{border-top:1px solid var(--line-d);padding-top:14px}
+.mn_ep{display:grid;grid-template-columns:72px minmax(0,1fr);gap:14px;align-items:start}
+.mn_art{width:72px;height:72px;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-style:italic;font-size:15px;line-height:.86;text-align:center}
+.mn_ep b{display:block;font-family:var(--h3);font-weight:700;font-size:16px;line-height:1.15;margin:2px 0 6px}
+.mn_ep span{font-family:var(--mono);font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted-d)}
+.mn_pl{display:flex;align-items:center;gap:10px;margin-top:14px}
+.mn_pb{width:34px;height:34px;border-radius:50%;border:0;background:var(--paper);color:var(--ink);display:grid;place-items:center;cursor:pointer;flex:none}
+.mn_tr{position:relative;flex:1;height:2px;background:var(--line-d)}
+.mn_tr i{position:absolute;left:0;top:0;bottom:0;background:var(--paper)}
+.mn_t{font-family:var(--mono);font-size:9.5px;color:var(--muted-d);font-variant-numeric:tabular-nums}
+.mn_net{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:22px;margin-top:22px;padding-top:14px;border-top:1px solid var(--line-d)}
+.mn_net div{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-d)}
+.mn_net b{display:block;font-family:var(--disp);font-weight:900;font-size:22px;color:var(--paper);letter-spacing:0;margin-bottom:2px}
+.mn_dep{border-top:1px solid var(--line-d);padding-top:14px}
+.mn_dep ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:9px 16px}
+.mn_dep a,.mn_fol a{font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:var(--paper)}
+.mn_dep a:hover,.mn_fol a:hover{color:var(--muted-d);opacity:1}
+.mn_fol{display:flex;gap:18px;margin-top:22px;padding-top:14px;border-top:1px solid var(--line-d)}
+.mn_fol span{font-family:var(--mono);font-size:9.5px;color:var(--muted-d);text-transform:uppercase;letter-spacing:.06em;margin-right:auto}
+
+@media (max-width:900px){.mn_body{grid-template-columns:1fr}.mn_side{display:none}}
+@media (prefers-reduced-motion:reduce){.mn,.mn.is-on{clip-path:none;transition:opacity .3s,visibility 0s}.mn{opacity:0}.mn.is-on{opacity:1}.mn_w span{transform:none!important}}
+
+/* CTA background: random location image per page load */
+.cta_bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;filter:brightness(.58) saturate(.9);opacity:0;transform:scale(1.2);animation:ctaIn 1.6s .15s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes ctaIn{to{opacity:1;transform:scale(1.12)}}
+.cta_bg.is-stand{filter:blur(30px) brightness(.55) saturate(.95);transform:scale(1.2)}
+.cta_cr{z-index:3;color:rgba(255,255,255,.78)}
+.cta_cr b{font-weight:400;color:#fff}
+@media (prefers-reduced-motion:reduce){.cta_bg{animation:none;opacity:1;transform:scale(1.12)}}
+.closer>h2,.closer>a{position:relative;z-index:2}
+.closer_lock{z-index:2}
+.closer::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(14,14,13,.25),rgba(14,14,13,0) 40%,rgba(14,14,13,.35));pointer-events:none}
+</style>
+</helmet>
+<div style="background: #DEDAD1; color: #0E0E0D; min-height: 100vh">
+
+<!-- ============ NAV + HERO ============ -->
+<header class="wrap">
+<nav class="nav" aria-label="Primary">
+<button class="nav_menu" aria-label="Open menu" aria-expanded="{{ mnExp }}" aria-controls="site-menu" onClick="{{ mnOpen }}"><span></span><span></span></button>
+<a class="nav_logo" href="#top"><img src="/_blob/a3ba6a28a9b8a219f7b522ca46d6dd70" alt="Alpha"></a>
+<a class="btn nav_cta" href="#qualify">Let&#39;s talk</a>
+</nav>
+</header>
+
+<section id="top" class="wrap">
+<div class="hero_grid">
+<h1 class="display hero_title">Raise the<br>standard</h1>
+<div class="hero_body">
+<p class="hero_copy"><b>Alpha Aesthetics Partners</b> is a national partnership of medical aesthetics practices. Partners keep their brand, their team, and their clinical judgment, and gain shared operations, buying power, and a clinical training program built with the people using it.</p>
+<div class="hero_ctas">
+<a class="btn" href="#partners">See partners</a>
+<a class="ulink" href="#how">How partnership works</a>
+</div>
+</div>
+<div class="stats">
+<a class="stat" href="#partners"><div class="stat_num">16<svg width="9" height="9" viewBox="0 0 9 9" aria-hidden="true"><path d="M1 8L8 1M3 1h5v5" stroke="currentColor" fill="none" stroke-width="1.3"></path></svg></div><div class="stat_label">Brands</div></a>
+<a class="stat" href="#network"><div class="stat_num">36<svg width="9" height="9" viewBox="0 0 9 9" aria-hidden="true"><path d="M1 8L8 1M3 1h5v5" stroke="currentColor" fill="none" stroke-width="1.3"></path></svg></div><div class="stat_label">Locations</div></a>
+<a class="stat" href="#network"><div class="stat_num">8<svg width="9" height="9" viewBox="0 0 9 9" aria-hidden="true"><path d="M1 8L8 1M3 1h5v5" stroke="currentColor" fill="none" stroke-width="1.3"></path></svg></div><div class="stat_label">States</div></a>
+</div>
+</div>
+</section>
+
+<section class="reel" aria-label="Network reel">
+<div class="reel_spec ph">Video 01 / Network reel<br>16 cuts, one per partner clinic, in join order. 0:48 loop, muted autoplay, Cloudflare Stream MP4. Caption below advances with each cut.</div>
+<button class="btn btn-light reel_unmute" style="color: #E8E4DA" onClick="{{ toggleMute }}">{{ muteLabel }}</button>
+<div class="reel_hud">
+<div class="reel_cut"><span>Cut {{ cutNum }} / 16</span><b>{{ cutBrand }}</b><span>{{ cutCity }}</span></div>
+<div class="reel_ticks" aria-hidden="true">
+<sc-for list="{{ ticks }}" as="t" hint-placeholder-count="16"><i class="{{ t.cls }}"></i></sc-for>
+</div>
+</div>
+</section>
+
+<!-- ============ NETWORK: last week, replayed ============ -->
+<section id="network" class="net on-dark">
+<div class="wrap">
+<div class="net_head">
+<div>
+<p class="eyebrow" style="color: #9B978E">The network</p>
+<h2 class="display h2">Separate brands.<br>One team.</h2>
+<p class="lede">Every dot is a partner practice. Every gold line is Alpha, already inside all of them. This is last week, replayed. It looks like this every week.</p>
+</div>
+<div class="net_stats">
+<div class="net_stat clk"><span class="net_num">{{ clock }}</span><span class="net_lab">Last week, replayed</span><div class="net_days"><sc-for list="{{ days }}" as="d" hint-placeholder-count="7"><i class="{{ d.cls }}"></i></sc-for></div></div>
+<div class="net_stat"><span class="net_num">{{ c1 }}</span><span class="net_lab">Conversations between practices</span></div>
+<div class="net_stat"><span class="net_num">{{ c2 }}</span><span class="net_lab">Questions answered</span></div>
+<div class="net_stat"><span class="net_num">{{ c3 }}</span><span class="net_lab">Typical time to first answer</span></div>
+</div>
+</div>
+
+<div class="net_stage" ref="{{ setStage }}" role="img" aria-label="Conversations between partner practices over the last week">
+<img class="net_dots" src="/_blob/e237efa3c5f927fb28e8e1cda7a49ea0" alt="">
+<canvas class="net_cv" ref="{{ setCanvas }}" aria-hidden="true"></canvas>
+<sc-for list="{{ nodes }}" as="n" hint-placeholder-count="16"><i class="{{ n.cls }}" style="left: {{ n.px }}%; top: {{ n.py }}%"></i></sc-for>
+
+<sc-for list="{{ chips }}" as="c" hint-placeholder-count="0">
+<div class="{{ c.cls }}" style="left: {{ c.left }}%; top: {{ c.top }}%">
+<div class="chip_t"><b><i class="{{ c.mk }}"></i>{{ c.label }}</b><span>{{ c.time }}</span></div>
+<div class="chip_row"><span class="pile"><sc-for list="{{ c.avs }}" as="v" hint-placeholder-count="1"><span class="{{ v.cls }}" style="background: {{ v.bg }}">{{ v.init }}</span></sc-for></span><div><p>{{ c.text }}</p><div class="chip_who"><b>{{ c.name }}</b> · {{ c.rest }}</div></div></div>
+<sc-if value="{{ c.hasThread }}" hint-placeholder-val="{{ false }}">
+<div class="chip_thread">
+<div class="chip_t"><b><i class="mk a"></i>{{ c.thLabel }}</b><span class="fast">{{ c.thTime }}</span></div>
+<div class="chip_row"><span class="pile"><sc-for list="{{ c.thAvs }}" as="v" hint-placeholder-count="1"><span class="{{ v.cls }}" style="background: {{ v.bg }}">{{ v.init }}</span></sc-for></span><div><p>{{ c.thText }}</p><div class="chip_who"><b>{{ c.thName }}</b> · {{ c.thRest }}</div></div></div>
+</div>
+</sc-if>
+</div>
+</sc-for>
+
+<sc-for list="{{ snaps }}" as="s" hint-placeholder-count="0">
+<div class="{{ s.cls }}" style="left: {{ s.left }}%; top: {{ s.top }}%"><div class="snap_img ph" style="background: {{ s.bg }}">[Photo]</div><span class="snap_cap">{{ s.label }}</span></div>
+</sc-for>
+<div class="{{ moment.cls }}" style="left: {{ moment.left }}%; top: {{ moment.top }}%"><div class="moment_img ph" style="background: {{ moment.bg }}">[Team photo]</div><div class="moment_cap"><b>{{ moment.type }}</b><span>{{ moment.line }}</span></div></div>
+</div>
+
+<div class="net_stack" aria-hidden="true">
+<sc-for list="{{ feed }}" as="c" hint-placeholder-count="0">
+<div class="{{ c.cls }}">
+<div class="chip_t"><b><i class="{{ c.mk }}"></i>{{ c.label }}</b><span>{{ c.time }}</span></div>
+<div class="chip_row"><span class="pile"><sc-for list="{{ c.avs }}" as="v" hint-placeholder-count="1"><span class="{{ v.cls }}" style="background: {{ v.bg }}">{{ v.init }}</span></sc-for></span><div><p>{{ c.text }}</p><div class="chip_who"><b>{{ c.name }}</b> · {{ c.rest }}</div></div></div>
+<sc-if value="{{ c.hasThread }}" hint-placeholder-val="{{ false }}">
+<div class="chip_thread"><div class="chip_t"><b><i class="mk a"></i>{{ c.thLabel }}</b><span class="fast">{{ c.thTime }}</span></div><div class="chip_row"><span class="pile"><sc-for list="{{ c.thAvs }}" as="v" hint-placeholder-count="1"><span class="{{ v.cls }}" style="background: {{ v.bg }}">{{ v.init }}</span></sc-for></span><div><p>{{ c.thText }}</p><div class="chip_who"><b>{{ c.thName }}</b> · {{ c.thRest }}</div></div></div></div>
+</sc-if>
+</div>
+</sc-for>
+</div>
+
+<div class="net_base">
+<div class="legend"><span><i class="mk"></i>Props</span><span><i class="mk q"></i>Question</span><span><i class="mk a"></i>Answer</span><span><i class="mk t"></i>Alpha team</span></div>
+</div>
+</div>
+</section>
+
+<!-- ============ PARTNERS: roster + theater ============ -->
+<section id="partners" class="partners">
+<div class="wrap">
+<h2 class="display h2">The partners raising<br>the standard</h2>
+<p class="lede">Every brand in the network, in the order they joined, and the founder who built it. Open a brand for its story, or a founder for theirs.</p>
+<div class="p_grid">
+<div class="p_list" role="list">
+<sc-for list="{{ partners }}" as="p" hint-placeholder-count="16">
+<button class="{{ p.cls }}" onMouseEnter="{{ p.hover }}" onFocus="{{ p.focus }}" onClick="{{ p.open }}" role="listitem"><span>{{ p.n }}</span><span class="nm">{{ p.name }}</span><span class="ct">{{ p.city }}</span><span class="yr">{{ p.yr }}</span></button>
+</sc-for>
+</div>
+<div class="p_viewer">
+<button class="{{ frameCls }}" onClick="{{ openCur }}" aria-label="Play {{ cur.name }} film">
+<sc-for list="{{ posters }}" as="q" hint-placeholder-count="1">
+<div class="{{ q.cls }}" style="background: {{ q.tone }}">
+<sc-if value="{{ q.hasImg }}" hint-placeholder-val="{{ false }}"><img src="{{ q.img }}" alt=""></sc-if>
+<sc-if value="{{ q.noImg }}" hint-placeholder-val="{{ true }}"><div class="tcard"><div class="mono" style="font-size: 10px; letter-spacing: .14em; margin-bottom: 10px">Partner {{ q.n }}</div><div class="tcard_name">{{ q.name }}</div><div class="tcard_rule"></div><div class="mono" style="font-size: 10px; letter-spacing: .1em; opacity: .85">{{ q.cityLong }}</div></div></sc-if>
+</div>
+</sc-for>
+<span class="p_pv"><i></i>Preview</span>
+<span class="p_play" aria-hidden="true"><svg width="18" height="20" viewBox="0 0 18 20"><path d="M2 1.5v17L16.5 10z" fill="currentColor"></path></svg></span>
+<span class="p_dur">1:30</span>
+</button>
+<div class="p_meta"><span>{{ cur.n }}&#160;&#160;&#160;<b>{{ cur.name }}</b></span><span>Partnered [Mo YYYY]</span></div>
+<div class="p_bar">
+<a class="p_who" href="#founder"><span class="av"><sc-if value="{{ cur.hasHead }}" hint-placeholder-val="{{ false }}"><img src="{{ cur.head }}" alt=""></sc-if><sc-if value="{{ cur.noHead }}" hint-placeholder-val="{{ true }}"><span>{{ cur.init }}</span></sc-if></span><span><b>{{ cur.founder }}</b><span>{{ cur.role }}</span></span></a>
+<div class="p_pile" aria-label="Team"><i></i><i></i><i></i><i></i></div>
+</div>
+<div class="p_bar">
+<span class="mono" style="font-size: 10.5px; color: #5C5952">{{ cur.locLine }}</span>
+<a class="btn" href="#partner">Open partner page</a>
+</div>
+</div>
+</div>
+<hr class="rule" style="margin-top: 88px">
+</div>
+</section>
+
+<!-- ============ PEOPLE ============ -->
+<section id="team" class="people" style="padding-top: 0">
+<div class="wrap">
+<div class="sec_head">
+<div>
+<h2 class="display h2">The people behind<br>every practice.</h2>
+<p class="lede">You keep your brand, your team and your clinical judgment. These are the people who take everything else off your plate.</p>
+</div>
+<div class="arrows"><button class="arrow" aria-label="Previous department" onClick="{{ deptPrev }}" disabled="{{ deptAtStart }}"><svg width="8" height="10" viewBox="0 0 8 10" aria-hidden="true"><path d="M6 1L2 5l4 4" stroke="currentColor" fill="none" stroke-width="1.3"></path></svg></button><button class="arrow" aria-label="Next department" onClick="{{ deptNext }}" disabled="{{ deptAtEnd }}"><svg width="8" height="10" viewBox="0 0 8 10" aria-hidden="true"><path d="M2 1l4 4-4 4" stroke="currentColor" fill="none" stroke-width="1.3"></path></svg></button></div>
+</div>
+<div class="rail" style="margin-top: 40px">
+<div class="track" style="transform: translateX({{ deptShift }})">
+<sc-for list="{{ depts }}" as="d" hint-placeholder-count="5">
+<article class="dept">
+<div class="mono" style="font-size: 10px; letter-spacing: .08em">{{ d.name }}</div>
+<p class="dept_line">{{ d.line }}</p>
+<a class="btn" href="#dept" style="align-self: flex-start; height: 28px; padding: 0 12px; font-size: 10px">Meet department</a>
+<div class="dept_avs"><span class="av">··</span><span class="av">··</span><span class="av">··</span><span class="av">··</span></div>
+<span class="dept_count">[N] people</span>
+</article>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; justify-content: flex-end; margin-top: 36px"><a class="btn" href="#team-all">Meet the whole team</a></div>
+<hr class="rule" style="margin-top: 72px">
+</div>
+</section>
+
+<!-- ============ STORIES ============ -->
+<section id="stories" class="stories" style="padding-top: 0">
+<div class="wrap">
+<div class="sec_head">
+<div>
+<h2 class="display h2">In their<br>own words</h2>
+<p class="lede">Providers, managers and founders from across the network, on what they were worried about going in and what partnership has actually been like.</p>
+</div>
+<div class="arrows"><button class="arrow" aria-label="Previous story" onClick="{{ storyPrev }}" disabled="{{ storyAtStart }}"><svg width="8" height="10" viewBox="0 0 8 10" aria-hidden="true"><path d="M6 1L2 5l4 4" stroke="currentColor" fill="none" stroke-width="1.3"></path></svg></button><button class="arrow" aria-label="Next story" onClick="{{ storyNext }}" disabled="{{ storyAtEnd }}"><svg width="8" height="10" viewBox="0 0 8 10" aria-hidden="true"><path d="M2 1l4 4-4 4" stroke="currentColor" fill="none" stroke-width="1.3"></path></svg></button></div>
+</div>
+<div class="rail" style="margin-top: 32px">
+<div class="track" style="gap: 10px; transform: translateX({{ storyShift }})">
+<sc-for list="{{ stories }}" as="s" hint-placeholder-count="7">
+<article class="story">
+<div class="story_media">
+<span class="story_ph ph">[PartnerCon interview still]</span>
+<span class="story_play" aria-hidden="true"><svg width="9" height="10" viewBox="0 0 9 10"><path d="M1 .8v8.4L8.3 5z" fill="currentColor"></path></svg></span>
+<p class="story_quote">{{ s.quote }}</p>
+</div>
+<div class="story_meta"><div><div class="story_name">{{ s.name }}</div><div class="story_role">{{ s.role }}</div></div><span class="story_brand">{{ s.brand }}</span></div>
+</article>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; justify-content: flex-end; margin-top: 36px"><a class="btn" href="#stories-all">See more stories</a></div>
+</div>
+</section>
+
+<!-- ============ PRACTICE ============ -->
+<section id="practice" class="practice" aria-label="Practice Aesthetics Training">
+<div class="wrap" style="width: 100%">
+<div class="practice_grid">
+<div class="practice_lock">
+<span class="practice_mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+<span style="width: 1px; height: 84px; background: rgba(255,255,255,.8)"></span>
+<span><span class="practice_word">Practice®</span><span class="practice_sub" style="display: block">Aesthetics Training™</span></span>
+</div>
+<div style="max-width: 320px">
+<p class="practice_tag">Become an injector<br>the field can trust</p>
+<a class="btn btn-light" href="#classes" style="color: #fff">See classes</a>
+</div>
+</div>
+</div>
+<span class="practice_ph ph">[Practice campaign still, anatomy overlay / full bleed / swap Practice lockup SVG]</span>
+</section>
+
+<!-- ============ PODCASTS ============ -->
+<section id="podcasts" class="pods">
+<div class="wrap">
+<div class="sec_head">
+<div>
+<h2 class="display h2">Hear from<br>the network</h2>
+<p class="lede">Seven shows hosted by founders, providers and the Alpha team. Everything from the front desk to the balance sheet, published every week.</p>
+</div>
+<div style="display: flex; flex-direction: column; align-items: flex-end; gap: 28px">
+<div class="stats">
+<div class="stat"><div class="stat_num">7</div><div class="stat_label">Shows</div></div>
+<div class="stat"><div class="stat_num">[#]</div><div class="stat_label">Episodes</div></div>
+<div class="stat"><div class="stat_num">[#]</div><div class="stat_label">Listens</div></div>
+</div>
+<div class="arrows"><button class="arrow" aria-label="Previous show" onClick="{{ podPrev }}" disabled="{{ podAtStart }}"><svg width="8" height="10" viewBox="0 0 8 10" aria-hidden="true"><path d="M6 1L2 5l4 4" stroke="currentColor" fill="none" stroke-width="1.3"></path></svg></button><button class="arrow" aria-label="Next show" onClick="{{ podNext }}" disabled="{{ podAtEnd }}"><svg width="8" height="10" viewBox="0 0 8 10" aria-hidden="true"><path d="M2 1l4 4-4 4" stroke="currentColor" fill="none" stroke-width="1.3"></path></svg></button></div>
+</div>
+</div>
+<div class="rail" style="margin-top: 28px">
+<div class="track" style="gap: 8px; transform: translateX({{ podShift }})">
+<a class="cover" href="#htb" style="text-decoration: none"><div class="cover_art" style="background: #8DC2DD; color: #fff"><div class="cover_t" style="font-size: 20px; letter-spacing: .14em; text-align: center">Holding time<br><span style="font-size: 54px; letter-spacing: .1em">Back</span></div><div style="text-align: center"><div class="mono" style="font-size: 9px; letter-spacing: .12em">With Dr. Amanda Holden</div><div class="cover_brand" style="margin-top: 4px">ALPHA®</div></div></div><div class="cover_meta"><span class="av">AH</span><span class="mono" style="font-size: 10px">Dr. Amanda Holden</span></div></a>
+<a class="cover" href="#dt" style="text-decoration: none"><div class="cover_art" style="background: #1D1B1A; color: #fff; justify-content: center; text-align: center"><div class="cover_s" style="font-size: 56px; line-height: .85; transform: rotate(-8deg)">Dear<br>Tiffany</div><div class="cover_brand" style="position: absolute; bottom: 18px; left: 0; right: 0">ALPHA®</div></div><div class="cover_meta"><span class="av">T</span><span class="mono" style="font-size: 10px">Tiffany</span></div></a>
+<a class="cover" href="#bf" style="text-decoration: none"><div class="cover_art" style="background: #D3192B; color: #fff; text-align: center"><div><div style="font-family: Georgia, serif; font-weight: 700; font-size: 34px; line-height: 1">Beauty <span style="font-weight: 400">Filter</span></div><div class="mono" style="font-size: 9px; letter-spacing: .12em; margin-top: 6px">With Sassy &amp; Alexis</div></div><div class="cover_brand">ALPHA®</div></div><div class="cover_meta"><span class="av">S</span><span class="av" style="margin-left: -18px">A</span><span class="mono" style="font-size: 10px">Sassy + Alexis</span></div></a>
+<a class="cover" href="#oms" style="text-decoration: none"><div class="cover_art" style="background: #5E6A4B; color: #fff; text-align: center"><div><div class="cover_s" style="font-size: 28px">Operation</div><div class="cover_t" style="font-size: 34px">Med Spa</div><div class="mono" style="font-size: 9px; letter-spacing: .12em; margin-top: 6px">With Bek + Janelle</div></div><div class="cover_brand">ALPHA®</div></div><div class="cover_meta"><span class="av">B</span><span class="av" style="margin-left: -18px">J</span><span class="mono" style="font-size: 10px">Bek + Janelle</span></div></a>
+<a class="cover" href="#gfp" style="text-decoration: none"><div class="cover_art" style="background: #CDBDE6; color: #0E0E0D"><div class="cover_t" style="font-size: 30px">The great<br>friends<br>podcast</div><div style="display: flex; justify-content: space-between; align-items: flex-end"><span style="font-family: Georgia, serif; font-weight: 700; font-size: 20px">alpha</span><span class="mono" style="font-size: 9px">With John Wheeler</span></div></div><div class="cover_meta"><span class="av">JW</span><span class="mono" style="font-size: 10px">John Wheeler</span></div></a>
+<a class="cover" href="#wce" style="text-decoration: none"><div class="cover_art" style="background: #EFECE4; color: #1E2B45; border: 1px solid rgba(14,14,13,.12)"><div class="mono" style="font-size: 9px; letter-spacing: .14em">The</div><div class="cover_t" style="font-size: 32px">White<br>coat<br>entrepreneur</div><div class="cover_brand">ALPHA®</div></div><div class="cover_meta"><span class="av">[ ]</span><span class="mono" style="font-size: 10px">[Host]</span></div></a>
+<a class="cover" href="#msm" style="text-decoration: none"><div class="cover_art" style="background: #2E3B55; color: #E8E4DA"><div class="mono" style="font-size: 9px; letter-spacing: .14em">Med spa marketing</div><div class="cover_t" style="font-size: 44px">Group<br>chat</div><div class="cover_brand">ALPHA®</div></div><div class="cover_meta"><span class="av">J</span><span class="mono" style="font-size: 10px">With Julia</span></div></a>
+</div>
+</div>
+<p class="ph" style="margin: 18px 0 0; color: #5C5952">[Typographic stand-ins / swap for real cover art]</p>
+
+<div id="how" class="start">
+<div>
+<hr class="rule" style="margin-bottom: 40px">
+<h2 class="display h2">Thinking about<br>partnership?<br>Start here.</h2>
+<p class="lede">Four conversations picked for owners weighing the decision. Press play and keep browsing; the player stays with you.</p>
+</div>
+<div>
+<hr class="rule">
+<sc-for list="{{ eps }}" as="e" hint-placeholder-count="4">
+<div class="ep">
+<button class="{{ e.btnCls }}" aria-label="Play {{ e.title }}" onClick="{{ e.play }}"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1.5 1v12L11 7z" fill="currentColor"></path></svg></button>
+<div class="ep_art" style="background: {{ e.tone }}"></div>
+<div><p class="ep_title">{{ e.title }}</p><div class="ep_show">{{ e.show }}</div></div>
+<span class="ep_len">{{ e.len }}</span>
+</div>
+</sc-for>
+<div style="display: flex; justify-content: flex-end; margin-top: 28px"><a class="btn" href="#episodes">All shows and episodes</a></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ============ QUALIFY ============ -->
+<section id="qualify" class="qual on-dark">
+<div class="wrap qual_grid">
+<div>
+<h2 class="display h2">Is your practice<br>qualified?</h2>
+<p class="lede">Five questions about your practice. If it&#39;s a fit, we set up a real conversation, with people who have already made this decision.</p>
+<p class="ph" style="color: #9B978E; margin-top: 28px">Routes to GHL / alphacrm.io<br>Thresholds below are placeholders</p>
+</div>
+<div class="form">
+<sc-if value="{{ notDone }}" hint-placeholder-val="{{ true }}">
+<div class="form_top"><span>{{ qLabel }}</span><span>{{ qCount }}</span></div>
+<div class="form_prog"><sc-for list="{{ qBars }}" as="b" hint-placeholder-count="5"><i class="{{ b.cls }}"></i></sc-for></div>
+<sc-if value="{{ isChoice }}" hint-placeholder-val="{{ true }}">
+<h3 class="form_q">{{ q.title }}</h3>
+<p class="form_hint">{{ q.hint }}</p>
+<div class="opts" role="radiogroup" aria-label="{{ q.title }}">
+<sc-for list="{{ q.opts }}" as="o" hint-placeholder-count="3"><button class="{{ o.cls }}" role="radio" aria-checked="{{ o.on }}" onClick="{{ o.pick }}"><span>{{ o.label }}</span><span class="opt_dot"></span></button></sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ isContact }}" hint-placeholder-val="{{ false }}">
+<h3 class="form_q">Where should we reach you?</h3>
+<p class="form_hint">A real person replies within [one business day].</p>
+<div class="fields">
+<div class="field"><label for="f-name">Name</label><input id="f-name" type="text" autocomplete="name"></div>
+<div class="field"><label for="f-practice">Practice</label><input id="f-practice" type="text" autocomplete="organization"></div>
+<div class="field"><label for="f-email">Email</label><input id="f-email" type="email" autocomplete="email"></div>
+<div class="field"><label for="f-phone">Phone</label><input id="f-phone" type="tel" autocomplete="tel"></div>
+</div>
+</sc-if>
+<div class="form_nav">
+<button class="ulink" style="background: none; border-top: 0; border-left: 0; border-right: 0; cursor: pointer; visibility: {{ backVis }}" onClick="{{ qBack }}">Back</button>
+<button class="btn btn-fill" onClick="{{ qNext }}" disabled="{{ nextDisabled }}" style="opacity: {{ nextOpacity }}">{{ nextLabel }}</button>
+</div>
+</sc-if>
+<sc-if value="{{ isDone }}" hint-placeholder-val="{{ false }}">
+<div style="margin: auto 0">
+<p class="eyebrow" style="color: #C9A26B">Received</p>
+<h3 class="form_q" style="font-size: 40px">Thanks. We&#39;ll be in touch.</h3>
+<p class="form_hint" style="max-width: 440px">While you wait, the four conversations above are the ones owners in your position listen to first.</p>
+<button class="ulink" style="background: none; border-top: 0; border-left: 0; border-right: 0; cursor: pointer" onClick="{{ qReset }}">Start over</button>
+</div>
+</sc-if>
+</div>
+</div>
+</section>
+
+<!-- ============ CLOSER ============ -->
+<section class="closer" aria-label="Let's talk">
+<img class="cta_bg is-stand" src="{{ cta.src }}" alt="" aria-hidden="true">
+<span class="closer_ph ph cta_cr"><b>{{ cta.ptr }}</b> / {{ cta.name }}<br>{{ cta.city }}</span>
+<h2 class="closer_t">What&#39;s holding you back?</h2>
+<a class="btn btn-light" href="#qualify" style="color: #fff">Let&#39;s talk</a>
+<div class="closer_lock" aria-label="Alpha, Stronger Together">
+<span class="closer_lock_a">A<sup style="font-size: 12px; font-family: -apple-system, sans-serif; font-weight: 500">®</sup></span>
+<span class="badge">ST</span>
+<span class="closer_lock_w">STRONGER<br>TOGETHER</span>
+</div>
+</section>
+
+<footer class="foot">
+<div class="wrap">
+<div class="foot_links">
+<div><h3>Partnership</h3><a href="#how">How it works</a><a href="#qualify">Qualify</a><a href="#stories">Stories</a></div>
+<div><h3>Network</h3><a href="#partners">Brands</a><a href="#founders">Founders</a><a href="#team">Alpha team</a></div>
+<div><h3>Learn</h3><a href="#practice">Practice</a><a href="#podcasts">Podcasts</a><a href="#careers">Careers</a></div>
+<div><h3>Contact</h3><a href="#qualify">Let&#39;s talk</a><a href="#ig">Instagram</a><a href="#li">LinkedIn</a></div>
+</div>
+</div>
+<div class="mark"><img src="/_blob/8c6e58a26569a1b0aff6a21dd2464ff0" alt="Alpha"></div>
+<div class="tags"><span>Raise the standard</span><span>Stronger together</span><span>Raise the standard</span><span>Stronger together</span><span>Raise the standard</span><span>Stronger together</span></div>
+</footer>
+
+<!-- ============ THEATER ============ -->
+<sc-if value="{{ thOpen }}" hint-placeholder-val="{{ false }}">
+<div class="theater" role="dialog" aria-modal="true" aria-label="Brand film" tabindex="-1" ref="{{ thRef }}" onKeyDown="{{ thKey }}">
+<div class="th_bar"><span>Film {{ th.idx }} of 16</span><button class="th_close" onClick="{{ thClose }}">Close <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.4"></path></svg></button></div>
+<div class="th_stage">
+<button class="th_arrow" aria-label="Previous film" onClick="{{ thPrev }}"><svg width="14" height="12" viewBox="0 0 14 12" aria-hidden="true"><path d="M13 6H1M6 1L1 6l5 5" stroke="currentColor" fill="none" stroke-width="1.3"></path></svg></button>
+<div class="th_screen">
+<div class="{{ th.pcls }}" style="background: {{ th.tone }}">
+<sc-if value="{{ th.hasImg }}" hint-placeholder-val="{{ false }}"><img src="{{ th.img }}" alt=""></sc-if>
+<sc-if value="{{ th.noImg }}" hint-placeholder-val="{{ true }}"><div class="tcard"><div class="mono" style="font-size: 11px; letter-spacing: .14em; margin-bottom: 12px">Partner {{ th.n }}</div><div class="tcard_name" style="font-size: clamp(36px, 5vw, 80px)">{{ th.name }}</div><div class="tcard_rule"></div><div class="mono" style="font-size: 11px; letter-spacing: .1em; opacity: .85">{{ th.cityLong }}</div></div></sc-if>
+</div>
+<div class="th_cap" style="opacity: {{ th.capOp }}">{{ th.cap }}</div>
+<div class="th_ctrl">
+<button class="th_pp" aria-label="{{ th.ppLabel }}" onClick="{{ thToggle }}">{{ th.ppIcon }}</button>
+<div class="th_track"><i style="width: {{ th.pct }}%"></i></div>
+<span class="th_time">{{ th.time }} / 1:30</span>
+</div>
+</div>
+<button class="th_arrow" aria-label="Next film" onClick="{{ thNext }}"><svg width="14" height="12" viewBox="0 0 14 12" aria-hidden="true"><path d="M1 6h12M8 1l5 5-5 5" stroke="currentColor" fill="none" stroke-width="1.3"></path></svg></button>
+</div>
+<div class="th_foot">
+<div class="th_foot_l"><span>PTR {{ th.n }}</span><b>{{ th.name }}</b><span>{{ th.founder }} · {{ th.role }}</span></div>
+<div style="display: flex; gap: 16px; align-items: center"><span class="th_keys">← → to browse · Esc to close</span><a class="btn btn-light" href="#partner" style="color: #F3F0E9">Open partner page</a></div>
+</div>
+</div>
+</sc-if>
+
+<!-- ============ PLAYER ============ -->
+<sc-if value="{{ hasPlaying }}" hint-placeholder-val="{{ false }}">
+<div class="player" role="region" aria-label="Now playing">
+<div class="player_art" style="background: {{ now.tone }}"></div>
+<div style="min-width: 0">
+<div style="font-family: NHD, sans-serif; font-weight: 900; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ now.title }}</div>
+<div class="mono" style="font-size: 10px; color: #9B978E; margin-top: 3px">{{ now.show }} · {{ now.len }}</div>
+<div class="player_bar"><i></i></div>
+</div>
+<div class="player_btns">
+<button class="ibtn" aria-label="Pause"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M2 1v12M10 1v12" stroke="currentColor" stroke-width="2.2"></path></svg></button>
+<button class="ibtn" aria-label="Close player" onClick="{{ closePlayer }}"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.4"></path></svg></button>
+</div>
+</div>
+</sc-if>
+
+
+
+</div>
+
+<!-- ============ SITE MENU (shared component, see Menu board) ============ -->
+<div class="{{ mnCls }}" id="site-menu" role="dialog" aria-modal="true" aria-label="Site menu">
+<div class="wrap mn_top">
+<button class="mn_x" onClick="{{ mnClose }}" aria-label="Close menu"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.4"></path></svg>Close<em>Esc</em></button>
+<a class="nav_logo" href="#home" onClick="{{ mnClose }}"><img src="/_blob/8c6e58a26569a1b0aff6a21dd2464ff0" alt="Alpha"></a>
+<a class="btn" href="#talk" onClick="{{ mnClose }}">Let&#39;s talk</a>
+</div>
+<div class="wrap mn_body">
+<nav class="mn_list" aria-label="Main">
+<sc-for list="{{ mnItems }}" as="m" hint-placeholder-count="6"><a class="mn_i" href="{{ m.href }}" onClick="{{ m.go }}"><span class="mn_n">{{ m.n }}</span><span class="mn_w"><span style="transition-delay: {{ m.d }}">{{ m.w }}</span></span><span class="mn_p"><b>{{ m.slug }}</b>{{ m.p }}</span></a></sc-for>
+</nav>
+<aside class="mn_side">
+<div class="mn_live">
+<p class="mn_k"><span>{{ mnLiveK }}</span><sc-if value="{{ mnPlaying }}" hint-placeholder-val="{{ false }}"><i>Live</i></sc-if></p>
+<div class="mn_ep"><span class="mn_art" style="background: #1D1B1A; color: #fff; border: 1px solid rgba(232,228,218,.14)">Dear<br>Tiffany</span><div><b>You don&#39;t have a spending problem</b><span>Dear Tiffany // EP 018</span></div></div>
+<div class="mn_pl"><button class="mn_pb" onClick="{{ mnToggle }}" aria-label="{{ mnPlayLabel }}"><sc-if value="{{ mnPlaying }}" hint-placeholder-val="{{ false }}"><svg width="9" height="11" viewBox="0 0 10 12" aria-hidden="true"><path d="M1 0h3v12H1zM6 0h3v12H6z" fill="currentColor"></path></svg></sc-if><sc-if value="{{ mnPaused }}" hint-placeholder-val="{{ true }}"><svg width="10" height="12" viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z" fill="currentColor"></path></svg></sc-if></button><div class="mn_tr"><i style="width: 33%"></i></div><span class="mn_t">17:12 / 52:00</span></div>
+<div class="mn_net"><div><b>16</b>Brands</div><div><b>36</b>Locations</div><div><b>8</b>States</div></div>
+</div>
+<div>
+<div class="mn_dep"><p class="mn_k"><span>Alpha team</span><span>SSO</span></p><ul><sc-for list="{{ mnDepts }}" as="d" hint-placeholder-count="7"><li><a href="#dept">{{ d }}</a></li></sc-for></ul></div>
+<div class="mn_fol"><span>Follow</span><a href="#ig">Instagram ↗</a><a href="#li">LinkedIn ↗</a></div>
+</div>
+</aside>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"autoplay":{"editor":"boolean","default":true,"section":"Motion"},"$preview":{"width":1440,"height":10400}}'>
+class Component extends DCLogic {
+  componentDidMount() {
+    this.rm = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.timer = setInterval(() => this.step(), 200);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer);
+    if (this.raf) cancelAnimationFrame(this.raf);
+    if (this.io) this.io.disconnect();
+  }
+  bump() { this.setState({ n: ((this.state || {}).n || 0) + 1 }); }
+
+  /* ---------- static data ---------- */
+  data() {
+    if (this.D) return this.D;
+    const NODES = [
+      ['Esthetics Center','Sacramento',81.6,314.8,3],['Laser Center of Marin','Corte Madera',60.4,331.5,2],
+      ['Holden Timeless Beauty','San Diego',169.6,466,4],['Preva Aesthetics','Encinitas',167,457.7,2],
+      ['Flawless','Albuquerque',383.4,405.1,2],['Preva Aesthetics','Denver',417.2,284.8,3],
+      ['Privé Med Spa','Lexington',833.9,328.7,2],['Anne Therese Aesthetics','Columbus',864.6,279.1,2],
+      ['CAMI Aesthetics','Huntersville',908.3,396.6,3],['Refined Aesthetics','Leesburg',975.1,300.8,4],
+      ['Dontage','Fairfax',986,316,2],['Mint + Needle','Middletown',1012.5,292.3,2],
+      ['Williams Center','Latham',1052.3,207.1,3],['RN Esthetics','Salem',1110.5,213.1,3],
+      ['InBloom','Londonderry',1100.9,204.3,2],['LexRx','Boston',1107.3,217.2,3]
+    ].map((a) => ({ brand: a[0], city: a[1], x: a[2], y: a[3], w: a[4] }));
+    /* the standing web: minimum spanning tree + two nearest neighbours per practice */
+    const E = [], seen = {}, add = (i, j) => { const k = i < j ? i + '-' + j : j + '-' + i; if (!seen[k]) { seen[k] = 1; E.push([i, j]); } };
+    const dist = (i, j) => Math.hypot(NODES[i].x - NODES[j].x, NODES[i].y - NODES[j].y);
+    const inT = [0];
+    while (inT.length < NODES.length) { let best = null; inT.forEach((i) => NODES.forEach((_, j) => { if (inT.indexOf(j) < 0 && (!best || dist(i, j) < best[2])) best = [i, j, dist(i, j)]; })); add(best[0], best[1]); inT.push(best[1]); }
+    NODES.forEach((_, i) => NODES.map((__, j) => j).filter((j) => j !== i).sort((a, b) => dist(i, a) - dist(i, b)).slice(0, 2).forEach((j) => add(i, j)));
+    const ADJ = NODES.map(() => []); E.forEach(([i, j]) => { ADJ[i].push(j); ADJ[j].push(i); });
+    const P = [
+      { n: '001', name: 'Esthetics Center', city: 'Sacramento, CA', locs: 1, area: 'Sacramento', founder: '[Founder]', tone: '#3B3A35' },
+      { n: '002', name: 'Holden Timeless Beauty', city: 'San Diego, CA', locs: 4, area: 'North County San Diego', founder: 'Amanda Holden, MD', tone: '#61788A' },
+      { n: '003', name: 'Refined Aesthetics', city: 'Leesburg, VA', locs: 2, area: 'Northern Virginia', founder: 'Sarah Safa', tone: '#4C5949' },
+      { n: '004', name: '[Partner 004]', city: '[City, ST]', locs: 0, area: '[Area]', founder: '[Founder]', tone: '#57534B' },
+      { n: '005', name: 'Laser Center of Marin', city: 'Corte Madera, CA', locs: 1, area: 'Marin County', founder: '[Founder]', tone: '#2F4550' },
+      { n: '006', name: 'Williams Center', city: 'Latham, NY', locs: 1, area: 'Capital Region', founder: '[Founder]', tone: '#4B4038' },
+      { n: '007', name: 'Anne Therese Aesthetics', city: 'Columbus, OH', locs: 1, area: 'Columbus', founder: '[Founder]', tone: '#6B5A55' },
+      { n: '008', name: 'Dontage', city: 'Fairfax, VA', locs: 1, area: 'Fairfax', founder: '[Founder]', tone: '#3D3D45' },
+      { n: '009', name: 'RN Esthetics', city: 'Salem, MA', locs: 3, area: 'North Shore', founder: 'Michelle Doran', tone: '#52606B' },
+      { n: '010', name: 'CAMI Aesthetics', city: 'Huntersville, NC', locs: 2, area: 'Charlotte area', founder: '[Founder]', tone: '#5B4E44' },
+      { n: '011', name: 'InBloom Health + Medispa', city: 'Londonderry, NH', locs: 1, area: 'Southern New Hampshire', founder: 'Dr. Tanya Lawson, ND', tone: '#7A2A1E', img: '/_blob/4d98d100087709e99a2681f05a716a09', head: '/_blob/bc7eacb4548f2042cbc209c1c6976dc4' },
+      { n: '012', name: 'Flawless', city: 'Albuquerque, NM', locs: 2, area: 'Albuquerque', founder: 'Heather Badal', tone: '#7B3C26', img: '/_blob/117fafec37d91a9f4b567818a404cc24', head: '/_blob/b01ba67d9cc798eec47b72024735b1ee' },
+      { n: '013', name: 'Mint + Needle', city: 'Middletown, DE', locs: 2, area: 'Delaware', founder: 'Brandi Gregge, MSN, FNP-BC', tone: '#8A8A76', img: '/_blob/6f9f59949585d33d629e1880f88442e4', head: '/_blob/1b354147334e88988c4a8270e418cf97' },
+      { n: '014', name: 'Privé Med Spa', city: 'Lexington, KY', locs: 1, area: 'Lexington', founder: 'Brandice Harrison, PA-C', role: 'Co-founder', tone: '#5A5A55', img: '/_blob/42e63922522a3aeb100987e90907ea6d' },
+      { n: '015', name: 'LexRx', city: 'Boston, MA', locs: 4, area: 'Boston and Nantucket', founder: 'Alexa Nicholls Costa, NP', tone: '#56646E', img: '/_blob/572e07793bb191e6cb70ac4b8f17dd11', head: '/_blob/1924a95bd36f0e78bd18f6faf42721f6' },
+      { n: '016', name: 'Preva Aesthetics', city: 'Denver, CO', locs: 2, area: 'Denver and Encinitas', founder: 'Michelle Paty', tone: '#8C7350', img: '/_blob/0e6c422690914b59a6eff7dc7db00550', head: '/_blob/661a270e1aad64eb71378028e78df048' }
+    ];
+    this.D = { NODES, EDGES: E, ADJ, P,
+      FIRST: ['Dana','Priya','Mara','Jess','Lauren','Nina','Tessa','Kelsey','Andrea','Carmen','Brooke','Leah','Sofia','Rachel','Maya','Elena','Claire','Jade'],
+      TEAMFIRST: ['Reggie','Janelle','Chris','Morgan','Sam'],
+      ROLES: ['Front desk lead','Practice manager','Lead injector','Founder','Aesthetician','Operations lead','Nurse injector'],
+      PROPS: ['Props to the {to} front desk for the smoothest shadow day we have ever had.','Huge thanks to {to} for sharing their consent flow. Live here on Monday.','Congrats {to} on a fully booked November.','Shoutout to the {to} team for covering a provider on two days’ notice.','Used the {to} rebooking script all week. It works.','Welcome to the new hires in {to}. Great first week.'],
+      QS: ['Anyone switched EMRs this year? Worth the pain?','Hiring a laser tech. Who has someone they would hire again?','What are you all doing for no-show deposits?','Best way you have found to train a new front desk in week one?','Anyone running memberships yet? How did you price the first tier?','Who has a good checklist for opening a second location?','How are you scheduling consults vs. treatments on the same day?'],
+      AS: ['We did in March. Worth it, happy to walk you through.','Sending you our checklist now.','Call me after 5, happy to share what worked.','We tested three. DMing you the winner.','Our script is in the shared drive, tagging you.','Two names coming your way.'],
+      TEAM: ['Three hiring candidates sent to {to} today.','New campaign assets delivered to {to}.','Payroll question from {to}, solved before lunch.','Vendor rep visit booked for {to} next week.'],
+      TEAM_ALL: ['New vendor pricing is live for every practice.','Next Practice cohort opens Monday. Six seats per brand.','Spring campaign kit is ready for everyone.','Benefits enrollment opens today, every practice.'],
+      MOMENTS: [
+        { day: 0, hour: 11, type: 'Launch', line: 'A new laser, launched to a full room in Marin.', at: 1, from: [0] },
+        { day: 1, hour: 15, type: 'Shadow day', line: 'Dr. Holden spends the day learning from Michelle Paty’s team.', at: 2, from: [3] },
+        { day: 2, hour: 10, type: 'Team day', line: 'New hires, first week, one very good photo.', at: 9, from: [] },
+        { day: 3, hour: 14, type: 'On the podium', line: 'A partner surgeon teaching fat transfer at AAFPRS.', pt: [770, 230], from: [7, 12, 5] },
+        { day: 4, hour: 12, type: 'Team day', line: 'The whole CAMI team, together for once.', at: 8, from: [] },
+        { day: 5, hour: 12, type: 'Founders dinner', line: 'Four founders, one table, nobody talking about the weather.', at: 5, from: [0, 7] },
+        { day: 6, hour: 13, type: 'All hands', line: 'Sunday reset before a big week.', at: 12, from: [] }
+      ],
+      SNAPS: [['Front desk · Encinitas',3],['Launch night · Marin',1],['The door · San Diego',2],['New hires · Leesburg',9],['Team hats · Huntersville',8],['Dinner · Denver',5],['Lobby · Boston',15],['Treatment room · Albuquerque',4]],
+      DAYS: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+      HUES: [18,28,34,40,22,12,30,26],
+      CAPS: ['[Caption line from the film]','[Burned-in captions run along the bottom]','[The founder, in their own words]']
+    };
+    return this.D;
+  }
+
+  /* ---------- network simulation ---------- */
+  sim0() {
+    if (this.S) return this.S;
+    const S = { tk: 0, min: 9 * 60, c1: 0, ans: 0, rt: [], fired: {}, lines: [], rings: [], sso: {}, chips: [], snaps: [], moment: { on: false, until: 0 }, flash: {}, jobs: [], feed: [], lastSnap: [], inView: true,
+      pi: 1, pvFrom: -99, th: false, thPlay: false, tt: 0, thG: 0 };
+    for (let i = 0; i < 3; i++) S.chips.push({ on: false, until: 0, d: null, rect: null });
+    for (let i = 0; i < 2; i++) S.snaps.push({ on: false, until: 0, label: '', bg: '', rect: null });
+    this.S = S;
+    return S;
+  }
+  rnd(a) { return a[Math.floor(Math.random() * a.length)]; }
+  pick(ex) {
+    const N = this.data().NODES; const t = N.reduce((s, n) => s + n.w, 0);
+    for (let k = 0; k < 20; k++) { let r = Math.random() * t, i = 0; for (; i < N.length; i++) { r -= N[i].w; if (r <= 0) break; } if (ex.indexOf(i) < 0) return i; }
+    return (ex[0] + 3) % N.length;
+  }
+  now() { return typeof performance !== 'undefined' ? performance.now() : Date.now(); }
+  /* partner to partner: a curved line that draws from dot to dot. web: Alpha travelling the standing web. */
+  arc(a, b, kind, delay) {
+    const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2, dx = b.x - a.x, dy = b.y - a.y, d = Math.sqrt(dx * dx + dy * dy) || 1;
+    let px = -dy / d, py = dx / d; if (py > 0) { px = -px; py = -py; }
+    const bend = kind === 'web' ? 0 : .28;
+    this.S.lines.push({ a, b, c: { x: mx + px * d * bend, y: my + py * d * bend }, kind, t0: this.now() + (delay || 0) });
+  }
+  ring(p, q, gold, delay) { this.S.rings.push({ x: p.x, y: p.y, q: !!q, gold: !!gold, t0: this.now() + (delay || 0) }); }
+  goldAt(i, delay) { const S = this.S; S.jobs.push({ at: S.tk + Math.ceil((delay || 0) / 200), run: () => { S.sso[i] = S.tk + 6; } }); }
+  tree(o) {
+    const A = this.data().ADJ, par = { [o]: -1 }, dep = { [o]: 0 }, q = [o];
+    while (q.length) { const i = q.shift(); A[i].forEach((j) => { if (!(j in par)) { par[j] = i; dep[j] = dep[i] + 1; q.push(j); } }); }
+    return { par, dep };
+  }
+  route(o, t, delay) {
+    const N = this.data().NODES, T = this.tree(o), hops = [], HOP = 340, d0 = delay || 0;
+    for (let j = t; j !== o; j = T.par[j]) hops.unshift([T.par[j], j]);
+    this.goldAt(o, d0);
+    hops.forEach(([i, j], k) => { this.arc(N[i], N[j], 'web', d0 + k * HOP); this.goldAt(j, d0 + (k + 1) * HOP); });
+  }
+  broadcast(o) {
+    const N = this.data().NODES, T = this.tree(o), HOP = 340;
+    this.goldAt(o, 0); this.ring(N[o], false, true);
+    Object.keys(T.par).forEach((k) => { const j = +k, i = T.par[j]; if (i < 0) return; this.arc(N[i], N[j], 'web', (T.dep[j] - 1) * HOP); this.goldAt(j, T.dep[j] * HOP); });
+  }
+  loop() {
+    this.raf = requestAnimationFrame(() => this.loop());
+    const S = this.S; if (!S || !S.inView || (typeof document !== 'undefined' && document.hidden)) return;
+    this.draw();
+  }
+  draw() {
+    const cv = this.cv, ctx = this.ctx, S = this.S; if (!cv || !ctx || !S) return;
+    const dpr = Math.min(2, window.devicePixelRatio || 1), W = Math.round(cv.clientWidth * dpr), H = Math.round(cv.clientHeight * dpr);
+    if (!W || !H) return;
+    if (cv.width !== W || cv.height !== H) { cv.width = W; cv.height = H; }
+    const k = W / 1200, px = dpr / k, t = this.now(), D = this.data(), N = D.NODES;
+    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, W, H); ctx.setTransform(k, 0, 0, H / 720, 0, 0);
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    /* the standing web: always there, quiet */
+    ctx.strokeStyle = 'rgba(201,162,107,.14)'; ctx.lineWidth = .7 * px; ctx.beginPath();
+    D.EDGES.forEach(([i, j]) => { ctx.moveTo(N[i].x, N[i].y); ctx.lineTo(N[j].x, N[j].y); }); ctx.stroke();
+    /* [r, g, b, alpha, width, draw ms, life ms] */
+    const K = { hum: [232, 228, 218, .3, .8, 1100, 4200], msg: [232, 228, 218, .85, 1.2, 1200, 5500], big: [232, 228, 218, 1, 1.5, 1400, 7000], web: [201, 162, 107, .95, 1.5, 340, 2600] };
+    S.lines = S.lines.filter((l) => t < l.t0 + K[l.kind][6]);
+    S.lines.forEach((l) => {
+      const [r, g, b, al, w, grow, life] = K[l.kind], e = t - l.t0; if (e < 0) return;
+      const p = this.rm ? 1 : Math.min(1, e / grow), u1 = 1 - Math.pow(1 - p, 3), fade = e < grow ? 1 : Math.max(0, 1 - (e - grow) / (life - grow));
+      ctx.strokeStyle = 'rgba(' + r + ',' + g + ',' + b + ',' + (al * fade).toFixed(3) + ')'; ctx.lineWidth = w * px;
+      ctx.beginPath(); let x = l.a.x, y = l.a.y; ctx.moveTo(x, y);
+      for (let s = 1; s <= 28; s++) { const u = u1 * s / 28, v = 1 - u; x = v * v * l.a.x + 2 * v * u * l.c.x + u * u * l.b.x; y = v * v * l.a.y + 2 * v * u * l.c.y + u * u * l.b.y; ctx.lineTo(x, y); }
+      ctx.stroke();
+      if (p < 1) { ctx.fillStyle = 'rgb(' + r + ',' + g + ',' + b + ')'; ctx.beginPath(); ctx.arc(x, y, 2.3 * px, 0, 6.2832); ctx.fill(); }
+      else if (!l.hit && (l.kind === 'msg' || l.kind === 'big')) { l.hit = 1; this.ring(l.b); }
+    });
+    S.rings = S.rings.filter((q) => t < q.t0 + 1900);
+    S.rings.forEach((q) => {
+      const e = t - q.t0; if (e < 0) return; const p = e / 1900, u = 1 - Math.pow(1 - p, 3);
+      ctx.strokeStyle = (q.gold ? 'rgba(201,162,107,' : 'rgba(232,228,218,') + (.85 * (1 - p)).toFixed(3) + ')'; ctx.lineWidth = 1.1 * px;
+      ctx.setLineDash(q.q ? [3 * px, 3 * px] : []); ctx.beginPath(); ctx.arc(q.x, q.y, 3 + u * 24, 0, 6.2832); ctx.stroke(); ctx.setLineDash([]);
+    });
+  }
+  flash(i) { this.S.flash[i] = this.S.tk + 5; }
+  av(name, team) {
+    const D = this.data(); const h = D.HUES[name.charCodeAt(0) % D.HUES.length];
+    return { init: name.slice(0, 1), cls: 'mav' + (team ? ' team' : ''), bg: 'radial-gradient(70% 70% at 35% 30%, hsl(' + h + ',38%,82%), hsl(' + h + ',26%,58%))' };
+  }
+  rects() {
+    const S = this.S, out = [];
+    S.chips.forEach((c) => { if (c.on && c.rect) out.push(c.rect); });
+    S.snaps.forEach((c) => { if (c.on && c.rect) out.push(c.rect); });
+    if (S.moment.on && S.moment.rect) out.push(S.moment.rect);
+    return out;
+  }
+  place(pt, w, h) {
+    const x = pt.x / 12, y = pt.y / 7.2, act = this.rects();
+    const C = [[x + 1.4, y - h - 2], [x + 1.4, y + 2], [x - w - 1.4, y - h - 2], [x - w - 1.4, y + 2], [x - w / 2, y - h - 3], [x - w / 2, y + 3]];
+    for (const c of C) {
+      const l = c[0], t = c[1];
+      if (l < 0 || t < -2 || l + w > 100 || t + h > 102) continue;
+      if (act.every((r) => l + w < r.l - .8 || l > r.l + r.w + .8 || t + h < r.t - 1 || t > r.t + r.h + 1)) return { l, t, w, h };
+    }
+    return null;
+  }
+  tlabel() { const m = this.S.min % 1440, h = Math.floor(m / 60), mm = Math.floor(m % 60), ap = h >= 12 ? 'PM' : 'AM', hh = h % 12 || 12; return hh + ':' + (mm < 10 ? '0' : '') + mm + ' ' + ap; }
+  chip(d, node, h, life) {
+    const S = this.S; const slot = S.chips.find((c) => !c.on);
+    const fd = Object.assign({}, d); S.feed.unshift(fd); S.feed = S.feed.slice(0, 3);
+    if (!slot) return fd;
+    const r = this.place(node, 23, h); if (!r) return fd;
+    slot.on = true; slot.until = S.tk + life; slot.d = fd; slot.rect = r;
+    return fd;
+  }
+  spawnProps() {
+    const D = this.data(), N = D.NODES, a = this.pick([]), b = this.pick([a]);
+    this.arc(N[a], N[b], 'msg'); this.flash(a); this.flash(b);
+    const f = this.rnd(D.FIRST);
+    this.chip({ kind: 'props', mk: 'mk', label: 'Props', time: this.tlabel(), text: this.rnd(D.PROPS).replace('{to}', N[b].city), name: f, rest: this.rnd(D.ROLES) + ' · ' + N[a].city, avs: [this.av(f)] }, N[b], 18, 24);
+  }
+  spawnQuestion() {
+    const D = this.data(), N = D.NODES, S = this.S, a = this.pick([]);
+    this.ring(N[a], true); this.flash(a);
+    const qf = this.rnd(D.FIRST);
+    const fd = this.chip({ kind: 'question', mk: 'mk q', label: 'Question', time: this.tlabel(), text: this.rnd(D.QS), name: qf, rest: this.rnd(D.ROLES) + ' · ' + N[a].city, avs: [this.av(qf)] }, N[a], 32, 40);
+    const n = Math.random() < .55 ? 2 : 1, who = [], ex = [a];
+    for (let i = 0; i < n; i++) { const b = this.pick(ex); ex.push(b); who.push(b); }
+    const mins = 4 + Math.floor(Math.random() * 22);
+    S.jobs.push({ at: S.tk + 13, run: () => {
+      who.forEach((b) => { this.arc(N[b], N[a], 'msg'); this.flash(b); });
+      this.flash(a);
+      const pool = D.FIRST.filter((x) => x !== qf).sort(() => Math.random() - .5), rf = who.map((_, i) => pool[i]);
+      /* about a third of the time someone from Alpha jumps in too, arriving over the web */
+      const sso = Math.random() < .35, tf = this.rnd(D.TEAMFIRST), dept = this.rnd(['Clinical','Operations','Marketing','People','Finance']), tot = n + (sso ? 1 : 0);
+      if (sso) this.route(this.pick([a]), a, 0);
+      Object.assign(fd, { hasThread: true, thLabel: tot > 1 ? tot + ' replies' : 'Reply', thTime: mins + ' min', thText: '“' + this.rnd(D.AS) + '”',
+        thName: rf.concat(sso ? [tf] : []).join(' & '), thRest: who.map((b) => N[b].city).concat(sso ? ['Alpha ' + dept] : []).join(', '),
+        thAvs: rf.map((x) => this.av(x)).concat(sso ? [this.av(tf, true)] : []) });
+      S.ans++; S.rt.push(mins);
+    } });
+  }
+  spawnTeam() {
+    /* Alpha has no location. It starts wherever the work is and moves through the web. */
+    const D = this.data(), N = D.NODES, o = this.pick([]), tf = this.rnd(D.TEAMFIRST);
+    let text, at;
+    if (Math.random() < .45) { this.broadcast(o); text = this.rnd(D.TEAM_ALL); at = N[o]; }
+    else { const t = this.pick([o]); this.route(o, t, 0); text = this.rnd(D.TEAM).replace('{to}', N[t].city); at = N[t]; }
+    this.chip({ kind: 'team', mk: 'mk t', label: 'Alpha team', time: this.tlabel(), text, name: tf, rest: 'Alpha ' + this.rnd(['Marketing','People','Finance','Clinical','Operations']), avs: [this.av(tf, true)] }, at, 18, 24);
+  }
+  snap() {
+    const D = this.data(), S = this.S; const slot = S.snaps.find((s) => !s.on); if (!slot) return;
+    const pool = D.SNAPS.filter((s) => S.lastSnap.indexOf(s[0]) < 0), sn = this.rnd(pool);
+    S.lastSnap.push(sn[0]); if (S.lastSnap.length > 4) S.lastSnap.shift();
+    const pt = D.NODES[sn[1]]; const r = this.place(pt, 10.5, 22); if (!r) return;
+    this.ring(pt); this.flash(sn[1]);
+    const h = D.HUES[sn[0].length % D.HUES.length];
+    Object.assign(slot, { on: true, until: S.tk + 20, label: sn[0], rect: r, bg: 'linear-gradient(160deg, hsl(' + h + ',18%,34%), hsl(' + h + ',14%,18%))' });
+  }
+  showMoment(m) {
+    const D = this.data(), S = this.S; const pt = m.pt ? { x: m.pt[0], y: m.pt[1] } : D.NODES[m.at];
+    m.from.forEach((f) => { this.arc(D.NODES[f], pt, 'big'); this.flash(f); });
+    this.ring(pt);
+    const r = this.place(pt, 21, 40); if (!r) return;
+    const h = D.HUES[m.type.length % D.HUES.length];
+    Object.assign(S.moment, { on: true, until: S.tk + 34, rect: r, type: m.type, line: m.line, bg: 'linear-gradient(160deg, hsl(' + h + ',20%,38%), hsl(' + h + ',14%,16%))' });
+  }
+  rate(d, h) { const we = d >= 5; if (h < 7 || h >= 22) return we ? .02 : .05; if (h < 9 || h >= 19) return we ? .12 : .35; return we ? .28 : .9; }
+  netTick() {
+    const S = this.S, D = this.data(), N = D.NODES;
+    S.min += 20;
+    if (S.min >= 7 * 1440) { S.min = 9 * 60; S.c1 = 0; S.ans = 0; S.rt = []; S.fired = {}; }
+    const d = Math.floor(S.min / 1440) % 7, h = Math.floor((S.min % 1440) / 60), r = this.rate(d, h);
+    const n = Math.random() < r ? (Math.random() < r * .6 ? 2 : 1) : 0;
+    for (let k = 0; k < n; k++) { const a = this.pick([]), b = this.pick([a]); this.arc(N[a], N[b], 'hum'); this.flash(a); this.flash(b); S.c1 += 1 + Math.floor(Math.random() * 4); }
+    if (Math.random() < r * .16) { const roll = Math.random(), wk = d < 5 && h >= 9 && h < 18; if (roll < .4) this.spawnProps(); else if (roll < .78) this.spawnQuestion(); else if (wk) this.spawnTeam(); else this.spawnProps(); }
+    if (h >= 8 && h < 21 && Math.random() < (d < 5 ? .07 : .035)) this.snap();
+    D.MOMENTS.forEach((m, i) => { if (!S.fired[i] && d === m.day && h >= m.hour) { S.fired[i] = 1; this.showMoment(m); } });
+  }
+  step() {
+    const S = this.sim0(); S.tk++;
+    let dirty = false;
+    const t = this.now(); S.lines = S.lines.filter((l) => t < l.t0 + 7000); S.rings = S.rings.filter((q) => t < q.t0 + 1900);
+    const due = S.jobs.filter((j) => j.at <= S.tk); S.jobs = S.jobs.filter((j) => j.at > S.tk);
+    due.forEach((j) => j.run()); if (due.length) dirty = true;
+    if (Object.keys(S.sso).some((i) => S.sso[i] === S.tk)) dirty = true;
+    S.chips.forEach((c) => { if (c.on && c.until <= S.tk) { c.on = false; c.rect = null; dirty = true; } });
+    S.snaps.forEach((c) => { if (c.on && c.until <= S.tk) { c.on = false; c.rect = null; dirty = true; } });
+    if (S.moment.on && S.moment.until <= S.tk) { S.moment.on = false; S.moment.rect = null; dirty = true; }
+    const running = this.props.autoplay !== false && S.inView && !(typeof document !== 'undefined' && document.hidden) && !S.th;
+    if (running) { this.netTick(); dirty = true; }
+    if (S.th && S.thPlay) { S.tt = Math.min(90, S.tt + .2); if (S.tt >= 90) S.thPlay = false; dirty = true; }
+    if (S.tk - S.pvFrom < 18) dirty = true;
+    if (S.tk % 13 === 0) dirty = true;
+    if (dirty) this.bump();
+  }
+  thOpen(i) { const S = this.sim0(); S.pi = i; S.th = true; S.thPlay = true; S.tt = 0; S.thG ^= 1; this._th = null; this.bump(); }
+  thLoad(i) { const S = this.S; S.pi = (i + 16) % 16; S.tt = 0; S.thPlay = true; S.thG ^= 1; this.bump(); }
+  thClose() { const S = this.S; S.th = false; S.thPlay = false; this.bump(); }
+
+  renderVals() { return Object.assign(this._rv(), this.mnVals(), this.ctaVals()); }
+  ctaVals() {
+    if (!this._cta) {
+      const L = [['011', 'InBloom', 'Londonderry, NH', '4d98d100087709e99a2681f05a716a09'], ['012', 'Flawless', 'Albuquerque, NM', '117fafec37d91a9f4b567818a404cc24'], ['013', 'Mint + Needle', 'Middletown, DE', '6f9f59949585d33d629e1880f88442e4'], ['014', 'Privé Med Spa', 'Lexington, KY', '42e63922522a3aeb100987e90907ea6d'], ['015', 'LexRx', 'Boston, MA', '572e07793bb191e6cb70ac4b8f17dd11'], ['016', 'Preva Aesthetics', 'Encinitas, CA', '0e6c422690914b59a6eff7dc7db00550']];
+      const l = L[Math.floor(Math.random() * L.length)];
+      this._cta = { ptr: 'PTR ' + l[0], name: l[1], city: l[2], src: '/_blob/' + l[3] };
+    }
+    return { cta: this._cta };
+  }
+  mnVals() {
+    const s = this.state || {}, set = (o) => this.setState(o), open = !!s.mnO;
+    if (!this._mnK && typeof document !== 'undefined') { this._mnK = (e) => { if (e.key === 'Escape' && (this.state || {}).mnO) this.setState({ mnO: false }); }; document.addEventListener('keydown', this._mnK); }
+    const items = [['PARTNERS', '#brands', '/brands', '16 brands, in join order'], ['MAP', '#locations', '/locations', '36 locations across 8 states'], ['PATHWAY', '#how', '/how-it-works', 'From first call to fully integrated'], ['PODCASTS', '#podcasts', '/podcasts', '8 shows, one network'], ['ABOUT', '#about', '/about', 'Built by operators'], ['NEWS', '#newswire', '/newswire', 'Latest: Preva joins the network']];
+    return {
+      mnCls: 'mn' + (open ? ' is-on' : ''), mnExp: open ? 'true' : 'false',
+      mnOpen: () => set({ mnO: true }), mnClose: () => set({ mnO: false }),
+      mnItems: items.map((m, i) => ({ n: String(i + 1).padStart(3, '0'), w: m[0], href: m[1], slug: m[2], p: m[3], d: (open ? .28 + i * .06 : 0).toFixed(2) + 's', go: () => set({ mnO: false }) })),
+      mnLiveK: s.mnP ? 'Now playing' : 'Paused', mnPlaying: !!s.mnP, mnPaused: !s.mnP, mnPlayLabel: s.mnP ? 'Pause' : 'Play', mnToggle: () => set({ mnP: !s.mnP }),
+      mnDepts: ['New Partnerships', 'Finance', 'Operations', 'Integrations', 'HR', 'IT', 'Marketing']
+    };
+  }
+  _rv() {
+    const s = this.state || {};
+    const set = (o) => this.setState(o);
+    const D = this.data(), S = this.sim0();
+    const P = D.P;
+
+    /* reel */
+    const cut = Math.floor(S.tk / 13) % 16;
+
+    /* network view */
+    const d = Math.floor(S.min / 1440) % 7;
+    const nodes = D.NODES.map((n, i) => ({ px: (n.x / 12).toFixed(2), py: (n.y / 7.2).toFixed(2), cls: (S.sso[i] || 0) > S.tk ? 'node sso' : ((S.flash[i] || 0) > S.tk ? 'node flash' : 'node') }));
+    const chipView = (c, on) => Object.assign({ hasThread: false, thAvs: [] }, c.d || c, { cls: 'chip ' + ((c.d || c).kind || '') + (on ? ' is-on' : '') });
+    const chips = S.chips.map((c) => Object.assign(chipView(c, c.on), { left: c.rect ? c.rect.l.toFixed(2) : 0, top: c.rect ? c.rect.t.toFixed(2) : 0, avs: (c.d && c.d.avs) || [], text: (c.d && c.d.text) || '' }));
+    const snaps = S.snaps.map((c) => ({ cls: 'snap' + (c.on ? ' is-on' : ''), left: c.rect ? c.rect.l.toFixed(2) : 0, top: c.rect ? c.rect.t.toFixed(2) : 0, label: c.label, bg: c.bg || '#2a2824' }));
+    const M = S.moment;
+    const moment = { cls: 'moment' + (M.on ? ' is-on' : ''), left: M.rect ? M.rect.l.toFixed(2) : 0, top: M.rect ? M.rect.t.toFixed(2) : 0, type: M.type || '', line: M.line || '', bg: M.bg || '#2a2824' };
+    const feed = S.feed.map((f) => chipView(f, true));
+    const hh = Math.floor((S.min % 1440) / 60), mm = Math.floor((S.min % 60) / 10) * 10;
+    const clock = D.DAYS[d] + ' ' + (hh % 12 || 12) + ':' + (mm < 10 ? '0' : '') + mm + ' ' + (hh >= 12 ? 'PM' : 'AM');
+    const days = D.DAYS.map((_, i) => ({ cls: i < d ? 'on' : (i === d ? 'now' : '') }));
+    const med = S.rt.length ? S.rt.slice().sort((a, b) => a - b)[Math.floor(S.rt.length / 2)] + ' min' : '—';
+
+    /* partners */
+    const pi = S.pi;
+    const partners = P.map((p, i) => ({ n: p.n, name: p.name, city: p.city, yr: '[yr]', cls: i === pi ? 'p_row is-on' : 'p_row',
+      hover: () => { const T = this.S; if (T.pi !== i) { T.pi = i; T.pvFrom = T.tk + 2; this.bump(); } },
+      focus: () => { this.S.pi = i; this.bump(); },
+      open: () => this.thOpen(i) }));
+    const posters = P.map((p, i) => ({ cls: 'p_poster' + (i === pi ? ' is-on' : ''), tone: p.tone, hasImg: !!p.img, noImg: !p.img, img: p.img || '', n: p.n, name: p.name, cityLong: p.city }));
+    const c = P[pi];
+    const init = c.founder.replace(/^(Dr\.|\[)/, '').split(/[\s,]+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
+    const cur = { n: c.n, name: c.name, founder: c.founder, role: c.role || 'Founder', hasHead: !!c.head, noHead: !c.head, head: c.head || '', init,
+      locLine: (c.locs ? c.locs + (c.locs > 1 ? ' locations' : ' location') : '[N] locations') + ' · ' + c.area };
+    const pv = S.tk >= S.pvFrom && S.tk < S.pvFrom + 16;
+    const tsec = Math.floor(S.tt), capIdx = Math.floor(S.tt / 6) % 4;
+    const th = { idx: pi + 1, n: c.n, name: c.name, founder: c.founder, role: c.role || 'Founder', cityLong: c.city, tone: c.tone, hasImg: !!c.img, noImg: !c.img, img: c.img || '',
+      pcls: 'th_poster' + (S.thPlay ? (S.thG ? ' kbA' : ' kbB') : ''), pct: (S.tt / 90 * 100).toFixed(2), time: Math.floor(tsec / 60) + ':' + (tsec % 60 < 10 ? '0' : '') + (tsec % 60),
+      cap: D.CAPS[capIdx % 3], capOp: capIdx < 3 && S.tt > 1.2 ? 1 : 0, ppIcon: S.thPlay ? '❚❚' : '▶', ppLabel: S.thPlay ? 'Pause' : 'Play' };
+
+    /* carousels, episodes, qualifier */
+    const depts = [
+      { name: 'Operations', line: 'Rolls out what works in one practice to the rest, from scheduling to front desk.' },
+      { name: 'Marketing', line: 'Runs your launches, campaigns and website, so you never brief an agency again.' },
+      { name: 'Finance', line: 'Owns the books, reporting and vendor terms, and tells you what the numbers mean.' },
+      { name: 'People', line: 'Finds, hires and onboards your next provider, and handles payroll and HR.' },
+      { name: 'Clinical', line: 'Builds the training your providers asked for, through Practice.' }
+    ];
+    const di = s.dept ?? 0, dMax = 2;
+    const stories = [
+      { name: 'Lauren Biscotti', role: 'RN injector', brand: '[Brand]', quote: '“Joining Alpha means never feeling alone.”' },
+      { name: 'Allie Oxton', role: 'NP injector', brand: '[Brand]', quote: '“Join if you want to be the best provider you can be.”' },
+      { name: 'Katie Martin', role: 'PA injector', brand: 'HTB', quote: '“We got things didn’t know were possible.”' },
+      { name: 'Katie Wilson', role: 'RN injector', brand: 'CAMI', quote: '“Alpha changed my life.”' },
+      { name: 'Riley Hadock', role: 'Director of ops', brand: '[Brand]', quote: '“I’ve never felt more welcomed into a team before.”' },
+      { name: 'Mary Carter', role: 'PA injector', brand: '[Brand]', quote: '“[Verbatim line from transcript]”' },
+      { name: 'Becky McDonald', role: 'Co-founder', brand: 'Privé', quote: '“[Verbatim line from transcript]”' }
+    ];
+    const si = s.story ?? 0, sMax = 3, pdi = s.pod ?? 0, pMax = 3;
+    const EP = [
+      { title: 'What Actually Changes On Day One', show: 'The Great Friends Podcast · Ep [##]', len: '48:10', tone: '#CDBDE6' },
+      { title: '[Episode title]', show: 'The Great Friends Podcast · Ep [##]', len: '[mm:ss]', tone: '#CDBDE6' },
+      { title: '[Episode title]', show: 'Dear Tiffany · Ep [##]', len: '[mm:ss]', tone: '#1D1B1A' },
+      { title: '[Episode title]', show: 'Operation Med Spa · Ep [##]', len: '[mm:ss]', tone: '#5E6A4B' }
+    ];
+    const playing = s.playing ?? -1;
+    const eps = EP.map((e, i) => ({ ...e, btnCls: i === playing ? 'ep_play is-on' : 'ep_play', play: () => set({ playing: i }) }));
+    const Q = [
+      { title: 'How many locations do you run?', hint: 'Count every location operating under your brand today.', key: 'locs', opts: ['1', '2 to 3', '4 or more'] },
+      { title: 'How long have you been open?', hint: 'From your first patient at your first location.', key: 'years', opts: ['Under [2] years', '[2] to [5] years', '[5]+ years'] },
+      { title: 'Roughly, what is your annual revenue?', hint: 'A range is fine. This stays between us.', key: 'rev', opts: ['Under $[X]M', '$[X]M to $[Y]M', '$[Y]M+'] },
+      { title: 'What is your role?', hint: 'We want to talk with the person who makes the call.', key: 'role', opts: ['Owner / founder', 'Medical director', 'Partner / investor'] }
+    ];
+    const qs = s.q ?? 0, ans = s.ans || {}, isDone = qs >= 5, isContact = qs === 4, qq = Q[Math.min(qs, 3)];
+    const q = { title: qq.title, hint: qq.hint, opts: qq.opts.map((o) => ({ label: o, on: ans[qq.key] === o ? 'true' : 'false', cls: ans[qq.key] === o ? 'opt is-on' : 'opt', pick: () => set({ ans: { ...((this.state || {}).ans || {}), [qq.key]: o } }) })) };
+    const answered = isContact || !!ans[qq.key];
+
+    return {
+      openMenu: () => set({ menu: true }), closeMenu: () => set({ menu: false }), menuOpen: !!s.menu,
+      toggleMute: () => set({ unmuted: !s.unmuted }), muteLabel: s.unmuted ? 'Mute' : 'Unmute',
+      cutNum: String(cut + 1).padStart(2, '0'), cutBrand: P[cut].name, cutCity: P[cut].city,
+      ticks: P.map((_, i) => ({ cls: i === cut ? 'tick is-on' : (i < cut ? 'tick is-past' : 'tick') })),
+      setStage: (el) => { if (el && !this.io && typeof IntersectionObserver !== 'undefined') { this.io = new IntersectionObserver((es) => { this.S.inView = es[0].isIntersecting; }, { threshold: .1 }); this.io.observe(el); } },
+      nodes, chips,
+      setCanvas: (el) => { if (el && el !== this.cv) { this.cv = el; this.ctx = el.getContext('2d'); if (!this.raf && typeof requestAnimationFrame !== 'undefined') this.loop(); } }, snaps, moment, feed, clock, days,
+      c1: S.c1.toLocaleString(), c2: String(S.ans), c3: med,
+      partners, posters, cur, frameCls: 'p_frame' + (pv ? ' is-preview' : ''), openCur: () => this.thOpen(this.S.pi),
+      thOpen: S.th, th,
+      thRef: (el) => { if (el && el !== this._th) { this._th = el; el.focus(); } },
+      thKey: (e) => { if (e.key === 'Escape') this.thClose(); else if (e.key === 'ArrowRight') this.thLoad(this.S.pi + 1); else if (e.key === 'ArrowLeft') this.thLoad(this.S.pi - 1); else if (e.key === ' ') { e.preventDefault(); this.S.thPlay = !this.S.thPlay; this.bump(); } },
+      thClose: () => this.thClose(), thPrev: () => this.thLoad(this.S.pi - 1), thNext: () => this.thLoad(this.S.pi + 1),
+      thToggle: () => { const T = this.S; if (T.tt >= 90) T.tt = 0; T.thPlay = !T.thPlay; this.bump(); },
+      depts, deptShift: 'calc(' + (-di) + ' * (clamp(260px, 22vw, 300px) + 14px))', deptPrev: () => set({ dept: Math.max(0, di - 1) }), deptNext: () => set({ dept: Math.min(dMax, di + 1) }), deptAtStart: di === 0, deptAtEnd: di === dMax,
+      stories, storyShift: 'calc(' + (-si) + ' * (clamp(200px, 15.5vw, 224px) + 10px))', storyPrev: () => set({ story: Math.max(0, si - 1) }), storyNext: () => set({ story: Math.min(sMax, si + 1) }), storyAtStart: si === 0, storyAtEnd: si === sMax,
+      podShift: 'calc(' + (-pdi) + ' * (clamp(220px, 18.6vw, 262px) + 8px))', podPrev: () => set({ pod: Math.max(0, pdi - 1) }), podNext: () => set({ pod: Math.min(pMax, pdi + 1) }), podAtStart: pdi === 0, podAtEnd: pdi === pMax,
+      eps, hasPlaying: playing >= 0, now: EP[Math.max(0, playing)], closePlayer: () => set({ playing: -1 }),
+      notDone: !isDone, isDone, isChoice: !isContact && !isDone, isContact,
+      q, qBars: [0, 1, 2, 3, 4].map((i) => ({ cls: i <= qs ? 'is-on' : '' })), qLabel: isContact ? 'Contact' : 'Your practice', qCount: String(Math.min(qs + 1, 5)).padStart(2, '0') + ' / 05',
+      backVis: qs > 0 ? 'visible' : 'hidden', qBack: () => set({ q: Math.max(0, qs - 1) }),
+      qNext: () => { if (answered) set({ q: qs + 1 }); }, nextDisabled: !answered, nextOpacity: answered ? 1 : 0.4,
+      nextLabel: isContact ? 'Submit' : 'Next', qReset: () => set({ q: 0, ans: {} })
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+import { postgresAdapter } from '@payloadcms/db-postgres'
+import { sqliteAdapter } from '@payloadcms/db-sqlite'
+import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
+import path from 'path'
+import { buildConfig } from 'payload'
+import sharp from 'sharp'
+import { fileURLToPath } from 'url'
+
+import { Articles, Network, Resources } from './collections/content'
+import { Media } from './collections/Media'
+import { Brands, CtaImages, Founders, Locations } from './collections/network'
+import { Episodes, Shows, Speakers, Tags } from './collections/podcast'
+import { Departments, Team } from './collections/team'
+import { Users } from './collections/Users'
+
+const dirname = path.dirname(fileURLToPath(import.meta.url))
+const DB = process.env.DATABASE_URL || 'file:./alpha.db'
+
+export default buildConfig({
+  admin: {
+    user: Users.slug,
+    importMap: { baseDir: path.resolve(dirname) },
+    meta: { titleSuffix: ' / Alpha CMS' },
+  },
+  collections: [
+    // network
+    Brands, Locations, Founders, CtaImages,
+    // alpha team
+    Departments, Team,
+    // podcasts
+    Shows, Episodes, Speakers, Tags,
+    // content
+    Articles, Resources,
+    // system
+    Media, Users,
+  ],
+  globals: [Network],
+  editor: lexicalEditor(),
+  secret: process.env.PAYLOAD_SECRET || '',
+  typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },
+  // Postgres (Neon via Vercel) in production, SQLite file locally.
+  db: DB.startsWith('postgres')
+    ? postgresAdapter({ pool: { connectionString: DB } })
+    : sqliteAdapter({ client: { url: DB } }),
+  plugins: [
+    vercelBlobStorage({
+      enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
+      collections: { media: true },
+      token: process.env.BLOB_READ_WRITE_TOKEN || '',
+    }),
+  ],
+  sharp,
+})

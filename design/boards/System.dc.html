@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Alpha design system</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"NHD";src:url(/_blob/bf901fbfee077add5b8fbd5af7b4b4a7) format("woff2");font-weight:900;font-display:swap;ascent-override:85.7%;descent-override:14.3%;line-gap-override:0%}@font-face{font-family:"NHD";src:url(/_blob/630fc1e4ee22b0eecfe2535aceaaad9c) format("woff2");font-weight:700;font-display:swap;ascent-override:85.7%;descent-override:14.3%;line-gap-override:0%}
+@font-face{font-family:"Diatype Mono";src:url(/_blob/bad569f2d2757d8e40320972d9f13e4b) format("opentype");font-weight:400;font-display:swap}
+@font-face{font-family:"Diatype Mono";src:url(/_blob/888f2a0a7a1517cff04dd7bb1810c18d) format("opentype");font-weight:700;font-display:swap}
+body{margin:0}
+a{color:#0E0E0D}a:hover{color:#5C5952}
+.m{font-family:"Diatype Mono",ui-monospace,monospace;text-transform:uppercase;letter-spacing:.05em}
+.d{font-family:"NHD","Helvetica Neue",Arial,sans-serif;font-weight:900;text-transform:uppercase;line-height:.9;margin:0}
+.lab{font-family:"Diatype Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:#5C5952}
+.btn{display:inline-flex;align-items:center;height:34px;padding:0 16px;border:1px solid currentColor;border-radius:999px;font-family:"Diatype Mono",monospace;font-size:11px;text-transform:uppercase;letter-spacing:.05em;text-decoration:none;background:transparent}
+</style>
+</helmet>
+<div style="width: 1280px; height: 1760px; box-sizing: border-box; padding: 72px; background: #DEDAD1; color: #0E0E0D; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif; display: flex; flex-direction: column; gap: 56px">
+
+<div style="display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 1px solid rgba(14,14,13,.16); padding-bottom: 24px">
+<h1 class="d" style="font-size: 64px">Alpha / System</h1>
+<span class="lab">v0.1 / Nov 2026 / Webflow build reference</span>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 56px">
+<div>
+<p class="lab" style="margin: 0 0 18px">Color</p>
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px">
+<div><div style="height: 96px; background: #DEDAD1; border: 1px solid rgba(14,14,13,.16)"></div><p class="m" style="font-size: 10px; margin: 8px 0 0"><b>Bone</b><br>#DEDAD1 / base</p></div>
+<div><div style="height: 96px; background: #0E0E0D"></div><p class="m" style="font-size: 10px; margin: 8px 0 0"><b>Ink</b><br>#0E0E0D / text, dark</p></div>
+<div><div style="height: 96px; background: #E8E4DA; border: 1px solid rgba(14,14,13,.16)"></div><p class="m" style="font-size: 10px; margin: 8px 0 0"><b>Paper</b><br>#E8E4DA / text on ink</p></div>
+<div><div style="height: 96px; background: #C9A26B"></div><p class="m" style="font-size: 10px; margin: 8px 0 0"><b>Signal</b><br>#C9A26B / Alpha team only</p></div>
+<div><div style="height: 44px; background: #5C5952"></div><p class="m" style="font-size: 10px; margin: 8px 0 0">Muted / #5C5952<br>4.8:1 on bone</p></div>
+<div><div style="height: 44px; background: #9B978E"></div><p class="m" style="font-size: 10px; margin: 8px 0 0">Muted-d / #9B978E<br>6.4:1 on ink</p></div>
+<div><div style="height: 44px; background: #D3CFC5"></div><p class="m" style="font-size: 10px; margin: 8px 0 0">Bone-2 / #D3CFC5<br>surfaces</p></div>
+<div><div style="height: 44px; border-top: 1px solid rgba(14,14,13,.16); border-bottom: 1px solid rgba(232,228,218,.14); background: #171715"></div><p class="m" style="font-size: 10px; margin: 8px 0 0">Lines<br>ink 16% / paper 14%</p></div>
+</div>
+<p style="font-size: 13px; line-height: 1.5; color: #5C5952; margin: 18px 0 0; max-width: 520px">Two grounds, no third. Signal gold appears only where Alpha itself is acting (the standing web, team messages, team routes, progress). Brand color comes from partner media, never from UI.</p>
+</div>
+
+<div>
+<p class="lab" style="margin: 0 0 18px">Type</p>
+<div style="display: flex; flex-direction: column; gap: 18px">
+<div style="display: grid; grid-template-columns: 150px 1fr; align-items: baseline"><span class="lab">Display XL<br>NHG Display 95 / 100 / .9</span><span class="d" style="font-size: 72px">Raise the</span></div>
+<div style="display: grid; grid-template-columns: 150px 1fr; align-items: baseline"><span class="lab">H2<br>NHG Display 95 / 50 / .9</span><span class="d" style="font-size: 44px">One team.</span></div>
+<div style="display: grid; grid-template-columns: 150px 1fr; align-items: baseline"><span class="lab">H3 / card<br>NHG Display 75 / 17 / 1.22</span><span style="font-family: NHD, 'Helvetica Neue', sans-serif; font-weight: 700; font-size: 17px">Owns the books, reporting and vendor terms.</span></div>
+<div style="display: grid; grid-template-columns: 150px 1fr; align-items: baseline"><span class="lab">Body<br>SF Pro / 15 / 1.55</span><span style="font-size: 15px; line-height: 1.55; color: #5C5952">You keep your brand, your team and your clinical judgment.</span></div>
+<div style="display: grid; grid-template-columns: 150px 1fr; align-items: baseline"><span class="lab">Mono / label<br>Diatype / 10 to 12</span><span class="m" style="font-size: 11.5px">Alpha Aesthetics Partners / 16 brands</span></div>
+</div>
+</div>
+</div>
+
+<div>
+<p class="lab" style="margin: 0 0 18px">Components</p>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px">
+
+<div style="border: 1px solid rgba(14,14,13,.16); padding: 24px; display: flex; flex-direction: column; gap: 18px">
+<span class="lab">btn / btn-light / ulink</span>
+<div style="display: flex; gap: 14px; align-items: center; flex-wrap: wrap"><a class="btn" href="#a">See partners</a><a class="btn" href="#b" style="background: #0E0E0D; color: #DEDAD1; border-color: #0E0E0D">Hover</a><a href="#c" class="m" style="font-size: 11px; text-decoration: none; border-bottom: 1px solid">How it works</a></div>
+<div style="background: #0E0E0D; padding: 16px; display: flex; gap: 12px"><a class="btn" href="#d" style="color: #E8E4DA">Let&#39;s talk</a><a class="btn" href="#e" style="background: #E8E4DA; color: #0E0E0D; border-color: #E8E4DA">Submit</a></div>
+<p style="font-size: 12px; color: #5C5952; margin: 0">34px pill, 44px hit area via ::before. Hover inverts to ink. One filled button per view, max.</p>
+</div>
+
+<div style="border: 1px solid rgba(14,14,13,.16); padding: 24px; display: flex; flex-direction: column; gap: 18px">
+<span class="lab">stat / chip / row</span>
+<div style="display: flex"><div style="padding-right: 22px"><div class="d" style="font-size: 40px">16↗</div><div class="lab" style="color: #0E0E0D; margin-top: 4px">Brands</div></div><div style="padding: 0 22px; border-left: 1px solid rgba(14,14,13,.16)"><div class="d" style="font-size: 40px">36↗</div><div class="lab" style="color: #0E0E0D; margin-top: 4px">Locations</div></div></div>
+<div style="display: flex; gap: 6px"><span class="m" style="font-size: 10px; border: 1px solid; border-radius: 99px; padding: 6px 10px">Lewes, DE</span><span class="m" style="font-size: 10px; border: 1px solid; border-radius: 99px; padding: 6px 10px">Middletown, DE</span></div>
+<div class="m" style="font-size: 11px; display: grid; grid-template-columns: 40px 1fr auto; border-top: 1px solid rgba(14,14,13,.16); border-bottom: 1px solid rgba(14,14,13,.16); padding: 13px 0 13px 8px; font-weight: 700"><span>013</span><span>Mint + Needle</span><span>Middletown, DE →</span></div>
+</div>
+
+<div style="border: 1px solid rgba(14,14,13,.16); padding: 24px; display: flex; flex-direction: column; gap: 14px; background: #0E0E0D; color: #E8E4DA">
+<span class="lab" style="color: #9B978E">msg (network moment)</span>
+<div style="background: #161614; border: 1px solid rgba(201,162,107,.7); padding: 12px 13px">
+<div class="m" style="font-size: 9.5px; display: flex; justify-content: space-between; color: #9B978E; margin-bottom: 9px"><span style="color: #E8E4DA">◆ Alpha team</span><span>10:20 AM</span></div>
+<div style="font-size: 13px; line-height: 1.35">Next Practice cohort opens Monday. Six seats per brand.</div>
+<div class="m" style="font-size: 9.5px; color: #9B978E; margin-top: 8px"><b style="color: #E8E4DA">Sam</b> · Alpha marketing</div>
+</div>
+<p style="font-size: 12px; color: #9B978E; margin: 0">States: hidden, new (gold border), old (42%). Types: props, question, answer, Alpha team, photo.</p>
+</div>
+</div>
+</div>
+
+<div>
+<p class="lab" style="margin: 0 0 18px">CMS map / what feeds each section</p>
+<div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px">
+<div style="background: #0E0E0D; color: #E8E4DA; padding: 16px; min-height: 172px"><p class="m" style="font-size: 11px; font-weight: 700; margin: 0 0 10px">Brands</p><p class="m" style="font-size: 9.5px; line-height: 1.7; color: #9B978E; margin: 0">join order (num)<br>name, slug<br>film still + MP4<br>tone hex<br>founders (multi-ref)<br>locations (multi-ref)<br>partner since</p></div>
+<div style="border: 1px solid rgba(14,14,13,.2); padding: 16px"><p class="m" style="font-size: 11px; font-weight: 700; margin: 0 0 10px">Founders</p><p class="m" style="font-size: 9.5px; line-height: 1.7; color: #5C5952; margin: 0">name, credentials<br>headshot<br>brand (ref)<br>story</p></div>
+<div style="border: 1px solid rgba(14,14,13,.2); padding: 16px"><p class="m" style="font-size: 11px; font-weight: 700; margin: 0 0 10px">Locations</p><p class="m" style="font-size: 9.5px; line-height: 1.7; color: #5C5952; margin: 0">city, state<br>lat / lng, map x / y %<br>brand (ref)<br>drives 36 + 8 counts</p></div>
+<div style="border: 1px solid rgba(14,14,13,.2); padding: 16px"><p class="m" style="font-size: 11px; font-weight: 700; margin: 0 0 10px">Team + Depts</p><p class="m" style="font-size: 9.5px; line-height: 1.7; color: #5C5952; margin: 0">dept: name, line, order<br>member: name, role,<br>headshot, dept (ref)</p></div>
+<div style="border: 1px solid rgba(14,14,13,.2); padding: 16px"><p class="m" style="font-size: 11px; font-weight: 700; margin: 0 0 10px">Moments</p><p class="m" style="font-size: 9.5px; line-height: 1.7; color: #5C5952; margin: 0">week, day<br>type (option)<br>text, person, role<br>location (ref)<br>photo (optional)</p></div>
+<div style="border: 1px solid rgba(14,14,13,.2); padding: 16px"><p class="m" style="font-size: 11px; font-weight: 700; margin: 0 0 10px">Stories</p><p class="m" style="font-size: 9.5px; line-height: 1.7; color: #5C5952; margin: 0">person, role<br>brand (ref)<br>verbatim quote<br>transcript timecode<br>portrait MP4</p></div>
+<div style="border: 1px solid rgba(14,14,13,.2); padding: 16px"><p class="m" style="font-size: 11px; font-weight: 700; margin: 0 0 10px">Shows</p><p class="m" style="font-size: 9.5px; line-height: 1.7; color: #5C5952; margin: 0">name, cover<br>hosts (ref)<br>cadence<br>Libsyn feed</p></div>
+<div style="border: 1px solid rgba(14,14,13,.2); padding: 16px"><p class="m" style="font-size: 11px; font-weight: 700; margin: 0 0 10px">Episodes</p><p class="m" style="font-size: 9.5px; line-height: 1.7; color: #5C5952; margin: 0">title, show (ref)<br>ep #, length<br>audio URL<br>start-here (bool)</p></div>
+<div style="border: 1px solid rgba(14,14,13,.2); padding: 16px"><p class="m" style="font-size: 11px; font-weight: 700; margin: 0 0 10px">Providers</p><p class="m" style="font-size: 9.5px; line-height: 1.7; color: #5C5952; margin: 0">planned<br>brand + location (refs)<br>solo-provider flag</p></div>
+<div style="border: 1px dashed rgba(14,14,13,.3); padding: 16px"><p class="m" style="font-size: 11px; font-weight: 700; margin: 0 0 10px">Hero stats</p><p class="m" style="font-size: 9.5px; line-height: 1.7; color: #5C5952; margin: 0">computed, never typed<br>brands = count<br>locations = count<br>states = distinct</p></div>
+</div>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1760}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
