@@ -19,6 +19,11 @@ const dirname = path.dirname(fileURLToPath(import.meta.url))
 // Neon on Vercel sets POSTGRES_URL / DATABASE_URL; locally fall back to a SQLite file
 const DB = process.env.DATABASE_URL || process.env.POSTGRES_URL || 'file:./alpha.db'
 
+// On Vercel, uploads must go to Blob. Without the token they'd land on the build machine's disk and vanish.
+if (process.env.VERCEL && !process.env.BLOB_READ_WRITE_TOKEN) {
+  throw new Error('BLOB_READ_WRITE_TOKEN is missing. Copy it from Storage › alpha-media › .env.local into Settings › Environment Variables.')
+}
+
 export default buildConfig({
   admin: {
     user: Users.slug,
