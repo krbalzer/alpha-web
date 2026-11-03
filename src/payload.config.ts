@@ -54,6 +54,7 @@ export default buildConfig({
     vercelBlobStorage({
       enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
       collections: { media: true },
+      alwaysInsertFields: true, // same schema with or without the token, so migrations never drift
       token: process.env.BLOB_READ_WRITE_TOKEN || '',
     }),
   ],
