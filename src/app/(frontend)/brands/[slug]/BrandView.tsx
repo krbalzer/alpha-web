@@ -16,7 +16,7 @@ export default function BrandView({ brand }: { brand: BrandData }) {
 
 {/* ============ HERO: silent loop, everything pinned to the bottom of the fold ============ */}
 <section className="hero dark" style={{"height": `${v.heroH}`}} aria-label={v.b.name}>
-{v.hasVideo ? (<><video className="hero_vid" src={v.b.heroVideo} poster={v.b.heroPoster} autoPlay muted loop playsInline aria-hidden="true"></video></>) : null}{v.noVideo ? (<><div className="hero_media" aria-hidden="true"></div></>) : null}
+{v.hasVideo ? (<><video className="hero_vid" src={v.b.heroVideo} poster={v.b.heroPoster} autoPlay muted loop playsInline aria-hidden="true"></video></>) : null}{v.posterOnly ? (<><img className="hero_vid" src={v.b.heroPoster} alt="" aria-hidden="true" fetchPriority="high" /></>) : null}{v.noMedia ? (<><div className="hero_media" aria-hidden="true"></div></>) : null}
 <div className="hero_shade" aria-hidden="true"></div>
 <div className="hero_in wrap">
 <span className="pill">{v.b.ptr}</span>

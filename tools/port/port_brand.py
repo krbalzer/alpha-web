@@ -23,7 +23,8 @@ b = b.replace('Partner since {{ b.since }}', '{{ b.sinceLine }}')
 # hero: real video when the CMS has one, prototype gradient otherwise
 b = sub(r'<div class="hero_media" aria-hidden="true"></div>\s*<div class="hero_shade" aria-hidden="true"></div>\s*<span class="hero_ph ph">.*?</span>',
         '<sc-if value="{{ hasVideo }}"><video class="hero_vid" src="{{ b.heroVideo }}" poster="{{ b.heroPoster }}" autoplay muted loop playsinline aria-hidden="true"></video></sc-if>'
-        '<sc-if value="{{ noVideo }}"><div class="hero_media" aria-hidden="true"></div></sc-if>\n<div class="hero_shade" aria-hidden="true"></div>', b)
+        '<sc-if value="{{ posterOnly }}"><img class="hero_vid" src="{{ b.heroPoster }}" alt="" aria-hidden="true" fetchPriority="high"></sc-if>'
+        '<sc-if value="{{ noMedia }}"><div class="hero_media" aria-hidden="true"></div></sc-if>\n<div class="hero_shade" aria-hidden="true"></div>', b)
 b = b.replace('<span class="logo_slot">Brand mark</span>', '<sc-if value="{{ b.logo }}"><img class="logo_img" src="{{ b.logo }}" alt="{{ b.name }}"></sc-if>')
 b = b.replace('<span class="card_img ph" style="background: {{ c.tone }}">{{ c.city }}<br>photo</span>',
               '<span class="card_img ph" style="background: {{ c.tone }}"><sc-if value="{{ c.img }}"><img src="{{ c.img }}" alt="" loading="lazy"></sc-if><sc-if value="{{ c.noImg }}">{{ c.city }}</sc-if></span>')
@@ -77,7 +78,7 @@ scss = scope_css(c, 'pg-brand')
 e = strip_injected(js)
 e = sub(r'  brand\(\) \{.*?\n  \}\n', '  brand() { return this.props.brand; }\n', e)
 e = sub(r"      stats: \[.*?\n      \],\n", '      stats: B.stats, hasStats: B.stats.length > 0,\n', e)
-e = e.replace("      b: B,\n", "      b: { ...B, sinceLine: B.since ? 'Partner since ' + B.since : '' },\n      metaLine: [[B.founder, B.cred].filter(Boolean).join(', '), B.services.join(' ')].filter(Boolean).join(' / '),\n      hasVideo: !!B.heroVideo, noVideo: !B.heroVideo,\n      founderHref: B.founderSlug ? '/founders/' + B.founderSlug : '/founders',\n      playFilm: () => { if (B.filmUrl) window.open(B.filmUrl, '_blank', 'noopener'); },\n", 1)
+e = e.replace("      b: B,\n", "      b: { ...B, sinceLine: B.since ? 'Partner since ' + B.since : '' },\n      metaLine: [[B.founder, B.cred].filter(Boolean).join(', '), B.services.join(' ')].filter(Boolean).join(' / '),\n      hasVideo: !!B.heroVideo, posterOnly: !B.heroVideo && !!B.heroPoster, noMedia: !B.heroVideo && !B.heroPoster,\n      founderHref: B.founderSlug ? '/founders/' + B.founderSlug : '/founders',\n      playFilm: () => { if (B.filmUrl) window.open(B.filmUrl, '_blank', 'noopener'); },\n", 1)
 e = e.replace("cards: L.map((l, i) => ({ cls:", "cards: L.map((l, i) => ({ img: l.img, noImg: !l.img, cls:", 1)
 e = e.replace("addrLine: L.map((l) => l.a1 + ', ' + l.a2).join(' / '),", "addrLine: L.map((l) => [l.a1, l.a2].filter(Boolean).join(', ')).join(' / '),", 1)
 e = e.replace("founderLine: B.founder + ', ' + B.cred,", "founderLine: [B.founder, B.cred].filter(Boolean).join(', '),", 1)

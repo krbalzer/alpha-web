@@ -199,7 +199,7 @@ export class BrandEngine extends DCLogic {
     return {
       b: { ...B, sinceLine: B.since ? 'Partner since ' + B.since : '' },
       metaLine: [[B.founder, B.cred].filter(Boolean).join(', '), B.services.join(' ')].filter(Boolean).join(' / '),
-      hasVideo: !!B.heroVideo, noVideo: !B.heroVideo,
+      hasVideo: !!B.heroVideo, posterOnly: !B.heroVideo && !!B.heroPoster, noMedia: !B.heroVideo && !B.heroPoster,
       founderHref: B.founderSlug ? '/founders/' + B.founderSlug : '/founders',
       playFilm: () => { if (B.filmUrl) window.open(B.filmUrl, '_blank', 'noopener'); },
       heroH: this.tall ? '820px' : 'calc(100svh - 126px)',
