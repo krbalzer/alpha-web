@@ -1,0 +1,199 @@
+'use client'
+/* Generated from design/boards/Location.dc.html by tools/port/port_pages.py. Edit the board or the porter, not this file. */
+import React from 'react'
+import { Nav } from '@/components/site/Nav'
+import { useDC } from '@/lib/dc'
+import { LocationEngine } from './engine'
+import './page.css'
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default function LocationView(props: any) {
+  const v = useDC(LocationEngine, props)
+  return (
+    <div className="pg-location">
+
+<Nav><div className="crumb loc"><div className="wrap"><span>{v.b.ptr}</span><a href={v.b.href} style={{"textDecoration": "none"} as React.CSSProperties}>{v.b.name}</a><span>{v.loc.place}</span><span></span><span>Partner since {v.b.since}</span></div></div></Nav>
+
+{/* ============ HERO ============ */}
+{v.hasVid ? (<>
+<section className="hero dark" style={{"height": `${v.heroH}`} as React.CSSProperties} aria-label={v.title}>
+{v.loc.heroVideo ? (<><video className="hero_vid" ref={v.vidRef} poster={v.loc.heroPoster} autoPlay muted loop playsInline preload="auto" aria-hidden="true">{v.loc.heroAv1 ? (<><source src={v.loc.heroAv1} type="video/mp4; codecs=av01.0.08M.08" /></>) : null}{v.loc.heroSmall ? (<><source src={v.loc.heroSmall} type="video/mp4" media="(max-width: 820px)" /></>) : null}<source src={v.loc.heroVideo} type="video/mp4" /></video></>) : null}{v.loc.noVideo ? (<><div className="hero_media" aria-hidden="true"></div></>) : null}
+<div className="hero_shade" aria-hidden="true"></div>
+<div className="hero_in wrap">
+<span className="pill">{v.b.ptr} location</span>
+<h1 className="h1">{v.title}</h1>
+<div className="hero_meta">
+<p className="addr">{v.loc.a1}, {v.loc.a2} /<br />{v.servicesLine}</p>
+<div className="marks">
+<span className="pair" role="group" aria-label={`Alpha partner ${v.b.name}`}><span className="amark" aria-hidden="true"></span><i aria-hidden="true"></i><span className={`bmark b-${v.b.n}`} aria-hidden="true"></span></span>
+<span className="states"><i className={`state s-${v.loc.st}`} title={v.loc.st}>{v.loc.st}</i></span>
+<span className="est"><small>EST</small>{v.loc.est}</span>
+</div>
+<span className="spacer"></span>
+<div className="hero_ctas">{v.b.book ? (<><a className="btn" href={v.b.book} target="_blank" rel="noopener">Book at {v.b.short}<span className="ext" aria-hidden="true">↗</span></a></>) : null}<a className="btn" href="/talk">Partner with Alpha</a></div>
+</div>
+</div>
+</section>
+</>) : null}
+
+{/* ============ MAP (single pin) ============ */}
+{/* No hero loop: the location map is the hero. Same section, so the map never appears twice. */}
+<section className={v.mapCls} ref={v.setMap} aria-label={v.mapAria} style={{"height": `${v.mapH}`} as React.CSSProperties}>
+<canvas className="map_cv" ref={v.setCanvas} aria-hidden="true"></canvas>
+<div className="map_fade" aria-hidden="true"></div>
+<div className="map_rule wrap"><hr /></div>
+<div className={v.routeCls} aria-hidden="true">{v.route.from}<b>→</b>{v.route.to}<b>/</b>{v.route.mi}</div>
+<span className={v.pinDotCls} aria-hidden="true"></span>
+<div className={v.pinCls} aria-hidden="true"><svg viewBox="0 0 34 46"><path d="M17 1C8.2 1 1 8 1 16.8 1 28.6 17 45 17 45s16-16.4 16-28.2C33 8 25.8 1 17 1z" fill="#E8E4DA"></path><circle cx="17" cy="16.5" r="6" fill="#151513"></circle></svg></div>
+<div className="carousel">
+<div className="track">
+<a className="card is-on" href={v.loc.dir} target="_blank" rel="noopener" style={{"textDecoration": "none"} as React.CSSProperties} aria-label={`Directions to ${v.title}`}>
+<span className="card_img ph" style={{"background": `${v.loc.tone}`} as React.CSSProperties}>{v.loc.img ? (<><img src={v.loc.img} alt="" loading="lazy" /></>) : null}{v.loc.noImg ? (<>{v.loc.city}</>) : null}</span>
+<span className="card_txt"><b>{v.b.name}</b><span className="card_addr">{v.loc.a1}<br />{v.loc.a2}</span><span className="card_marks"><i className={`state s-${v.loc.st}`} title={v.loc.st}>{v.loc.st}</i><span className="amark" aria-hidden="true"></span><span className="est"><small>EST</small>{v.loc.est}</span></span></span>
+</a>
+</div>
+</div>
+{v.mapHero ? (<>
+<div className="hero_in wrap map_hin">
+<span className="pill">{v.b.ptr} location</span>
+<h1 className="h1">{v.title}</h1>
+<div className="hero_meta">
+<p className="addr">{v.loc.a1}, {v.loc.a2} /<br />{v.servicesLine}</p>
+<div className="marks">
+<span className="pair" role="group" aria-label={`Alpha partner ${v.b.name}`}><span className="amark" aria-hidden="true"></span><i aria-hidden="true"></i><span className={`bmark b-${v.b.n}`} aria-hidden="true"></span></span>
+<span className="states"><i className={`state s-${v.loc.st}`} title={v.loc.st}>{v.loc.st}</i></span>
+<span className="est"><small>EST</small>{v.loc.est}</span>
+</div>
+<span className="spacer"></span>
+<div className="hero_ctas">{v.b.book ? (<><a className="btn" href={v.b.book} target="_blank" rel="noopener">Book at {v.b.short}<span className="ext" aria-hidden="true">↗</span></a></>) : null}<a className="btn" href="/talk">Partner with Alpha</a></div>
+</div>
+</div>
+</>) : null}
+<a className="map_link" href="/locations">See partner map</a>
+</section>
+
+{/* ============ VISIT ============ */}
+<section className="visit" aria-label={`Visit ${v.title}`}>
+<div className="wrap visit_in">
+<div className="v_col"><p className="eyebrow">Address</p><p className="v_t">{v.loc.a1}<br />{v.loc.a2}</p><a className="v_link" href={v.loc.dir} target="_blank" rel="noopener">Directions<span className="ext" aria-hidden="true">↗</span></a></div>
+{v.visit.hasHours ? (<><div className="v_col"><p className="eyebrow">Hours</p><div className="v_rows">{(v.visit.hours || []).map((h: any, h_i: number) => (<React.Fragment key={h_i}><div><span>{h.d}</span><b>{h.t}</b></div></React.Fragment>))}</div></div></>) : null}
+{v.visit.phone ? (<><div className="v_col"><p className="eyebrow">Phone</p><p className="v_t"><a href={v.visit.tel}>{v.visit.phone}</a></p></div></>) : null}
+{v.visit.arrive ? (<><div className="v_col"><p className="eyebrow">Arriving</p><p className="v_t">{v.visit.arrive}</p></div></>) : null}
+<div className="v_cta">{v.b.book ? (<><a className="btn" href={v.b.book} target="_blank" rel="noopener">Book at {v.b.short}<span className="ext" aria-hidden="true">↗</span></a></>) : null}</div>
+</div>
+</section>
+
+{/* ============ INSIDE ============ */}{v.hasStory ? (<>
+<section className="sec">
+<div className="wrap">
+<hr className="rule" style={{"marginBottom": "clamp(36px, 4vw, 60px)"} as React.CSSProperties} />
+<div className="inside_head"><div><h2 className="h3">Inside {v.b.name} {v.loc.city}</h2>{v.loc.facts ? (<><p className="sub">{v.loc.facts}</p></>) : null}</div><div className="body inside_story" dangerouslySetInnerHTML={{ __html: v.storyHtml }} /></div>
+{v.galOn ? (<>
+<div className="gal two">
+{(v.gal2 || []).map((g: any, g_i: number) => (<React.Fragment key={g_i}><figure><div className="img ph">{g.ph}</div><figcaption className="cap"><b>{g.k}</b>{g.t}</figcaption></figure></React.Fragment>))}
+</div>
+<div className="gal three">
+{(v.gal3 || []).map((g: any, g_i: number) => (<React.Fragment key={g_i}><figure><div className="img ph">{g.ph}</div><figcaption className="cap"><b>{g.k}</b>{g.t}</figcaption></figure></React.Fragment>))}
+</div>
+</>) : null}
+</div>
+</section>
+
+</>) : null}
+{/* ============ WHO LEADS HERE ============ */}
+<section style={{"paddingBottom": "clamp(90px, 10vw, 150px)"} as React.CSSProperties}>
+<div className="wrap">
+<hr className="rule" style={{"marginBottom": "clamp(36px, 4vw, 60px)"} as React.CSSProperties} />
+<h2 className="h3">Who leads here</h2>
+{v.provLine ? (<><p className="sub">{v.provLine}</p></>) : null}
+<div className="leads">
+{(v.leads || []).map((p: any, p_i: number) => (<React.Fragment key={p_i}>
+<a className="lead" href={p.href}>
+<div className="prov_img">{p.hasImg ? (<><img src={p.img} alt={p.name} /></>) : null}{p.noImg ? (<>{p.init}</>) : null}</div>
+<div className="lead_t"><span className="lead_r">{p.role}</span><b>{p.name}</b><span className="lead_c">{p.cred}</span><span className="lead_go" aria-hidden="true">Profile →</span></div>
+</a>
+</React.Fragment>))}
+</div>
+</div>
+</section>
+
+{/* ============ IN THEIR WORDS: Google reviews, synced nightly, top 6 auto-picked. Hidden under 3 qualifying reviews. ============ */}{v.hasReviews ? (<>
+<section style={{"paddingBottom": "clamp(90px, 10vw, 150px)"} as React.CSSProperties}>
+<div className="wrap">
+<hr className="rule" style={{"marginBottom": "clamp(36px, 4vw, 60px)"} as React.CSSProperties} />
+<div className="rv_head">
+<div><h2 className="h3">In their words</h2><p className="sub">From patients of {v.b.short} {v.loc.city}, on Google.</p></div>
+<div className="rv_agg"><span className="rv_n">4.9</span><span className="rv_st" role="img" aria-label="4.9 out of 5 stars"><i style={{"width": "98.0%"} as React.CSSProperties}></i></span><span className="rv_c">238 Google reviews</span><a className="rv_all" href="#google" target="_blank" rel="noopener">Read all on Google<span className="ext" aria-hidden="true">↗</span></a></div>
+</div>
+<div className="rv">
+<figure className="rv_i rv_top"><span className="rv_tag">Moxi</span><blockquote>I just had a Moxi treatment with Torri and couldn’t be happier! She’s so knowledgeable and really takes the time to listen to your goals and explain what’s best for you. She made the whole experience feel easy and comfortable, and even helped me plan out a full treatment timeline leading up to my wedding. I feel so taken care of and confident that I’m in the best hands :)</blockquote><label className="rv_more"><input type="checkbox" className="rv_x" /><span className="rv_m">Read more</span><span className="rv_l">Show less</span></label><figcaption className="rv_f"><span><b>[First L.]</b> / [Date]</span><span>via Google</span></figcaption></figure>
+<figure className="rv_i"><span className="rv_tag">Sculptra</span><blockquote>I’ve been loving my results with Sculptra at Preva! My skin looks and feels so much smoother! I’ve been getting so many compliments about my glow lately. Mackenzie is truly amazing! She’s incredibly gentle to the touch, which makes the whole experience comfortable. Highly recommend Mackenzie and the team at Preva. 🙌🏽</blockquote><label className="rv_more"><input type="checkbox" className="rv_x" /><span className="rv_m">Read more</span><span className="rv_l">Show less</span></label><figcaption className="rv_f"><span><b>[First L.]</b> / [Date]</span><span>via Google</span></figcaption></figure>
+<figure className="rv_i"><span className="rv_tag">Tox + filler / membership</span><blockquote>I look forward to my quarterly treatments at Preva! Tori is the best injector and I have recommended her to countless friends. Natural looking results with tox and filler are their top priority and it shows! 🩵 Definitely recommend taking advantage of their member pricing structure and discounts.</blockquote><label className="rv_more"><input type="checkbox" className="rv_x" /><span className="rv_m">Read more</span><span className="rv_l">Show less</span></label><figcaption className="rv_f"><span><b>[First L.]</b> / [Date]</span><span>via Google</span></figcaption></figure>
+<figure className="rv_i"><span className="rv_tag">Returning patient</span><blockquote>McKenzie is simply the BEST! I’ve gone to see her a couple times now and can confidently say I have no plans on switching up anytime soon. …</blockquote><figcaption className="rv_f"><span><b>[First L.]</b> / [Date]</span><span>via Google</span></figcaption></figure>
+<figure className="rv_i"><span className="rv_tag">First consult</span><blockquote>I had such a great experience here. McKenzie took her time really understanding what I was looking for and walked me through everything in a way that felt thoughtful and honest. I never felt rushed or pushed, which I really appreciated. You can tell she genuinely cares about her clients and I love my results! I’ll definitely be back - highly recommend!</blockquote><figcaption className="rv_f"><span><b>[First L.]</b> / [Date]</span><span>via Google</span></figcaption></figure>
+</div>
+<span className="rv_note">Real Google data, pulled Nov 5 2026 (Places: 5 reviews, Google’s pick, no names or dates). Full set + scorer arrive with the Business Profile sync</span>
+</div>
+</section>
+
+</>) : null}
+{/* ============ SINCE ALPHA ============ */}{v.hasSince ? (<>
+<section style={{"paddingBottom": "clamp(56px, 6vw, 90px)"} as React.CSSProperties}>
+<div className="wrap">
+<hr className="rule" style={{"marginBottom": "clamp(36px, 4vw, 60px)"} as React.CSSProperties} />
+<div className="since">
+<div><h2 className="h3">Since Alpha</h2><p className="sub">Partner since {v.b.since}</p></div>
+<div>
+<ol className="ms">{(v.ms || []).map((m: any, m_i: number) => (<React.Fragment key={m_i}><li><span>{m.y}</span><p>{m.t}</p></li></React.Fragment>))}</ol>
+{v.q.t ? (<><figure className="ms_q"><blockquote>“{v.q.t}”</blockquote><figcaption className="cap">{v.q.s}</figcaption></figure></>) : null}
+</div>
+</div>
+</div>
+</section>
+
+</>) : null}
+{/* ============ STATS ============ */}{v.hasStats ? (<>
+<section style={{"paddingBottom": "clamp(90px, 10vw, 150px)"} as React.CSSProperties}>
+<div className="wrap">
+<div className="stats">
+{(v.stats || []).map((s: any, s_i: number) => (<React.Fragment key={s_i}>
+<div className="stat">
+<span className="stat_k">{s.k}</span>
+<span className="stat_n">{s.n}</span>
+<span className="stat_l">{s.l}</span>
+<div className="rows">{(s.rows || []).map((r: any, r_i: number) => (<React.Fragment key={r_i}><div className="row"><span>{r.k}</span><b>{r.v}</b></div></React.Fragment>))}</div>
+</div>
+</React.Fragment>))}
+</div>
+</div>
+</section>
+
+</>) : null}
+{/* ============ OPEN ROLES ============ */}{v.hasRoles ? (<>
+<section style={{"paddingBottom": "clamp(90px, 10vw, 150px)"} as React.CSSProperties}>
+<div className="wrap">
+<h2 className="h3">Open roles</h2>
+<div className="roles">
+{(v.roles || []).map((r: any, r_i: number) => (<React.Fragment key={r_i}><a className="role" href="#careers"><b>{r.t}</b><span>{r.where}</span><span aria-hidden="true">Apply →</span></a></React.Fragment>))}
+</div>
+</div>
+</section>
+
+</>) : null}
+{/* ============ SIBLING ============ */}
+{v.hasSib ? (<>
+<section className="also" style={{"paddingBottom": "clamp(90px, 10vw, 150px)"} as React.CSSProperties}>
+<div className="wrap">
+<h2 className="h3" style={{"marginBottom": "clamp(22px, 2.2vw, 34px)"} as React.CSSProperties}>Also {v.b.short} {v.sib.city}</h2>
+<a href={v.sib.href} style={{"display": "block", "textDecoration": "none"} as React.CSSProperties}><div className="img ph" style={{"background": `${v.sib.tone}`, "color": "rgba(232,228,218,.6)", "position": "relative", "overflow": "hidden"} as React.CSSProperties}>{v.sib.img ? (<><img className="ph_img" src={v.sib.img} alt="" loading="lazy" /></>) : null}</div></a>
+<div className="also_row cap"><span><b>{v.sib.place}</b>{v.sib.a1}, {v.sib.a2}</span><a href={v.sib.href}>View {v.b.short} {v.sib.city} →</a></div>
+</div>
+</section>
+</>) : null}
+
+{/* ============ CLOSER ============ */}
+
+
+    </div>
+  )
+}

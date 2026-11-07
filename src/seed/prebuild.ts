@@ -2,18 +2,43 @@
  * Runs once before `next build` (single process, so no race between build workers).
  *   SEED_ON_EMPTY=true   load stand-in content into an empty database
  *   SEED_ON_EMPTY=reset  wipe stand-in collections and reload (e.g. after swapping the Blob store)
- *   SEED_ON_EMPTY=webflow  wipe content and import the current Webflow CMS (src/seed/webflow/export.json)
- * Unset: does nothing. Remove the variable once real content is in.
+ *   SEED_ON_EMPTY=webflow  wipe content and import the current Webflow CMS (src/seed/webflow/export.json), then the interview copy
+ *   SEED_ON_EMPTY=content  apply the interview copy (src/seed/content/partners.json) without wiping
+ * Always: scrubs records removed from the network (src/seed/removed.ts).
+ * Unset: nothing else. Remove the variable once real content is in.
  */
 import config from '@payload-config'
 import { getPayload } from 'payload'
 import { seedStandIn } from './standin'
 
 const mode = process.env.SEED_ON_EMPTY
+{
+  // always: pull new podcast episodes from each show's feed (never fails the build)
+  if (process.env.IMPORT_EPISODES !== '0') {
+    try {
+      const p = await getPayload({ config: await config })
+      const { importEpisodes } = await import('./episodes')
+      await importEpisodes(p)
+    } catch (e) { console.warn('episodes: import skipped', e) }
+  }
+}
+{
+  // always: make sure removed people and partners are gone from the live database
+  const p = await getPayload({ config: await config })
+  const { scrubRemoved } = await import('./removed')
+  await scrubRemoved(p)
+}
 if (mode === 'webflow') {
   const p = await getPayload({ config: await config })
   const { importWebflow } = await import('./webflow')
   await importWebflow(p)
+  const { applyContent } = await import('./interviews')
+  await applyContent(p)
+} else if (mode === 'content') {
+  // interview copy only, on top of what is already in the database
+  const p = await getPayload({ config: await config })
+  const { applyContent } = await import('./interviews')
+  await applyContent(p)
 } else if (mode === 'true' || mode === 'reset') {
   const p = await getPayload({ config: await config }) // applies pending migrations on Postgres
   const empty = !(await p.count({ collection: 'brands' })).totalDocs

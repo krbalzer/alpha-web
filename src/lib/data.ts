@@ -17,6 +17,14 @@ export const url = (x: unknown, size?: 'card' | 'wide' | 'full') => {
   if (!me) return undefined
   return (size && me.sizes?.[size]?.url) || me.url || undefined
 }
+/** Posters ingested as AVIF are served as-is (already sized and sharp); anything else gets the 2400 WebP. */
+export const posterUrl = (x: unknown) => (m(x)?.mimeType === 'image/avif' ? url(x) : url(x, 'full')) || ''
+/** A video Media doc plus its web renditions (set by pnpm ingest:video). */
+export const video = (x: unknown) => {
+  const me = m(x)
+  const v = (me as { variants?: Record<string, unknown> } | null)?.variants || {}
+  return { src: me?.url || '', av1: url(v.av1) || '', small: url(v.small) || '', uhd: url(v.uhd) || '' }
+}
 const srcSet = (x: unknown) => {
   const me = m(x)
   if (!me?.sizes) return undefined
@@ -89,6 +97,7 @@ export const getBrand = cache(async (slug: string) => {
   return {
     id: String(b.id), slug: b.slug,
     n: String(b.ptr).padStart(3, '0'), ptr: ptr(b.ptr), name: b.name, short: b.short || b.name,
+    book: b.website || locs.docs.find((l) => l.bookingUrl)?.bookingUrl || '',
     since: fmtSince(b.since), est,
     founder: f?.name || '', cred: f?.credentials || '', founderSlug: f?.slug || '',
     founderImg: url(f?.headshot, 'card') || url(f?.portrait, 'card') || '',
@@ -100,16 +109,18 @@ export const getBrand = cache(async (slug: string) => {
     practiceHeadline: b.practice?.headline || '',
     practiceHtml: html(b.practice?.body),
     practiceImg: url(b.practice?.image, 'wide') || '',
-    filmPoster: url(b.film?.poster, 'full') || '',
+    filmPoster: posterUrl(b.film?.poster),
     filmUrl: b.film?.url || '',
+    film: video(b.film?.video),
     filmCaption: b.film?.caption || '',
     stats: (b.stats || []).map((s) => ({ k: s.kicker || '', n: s.value || '', l: s.label || '', rows: (s.rows || []).map((r) => ({ k: r.k || '', v: r.v || '' })) })),
     quote: b.quote?.text || '',
-    whyHeadline: b.why?.headline || '',
+    whyHeadline: b.why?.headline ? `\u201C${b.why.headline.replace(/^["\u201C]|["\u201D]$/g, '')}\u201D` : '', // verbatim, so always in quote marks
     whyHtml: html(b.why?.body),
     whyImg: url(b.why?.image, 'wide') || '',
     heroVideo: url(b.heroVideo) || '',
-    heroPoster: url(b.heroPoster, 'full') || '',
+    hero: video(b.heroVideo),
+    heroPoster: posterUrl(b.heroPoster),
     logo: url(b.logo) || '',
     tone: b.tone || '',
     seo: { title: b.seo?.title || `${b.name} / Alpha partner`, description: b.seo?.description || b.intro || '' },

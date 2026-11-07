@@ -1,3 +1,4 @@
+import { guard } from './guard'
 import type { CollectionConfig } from 'payload'
 import { img, live, publicRead, seo, slug } from './fields'
 
@@ -6,6 +7,7 @@ export const Shows: CollectionConfig = {
   access: publicRead,
   admin: { useAsTitle: 'name', defaultColumns: ['order', 'name', 'schedule', 'live'] },
   defaultSort: 'order',
+  hooks: { beforeValidate: [guard] },
   fields: [
     { type: 'row', fields: [
       { name: 'name', type: 'text', required: true },
@@ -37,6 +39,7 @@ export const Episodes: CollectionConfig = {
   access: publicRead,
   admin: { useAsTitle: 'title', defaultColumns: ['show', 'number', 'title', 'published'], listSearchableFields: ['title'] },
   defaultSort: '-published',
+  hooks: { beforeValidate: [guard] },
   fields: [
     { name: 'title', type: 'text', required: true },
     { type: 'row', fields: [
@@ -69,6 +72,7 @@ export const Speakers: CollectionConfig = {
   slug: 'speakers',
   access: publicRead,
   admin: { useAsTitle: 'name' },
+  hooks: { beforeValidate: [guard] },
   fields: [
     { name: 'name', type: 'text', required: true },
     { name: 'role', type: 'text' },

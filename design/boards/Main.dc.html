@@ -394,16 +394,42 @@ button{font:inherit;color:inherit}
 .closer>h2,.closer>a{position:relative;z-index:2}
 .closer_lock{z-index:2}
 .closer::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(14,14,13,.25),rgba(14,14,13,0) 40%,rgba(14,14,13,.35));pointer-events:none}
+
+/* closer: lockup centered, CTA under it */
+.closer>.closer_lock{position:relative;bottom:auto;left:auto;transform:none;z-index:2}
+.closer>.btn{margin-top:clamp(22px,2.2vw,32px);position:relative;z-index:2}
+
+
+/* motion (shared system, see motion_inject.py). Reveal once, fast, no bounce. */
+:root{--mo-e:cubic-bezier(.16,1,.3,1)}
+[data-mo] :is(h1,h2,.h1,.h2,.h3,.display,.tv_t,.pg_h,blockquote):not([data-mo-in]):not(:is(.b_top,.mn,.pp,.mpp,.map,.lx_list,.closer_tags,.demo_bar,.crumb) *){clip-path:inset(-.25em -.25em 100% -.25em);transform:translateY(.28em)}
+[data-mo] :is(.eyebrow,.pill,.lede,.body,.sub,.addr,.marks,.hero_ctas,.hero_cta,.stat,.chiprow,.field,.qual,.role,.ms li,.lead,.v_col,.v_cta,.foot_links,.foot_meta,figcaption,.closer_media>.btn,.cta_cr,.lock):not([data-mo-in]):not(:is(.b_top,.mn,.pp,.mpp,.map,.lx_list,.closer_tags,.demo_bar,.crumb) *){opacity:0;transform:translateY(12px)}
+[data-mo] :is(.img,.founder_img,.film,.card_img,figure>img):not([data-mo-in]):not(:is(.b_top,.mn,.pp,.mpp,.map,.lx_list,.closer_tags,.demo_bar,.crumb) *){opacity:0;clip-path:inset(4% 3% 4% 3%)}
+[data-mo] :is(.img,.founder_img,.film,.card_img):not([data-mo-in]):not(:is(.b_top,.mn,.pp,.mpp,.map,.lx_list,.closer_tags,.demo_bar,.crumb) *) img{transform:scale(1.06)}
+[data-mo] .rule:not([data-mo-in]):not(:is(.b_top,.mn,.pp,.mpp,.map,.demo_bar) *){transform:scaleX(0);transform-origin:0 50%}
+[data-mo-in="1"]{transition:opacity .45s var(--mo-e) var(--mo-d,0ms),transform .6s var(--mo-e) var(--mo-d,0ms),clip-path .65s var(--mo-e) var(--mo-d,0ms)!important;transform-origin:0 50%}
+[data-mo-in="1"]:is(h1,h2,.h1,.h2,.h3,.display,.tv_t,.pg_h,blockquote){clip-path:inset(-.25em -.25em -.25em -.25em)}
+[data-mo-in="1"]:is(.img,.founder_img,.film,.card_img,figure>img){clip-path:inset(0 0 0 0)}
+[data-mo-in="1"] img{transition:transform .9s var(--mo-e) var(--mo-d,0ms)}
+/* closer background waits until it is on screen */
+[data-mo] .closer_media:not([data-mo-in]) .cta_bg{animation-play-state:paused}
+/* touch: quick press feedback, slow image settle on linked media */
+.btn,.tv_play{transition:background .2s,color .2s,transform .15s var(--mo-e)}
+.btn:active,.tv_play:active{transform:scale(.97)}
+a .img img,a .card_img img,a.card img{transition:transform .7s var(--mo-e)}
+a:hover .img img,a:hover .card_img img{transform:scale(1.025)}
+@media (prefers-reduced-motion:reduce){[data-mo] *{clip-path:none!important}}
+/* /motion */
 </style>
 </helmet>
-<div style="background: #DEDAD1; color: #0E0E0D; min-height: 100vh">
+<div ref="{{ moRoot }}" style="background: #DEDAD1; color: #0E0E0D; min-height: 100vh">
 
 <!-- ============ NAV + HERO ============ -->
 <header class="wrap">
 <nav class="nav" aria-label="Primary">
 <button class="nav_menu" aria-label="Open menu" aria-expanded="{{ mnExp }}" aria-controls="site-menu" onClick="{{ mnOpen }}"><span></span><span></span></button>
 <a class="nav_logo" href="#top"><img src="/_blob/a3ba6a28a9b8a219f7b522ca46d6dd70" alt="Alpha"></a>
-<a class="btn nav_cta" href="#qualify">Let&#39;s talk</a>
+<a class="btn nav_cta" href="#qualify">Let's talk</a>
 </nav>
 </header>
 
@@ -418,18 +444,18 @@ button{font:inherit;color:inherit}
 </div>
 </div>
 <div class="stats">
-<a class="stat" href="#partners"><div class="stat_num">16<svg width="9" height="9" viewBox="0 0 9 9" aria-hidden="true"><path d="M1 8L8 1M3 1h5v5" stroke="currentColor" fill="none" stroke-width="1.3"></path></svg></div><div class="stat_label">Brands</div></a>
+<a class="stat" href="#partners"><div class="stat_num">15<svg width="9" height="9" viewBox="0 0 9 9" aria-hidden="true"><path d="M1 8L8 1M3 1h5v5" stroke="currentColor" fill="none" stroke-width="1.3"></path></svg></div><div class="stat_label">Brands</div></a>
 <a class="stat" href="#network"><div class="stat_num">36<svg width="9" height="9" viewBox="0 0 9 9" aria-hidden="true"><path d="M1 8L8 1M3 1h5v5" stroke="currentColor" fill="none" stroke-width="1.3"></path></svg></div><div class="stat_label">Locations</div></a>
-<a class="stat" href="#network"><div class="stat_num">8<svg width="9" height="9" viewBox="0 0 9 9" aria-hidden="true"><path d="M1 8L8 1M3 1h5v5" stroke="currentColor" fill="none" stroke-width="1.3"></path></svg></div><div class="stat_label">States</div></a>
+<a class="stat" href="#network"><div class="stat_num">12<svg width="9" height="9" viewBox="0 0 9 9" aria-hidden="true"><path d="M1 8L8 1M3 1h5v5" stroke="currentColor" fill="none" stroke-width="1.3"></path></svg></div><div class="stat_label">States</div></a>
 </div>
 </div>
 </section>
 
 <section class="reel" aria-label="Network reel">
-<div class="reel_spec ph">Video 01 / Network reel<br>16 cuts, one per partner clinic, in join order. 0:48 loop, muted autoplay, Cloudflare Stream MP4. Caption below advances with each cut.</div>
+<div class="reel_spec ph">Video 01 / Network reel<br>15 cuts, one per partner clinic, in join order. 0:48 loop, muted autoplay, Cloudflare Stream MP4. Caption below advances with each cut.</div>
 <button class="btn btn-light reel_unmute" style="color: #E8E4DA" onClick="{{ toggleMute }}">{{ muteLabel }}</button>
 <div class="reel_hud">
-<div class="reel_cut"><span>Cut {{ cutNum }} / 16</span><b>{{ cutBrand }}</b><span>{{ cutCity }}</span></div>
+<div class="reel_cut"><span>Cut {{ cutNum }} / 15</span><b>{{ cutBrand }}</b><span>{{ cutCity }}</span></div>
 <div class="reel_ticks" aria-hidden="true">
 <sc-for list="{{ ticks }}" as="t" hint-placeholder-count="16"><i class="{{ t.cls }}"></i></sc-for>
 </div>
@@ -518,7 +544,7 @@ button{font:inherit;color:inherit}
 <span class="p_play" aria-hidden="true"><svg width="18" height="20" viewBox="0 0 18 20"><path d="M2 1.5v17L16.5 10z" fill="currentColor"></path></svg></span>
 <span class="p_dur">1:30</span>
 </button>
-<div class="p_meta"><span>{{ cur.n }}&#160;&#160;&#160;<b>{{ cur.name }}</b></span><span>Partnered [Mo YYYY]</span></div>
+<div class="p_meta"><span>{{ cur.n }}&nbsp;&nbsp;&nbsp;<b>{{ cur.name }}</b></span><span>Partnered [Mo YYYY]</span></div>
 <div class="p_bar">
 <a class="p_who" href="#founder"><span class="av"><sc-if value="{{ cur.hasHead }}" hint-placeholder-val="{{ false }}"><img src="{{ cur.head }}" alt=""></sc-if><sc-if value="{{ cur.noHead }}" hint-placeholder-val="{{ true }}"><span>{{ cur.init }}</span></sc-if></span><span><b>{{ cur.founder }}</b><span>{{ cur.role }}</span></span></a>
 <div class="p_pile" aria-label="Team"><i></i><i></i><i></i><i></i></div>
@@ -664,7 +690,7 @@ button{font:inherit;color:inherit}
 <div class="wrap qual_grid">
 <div>
 <h2 class="display h2">Is your practice<br>qualified?</h2>
-<p class="lede">Five questions about your practice. If it&#39;s a fit, we set up a real conversation, with people who have already made this decision.</p>
+<p class="lede">Five questions about your practice. If it's a fit, we set up a real conversation, with people who have already made this decision.</p>
 <p class="ph" style="color: #9B978E; margin-top: 28px">Routes to GHL / alphacrm.io<br>Thresholds below are placeholders</p>
 </div>
 <div class="form">
@@ -696,7 +722,7 @@ button{font:inherit;color:inherit}
 <sc-if value="{{ isDone }}" hint-placeholder-val="{{ false }}">
 <div style="margin: auto 0">
 <p class="eyebrow" style="color: #C9A26B">Received</p>
-<h3 class="form_q" style="font-size: 40px">Thanks. We&#39;ll be in touch.</h3>
+<h3 class="form_q" style="font-size: 40px">Thanks. We'll be in touch.</h3>
 <p class="form_hint" style="max-width: 440px">While you wait, the four conversations above are the ones owners in your position listen to first.</p>
 <button class="ulink" style="background: none; border-top: 0; border-left: 0; border-right: 0; cursor: pointer" onClick="{{ qReset }}">Start over</button>
 </div>
@@ -709,13 +735,12 @@ button{font:inherit;color:inherit}
 <section class="closer" aria-label="Let's talk">
 <img class="cta_bg is-stand" src="{{ cta.src }}" alt="" aria-hidden="true">
 <span class="closer_ph ph cta_cr"><b>{{ cta.ptr }}</b> / {{ cta.name }}<br>{{ cta.city }}</span>
-<h2 class="closer_t">What&#39;s holding you back?</h2>
-<a class="btn btn-light" href="#qualify" style="color: #fff">Let&#39;s talk</a>
 <div class="closer_lock" aria-label="Alpha, Stronger Together">
 <span class="closer_lock_a">A<sup style="font-size: 12px; font-family: -apple-system, sans-serif; font-weight: 500">®</sup></span>
 <span class="badge">ST</span>
 <span class="closer_lock_w">STRONGER<br>TOGETHER</span>
 </div>
+<a class="btn btn-light" href="#qualify" style="color: #fff">Let's talk</a>
 </section>
 
 <footer class="foot">
@@ -724,7 +749,7 @@ button{font:inherit;color:inherit}
 <div><h3>Partnership</h3><a href="#how">How it works</a><a href="#qualify">Qualify</a><a href="#stories">Stories</a></div>
 <div><h3>Network</h3><a href="#partners">Brands</a><a href="#founders">Founders</a><a href="#team">Alpha team</a></div>
 <div><h3>Learn</h3><a href="#practice">Practice</a><a href="#podcasts">Podcasts</a><a href="#careers">Careers</a></div>
-<div><h3>Contact</h3><a href="#qualify">Let&#39;s talk</a><a href="#ig">Instagram</a><a href="#li">LinkedIn</a></div>
+<div><h3>Contact</h3><a href="#qualify">Let's talk</a><a href="#ig">Instagram</a><a href="#li">LinkedIn</a></div>
 </div>
 </div>
 <div class="mark"><img src="/_blob/8c6e58a26569a1b0aff6a21dd2464ff0" alt="Alpha"></div>
@@ -734,7 +759,7 @@ button{font:inherit;color:inherit}
 <!-- ============ THEATER ============ -->
 <sc-if value="{{ thOpen }}" hint-placeholder-val="{{ false }}">
 <div class="theater" role="dialog" aria-modal="true" aria-label="Brand film" tabindex="-1" ref="{{ thRef }}" onKeyDown="{{ thKey }}">
-<div class="th_bar"><span>Film {{ th.idx }} of 16</span><button class="th_close" onClick="{{ thClose }}">Close <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.4"></path></svg></button></div>
+<div class="th_bar"><span>Film {{ th.idx }} of 15</span><button class="th_close" onClick="{{ thClose }}">Close <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.4"></path></svg></button></div>
 <div class="th_stage">
 <button class="th_arrow" aria-label="Previous film" onClick="{{ thPrev }}"><svg width="14" height="12" viewBox="0 0 14 12" aria-hidden="true"><path d="M13 6H1M6 1L1 6l5 5" stroke="currentColor" fill="none" stroke-width="1.3"></path></svg></button>
 <div class="th_screen">
@@ -783,7 +808,7 @@ button{font:inherit;color:inherit}
 <div class="wrap mn_top">
 <button class="mn_x" onClick="{{ mnClose }}" aria-label="Close menu"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.4"></path></svg>Close<em>Esc</em></button>
 <a class="nav_logo" href="#home" onClick="{{ mnClose }}"><img src="/_blob/8c6e58a26569a1b0aff6a21dd2464ff0" alt="Alpha"></a>
-<a class="btn" href="#talk" onClick="{{ mnClose }}">Let&#39;s talk</a>
+<a class="btn" href="#talk" onClick="{{ mnClose }}">Let's talk</a>
 </div>
 <div class="wrap mn_body">
 <nav class="mn_list" aria-label="Main">
@@ -792,9 +817,9 @@ button{font:inherit;color:inherit}
 <aside class="mn_side">
 <div class="mn_live">
 <p class="mn_k"><span>{{ mnLiveK }}</span><sc-if value="{{ mnPlaying }}" hint-placeholder-val="{{ false }}"><i>Live</i></sc-if></p>
-<div class="mn_ep"><span class="mn_art" style="background: #1D1B1A; color: #fff; border: 1px solid rgba(232,228,218,.14)">Dear<br>Tiffany</span><div><b>You don&#39;t have a spending problem</b><span>Dear Tiffany // EP 018</span></div></div>
+<div class="mn_ep"><span class="mn_art" style="background: #1D1B1A; color: #fff; border: 1px solid rgba(232,228,218,.14)">Dear<br>Tiffany</span><div><b>You don't have a spending problem</b><span>Dear Tiffany // EP 018</span></div></div>
 <div class="mn_pl"><button class="mn_pb" onClick="{{ mnToggle }}" aria-label="{{ mnPlayLabel }}"><sc-if value="{{ mnPlaying }}" hint-placeholder-val="{{ false }}"><svg width="9" height="11" viewBox="0 0 10 12" aria-hidden="true"><path d="M1 0h3v12H1zM6 0h3v12H6z" fill="currentColor"></path></svg></sc-if><sc-if value="{{ mnPaused }}" hint-placeholder-val="{{ true }}"><svg width="10" height="12" viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z" fill="currentColor"></path></svg></sc-if></button><div class="mn_tr"><i style="width: 33%"></i></div><span class="mn_t">17:12 / 52:00</span></div>
-<div class="mn_net"><div><b>16</b>Brands</div><div><b>36</b>Locations</div><div><b>8</b>States</div></div>
+<div class="mn_net"><div><b>15</b>Brands</div><div><b>36</b>Locations</div><div><b>12</b>States</div></div>
 </div>
 <div>
 <div class="mn_dep"><p class="mn_k"><span>Alpha team</span><span>SSO</span></p><ul><sc-for list="{{ mnDepts }}" as="d" hint-placeholder-count="7"><li><a href="#dept">{{ d }}</a></li></sc-for></ul></div>
@@ -838,15 +863,14 @@ class Component extends DCLogic {
     NODES.forEach((_, i) => NODES.map((__, j) => j).filter((j) => j !== i).sort((a, b) => dist(i, a) - dist(i, b)).slice(0, 2).forEach((j) => add(i, j)));
     const ADJ = NODES.map(() => []); E.forEach(([i, j]) => { ADJ[i].push(j); ADJ[j].push(i); });
     const P = [
-      { n: '001', name: 'Esthetics Center', city: 'Sacramento, CA', locs: 1, area: 'Sacramento', founder: '[Founder]', tone: '#3B3A35' },
-      { n: '002', name: 'Holden Timeless Beauty', city: 'San Diego, CA', locs: 4, area: 'North County San Diego', founder: 'Amanda Holden, MD', tone: '#61788A' },
+      { n: '001', name: 'Esthetics Center', city: 'Sacramento, CA', locs: 4, area: 'Sacramento', founder: '[Founder]', tone: '#3B3A35' },
+      { n: '002', name: 'Holden Timeless Beauty', city: 'San Diego, CA', locs: 3, area: 'North County San Diego', founder: 'Amanda Holden, MD', tone: '#61788A' },
       { n: '003', name: 'Refined Aesthetics', city: 'Leesburg, VA', locs: 2, area: 'Northern Virginia', founder: 'Sarah Safa', tone: '#4C5949' },
-      { n: '004', name: '[Partner 004]', city: '[City, ST]', locs: 0, area: '[Area]', founder: '[Founder]', tone: '#57534B' },
       { n: '005', name: 'Laser Center of Marin', city: 'Corte Madera, CA', locs: 1, area: 'Marin County', founder: '[Founder]', tone: '#2F4550' },
-      { n: '006', name: 'Williams Center', city: 'Latham, NY', locs: 1, area: 'Capital Region', founder: '[Founder]', tone: '#4B4038' },
-      { n: '007', name: 'Anne Therese Aesthetics', city: 'Columbus, OH', locs: 1, area: 'Columbus', founder: '[Founder]', tone: '#6B5A55' },
-      { n: '008', name: 'Dontage', city: 'Fairfax, VA', locs: 1, area: 'Fairfax', founder: '[Founder]', tone: '#3D3D45' },
-      { n: '009', name: 'RN Esthetics', city: 'Salem, MA', locs: 3, area: 'North Shore', founder: 'Michelle Doran', tone: '#52606B' },
+      { n: '006', name: 'Williams Center', city: 'Latham, NY', locs: 2, area: 'Capital Region', founder: '[Founder]', tone: '#4B4038' },
+      { n: '007', name: 'Anne Therese Aesthetics', city: 'Columbus, OH', locs: 4, area: 'Columbus', founder: '[Founder]', tone: '#6B5A55' },
+      { n: '008', name: 'RN Esthetics', city: 'Salem, MA', locs: 4, area: 'North Shore', founder: 'Michelle Doran', tone: '#52606B' },
+      { n: '009', name: 'Dontage', city: 'Fairfax, VA', locs: 1, area: 'Fairfax', founder: '[Founder]', tone: '#3D3D45' },
       { n: '010', name: 'CAMI Aesthetics', city: 'Huntersville, NC', locs: 2, area: 'Charlotte area', founder: '[Founder]', tone: '#5B4E44' },
       { n: '011', name: 'InBloom Health + Medispa', city: 'Londonderry, NH', locs: 1, area: 'Southern New Hampshire', founder: 'Dr. Tanya Lawson, ND', tone: '#7A2A1E', img: '/_blob/4d98d100087709e99a2681f05a716a09', head: '/_blob/bc7eacb4548f2042cbc209c1c6976dc4' },
       { n: '012', name: 'Flawless', city: 'Albuquerque, NM', locs: 2, area: 'Albuquerque', founder: 'Heather Badal', tone: '#7B3C26', img: '/_blob/117fafec37d91a9f4b567818a404cc24', head: '/_blob/b01ba67d9cc798eec47b72024735b1ee' },
@@ -1072,10 +1096,55 @@ class Component extends DCLogic {
     if (dirty) this.bump();
   }
   thOpen(i) { const S = this.sim0(); S.pi = i; S.th = true; S.thPlay = true; S.tt = 0; S.thG ^= 1; this._th = null; this.bump(); }
-  thLoad(i) { const S = this.S; S.pi = (i + 16) % 16; S.tt = 0; S.thPlay = true; S.thG ^= 1; this.bump(); }
+  thLoad(i) { const S = this.S; const n = this.D.P.length; S.pi = (i + n) % n; S.tt = 0; S.thPlay = true; S.thG ^= 1; this.bump(); }
   thClose() { const S = this.S; S.th = false; S.thPlay = false; this.bump(); }
 
-  renderVals() { return Object.assign(this._rv(), this.mnVals(), this.ctaVals()); }
+  renderVals() { return Object.assign(this._rv(), this.mnVals(), this.ctaVals(), this.moVals()); }
+  moVals() {
+    return { moRoot: (el) => {
+      if (!el || el === this._moEl || typeof window === 'undefined') return;
+      if (this._moStop) this._moStop();
+      this._moEl = el;
+      this._moStop = (function () {
+        function moStart(root) {
+          if (!root || typeof IntersectionObserver === 'undefined') return null;
+          if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { root.removeAttribute('data-mo'); return null; }
+          var SEL = 'h1,h2,.h1,.h2,.h3,.display,.tv_t,.pg_h,blockquote,.eyebrow,.pill,.lede,.body,.sub,.addr,.marks,.hero_ctas,.hero_cta,.stat,.chiprow,.field,.qual,.role,.ms li,.lead,.v_col,.v_cta,.foot_links,.foot_meta,figcaption,.closer_media>.btn,.cta_cr,.img,.founder_img,.film,.card_img,figure>img,.rule,.lock';
+          var TRIG = '.closer_media';
+          var SKIP = '.b_top,.mn,.pp,.mpp,.map,.lx_list,.closer_tags,.demo_bar,.crumb';
+          root.setAttribute('data-mo', '');
+          var done = function (el) { el.setAttribute('data-mo-in', '2'); el.style.removeProperty('--mo-d'); };
+          var io = new IntersectionObserver(function (es) {
+            var vis = es.filter(function (e) { return e.isIntersecting; }).map(function (e) { return e.target; });
+            vis.sort(function (a, b) { return a.compareDocumentPosition(b) & 4 ? -1 : 1; });
+            vis.forEach(function (el, i) {
+              io.unobserve(el);
+              el.style.setProperty('--mo-d', Math.min(i, 6) * 55 + 'ms');
+              el.setAttribute('data-mo-in', '1');
+              setTimeout(function () { done(el); }, 1100 + Math.min(i, 6) * 55);
+            });
+          }, { rootMargin: '0px 0px -6% 0px', threshold: 0 });
+          var add = function (n) {
+            if (n.nodeType !== 1) return;
+            var ALL = SEL + ',' + TRIG;
+            var list = n.matches(ALL) ? [n] : [];
+            n.querySelectorAll(ALL).forEach(function (x) { list.push(x); });
+            list.forEach(function (x) {
+              if (x.hasAttribute('data-mo-in') || x.closest(SKIP)) return;
+              var up = x.parentElement && x.parentElement.closest(SEL);
+              if (up && up !== root && root.contains(up)) { x.setAttribute('data-mo-in', '2'); return; }
+              io.observe(x);
+            });
+          };
+          add(root);
+          var mo = new MutationObserver(function (ms) { ms.forEach(function (m) { m.addedNodes.forEach(add); }); });
+          mo.observe(root, { childList: true, subtree: true });
+          return function () { io.disconnect(); mo.disconnect(); };
+        }
+        return moStart;
+      })()(el);
+    } };
+  }
   ctaVals() {
     if (!this._cta) {
       const L = [['011', 'InBloom', 'Londonderry, NH', '4d98d100087709e99a2681f05a716a09'], ['012', 'Flawless', 'Albuquerque, NM', '117fafec37d91a9f4b567818a404cc24'], ['013', 'Mint + Needle', 'Middletown, DE', '6f9f59949585d33d629e1880f88442e4'], ['014', 'Privé Med Spa', 'Lexington, KY', '42e63922522a3aeb100987e90907ea6d'], ['015', 'LexRx', 'Boston, MA', '572e07793bb191e6cb70ac4b8f17dd11'], ['016', 'Preva Aesthetics', 'Encinitas, CA', '0e6c422690914b59a6eff7dc7db00550']];
@@ -1087,7 +1156,7 @@ class Component extends DCLogic {
   mnVals() {
     const s = this.state || {}, set = (o) => this.setState(o), open = !!s.mnO;
     if (!this._mnK && typeof document !== 'undefined') { this._mnK = (e) => { if (e.key === 'Escape' && (this.state || {}).mnO) this.setState({ mnO: false }); }; document.addEventListener('keydown', this._mnK); }
-    const items = [['PARTNERS', '#brands', '/brands', '16 brands, in join order'], ['MAP', '#locations', '/locations', '36 locations across 8 states'], ['PATHWAY', '#how', '/how-it-works', 'From first call to fully integrated'], ['PODCASTS', '#podcasts', '/podcasts', '8 shows, one network'], ['ABOUT', '#about', '/about', 'Built by operators'], ['NEWS', '#newswire', '/newswire', 'Latest: Preva joins the network']];
+    const items = [['PARTNERS', '#brands', '/brands', '15 brands, in join order'], ['MAP', '#locations', '/locations', '36 locations across 12 states'], ['PATHWAY', '#how', '/how-it-works', 'From first call to fully integrated'], ['PODCASTS', '#podcasts', '/podcasts', '8 shows, one network'], ['ABOUT', '#about', '/about', 'Built by operators'], ['NEWS', '#newswire', '/newswire', 'Latest: Preva joins the network']];
     return {
       mnCls: 'mn' + (open ? ' is-on' : ''), mnExp: open ? 'true' : 'false',
       mnOpen: () => set({ mnO: true }), mnClose: () => set({ mnO: false }),
@@ -1103,7 +1172,7 @@ class Component extends DCLogic {
     const P = D.P;
 
     /* reel */
-    const cut = Math.floor(S.tk / 13) % 16;
+    const cut = Math.floor(S.tk / 13) % this.D.P.length;
 
     /* network view */
     const d = Math.floor(S.min / 1440) % 7;

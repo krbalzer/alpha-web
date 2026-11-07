@@ -11,6 +11,45 @@ export class BrandEngine extends DCLogic {
   }
   componentWillUnmount() { if (this.raf) cancelAnimationFrame(this.raf); if (this.io) this.io.disconnect(); }
   bump() { this.setState({ n: ((this.state || {}).n || 0) + 1 }); }
+  /* ---------- locations index: city names rise out of a mask, like the menu ---------- */
+  watchLx(el) {
+    if (!el || this.lxIO || typeof IntersectionObserver === 'undefined') return;
+    if (typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    this.lxIn = false;
+    this.lxIO = new IntersectionObserver((es) => {
+      if (!es[0].isIntersecting) return;
+      this.lxIO.disconnect();
+      requestAnimationFrame(() => { this.lxIn = true; this.bump(); });
+    }, { threshold: .25 });
+    this.lxIO.observe(el);
+    this.bump();
+  }
+  /* ---------- stat count-up: runs once when the stats scroll into view ---------- */
+  watchStats(el) {
+    if (!el || this.statIO || typeof IntersectionObserver === 'undefined') return;
+    const reduce = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) { this.statP = 1; return; }
+    this.statP = 0;
+    this.statIO = new IntersectionObserver((es) => {
+      if (!es[0].isIntersecting) return;
+      this.statIO.disconnect();
+      const t0 = this.now(), dur = 1600;
+      const step = () => { const t = Math.min(1, (this.now() - t0) / dur); this.statP = 1 - Math.pow(1 - t, 3); this.bump(); if (t < 1) requestAnimationFrame(step); };
+      requestAnimationFrame(step);
+    }, { threshold: .35 });
+    this.statIO.observe(el);
+  }
+  /* "2.5K" counts 0.0K to 2.5K, "26,520" keeps its commas; anything non-numeric shows as is */
+  counted(list) {
+    const p = this.statP == null ? 1 : this.statP;
+    return (list || []).map((s) => {
+      const m = String(s.n).match(/^([^0-9]*)([0-9][0-9,]*(?:\.[0-9]+)?)(.*)$/);
+      if (!m || p >= 1) return s;
+      const raw = m[2].replace(/,/g, ''), dec = (raw.split('.')[1] || '').length, v = parseFloat(raw) * p;
+      const num = m[2].includes(',') ? Math.round(v).toLocaleString('en-US') : v.toFixed(dec);
+      return { ...s, n: m[1] + num + m[3] };
+    });
+  }
   now() { return typeof performance !== 'undefined' ? performance.now() : Date.now(); }
 
   /* ---------- CMS item (one Brand) ---------- */
@@ -96,7 +135,7 @@ export class BrandEngine extends DCLogic {
     this.raf = requestAnimationFrame(() => this.loop());
     if (!this.inView || (typeof document !== 'undefined' && document.hidden)) { this.last = 0; return; }
     const now = this.now(), dt = this.last ? Math.min(64, now - this.last) : 16; this.last = now;
-    this.tick(now, dt); this.draw(now);
+    this.tick(now, dt); if (!this.props.mapbox) this.draw(now);
   }
 
   /* ---------- render ---------- */
@@ -201,11 +240,34 @@ export class BrandEngine extends DCLogic {
       metaLine: [[B.founder, B.cred].filter(Boolean).join(', '), B.services.join(' ')].filter(Boolean).join(' / '),
       hasVideo: !!B.heroVideo, posterOnly: !B.heroVideo && !!B.heroPoster, noMedia: !B.heroVideo && !B.heroPoster,
       founderHref: B.founderSlug ? '/founders/' + B.founderSlug : '/founders',
-      playFilm: () => { if (B.filmUrl) window.open(B.filmUrl, '_blank', 'noopener'); },
+      // Film plays in place. Nothing loads until the click; then the rendition fits the screen and connection.
+      playFilm: (e) => {
+        const f = B.film || {};
+        if (!f.src) { if (B.filmUrl) window.open(B.filmUrl, '_blank', 'noopener'); return; }
+        const box = e && e.currentTarget && e.currentTarget.closest('.film');
+        if (!box || box.querySelector('video')) return;
+        const w = window.innerWidth, px = w * (window.devicePixelRatio || 1), c = navigator.connection;
+        const slow = !!(c && (c.saveData || /(^|-)(2g|3g)$/.test(c.effectiveType || '')));
+        const fast = !c || (c.downlink || 0) >= 10;
+        const src = !slow && fast && f.uhd && px >= 2880 && w >= 1200 ? f.uhd : !slow && w > 820 ? f.src : (f.small || f.src);
+        const v = document.createElement('video');
+        v.className = 'film_vid'; v.src = src; v.controls = true; v.playsInline = true; v.preload = 'auto';
+        if (B.filmPoster) v.poster = B.filmPoster;
+        box.appendChild(v); box.classList.add('is-playing');
+        const p = v.play(); if (p && p.catch) p.catch(() => {});
+      },
       heroH: this.tall ? '820px' : 'calc(100svh - 126px)',
-      addrLine: L.map((l) => [l.a1, l.a2].filter(Boolean).join(', ')).join(' / '),
+      vidRef: (el) => {
+        if (!el || el === this._vid) return;
+        this._vid = el; el.muted = true;
+        if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) { el.removeAttribute('autoplay'); el.pause(); return; }
+        const p = el.play && el.play(); if (p && p.catch) p.catch(() => {});
+      },
+      addrs: L.map((l) => [l.a1, l.a2].filter(Boolean).join(', ')),
       founderLine: [B.founder, B.cred].filter(Boolean).join(', '),
-      servicesLine: B.services.join(' '),
+      servicesLine: B.services.slice(0, 4).join(', '),
+      // flagship only, so 3+ location brands stay one tidy line
+      metaLine: [[L[0].a1, L[0].a2].filter(Boolean).join(', '), [B.founder, B.cred].filter(Boolean).join(', '), B.services.slice(0, 4).join(', ')].filter(Boolean).join(' / '),
       setCanvas: (el) => { if (el && el !== this.cv) { this.cv = el; this.ctx = el.getContext('2d'); if (!this.raf && typeof requestAnimationFrame !== 'undefined') this.loop(); } },
       setMap: (el) => {
         if (!el || this.io || typeof IntersectionObserver === 'undefined') return;
@@ -219,8 +281,12 @@ export class BrandEngine extends DCLogic {
       count: String(idx + 1).padStart(2, '0') + ' / ' + String(L.length).padStart(2, '0'),
       prevCls: 'arw' + (idx === 0 ? ' is-off' : ''), nextCls: 'arw' + (idx === L.length - 1 ? ' is-off' : ''),
       prev: () => this.go(idx - 1), next: () => this.go(idx + 1),
+      lxCls: 'lx_list' + (this.lxIn === false ? ' is-pre' : ''), setLx: (el) => this.watchLx(el),
+      locHead: 'Visit ' + B.short, locCount: L.length + ' locations',
+      locRows: L.map((l, i) => ({ n: String(i + 1).padStart(2, '0'), city: l.city + ', ' + l.st, addr: l.a1 ? [l.a1, l.a2].filter(Boolean).join(', ') : '', d: (.06 + i * .07).toFixed(2) + 's', d2: (.35 + i * .07).toFixed(2) + 's', href: l.slug ? '/locations/' + l.slug : '#location', bg: l.img ? 'center / cover no-repeat url(' + l.img + ')' : l.tone })),
       cards: L.map((l, i) => ({ img: l.img, noImg: !l.img, cls: 'card' + (i === idx ? ' is-on' : ''), go: () => this.go(i), aria: B.name + ', ' + l.city, cur: i === idx ? 'true' : 'false', tone: l.tone, city: l.city, name: B.name, a1: l.a1, a2: l.a2, st: l.st, est: B.est })),
-      stats: B.stats, hasStats: B.stats.length > 0,
+      setStats: (el) => this.watchStats(el),
+      stats: this.counted(B.stats), hasStats: B.stats.length > 0,
       _n: st.n
     };
   }

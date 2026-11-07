@@ -1,3 +1,4 @@
+import { guard } from './guard'
 import type { CollectionConfig } from 'payload'
 import { img, live, publicRead, seo, slug } from './fields'
 
@@ -35,6 +36,7 @@ export const Team: CollectionConfig = {
   access: publicRead,
   admin: { useAsTitle: 'name', defaultColumns: ['name', 'title', 'department', 'order'] },
   defaultSort: 'order',
+  hooks: { beforeValidate: [guard] },
   fields: [
     { type: 'row', fields: [
       { name: 'name', type: 'text', required: true },
@@ -46,6 +48,7 @@ export const Team: CollectionConfig = {
       { name: 'leader', type: 'checkbox', admin: { description: 'Department lead, shown first.' } },
     ] },
     img('headshot'),
+    { name: 'askAbout', label: 'Ask me about', type: 'text', admin: { description: 'Two to four words. Shows on hover on the Team page, e.g. "the 90-day plan".' } },
     { name: 'bio', type: 'richText' },
     { name: 'ownsForYou', label: 'What they own for a partner', type: 'array', fields: [{ name: 'item', type: 'text' }] },
     { name: 'metrics', type: 'array', maxRows: 3, admin: { description: 'Role metrics that replace vanity stats in the hero.' }, fields: [

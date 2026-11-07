@@ -342,10 +342,73 @@ button{font:inherit;color:inherit}
 @media (prefers-reduced-motion:reduce){.cta_bg{animation:none;opacity:1;transform:scale(1.12)}}
 .closer_media::after{z-index:1}
 .closer_media>h2{position:relative;z-index:2}.closer_media>.lock{z-index:2}
+
+/* closer: lockup centered, CTA under it */
+.closer_media{justify-content:center;padding-top:0}
+.closer_media>.lock{position:relative;left:auto;top:auto;transform:none}
+.closer_media>.btn{margin-top:clamp(22px,2.2vw,32px)}
+
+
+.card_img:has(img),.prac_img:has(img){padding:0;overflow:hidden}
+.card_img img,.prac_img img{width:100%;height:100%;object-fit:cover;display:block}
+.fhero_img{overflow:hidden}
+.fhero_pic{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 25%}
+
+.pair{display:inline-flex;align-items:center;gap:10px}
+.pair i{display:block;width:1px;height:18px;background:currentColor;opacity:.4}
+/* partner marks + state flags (masked, take currentColor) */
+.bmark{display:inline-block;flex:0 0 auto;height:26px;aspect-ratio:var(--ar,1);background:currentColor;-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat}
+.state:is(.s-CA,.s-CO,.s-DE,.s-FL,.s-KY,.s-MA,.s-NM,.s-NH,.s-NC,.s-NY,.s-OH,.s-VA){border:0;font-size:0;background:currentColor;-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat}
+.b-001{--m:url(/_blob/acd758d2c7d28315fa698dbe9ec586a4);--ar:1.0}
+.b-002{--m:url(/_blob/bf0cb09e099ffd08e157c7a2527b15d4);--ar:4.1729}
+.b-003{--m:url(/_blob/07d6f47cf04c5b870d08c19fa405707c);--ar:1.0}
+.b-005{--m:url(/_blob/6c3dcd041432729a9e78c6149fb45208);--ar:0.6843}
+.b-006{--m:url(/_blob/11fbe015cfb3fcfcd247c3ad2077da5b);--ar:1.4658}
+.b-007{--m:url(/_blob/0ccb40da91f47ad8a407ce8a848d0b91);--ar:1.0}
+.b-008{--m:url(/_blob/ca83c659da266b70ecee710da39049b6);--ar:1.4291}
+.b-009{--m:url(/_blob/977a1e28842c7d0f1ceaf158d7508117);--ar:1.0}
+.b-010{--m:url(/_blob/36bfaaba5b556cdc3a1bacb6332ec4e9);--ar:3.3176}
+.b-012{--m:url(/_blob/bd38895f64cedccb4f3a4f4880cf0e2e);--ar:1.0935}
+.b-013{--m:url(/_blob/61c4a276b75d751e772edb7967178138);--ar:1.3213}
+.b-014{--m:url(/_blob/3338152bcddce0a2936289bcc6c757f6);--ar:2.7449}
+.b-015{--m:url(/_blob/bb52fb236297e65167cc48c9b7bcb464);--ar:1.2903}
+.b-016{--m:url(/_blob/7d9fc18ce1e5d3c17694677090383529);--ar:1.3014}
+.s-CA{--m:url(/_blob/5c2f783b104265b2c6e9562f3eb4f621)}
+.s-CO{--m:url(/_blob/665cf124e8d188f0e1b4e2ca99e77e2c)}
+.s-FL{--m:url(/_blob/bae0b6be719992cdd9892d52c36d04d8)}
+.s-KY{--m:url(/_blob/6e4190e3ab8ef90d1e919116e7078896)}
+.s-MA{--m:url(/_blob/bdf586eddbc7ef6132f6d55fd4b419b2)}
+.s-NM{--m:url(/_blob/ae40483b705fad39169507edfbaa5e10)}
+.s-NH{--m:url(/_blob/f32aa0c65e959e9336129660ebe1f0f5)}
+.s-NC{--m:url(/_blob/f57f5aca62e663ce2a61b96c79039011)}
+.s-OH{--m:url(/_blob/655561b57b4d7f83885092cd9602941d)}
+.s-VA{--m:url(/_blob/edd291f97a4b9dcf1cb54005db25b79b)}
+.s-NY{--m:url(/_blob/9f1d94c76e661935ebb5182369b414bf)}
+.s-DE{--m:url(/_blob/d71613cf8f128140ab5b526aa892a46e)}
+/* motion (shared system, see motion_inject.py). Reveal once, fast, no bounce. */
+:root{--mo-e:cubic-bezier(.16,1,.3,1)}
+[data-mo] :is(h1,h2,.h1,.h2,.h3,.display,.tv_t,.pg_h,blockquote):not([data-mo-in]):not(:is(.b_top,.mn,.pp,.mpp,.map,.lx_list,.closer_tags,.demo_bar,.crumb) *){clip-path:inset(-.25em -.25em 100% -.25em);transform:translateY(.28em)}
+[data-mo] :is(.eyebrow,.pill,.lede,.body,.sub,.addr,.marks,.hero_ctas,.hero_cta,.stat,.chiprow,.field,.qual,.role,.ms li,.lead,.v_col,.v_cta,.foot_links,.foot_meta,figcaption,.closer_media>.btn,.cta_cr,.lock):not([data-mo-in]):not(:is(.b_top,.mn,.pp,.mpp,.map,.lx_list,.closer_tags,.demo_bar,.crumb) *){opacity:0;transform:translateY(12px)}
+[data-mo] :is(.img,.founder_img,.film,.card_img,figure>img):not([data-mo-in]):not(:is(.b_top,.mn,.pp,.mpp,.map,.lx_list,.closer_tags,.demo_bar,.crumb) *){opacity:0;clip-path:inset(4% 3% 4% 3%)}
+[data-mo] :is(.img,.founder_img,.film,.card_img):not([data-mo-in]):not(:is(.b_top,.mn,.pp,.mpp,.map,.lx_list,.closer_tags,.demo_bar,.crumb) *) img{transform:scale(1.06)}
+[data-mo] .rule:not([data-mo-in]):not(:is(.b_top,.mn,.pp,.mpp,.map,.demo_bar) *){transform:scaleX(0);transform-origin:0 50%}
+[data-mo-in="1"]{transition:opacity .45s var(--mo-e) var(--mo-d,0ms),transform .6s var(--mo-e) var(--mo-d,0ms),clip-path .65s var(--mo-e) var(--mo-d,0ms)!important;transform-origin:0 50%}
+[data-mo-in="1"]:is(h1,h2,.h1,.h2,.h3,.display,.tv_t,.pg_h,blockquote){clip-path:inset(-.25em -.25em -.25em -.25em)}
+[data-mo-in="1"]:is(.img,.founder_img,.film,.card_img,figure>img){clip-path:inset(0 0 0 0)}
+[data-mo-in="1"] img{transition:transform .9s var(--mo-e) var(--mo-d,0ms)}
+/* closer background waits until it is on screen */
+[data-mo] .closer_media:not([data-mo-in]) .cta_bg{animation-play-state:paused}
+/* touch: quick press feedback, slow image settle on linked media */
+.btn,.tv_play{transition:background .2s,color .2s,transform .15s var(--mo-e)}
+.btn:active,.tv_play:active{transform:scale(.97)}
+a .img img,a .card_img img,a.card img{transition:transform .7s var(--mo-e)}
+a:hover .img img,a:hover .card_img img{transform:scale(1.025)}
+@media (prefers-reduced-motion:reduce){[data-mo] *{clip-path:none!important}}
+/* /motion */
 </style>
 </helmet>
 
-<div id="top">
+<div ref="{{ moRoot }}" id="top">
 <header class="b_top">
 <div class="wrap"><nav class="nav" aria-label="Primary">
 <button class="nav_menu" aria-label="Open menu" aria-expanded="{{ mnExp }}" aria-controls="site-menu" onClick="{{ mnOpen }}"><span></span><span></span></button>
@@ -357,7 +420,7 @@ button{font:inherit;color:inherit}
 
 <!-- ============ HERO (from XD) ============ -->
 <section class="fhero" style="min-height: {{ heroH }}" aria-label="{{ f.name }}">
-<div class="fhero_img"><span class="ph">Founder portrait<br>Environmental, in her clinic<br>Upload full-res; 300px headshot on file</span></div>
+<div class="fhero_img"><sc-if value="{{ f.portrait }}" hint-placeholder-val="{{ true }}"><img class="fhero_pic" src="{{ f.portrait }}" alt="{{ f.name }}"></sc-if></div>
 <div class="fhero_txt">
 <div class="fhero_main">
 <span class="pill ink">{{ b.ptr }}</span>
@@ -365,9 +428,8 @@ button{font:inherit;color:inherit}
 <p class="fcred">{{ f.cred }}</p>
 <p class="fmeta">Founder, {{ b.name }}<br>{{ f.markets }} · Practicing since {{ f.since }}</p>
 <div class="marks" style="margin-top: clamp(22px, 2.2vw, 34px)">
-<span class="amark" role="img" aria-label="Alpha partner"></span>
-<span class="logo_slot ink">Brand mark</span>
-<span class="states" style="margin-left: 10px"><sc-for list="{{ b.states }}" as="s" hint-placeholder-count="2"><i class="state">{{ s }}</i></sc-for></span>
+<span class="pair" role="group" aria-label="Alpha partner {{ b.name }}"><span class="amark" aria-hidden="true"></span><i aria-hidden="true"></i><span class="bmark b-016" aria-hidden="true"></span></span>
+<span class="states" style="margin-left: 10px"><sc-for list="{{ b.states }}" as="s" hint-placeholder-count="2"><i class="state s-{{ s }}" title="{{ s }}">{{ s }}</i></sc-for></span>
 </div>
 </div>
 <div class="fhero_ctas"><a class="btn" href="{{ b.book }}" target="_blank" rel="noopener">Book at&nbsp; {{ b.short }}<span class="ext" aria-hidden="true">↗</span></a><a class="btn" href="#talk">Partner with Alpha</a></div>
@@ -380,8 +442,8 @@ button{font:inherit;color:inherit}
 <div class="state_grid">
 <p class="eyebrow">01 / Who she is</p>
 <div>
-<h2 class="lead">She learned restraint in the ICU. Then she built a practice on it.</h2>
-<div class="body cols"><p>Michelle Paty came to aesthetics from critical care, where precision is the job and nothing is done for show. She trained as a pediatric acute care nurse practitioner, then a family nurse practitioner, and brought that same discipline into the treatment room.</p><p>The result is Preva: two practices, two states, and a reputation built on work patients never have to explain. Her providers learn it from her directly. Her patients come back for it.</p></div>
+<h2 class="lead">She was trained for four days. Her injectors train for months.</h2>
+<div class="body cols"><p>Michelle Paty was a nurse and nurse practitioner in the cardiac ICU before she moved into aesthetics in 2019. Her first job trained her for four days, then put her on cheek and jawline filler with no mentor in the state. She learned by doing, and by seeking out injectors she respected.</p><p>On January 1, 2022 she opened Skin Den in a 100 square foot room in Denver, hiring for energy as much as skill. That May it became Preva, for preventative aesthetics. Today her injectors train for at least two to three months before their first basic treatment, and every opening draws more than 300 applicants.</p></div>
 </div>
 </div>
 <div class="figs">
@@ -431,7 +493,7 @@ button{font:inherit;color:inherit}
 <p class="eyebrow" style="color: #9B978E">05 / Why she partnered</p>
 <div class="why_grid">
 <div class="film why_film"><span class="ph">PartnerCon interview / Vimeo, loads on play</span><button class="play" aria-label="Play Michelle Paty's interview"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1l10 6-10 6z" fill="#0E0E0D"></path></svg></button></div>
-<figure class="why_q"><blockquote>“[Her answer to: why Alpha? One or two lines, verbatim from the interview.]”</blockquote><figcaption class="mono">{{ f.name }} / PartnerCon 2025 / [timecode]</figcaption></figure>
+<figure class="why_q"><blockquote>“I felt like they had a firm direction. They had very high standards, and it matched ours.”</blockquote><figcaption class="mono">{{ f.name }} / Interview / 00:13:16</figcaption></figure>
 </div>
 <div class="ba">
 <div class="ba_col"><p class="ba_h mono">Before Alpha</p><ul><sc-for list="{{ before }}" as="x" hint-placeholder-count="4"><li>{{ x }}</li></sc-for></ul></div>
@@ -459,7 +521,7 @@ button{font:inherit;color:inherit}
 <p class="eyebrow">07 / Her practice</p>
 <div class="prac">
 <a class="prac_brand" href="#brand"><span class="mono" style="font-size: 10.5px">{{ b.ptr }}</span><span class="prac_name">{{ b.name }}</span><span class="mono" style="font-size: 10.5px; opacity: .75">{{ f.markets }} · Est {{ b.est }}</span><span class="prac_go mono">View brand →</span></a>
-<sc-for list="{{ b.locations }}" as="l" hint-placeholder-count="2"><a class="prac_loc" href="#location"><span class="prac_img ph" style="background: {{ l.tone }}">{{ l.city }} photo</span><b>{{ l.city }}, {{ l.st }}</b><span>{{ l.a1 }}</span><span class="prac_go mono">View location →</span></a></sc-for>
+<sc-for list="{{ b.locations }}" as="l" hint-placeholder-count="2"><a class="prac_loc" href="#location"><span class="prac_img ph" style="background: {{ l.tone }}"><sc-if value="{{ l.img }}" hint-placeholder-val="{{ false }}"><img src="{{ l.img }}" alt="" loading="lazy"></sc-if><sc-if value="{{ l.noImg }}" hint-placeholder-val="{{ true }}">{{ l.city }} photo</sc-if></span><b>{{ l.city }}, {{ l.st }}</b><span>{{ l.a1 }}</span><span class="prac_go mono">View location →</span></a></sc-for>
 </div>
 </div>
 </section>
@@ -469,9 +531,8 @@ button{font:inherit;color:inherit}
 <div class="closer_media">
 <img class="cta_bg is-stand" src="{{ cta.src }}" alt="" aria-hidden="true">
 <span class="ph cta_cr"><b>{{ cta.ptr }}</b> / {{ cta.name }}<br>{{ cta.city }}</span>
-<h2 class="closer_t">What's holding you back?</h2>
-<a class="btn" href="#talk" style="position: relative; z-index: 2">Let's talk</a>
 <div class="lock" aria-label="Alpha, Stronger Together"><span class="amark" style="height: 40px" aria-hidden="true"></span><span class="badge">ST</span><span class="lock_w">STRONGER<br>TOGETHER</span></div>
+<a class="btn" href="#talk" style="position: relative; z-index: 2">Let's talk</a>
 </div>
 <div class="closer_mark"><img src="/_blob/8c6e58a26569a1b0aff6a21dd2464ff0" alt="Alpha"></div>
 <div class="closer_tags"><span>Stronger together</span><span>Stronger together</span><span>Stronger together</span><span>Stronger together</span><span>Stronger together</span><span>Stronger together</span></div>
@@ -494,7 +555,7 @@ button{font:inherit;color:inherit}
 <p class="mn_k"><span>{{ mnLiveK }}</span><sc-if value="{{ mnPlaying }}" hint-placeholder-val="{{ false }}"><i>Live</i></sc-if></p>
 <div class="mn_ep"><span class="mn_art" style="background: #1D1B1A; color: #fff; border: 1px solid rgba(232,228,218,.14)">Dear<br>Tiffany</span><div><b>You don&#39;t have a spending problem</b><span>Dear Tiffany // EP 018</span></div></div>
 <div class="mn_pl"><button class="mn_pb" onClick="{{ mnToggle }}" aria-label="{{ mnPlayLabel }}"><sc-if value="{{ mnPlaying }}" hint-placeholder-val="{{ false }}"><svg width="9" height="11" viewBox="0 0 10 12" aria-hidden="true"><path d="M1 0h3v12H1zM6 0h3v12H6z" fill="currentColor"></path></svg></sc-if><sc-if value="{{ mnPaused }}" hint-placeholder-val="{{ true }}"><svg width="10" height="12" viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z" fill="currentColor"></path></svg></sc-if></button><div class="mn_tr"><i style="width: 33%"></i></div><span class="mn_t">17:12 / 52:00</span></div>
-<div class="mn_net"><div><b>16</b>Brands</div><div><b>36</b>Locations</div><div><b>8</b>States</div></div>
+<div class="mn_net"><div><b>15</b>Brands</div><div><b>36</b>Locations</div><div><b>12</b>States</div></div>
 </div>
 <div>
 <div class="mn_dep"><p class="mn_k"><span>Alpha team</span><span>SSO</span></p><ul><sc-for list="{{ mnDepts }}" as="d" hint-placeholder-count="7"><li><a href="#dept">{{ d }}</a></li></sc-for></ul></div>
@@ -516,16 +577,61 @@ class Component extends DCLogic {
   /* CMS: Founder item, with Brand + Locations by reference */
   data() {
     if (this._d) return this._d;
-    const b = { ptr: 'PTR 016', name: 'Preva Aesthetics', short: 'Preva', since: 'June 2025', est: '2016', book: 'https://prevaaesthetics.com', states: ['CA', 'CO'],
+    const b = { ptr: 'PTR 016', name: 'Preva Aesthetics', short: 'Preva', since: 'June 2025', est: '2022', book: 'https://www.bookpreva.com/', states: ['CA', 'CO'],
       locations: [
-        { city: 'Encinitas', st: 'CA', a1: '760 Garden View Ct, Ste 100', tone: 'linear-gradient(160deg,#8C7F6B,#4D463C)' },
-        { city: 'Denver', st: 'CO', a1: '4045 N Pecos St, Unit 100', tone: 'linear-gradient(160deg,#6F7276,#393B3E)' }
+        { city: 'Encinitas', st: 'CA', img: '/_blob/ee303de323f7205891247505038a8fc6', noImg: false, a1: '760 Garden View Ct, Ste 100', tone: 'linear-gradient(160deg,#8C7F6B,#4D463C)' },
+        { city: 'Denver', st: 'CO', noImg: true, a1: '4045 N Pecos St, Unit 100', tone: 'linear-gradient(160deg,#6F7276,#393B3E)' }
       ] };
-    const f = { name: 'Michelle Paty', first: 'Michelle', last: 'Paty', cred: 'MSN, CPNP-AC, FNP-C', since: '2018', markets: 'Encinitas & Denver' };
+    const f = { portrait: '/_blob/c2339cbcd90705608ac2668eb9893418', headshot: '/_blob/349cff5ef32ec7580bd1cbfc7dedcdac', name: 'Michelle Paty', first: 'Michelle', last: 'Paty', cred: 'MSN, CPNP-AC, FNP-C', since: '2019', markets: 'Encinitas & Denver' };
     return (this._d = { b, f });
   }
 
-  renderVals() { return Object.assign(this._rv(), this.mnVals(), this.ctaVals()); }
+  renderVals() { return Object.assign(this._rv(), this.mnVals(), this.ctaVals(), this.moVals()); }
+  moVals() {
+    return { moRoot: (el) => {
+      if (!el || el === this._moEl || typeof window === 'undefined') return;
+      if (this._moStop) this._moStop();
+      this._moEl = el;
+      this._moStop = (function () {
+        function moStart(root) {
+          if (!root || typeof IntersectionObserver === 'undefined') return null;
+          if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { root.removeAttribute('data-mo'); return null; }
+          var SEL = 'h1,h2,.h1,.h2,.h3,.display,.tv_t,.pg_h,blockquote,.eyebrow,.pill,.lede,.body,.sub,.addr,.marks,.hero_ctas,.hero_cta,.stat,.chiprow,.field,.qual,.role,.ms li,.lead,.v_col,.v_cta,.foot_links,.foot_meta,figcaption,.closer_media>.btn,.cta_cr,.img,.founder_img,.film,.card_img,figure>img,.rule,.lock';
+          var TRIG = '.closer_media';
+          var SKIP = '.b_top,.mn,.pp,.mpp,.map,.lx_list,.closer_tags,.demo_bar,.crumb';
+          root.setAttribute('data-mo', '');
+          var done = function (el) { el.setAttribute('data-mo-in', '2'); el.style.removeProperty('--mo-d'); };
+          var io = new IntersectionObserver(function (es) {
+            var vis = es.filter(function (e) { return e.isIntersecting; }).map(function (e) { return e.target; });
+            vis.sort(function (a, b) { return a.compareDocumentPosition(b) & 4 ? -1 : 1; });
+            vis.forEach(function (el, i) {
+              io.unobserve(el);
+              el.style.setProperty('--mo-d', Math.min(i, 6) * 55 + 'ms');
+              el.setAttribute('data-mo-in', '1');
+              setTimeout(function () { done(el); }, 1100 + Math.min(i, 6) * 55);
+            });
+          }, { rootMargin: '0px 0px -6% 0px', threshold: 0 });
+          var add = function (n) {
+            if (n.nodeType !== 1) return;
+            var ALL = SEL + ',' + TRIG;
+            var list = n.matches(ALL) ? [n] : [];
+            n.querySelectorAll(ALL).forEach(function (x) { list.push(x); });
+            list.forEach(function (x) {
+              if (x.hasAttribute('data-mo-in') || x.closest(SKIP)) return;
+              var up = x.parentElement && x.parentElement.closest(SEL);
+              if (up && up !== root && root.contains(up)) { x.setAttribute('data-mo-in', '2'); return; }
+              io.observe(x);
+            });
+          };
+          add(root);
+          var mo = new MutationObserver(function (ms) { ms.forEach(function (m) { m.addedNodes.forEach(add); }); });
+          mo.observe(root, { childList: true, subtree: true });
+          return function () { io.disconnect(); mo.disconnect(); };
+        }
+        return moStart;
+      })()(el);
+    } };
+  }
   ctaVals() {
     if (!this._cta) {
       const L = [['011', 'InBloom', 'Londonderry, NH', '4d98d100087709e99a2681f05a716a09'], ['012', 'Flawless', 'Albuquerque, NM', '117fafec37d91a9f4b567818a404cc24'], ['013', 'Mint + Needle', 'Middletown, DE', '6f9f59949585d33d629e1880f88442e4'], ['014', 'Privé Med Spa', 'Lexington, KY', '42e63922522a3aeb100987e90907ea6d'], ['015', 'LexRx', 'Boston, MA', '572e07793bb191e6cb70ac4b8f17dd11'], ['016', 'Preva Aesthetics', 'Encinitas, CA', '0e6c422690914b59a6eff7dc7db00550']];
@@ -537,7 +643,7 @@ class Component extends DCLogic {
   mnVals() {
     const s = this.state || {}, set = (o) => this.setState(o), open = !!s.mnO;
     if (!this._mnK && typeof document !== 'undefined') { this._mnK = (e) => { if (e.key === 'Escape' && (this.state || {}).mnO) this.setState({ mnO: false }); }; document.addEventListener('keydown', this._mnK); }
-    const items = [['PARTNERS', '#brands', '/brands', '16 brands, in join order'], ['MAP', '#locations', '/locations', '36 locations across 8 states'], ['PATHWAY', '#how', '/how-it-works', 'From first call to fully integrated'], ['PODCASTS', '#podcasts', '/podcasts', '8 shows, one network'], ['ABOUT', '#about', '/about', 'Built by operators'], ['NEWS', '#newswire', '/newswire', 'Latest: Preva joins the network']];
+    const items = [['PARTNERS', '#brands', '/brands', '15 brands, in join order'], ['MAP', '#locations', '/locations', '36 locations across 12 states'], ['PATHWAY', '#how', '/how-it-works', 'From first call to fully integrated'], ['PODCASTS', '#podcasts', '/podcasts', '8 shows, one network'], ['ABOUT', '#about', '/about', 'Built by operators'], ['NEWS', '#newswire', '/newswire', 'Latest: Preva joins the network']];
     return {
       mnCls: 'mn' + (open ? ' is-on' : ''), mnExp: open ? 'true' : 'false',
       mnOpen: () => set({ mnO: true }), mnClose: () => set({ mnO: false }),
@@ -549,12 +655,11 @@ class Component extends DCLogic {
   _rv() {
     const { b, f } = this.data(), on = !!(this.state || {}).pathOn || this.rm;
     const path = [
-      { y: '[Year]', t: 'ICU nurse', d: 'Critical care. Where precision is the job and nothing is done for show.' },
-      { y: '[Year]', t: 'MSN, CPNP-AC', d: 'Pediatric acute care nurse practitioner.' },
-      { y: '[Year]', t: 'FNP-C', d: 'Family nurse practitioner. The license that opened aesthetics.' },
-      { y: b.est, t: 'Preva Aesthetics', d: 'Founded on prevention before correction.' },
-      { y: '2020', t: 'Encinitas', d: 'First location. Six rooms on Garden View Court.' },
-      { y: '[Year]', t: 'Denver', d: 'Second market, second state, same standard.' },
+      { y: '[Year]', t: 'Cardiac ICU', d: 'Nurse, then nurse practitioner.' },
+      { y: '2019', t: 'Aesthetics', d: 'Four days of training at a chain med spa. No mentor in the state.' },
+      { y: '2022', t: 'Skin Den', d: 'Opens January 1 in a 100 square foot room in Denver.' },
+      { y: '2022', t: 'Preva', d: 'Renamed in May for preventative aesthetics. A name that could travel.' },
+      { y: '[Year]', t: 'Encinitas', d: 'Second location, second state.' },
       { y: '2025', t: 'Partner 016', d: 'Joins Alpha in June. Keeps the brand, hands off the rest.', alpha: true }
     ];
     return {
@@ -569,9 +674,9 @@ class Component extends DCLogic {
       tlCls: 'tl' + (on ? ' is-on' : ''),
       path: path.map((p, i) => ({ y: p.y, t: p.t, d: p.d, cls: 'step' + (p.alpha ? ' alpha' : (i === path.length - 2 ? ' now' : '')), delay: 200 + i * 140 })),
       rules: [
-        { n: '01', t: 'Prevention before correction.', d: 'Treat early and lightly, so nothing ever needs to be undone.' },
-        { n: '02', t: 'Restraint before volume.', d: 'The plan is built around the patient, not the syringe count.' },
-        { n: '03', t: 'Like themselves, just earlier.', d: 'The best work is the work nobody can point to.' }
+        { n: '01', t: 'Train longer than the industry does.', d: '“This industry is really an art, and there\'s a lot to it.”' },
+        { n: '02', t: 'One standard, everywhere.', d: '“If you have a high standard, you\'re gonna have a high standard across the board.”' },
+        { n: '03', t: 'Hire for energy.', d: '“I think the people were the biggest thing. So it was about who I was hiring.”' }
       ],
       record: [
         { y: 'Active', k: 'Credentials', t: 'MSN, CPNP-AC, FNP-C', o: '[Certifying boards]' },
@@ -581,8 +686,8 @@ class Component extends DCLogic {
         { y: '[Year]', k: 'Award', t: '[Award]', o: '[Organization]' },
         { y: '2025', k: 'Network', t: 'Partner 016, Alpha Aesthetics Partners', o: 'Alpha' }
       ],
-      before: ['Payroll and HR after the last patient left', 'Two of every vendor contract, negotiated alone', 'Hiring for two markets from one inbox', 'Marketing that only moved when she did'],
-      after: ['[Days a week back in the treatment room]', 'Operations, finance and people handled by the Alpha team', 'Buying power across sixteen brands', 'Her providers trained through Practice'],
+      before: ['Growth capped at what one founder could carry', 'New cities asking every day, no capacity to say yes', 'A small team carrying the admin and back end'],
+      after: ['Administrative and back-end support from the Alpha team', 'Systems that help the practice run smoother', 'Room to add locations and services, and train providers faster', 'Everyone stays in their zone of genius'],
       peers: [
         { name: 'Amanda Holden, MD', cred: 'Founder', brand: 'Holden Timeless Beauty', city: 'San Diego' },
         { name: 'Heather Badal', cred: 'Founder', brand: 'Flawless', city: 'Albuquerque', img: '/_blob/b01ba67d9cc798eec47b72024735b1ee' },

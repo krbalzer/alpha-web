@@ -11,7 +11,7 @@ ATTR_MAP = {'class': 'className', 'for': 'htmlFor', 'tabindex': 'tabIndex', 'str
             'stroke-linecap': 'strokeLinecap', 'stroke-linejoin': 'strokeLinejoin', 'fill-rule': 'fillRule',
             'clip-rule': 'clipRule', 'viewbox': 'viewBox', 'autoplay': 'autoPlay', 'playsinline': 'playsInline',
             'srcset': 'srcSet', 'crossorigin': 'crossOrigin', 'maxlength': 'maxLength', 'readonly': 'readOnly',
-            'colspan': 'colSpan', 'rowspan': 'rowSpan', 'xlink:href': 'xlinkHref', 'stroke-dasharray': 'strokeDasharray',
+            'colspan': 'colSpan', 'autocomplete': 'autoComplete', 'inputmode': 'inputMode', 'enterkeyhint': 'enterKeyHint', 'autofocus': 'autoFocus', 'novalidate': 'noValidate', 'frameborder': 'frameBorder', 'allowfullscreen': 'allowFullScreen', 'fetchpriority': 'fetchPriority', 'referrerpolicy': 'referrerPolicy', 'datetime': 'dateTime', 'rowspan': 'rowSpan', 'xlink:href': 'xlinkHref', 'stroke-dasharray': 'strokeDasharray',
             'stop-color': 'stopColor', 'stop-opacity': 'stopOpacity', 'font-size': 'fontSize', 'text-anchor': 'textAnchor',
             'onclick': 'onClick', 'oninput': 'onInput', 'onchange': 'onChange', 'onsubmit': 'onSubmit',
             'onmouseenter': 'onMouseEnter', 'onmouseleave': 'onMouseLeave', 'onkeydown': 'onKeyDown',
@@ -52,7 +52,7 @@ def style_obj(s, scope):
             out.append(json.dumps(key) + ': `' + tpl + '`')
         else:
             out.append(json.dumps(key) + ': ' + json.dumps(html.unescape(val)))
-    return '{' + ', '.join(out) + '}'
+    return '{' + ', '.join(out) + '} as React.CSSProperties'
 
 
 TAG = re.compile(r'<!--.*?-->|</?[a-zA-Z][\w:-]*(?:\s+[^<>]*?)?/?>', re.S)
@@ -115,6 +115,9 @@ def convert(markup):
             if raw == '':
                 attrs.append(key)
                 continue
+            if key == 'tabIndex' and re.fullmatch(r'-?\d+', val or ''):
+                attrs.append(key + '={' + val + '}')
+                continue
             attrs.append(key + '=' + attr_value(key, val or '', scope))
         selfclose = orig in VOID or tag.endswith('/>')
         out.append('<' + name + (' ' + ' '.join(attrs) if attrs else '') + (' />' if selfclose else '>'))
@@ -172,9 +175,10 @@ def parse(path):
 
 
 def strip_injected(js):
+    js = js.replace(', this.moVals())', ')')
     js = js.replace('renderVals() { return Object.assign(this._rv(), this.mnVals(), this.ctaVals()); }', '')
     js = js.replace('renderVals() { return Object.assign(this._rv(), this.mnVals()); }', '')
-    for fn in ('ctaVals', 'mnVals'):
+    for fn in ('ctaVals', 'mnVals', 'moVals'):
         m = re.search(r'\n  ' + fn + r'\(\) \{', js)
         if m:
             k, depth = js.index('{', m.start()) + 1, 1

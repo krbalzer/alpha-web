@@ -617,7 +617,7 @@ button{font:inherit;color:inherit}
 <p class="mn_k"><span>{{ liveK }}</span><sc-if value="{{ playing }}" hint-placeholder-val="{{ false }}"><i>Live</i></sc-if></p>
 <div class="mn_ep"><span class="mn_art" style="background: #1D1B1A; color: #fff; border: 1px solid rgba(232,228,218,.14)">Dear<br>Tiffany</span><div><b>{{ ep.title }}</b><span>Dear Tiffany // EP {{ ep.n }}</span></div></div>
 <div class="mn_pl"><button class="mn_pb" onClick="{{ toggle }}" aria-label="{{ playLabel }}"><sc-if value="{{ playing }}" hint-placeholder-val="{{ false }}"><svg width="9" height="11" viewBox="0 0 10 12" aria-hidden="true"><path d="M1 0h3v12H1zM6 0h3v12H6z" fill="currentColor"></path></svg></sc-if><sc-if value="{{ paused }}" hint-placeholder-val="{{ true }}"><svg width="10" height="12" viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z" fill="currentColor"></path></svg></sc-if></button><div class="mn_tr"><i style="width: {{ pct }}%"></i></div><span class="mn_t">{{ tNow }}</span></div>
-<div class="mn_net"><div><b>16</b>Brands</div><div><b>36</b>Locations</div><div><b>8</b>States</div></div>
+<div class="mn_net"><div><b>15</b>Brands</div><div><b>36</b>Locations</div><div><b>12</b>States</div></div>
 </div>
 <div>
 <div class="mn_dep"><p class="mn_k"><span>Alpha team</span><span>SSO</span></p><ul><sc-for list="{{ depts }}" as="d" hint-placeholder-count="7"><li><a href="#dept">{{ d }}</a></li></sc-for></ul></div>
@@ -693,8 +693,8 @@ class Component extends DCLogic {
   renderVals() {
     const s = this.st(), set = (o) => this.setState(o), open = !!s.open, live = s.live !== false;
     const items = [
-      ['PARTNERS', '#brands', '/brands', '16 brands, in join order'],
-      ['MAP', '#locations', '/locations', '36 locations across 8 states'],
+      ['PARTNERS', '#brands', '/brands', '15 brands, in join order'],
+      ['MAP', '#locations', '/locations', '36 locations across 12 states'],
       ['PATHWAY', '#how', '/how-it-works', 'From first call to fully integrated'],
       ['PODCASTS', '#podcasts', '/podcasts', '8 shows, one network'],
       ['ABOUT', '#about', '/about', 'Built by operators'],

@@ -20,6 +20,8 @@ export default async function BrandPage({ params }: { params: Promise<{ slug: st
   if (!brand) notFound()
   return (
     <>
+      {/* The poster is the first thing anyone sees: fetch it ahead of the video and everything else. React hoists this into <head>. */}
+      {brand.heroPoster ? <link rel="preload" as="image" href={brand.heroPoster} fetchPriority="high" /> : null}
       <BrandView brand={brand} />
       <Closer skipBrand={brand.slug} />
     </>

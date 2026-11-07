@@ -1,0 +1,307 @@
+{
+  "v": 3,
+  "attachments": {},
+  "boards": {
+    "About.dc.html": {
+      "expand": "fill",
+      "h": 6200,
+      "is_interactive": true,
+      "title": "About (static)",
+      "w": 1440,
+      "x": 0,
+      "y": 9400
+    },
+    "Article.dc.html": {
+      "expand": "fill",
+      "h": 3800,
+      "is_interactive": true,
+      "title": "Newswire article template",
+      "w": 1440,
+      "x": 6080,
+      "y": 9400
+    },
+    "Brand.dc.html": {
+      "expand": "fill",
+      "h": 7400,
+      "is_interactive": true,
+      "title": "Brand template / Preva (interactive)",
+      "w": 1440,
+      "x": 2880,
+      "y": 0
+    },
+    "Dept.dc.html": {
+      "expand": "fill",
+      "h": 8000,
+      "is_interactive": true,
+      "title": "Department template / Marketing (interactive)",
+      "w": 1440,
+      "x": 8960,
+      "y": 0
+    },
+    "Episode.dc.html": {
+      "expand": "fill",
+      "h": 7200,
+      "is_interactive": true,
+      "title": "Episode template / Dear Tiffany 018 (interactive)",
+      "w": 1440,
+      "x": 7440,
+      "y": 0
+    },
+    "Founder.dc.html": {
+      "expand": "fill",
+      "h": 8000,
+      "is_interactive": true,
+      "title": "Founder template / Michelle Paty (interactive)",
+      "w": 1440,
+      "x": 5920,
+      "y": 0
+    },
+    "Landing.dc.html": {
+      "expand": "fill",
+      "h": 2800,
+      "is_interactive": true,
+      "title": "Campaign landing template",
+      "w": 1440,
+      "x": 12160,
+      "y": 9400
+    },
+    "Legal.dc.html": {
+      "expand": "fill",
+      "h": 2400,
+      "is_interactive": true,
+      "title": "Legal template (privacy/terms/a11y)",
+      "w": 1440,
+      "x": 13680,
+      "y": 9400
+    },
+    "Location.dc.html": {
+      "expand": "fill",
+      "h": 7600,
+      "is_interactive": true,
+      "title": "Location template / Preva Encinitas (interactive)",
+      "w": 1440,
+      "x": 4400,
+      "y": 0
+    },
+    "Locations.dc.html": {
+      "expand": "fill",
+      "h": 6400,
+      "is_interactive": true,
+      "title": "Locations directory / portfolio map (interactive)",
+      "w": 1440,
+      "x": 13520,
+      "y": 0
+    },
+    "Main.dc.html": {
+      "expand": "fill",
+      "h": 8000,
+      "is_interactive": true,
+      "title": "Home / Desktop (interactive)",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "Menu.dc.html": {
+      "expand": "fill",
+      "h": 3300,
+      "is_interactive": true,
+      "title": "Site-wide / Menu (interactive)",
+      "w": 1440,
+      "x": 1520,
+      "y": 16400
+    },
+    "Newswire.dc.html": {
+      "expand": "fill",
+      "h": 4200,
+      "is_interactive": true,
+      "title": "Newswire index (static)",
+      "w": 1440,
+      "x": 4560,
+      "y": 9400
+    },
+    "NotFound.dc.html": {
+      "expand": "fill",
+      "h": 1400,
+      "is_interactive": true,
+      "title": "404",
+      "w": 1440,
+      "x": 15200,
+      "y": 9400
+    },
+    "Player.dc.html": {
+      "expand": "fill",
+      "h": 2600,
+      "is_interactive": true,
+      "title": "Site-wide / Persistent podcast player (interactive)",
+      "w": 1440,
+      "x": 0,
+      "y": 16400
+    },
+    "Podcasts.dc.html": {
+      "expand": "fill",
+      "h": 5200,
+      "is_interactive": true,
+      "title": "Podcasts index / episode database (interactive)",
+      "w": 1440,
+      "x": 12000,
+      "y": 0
+    },
+    "Portal.dc.html": {
+      "expand": "fill",
+      "h": 2400,
+      "is_interactive": true,
+      "title": "Partner portal / post-NDA lead dashboard (interactive)",
+      "w": 1440,
+      "x": 3040,
+      "y": 16400
+    },
+    "PortalAdmin.dc.html": {
+      "expand": "fill",
+      "h": 2000,
+      "is_interactive": true,
+      "title": "Partner portal / admin view for New Partnerships (interactive)",
+      "w": 1440,
+      "x": 4560,
+      "y": 16400
+    },
+    "Profile.dc.html": {
+      "expand": "fill",
+      "h": 8000,
+      "is_interactive": true,
+      "title": "Team member template / Marketing slider (interactive)",
+      "w": 1440,
+      "x": 10480,
+      "y": 0
+    },
+    "Resources.dc.html": {
+      "expand": "fill",
+      "h": 3600,
+      "is_interactive": true,
+      "title": "Free resources (static, gated)",
+      "w": 1440,
+      "x": 10640,
+      "y": 9400
+    },
+    "ReviewBrand.dc.html": {
+      "expand": "fill",
+      "h": 7400,
+      "is_interactive": true,
+      "title": "REVIEW / Brand pages, live content (comment here)",
+      "w": 1440,
+      "x": 2880,
+      "y": 20400
+    },
+    "Show.dc.html": {
+      "expand": "fill",
+      "h": 4600,
+      "is_interactive": true,
+      "title": "Podcast show template",
+      "w": 1440,
+      "x": 7600,
+      "y": 9400
+    },
+    "Speaker.dc.html": {
+      "expand": "fill",
+      "h": 3400,
+      "is_interactive": true,
+      "title": "Podcast speaker template",
+      "w": 1440,
+      "x": 9120,
+      "y": 9400
+    },
+    "System.dc.html": {
+      "h": 1760,
+      "title": "Design system",
+      "w": 1280,
+      "x": 1520,
+      "y": 0
+    },
+    "Talk.dc.html": {
+      "expand": "fill",
+      "h": 2600,
+      "is_interactive": true,
+      "title": "Let's talk + thank you (static)",
+      "w": 1440,
+      "x": 3040,
+      "y": 9400
+    },
+    "Team.dc.html": {
+      "expand": "fill",
+      "h": 4400,
+      "is_interactive": true,
+      "title": "Team index (static)",
+      "w": 1440,
+      "x": 1520,
+      "y": 9400
+    },
+    "LocationNantucket.dc.html": {
+      "expand": "fill",
+      "h": 6400,
+      "is_interactive": true,
+      "title": "Location template / LexRx Nantucket, no media (interactive)",
+      "w": 1440,
+      "x": 15040,
+      "y": 0
+    },
+    "LocationBair.dc.html": {
+      "expand": "fill",
+      "h": 7200,
+      "is_interactive": true,
+      "title": "Location template / Flawless, formerly Bair Medical Spa: tuck-in (interactive)",
+      "w": 1440,
+      "x": 16560,
+      "y": 0
+    },
+    "Pathway.dc.html": {
+      "expand": "fill",
+      "h": 5400,
+      "is_interactive": true,
+      "title": "How it works / two paths: partner or join a partner (interactive)",
+      "w": 1440,
+      "x": 16720,
+      "y": 9400
+    }
+  },
+  "createdOnFiles": {
+    "at": "2026-11-02T16:05:00Z",
+    "v": 1
+  },
+  "designSystems": [],
+  "launch": {
+    "view": "canvas"
+  },
+  "notes": {},
+  "order": [
+    "Main.dc.html",
+    "Brand.dc.html",
+    "ReviewBrand.dc.html",
+    "Location.dc.html",
+    "LocationNantucket.dc.html",
+    "LocationBair.dc.html",
+    "Founder.dc.html",
+    "Episode.dc.html",
+    "Dept.dc.html",
+    "Profile.dc.html",
+    "Podcasts.dc.html",
+    "Locations.dc.html",
+    "About.dc.html",
+    "Team.dc.html",
+    "Pathway.dc.html",
+    "Talk.dc.html",
+    "Newswire.dc.html",
+    "Article.dc.html",
+    "Show.dc.html",
+    "Speaker.dc.html",
+    "Resources.dc.html",
+    "Landing.dc.html",
+    "Legal.dc.html",
+    "NotFound.dc.html",
+    "Portal.dc.html",
+    "PortalAdmin.dc.html",
+    "Player.dc.html",
+    "Menu.dc.html",
+    "System.dc.html"
+  ],
+  "pages": [],
+  "title": "Alpha Site Redesign"
+}

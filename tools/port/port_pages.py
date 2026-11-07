@@ -1,0 +1,805 @@
+"""Port design boards (design/boards/*.dc.html) into Next routes.
+
+    python3 tools/port/port_pages.py            # every page in PAGES
+    python3 tools/port/port_pages.py About Team  # just these
+
+Each page becomes <dir>/<Name>View.tsx (client, markup from the board), engine.ts (the board's logic class)
+and page.css (board CSS scoped under .pg-<slug>). Site chrome is stripped and replaced by the real thing:
+nav -> <Nav>, menu/footer/player -> layout, CTA closer -> <Closer> in page.tsx.
+Data: a board's data() method is swapped for `return this.props.data` when the page config says so, and the
+page.tsx passes the same shape from src/lib/pages.ts. Edit the board or this file, not the generated files.
+Brand is ported by port_brand.py.
+"""
+import json, os, re, sys
+
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
+sys.path.insert(0, os.path.dirname(__file__))
+from dc2jsx import convert, scope_css, strip_injected  # noqa: E402
+
+APP = ROOT + '/src/app/(frontend)/'
+ASSETS = json.load(open(os.path.join(os.path.dirname(__file__), 'assets.json')))
+
+# board anchors -> routes
+HREF = {
+    '#home': '/', '#top': '#top', '#talk': '/talk', '#about': '/about', '#how': '/how-it-works', '#pathway': '/how-it-works',
+    '#network': '/locations', '#locations': '/locations', '#map': '/locations', '#brands': '/locations#brands', '#founders': '/locations#founders',
+    '#team': '/team', '#podcasts': '/podcasts', '#newswire': '/newswire', '#news': '/newswire', '#resources': '/resources',
+    '#privacy': '/legal/privacy', '#terms': '/legal/terms', '#a11y': '/legal/accessibility', '#join': '/how-it-works#join',
+    '#ig': 'https://www.instagram.com/', '#li': 'https://www.linkedin.com/',
+    # template links that data wiring replaces with real slugs; until then they land on the index
+    '#dept': '/team', '#profile': '/team', '#show': '/podcasts', '#episode': '/podcasts', '#speaker': '/podcasts',
+    '#brand': '/locations#brands', '#founder': '/locations#founders', '#location': '/locations', '#article': '/newswire',
+    '#portal': '/talk', '#qualify': '/talk', '#apply': '/talk', '#contact': '/talk',
+}
+
+def sub(pat, rep, s, flags=re.S):
+    r, k = re.subn(pat, rep, s, flags=flags)
+    assert k >= 1, 'no match: ' + pat[:80]
+    return r
+
+
+def gate(b, marker, cond):
+    """Wrap the section that starts at the board comment containing `marker` (up to the next section comment) in sc-if."""
+    m = re.search(r'<!-- =+ [^>]*' + re.escape(marker) + r'[^>]*-->', b)
+    assert m, 'no section ' + marker
+    n = re.search(r'<!-- =+ ', b[m.end():])
+    end = m.end() + n.start() if n else len(b)
+    return b[:m.end()] + '<sc-if value="{{ ' + cond + ' }}">' + b[m.end():end] + '</sc-if>\n' + b[end:]
+
+
+def rep(s, old, new):
+    assert old in s, 'missing: ' + old[:80]
+    return s.replace(old, new)
+
+
+# ---------- per-page patches (markup runs on board markup before JSX conversion; engine on the logic class) ----------
+def legal_markup(b):
+    b = rep(b, 'Last updated [date]. One template serves Privacy, Terms and Accessibility.', 'Last updated {{ updated }}.')
+    b = rep(b, '<button class="{{ t.cls }}" onClick="{{ t.go }}">{{ t.t }}</button>', '<a class="{{ t.cls }}" href="{{ t.href }}">{{ t.t }}</a>')
+    b = rep(b, '<button class="{{ s.cls }}" onClick="{{ s.go }}">{{ s.n }} {{ s.t }}</button>', '<a class="{{ s.cls }}" href="{{ s.href }}">{{ s.n }} {{ s.t }}</a>')
+    b = rep(b, '<h2>{{ s.n }} {{ s.t }}</h2><p>[Legal copy for this section, pasted from counsel. Rich text field in the CMS.]</p>',
+            '<h2 id="{{ s.id }}">{{ s.n }} {{ s.t }}</h2><x-rich class="lg_sec" html="{{ s.html }}"></x-rich>')
+    return b
+
+
+def legal_engine(e):
+    i, j = e.index('  renderVals() {'), e.rindex('}')
+    return e[:i] + '''  renderVals() {
+    const d = this.props.doc, docs = this.props.docs || [];
+    return {
+      doc: { t: d.title }, updated: d.updated,
+      tabs: docs.map((x) => ({ t: x.title, href: '/legal/' + x.slug, cls: 'chipb' + (x.slug === d.slug ? ' is-on' : '') })),
+      toc: d.sections.map((s, i) => ({ n: String(i + 1).padStart(2, '0'), t: s.t, id: 's' + (i + 1), href: '#s' + (i + 1), html: s.html, cls: '' }))
+    };
+  }
+''' + e[j:]
+
+
+def talk_markup(b):
+    b = rep(b, '<div class="form_nav"><span></span><button class="btn btn-fill">Send</button></div>',
+            '<div class="form_nav"><span class="form_hint" style="margin: 0">{{ otherNote }}</span><button class="btn btn-fill" onClick="{{ sendOther }}" disabled="{{ otherBusy }}">{{ otherLabel }}</button></div>')
+    return qualifier_markup(b)
+
+
+SEND = """  send(kind, answers, ids, done) {
+    const v = {}; ids.forEach((id) => { const el = document.getElementById(id); v[id] = el ? el.value.trim() : ''; });
+    const email = v['f-email'] || v['o-e'];
+    if (!email || !/.+@.+\\..+/.test(email)) { this.setState({ err: 'Add an email so we can reply.' }); return; }
+    this.setState({ busy: true, err: '' });
+    fetch('/talk/submit', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ kind, answers, fields: v, page: location.pathname }) })
+      .then((r) => { if (!r.ok) throw new Error(); this.setState({ busy: false }); done(); })
+      .catch(() => this.setState({ busy: false, err: 'That did not send. Please try again.' }));
+  }
+"""
+
+
+def qualifier_engine(e):
+    """The five-question qualifier (Talk, Dept, Home): the contact step posts to the Leads collection."""
+    e = sub(r"qNext: \(\) => \{ if \(answered\) set\(\{ q: qs \+ 1 \}\); \},",
+            "qNext: () => { if (!answered) return; if (isContact) return this.send('partner', ans, ['f-name', 'f-practice', 'f-email', 'f-phone'], () => set({ q: qs + 1 })); set({ q: qs + 1 }); },", e)
+    e = sub(r"nextDisabled: !answered,", "nextDisabled: !answered || !!s.busy,", e)
+    e = sub(r"nextLabel: isContact \? 'Submit' : 'Next',", "nextLabel: isContact ? (s.busy ? 'Sending…' : 'Submit') : 'Next', contactHint: s.err || 'A real person replies within [one business day].',", e)
+    return e.replace('  renderVals() {', SEND + '  renderVals() {', 1) if 'send(kind' not in e else e
+
+
+def qualifier_markup(b):
+    return b.replace('<p class="form_hint">A real person replies within [one business day].</p>', '<p class="form_hint">{{ contactHint }}</p>')
+
+
+def talk_engine(e):
+    e = qualifier_engine(e)
+    e = rep(e, "isOwn: path === 'own', isOther: path === 'other',",
+            "isOwn: path === 'own', isOther: path === 'other',\n      sendOther: () => this.send('other', {}, ['o-r', 'o-n', 'o-e', 'o-m'], () => set({ sent: true })), otherBusy: !!s.busy || !!s.sent,\n      otherLabel: s.sent ? 'Sent' : s.busy ? 'Sending…' : 'Send', otherNote: s.sent ? 'Thanks. We will reply by email.' : (s.err || ''),")
+    return e
+
+
+IMG_CSS = """
+.ph_img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.tp_i,.tm_img,.o2_img,.face,.ph_cut{position:relative;overflow:hidden}
+"""
+
+
+def ph_img(field, cond_text):
+    """Show a CMS image over an initials placeholder: <img> when set, the initials otherwise."""
+    return '<sc-if value="{{ ' + field + ' }}"><img class="ph_img" src="{{ ' + field + ' }}" alt="" loading="lazy"></sc-if>' + cond_text
+
+
+def team_markup(b):
+    b = rep(b, '<a href="/team">Department page →</a>', '<a href="{{ d.href }}">Department page →</a>')
+    b = rep(b, '<a class="{{ p.cls }}" href="/team"><span class="tp_i">{{ p.i }}<em>Ask about: {{ p.ask }}</em></span>',
+            '<a class="{{ p.cls }}" href="{{ p.href }}"><span class="tp_i">' + ph_img('p.img', '{{ p.iOnly }}') + '<sc-if value="{{ p.ask }}"><em>Ask about: {{ p.ask }}</em></sc-if></span>')
+    return b
+
+
+def team_engine(e):
+    e = rep(e, "people: T.filter((x) => x[0] === d.k).map((x) => ({ n: x[1], t: x[2], ask: x[3],",
+            "href: d.href, people: T.filter((x) => x[0] === d.k).map((x) => ({ n: x[1], t: x[2], ask: x[3], href: x[4], img: x[5], iOnly: x[5] ? '' : x[1].split(' ').map((w) => w[0]).join(''),")
+    return e
+
+
+def dept_markup(b):
+    b = rep(b, '<sc-for list="{{ team }}" as="p" hint-placeholder-count="4"><span class="face">{{ p.init }}</span></sc-for>',
+            '<sc-for list="{{ team }}" as="p" hint-placeholder-count="4"><span class="face">' + ph_img('p.img', '{{ p.iOnly }}') + '</span></sc-for>')
+    b = rep(b, '<div class="tm"><div class="tm_img ph">Portrait</div><b>{{ p.name }}</b><span class="mono">{{ p.role }}</span><span class="tm_ask">Ask about: {{ p.ask }}</span></div>',
+            '<a class="tm" href="{{ p.href }}" style="text-decoration: none"><div class="tm_img">' + ph_img('p.img', '{{ p.iOnly }}') + '</div><b>{{ p.name }}</b><span class="mono">{{ p.role }}</span><sc-if value="{{ p.ask }}"><span class="tm_ask">Ask about: {{ p.ask }}</span></sc-if></a>')
+    b = rep(b, '<a href="/team">Visit {{ focusName }} →</a>', '<a href="{{ focusHref }}">Visit {{ focusName }} →</a>')
+    b = rep(b, '<a class="other" href="/team">', '<a class="other" href="{{ o.href }}">')
+    b = rep(b, '<h1 class="dh_t">{{ d.h1a }}<br>{{ d.h1b }}<br>{{ d.h1c }}</h1>', '<h1 class="dh_t">{{ d.h1a }}<sc-if value="{{ d.h1b }}"><br>{{ d.h1b }}<br>{{ d.h1c }}</sc-if></h1>')
+    for sec, cond in (('WHAT COMES OFF YOUR PLATE', 'hasPlate'), ('WHAT WE RUN', 'hasScope'), ('FIRST 90 DAYS', 'hasNinety'), ('EVERY BRAND', 'hasGrid'), ('FAQ', 'hasFaq')):
+        b = gate(b, sec, cond)
+    b = rep(b, '<a class="btn" href="#work">See the work</a>', '<sc-if value="{{ hasGrid }}"><a class="btn" href="#work">See the work</a></sc-if>')
+    return qualifier_markup(b)
+
+
+def dept_engine(e):
+    e = qualifier_engine(e)
+    e = rep(e, "const sel = D.partners[s.sel == null ? 1 : s.sel]", "const sel = D.partners[s.sel == null ? 1 : s.sel] || ['', '', 'k']")
+    e = rep(e, "d: Object.assign({}, d, {", "hasPlate: d.plate.length > 0, hasScope: d.scope.length > 0, hasNinety: d.ninety.length > 0, hasGrid: D.partners.length > 0, hasFaq: D.faq.length > 0,\n      focusHref: '/team/' + focus,\n      d: Object.assign({}, d, {")
+    e = rep(e, "team: D.team,", "team: D.team.map((p) => Object.assign({}, p, { iOnly: p.img ? '' : p.init })),")
+    e = rep(e, "others: D.depts.filter((x) => x.slug !== d.slug).map((x, i) => ({ k: String(i + 1).padStart(2, '0'), name: x.name, line: x.line })),",
+            "others: D.depts.filter((x) => x.slug !== d.slug).map((x, i) => ({ k: String(i + 1).padStart(2, '0'), name: x.name, line: x.line, href: '/team/' + x.slug })),")
+    return e
+
+
+def profile_markup(b):
+    b = rep(b, '<a class="mono ph_dept" href="/team">', '<a class="mono ph_dept" href="{{ deptHref }}">')
+    b = rep(b, '<div class="ph_cut" style="background: {{ p.tone }}"><span class="ph_init">{{ p.init }}</span></div>',
+            '<div class="ph_cut" style="background: {{ p.tone }}">' + ph_img('p.img', '<sc-if value="{{ p.noImg }}"><span class="ph_init">{{ p.init }}</span></sc-if>') + '</div>')
+    b = sub(r'<span class="ph ph_note">.*?</span>\s*', '', b)
+    b = rep(b, '<sc-if value="{{ p.line }}">', '<sc-if value="{{ p.line }}">') if '{{ p.line }}</p>' not in b else b.replace('<p class="ph_line mono">{{ p.line }}</p>', '<sc-if value="{{ p.line }}"><p class="ph_line mono">{{ p.line }}</p></sc-if>')
+    b = rep(b, '<h2 class="lead">{{ p.owns }}</h2>', '<sc-if value="{{ p.owns }}"><h2 class="lead">{{ p.owns }}</h2></sc-if>')
+    b = rep(b, '<div class="body cols"><sc-for list="{{ p.bio }}" as="b" hint-placeholder-count="2"><p>{{ b }}</p></sc-for></div>', '<x-rich class="body cols" html="{{ p.bioHtml }}"></x-rich>')
+    b = sub(r'(<div class="attrs">.*?</div>\s*<p class="attr_d">\{\{ attrLine \}\}</p>)', r'<sc-if value="{{ hasAttrs }}">\1</sc-if>', b)
+    b = gate(b, 'TRACK RECORD', 'hasRecord')
+    b = sub(r'(<div>\s*<h3 class="rec_h">At Alpha.*?</div>\s*</div>)', r'<sc-if value="{{ hasWork }}">\1</sc-if>', b)
+    b = gate(b, 'WHAT PEOPLE SAY', 'hasQuotes')
+    b = gate(b, 'OFF THE CLOCK', 'hasYb')
+    b = rep(b, '<button class="o2" onClick="{{ o.go }}"><span class="o2_img">{{ o.init }}</span><b>{{ o.name }}</b><span class="mono">{{ o.title }}</span><span class="mono o2_d">{{ o.dept }}</span></button>',
+            '<a class="o2" href="{{ o.href }}" style="text-decoration: none"><span class="o2_img">' + ph_img('o.img', '{{ o.iOnly }}') + '</span><b>{{ o.name }}</b><span class="mono">{{ o.title }}</span><span class="mono o2_d">{{ o.dept }}</span></a>')
+    return b
+
+
+def profile_engine(e):
+    e = rep(e, "this.setState({ i: 0, g: 0 });", "this.setState({ g: 0 });")
+    e = rep(e, "const N = D.team.length, i = s.i || 0,", "const N = D.team.length, i = s.i == null ? (D.start || 0) : s.i,")
+    e = rep(e, "set({ i: j, dx: dir * 60, g: (s.g || 0) + 1, focus: null, qi: 0, attr: null }); };",
+            "set({ i: j, dx: dir * 60, g: (s.g || 0) + 1, focus: null, qi: 0, attr: null }); if (typeof history !== 'undefined' && D.team[j].href) history.replaceState(history.state, '', D.team[j].href); };")
+    e = rep(e, "const qi = (s.qi || 0) % p.quotes.length, q = p.quotes[qi];", "const qi = p.quotes.length ? (s.qi || 0) % p.quotes.length : 0, q = p.quotes[qi] || { q: '', who: '', role: '' };")
+    e = rep(e, "p: Object.assign({}, p, { first: p.first, partnerCount: p.partnerCount }), deptName: dept.name,",
+            "p: Object.assign({}, p, { noImg: !p.img }), deptName: dept ? dept.name : '', deptHref: D.deptHref,\n      hasAttrs: p.attrs.length > 0, hasRecord: p.before.length > 0 || p.work.length > 0, hasWork: p.work.length > 0, hasQuotes: p.quotes.length > 0, hasYb: !!p.yb,")
+    e = rep(e, "others: D.everyone.filter((o) => o !== p && (flt === 'all' || o.dept === flt)).map((o) => ({ name: o.first + ' ' + o.last, init: o.init, title: o.title, dept: dn(o.dept),",
+            "others: D.everyone.filter((o) => o.slug !== p.slug && (flt === 'all' || o.dept === flt)).map((o) => ({ name: o.first + ' ' + o.last, init: o.init, iOnly: o.img ? '' : o.init, img: o.img, href: o.href, title: o.title, dept: dn(o.dept),")
+    e = rep(e, "const ai = s.attr == null ? -1 : s.attr;", "const ai = s.attr == null ? -1 : s.attr;\n    if (!dept) return {};")
+    return e
+
+
+def about_markup(b):
+    b = rep(b, '<a class="ex" href="/team"><span class="ex_i">{{ e.i }}</span>', '<a class="ex" href="{{ e.href }}"><span class="ex_i">' + ph_img('e.img', '{{ e.iOnly }}') + '</span>')
+    return b
+
+
+def about_engine(e):
+    # leadership comes from the Team collection (leaders, CMS order); falls back to the board list
+    e = rep(e, "execs: [['John Wheeler'", "execs: (this.props.execs && this.props.execs.length) ? this.props.execs : [['John Wheeler'")
+    e = rep(e, ".map((e) => ({ n: e[0], t: e[1], i: e[0].split(' ').map((w) => w[0]).join('') }))",
+            ".map((e) => ({ n: e[0], t: e[1], i: e[0].split(' ').map((w) => w[0]).join(''), iOnly: e[0].split(' ').map((w) => w[0]).join(''), href: '/team', img: '' }))")
+    return e
+
+
+def newswire_markup(b):
+    b = rep(b, '<a class="feat" href="/newswire"><div class="feat_img ph" style="background: {{ top.tone }}">Release image / partner team photo</div>',
+            '<a class="feat" href="{{ top.href }}"><div class="feat_img" style="background: {{ top.tone }}; position: relative; overflow: hidden"><sc-if value="{{ top.img }}"><img class="ph_img" src="{{ top.img }}" alt="" fetchpriority="high"></sc-if></div>')
+    b = rep(b, '<a class="nw_r" href="/newswire">', '<a class="nw_r" href="{{ r.href }}">')
+    return b
+
+
+def newswire_engine(e):
+    e = rep(e, "top: { date: this.fd(top.date) + ', ' + top.date.slice(0, 4), tag: top.tag, t: top.t, tone: '#8C7350', sum: '[One-line summary pulled from the release.]' },",
+            "top: { date: this.fd(top.date) + ', ' + top.date.slice(0, 4), tag: top.tag, t: top.t, tone: '#8C7350', sum: top.sum, href: top.href, img: top.img },")
+    e = rep(e, "items: res.filter((r) => r.date.slice(0, 4) === y).map((r) => ({ d: this.fd(r.date), t: r.t, tag: r.tag,", "items: res.filter((r) => r.date.slice(0, 4) === y).map((r) => ({ href: r.href, d: this.fd(r.date), t: r.t, tag: r.tag,")
+    return e
+
+
+def article_markup(b):
+    i, j = b.index('<article>'), b.index('</article>') + len('</article>')
+    art = '''<article>
+<header class="ar_h"><div class="wrap">
+<div class="ar_meta"><a class="lnk k" href="/newswire">← Newswire</a><span class="k">Released {{ a.date }}</span><span class="nw_tag">{{ a.tag }}</span><sc-if value="{{ a.ptr }}"><span class="k">{{ a.ptr }}</span></sc-if></div>
+<h1 class="ar_t">{{ a.t }}</h1>
+<sc-if value="{{ a.img }}"><div class="ar_img" style="position: relative; overflow: hidden"><img class="ph_img" src="{{ a.img }}" alt="" fetchpriority="high"></div></sc-if>
+</div></header>
+<div class="wrap ar_grid">
+<aside class="ar_side"><div class="ar_share"><span class="k" style="margin-bottom: 6px">Share</span><a href="{{ share.li }}" target="_blank" rel="noopener">LinkedIn</a><a href="{{ share.x }}" target="_blank" rel="noopener">X</a><a href="{{ share.fb }}" target="_blank" rel="noopener">Facebook</a><button onClick="{{ copy }}">{{ copyLabel }}</button></div></aside>
+<x-rich class="ar_body" html="{{ a.html }}"></x-rich>
+<aside class="ar_side"><sc-if value="{{ brand }}"><span class="k">In this release</span><a class="pcard" href="{{ brand.href }}"><span class="pcard_img" style="background: #5A5A55; position: relative; overflow: hidden"><sc-if value="{{ brand.img }}"><img class="ph_img" src="{{ brand.img }}" alt="" loading="lazy"></sc-if></span><span class="pcard_t"><span class="mono">PTR {{ brand.n }} · {{ brand.where }}</span><b>{{ brand.name }}</b><span class="mono">View brand →</span></span></a><a class="lnk k" href="/locations">See it on the map →</a></sc-if></aside>
+</div>
+<section style="padding-bottom: clamp(90px, 10vw, 150px)"><div class="wrap"><h2 class="h3" style="margin-bottom: 18px">More releases</h2><div class="rel"><sc-for list="{{ more }}" as="m"><a href="{{ m.href }}"><span class="mono">{{ m.d }}</span><b>{{ m.t }}</b><span class="mono">→</span></a></sc-for></div></div></section>
+</article>'''
+    return b[:i] + art + b[j:]
+
+
+def article_engine(e):
+    return rep(e, "return { copy:", "const D = this.props.data;\n    return { a: D.a, brand: D.brand, more: D.more, share: D.share, copy:")
+
+
+def locations_markup(b):
+    b = rep(b, '<a class="lc_img ph" href="/locations" style="background: {{ c.tone }}"><sc-if value="{{ c.photo }}" hint-placeholder-val="{{ true }}">{{ c.city }}</sc-if>',
+            '<a class="lc_img ph" href="{{ c.href }}" style="background: {{ c.tone }}; position: relative; overflow: hidden"><sc-if value="{{ c.img }}"><img class="ph_img" src="{{ c.img }}" alt="" loading="lazy"></sc-if><sc-if value="{{ c.noPhoto }}">{{ c.city }}</sc-if>')
+    b = rep(b, '<a class="lc_b mono" href="/locations">{{ c.brand }}</a><a class="lc_go mono" href="/locations"', '<a class="lc_b mono" href="{{ c.brandHref }}">{{ c.brand }}</a><a class="lc_go mono" href="{{ c.href }}"')
+    b = rep(b, '<div class="pan_img ph" style="background: {{ sel.tone }}">{{ sel.city }} photo</div>', '<div class="pan_img ph" style="background: {{ sel.tone }}; position: relative; overflow: hidden"><sc-if value="{{ sel.img }}"><img class="ph_img" src="{{ sel.img }}" alt=""></sc-if></div>')
+    b = rep(b, '<div><dt class="mono">Google</dt><dd>{{ sel.rating }}</dd></div>', '<sc-if value="{{ sel.rating }}"><div><dt class="mono">Google</dt><dd>{{ sel.rating }}</dd></div></sc-if>')
+    b = rep(b, '<div class="pan_ctas"><a class="btn" href="/locations">Location page</a><a class="btn" href="/locations#brands">Brand</a></div>',
+            '<div class="pan_ctas"><a class="btn" href="{{ sel.href }}">Location page</a><a class="btn" href="{{ sel.brandHref }}">Brand</a></div>')
+    b = rep(b, '<a class="{{ f.cls }}" href="/locations#founders">', '<a class="{{ f.cls }}" href="{{ f.href }}">')
+    b = rep(b, '<a class="{{ b.cls }}" href="/locations#brands"', '<a class="{{ b.cls }}" href="{{ b.href }}"')
+    b = sub(r'<span class="map_note ph">.*?</span>\s*', '', b)
+    b = rep(b, '<select onChange="{{ onBrand }}" aria-label="Brand">', '<select onChange="{{ onBrand }}" value="{{ brandVal }}" aria-label="Brand">')
+    b = rep(b, '<option value="{{ o.v }}" selected="{{ o.sel }}">', '<option value="{{ o.v }}">')
+    return b
+
+
+def locations_engine(e):
+    e = rep(e, "const card = (l) => ({ cls:", "const card = (l) => ({ href: l.href, brandHref: l.brandHref, img: l.img, noPhoto: !l.noMedia && !l.img, cls:")
+    e = rep(e, "rating: sel.rating.toFixed(1) + ' (' + sel.reviews.toLocaleString('en-US') + ')',", "rating: sel.rating ? sel.rating.toFixed(1) + ' (' + sel.reviews.toLocaleString('en-US') + ')' : '', href: sel.href, brandHref: sel.brandHref, img: sel.img,")
+    e = rep(e, "{ k: 'Providers', v: hasF ? '[n]' : '145' }", "{ k: 'Providers', v: hasF ? '–' : '145' }")
+    e = rep(e, "{ k: 'Annual practice visits', v: '[n]' }, ", "")
+    e = rep(e, "l: '[Label: per year?]',", "l: '[Label]',")
+    e = rep(e, "founders: D.F.map((f) => ({ name: f[0],", "founders: D.F.map((f) => ({ href: f[4], name: f[0],")
+    e = rep(e, "onBrand: (e) => set({ brand: e.target.value }),", "onBrand: (e) => set({ brand: e.target.value }), brandVal: fb || '',")
+    e = rep(e, "return { n, name: D.B[n].name, tone: D.B[n].tone,", "return { n, href: D.B[n].href, name: D.B[n].name, tone: D.B[n].tone,")
+    return e
+
+
+def founder_markup(b):
+    b = rep(b, '<a href="/locations#brands" style="text-decoration: none">{{ b.name }}</a>', '<a href="{{ b.href }}" style="text-decoration: none">{{ b.name }}</a>')
+    b = rep(b, '<span class="bmark b-016" aria-hidden="true"></span>', '<span class="bmark b-{{ b.n }}" aria-hidden="true"></span>')
+    b = rep(b, '<p class="fmeta">Founder, {{ b.name }}<br>{{ f.markets }} · Practicing since {{ f.since }}</p>', '<p class="fmeta">{{ f.role }}, {{ b.name }}<br>{{ f.markets }}</p>')
+    b = rep(b, '<a class="btn" href="{{ b.book }}" target="_blank" rel="noopener">', '<sc-if value="{{ b.book }}"><a class="btn" href="{{ b.book }}" target="_blank" rel="noopener">')
+    b = rep(b, '<span class="ext" aria-hidden="true">↗</span></a>', '<span class="ext" aria-hidden="true">↗</span></a></sc-if>')
+    b = rep(b, '<p class="eyebrow">01 / Who she is</p>', '<p class="eyebrow">01 / Who {{ f.first }} is</p>')
+    b = sub(r'<h2 class="lead">She was trained for four days\. Her injectors train for months\.</h2>\s*<div class="body cols">.*?</div>',
+            '<sc-if value="{{ f.headline }}"><h2 class="lead">{{ f.headline }}</h2></sc-if><x-rich class="body cols" html="{{ f.bioHtml }}"></x-rich>', b)
+    b = sub(r'(<div class="figs">.*?</sc-for>\s*</div>)', r'<sc-if value="{{ hasFigs }}">\1</sc-if>', b)
+    b = rep(b, '<h2 class="h3">From the ICU to PTR 016.</h2>', '<h2 class="h3">The road to {{ b.ptr }}.</h2>')
+    b = gate(b, 'THE PATH', 'hasPath')
+    b = rep(b, '<p class="eyebrow">03 / How she practices</p>', '<p class="eyebrow">03 / How {{ f.first }} practices</p>')
+    b = gate(b, 'HOW SHE PRACTICES', 'hasRules')
+    b = gate(b, 'ON THE RECORD', 'hasRecord')
+    b = rep(b, '05 / Why she partnered', '04 / In {{ f.first }}&#39;s words')
+    b = sub(r'<div class="film why_film">.*?</button></div>\s*', '', b)
+    b = rep(b, '<figure class="why_q"><blockquote>“I felt like they had a firm direction. They had very high standards, and it matched ours.”</blockquote><figcaption class="mono">{{ f.name }} / Interview / 00:13:16</figcaption></figure>',
+            '<sc-for list="{{ quotes }}" as="q"><figure class="why_q"><blockquote>“{{ q.text }}”</blockquote><figcaption class="mono">{{ f.name }} / {{ q.source }}</figcaption></figure></sc-for>')
+    b, n = cut(b, r'<div class="ba">', 'div')
+    assert n == 1
+    b = gate(b, 'WHY SHE PARTNERED', 'hasQuotes')
+    b = rep(b, "06 / The room she's in", '05 / The room {{ f.first }} is in')
+    b = rep(b, 'These are the people Michelle calls.', 'These are the people {{ f.first }} calls.')
+    b = rep(b, '<a class="peer" href="/locations#founders">', '<a class="peer" href="{{ p.href }}">')
+    b = rep(b, '07 / Her practice', '06 / {{ f.first }}&#39;s practice')
+    b = rep(b, '<a class="prac_brand" href="/locations#brands">', '<a class="prac_brand" href="{{ b.href }}">')
+    b = rep(b, '<span class="mono" style="font-size: 10.5px; opacity: .75">{{ f.markets }} · Est {{ b.est }}</span>', '<span class="mono" style="font-size: 10.5px; opacity: .75">{{ f.markets }}<sc-if value="{{ b.est }}"> · Est {{ b.est }}</sc-if></span>')
+    b = rep(b, '<a class="prac_loc" href="/locations">', '<a class="prac_loc" href="{{ l.href }}">')
+    b = rep(b, '<sc-if value="{{ l.noImg }}" hint-placeholder-val="{{ true }}">{{ l.city }} photo</sc-if>', '<sc-if value="{{ l.noImg }}" hint-placeholder-val="{{ true }}">{{ l.city }}</sc-if>')
+    return b
+
+
+def founder_engine(e):
+    i, j = e.index('  renderVals() {'), e.rindex('}')
+    return e[:i] + '''  renderVals() {
+    const { b, f, path, rules, quotes, peers } = this.data(), on = !!(this.state || {}).pathOn || this.rm;
+    return {
+      b, f, quotes,
+      heroH: this.tall ? '820px' : 'calc(100svh - 126px)',
+      figs: [], hasFigs: false, hasRecord: false, record: [],
+      hasPath: path.length > 1, hasRules: rules.length > 0, hasQuotes: quotes.length > 0,
+      setPath: (el) => {
+        if (!el || this.io || typeof IntersectionObserver === 'undefined') return;
+        this.io = new IntersectionObserver((es) => { if (es[0].isIntersecting) { this.setState({ pathOn: true }); this.io.disconnect(); } }, { threshold: .25 });
+        this.io.observe(el);
+      },
+      tlCls: 'tl' + (on ? ' is-on' : ''),
+      path: path.map((p, i) => ({ y: p.y, t: p.t, d: p.d, cls: 'step' + (p.alpha ? ' alpha' : (i === path.length - 2 ? ' now' : '')), delay: 200 + i * 140 })),
+      rules: rules.map((r, i) => ({ n: String(i + 1).padStart(2, '0'), t: r.t, d: r.d })),
+      peers: peers.map((p) => Object.assign({}, p, { hasImg: !!p.img, noImg: !p.img, init: p.name.replace('Dr. ', '').split(' ').map((w) => w[0]).join('').slice(0, 2) }))
+    };
+  }
+''' + e[j:]
+
+
+HERO_VIDEO = ('<video class="hero_vid" ref="{{ vidRef }}" poster="{{ loc.heroPoster }}" autoplay muted loop playsinline preload="auto" aria-hidden="true">'
+              '<sc-if value="{{ loc.heroAv1 }}"><source src="{{ loc.heroAv1 }}" type="video/mp4; codecs=av01.0.08M.08"></sc-if>'
+              '<sc-if value="{{ loc.heroSmall }}"><source src="{{ loc.heroSmall }}" type="video/mp4" media="(max-width: 820px)"></sc-if>'
+              '<source src="{{ loc.heroVideo }}" type="video/mp4"></video>')
+
+
+def location_markup(b):
+    b = rep(b, '<a href="/locations#brands" style="text-decoration: none">{{ b.name }}</a>', '<a href="{{ b.href }}" style="text-decoration: none">{{ b.name }}</a>')
+    b = rep(b, '<video class="hero_vid" ref="{{ vidRef }}" src="{{ loc.heroVideo }}" poster="{{ loc.heroPoster }}" autoplay muted loop playsinline aria-hidden="true"></video>', HERO_VIDEO)
+    book = '<a class="btn" href="{{ b.book }}" target="_blank" rel="noopener">Book at {{ b.short }}<span class="ext" aria-hidden="true">↗</span></a>'
+    assert book in b
+    b = b.replace(book, '<sc-if value="{{ b.book }}">' + book + '</sc-if>')
+    b = rep(b, '<sc-if value="{{ loc.noImg }}" hint-placeholder-val="{{ true }}">{{ loc.city }}<br>photo</sc-if>', '<sc-if value="{{ loc.noImg }}" hint-placeholder-val="{{ true }}">{{ loc.city }}</sc-if>')
+    b = sub(r'<span class="ph map_hph">.*?</span>\s*', '', b)
+    b = sub(r'<span class="map_note ph">.*?</span>\s*', '', b)
+    b = rep(b, '<div class="v_col"><p class="eyebrow">Hours</p>', '<sc-if value="{{ visit.hasHours }}"><div class="v_col"><p class="eyebrow">Hours</p>')
+    b = rep(b, '<div><span>{{ h.d }}</span><b>{{ h.t }}</b></div></sc-for></div></div>', '<div><span>{{ h.d }}</span><b>{{ h.t }}</b></div></sc-for></div></div></sc-if>')
+    b = rep(b, '<div class="v_col"><p class="eyebrow">Phone</p><p class="v_t"><a href="{{ visit.tel }}">{{ visit.phone }}</a></p></div>', '<sc-if value="{{ visit.phone }}"><div class="v_col"><p class="eyebrow">Phone</p><p class="v_t"><a href="{{ visit.tel }}">{{ visit.phone }}</a></p></div></sc-if>')
+    b = rep(b, '<div class="v_col"><p class="eyebrow">Arriving</p><p class="v_t">{{ visit.arrive }}</p></div>', '<sc-if value="{{ visit.arrive }}"><div class="v_col"><p class="eyebrow">Arriving</p><p class="v_t">{{ visit.arrive }}</p></div></sc-if>')
+    b = rep(b, '<p class="sub">{{ loc.facts }}</p>', '<sc-if value="{{ loc.facts }}"><p class="sub">{{ loc.facts }}</p></sc-if>')
+    b = rep(b, '<div class="body inside_story"><span class="draft">Draft copy</span><sc-for list="{{ story }}" as="p" hint-placeholder-count="2"><p>{{ p.t }}</p></sc-for></div>', '<x-rich class="body inside_story" html="{{ storyHtml }}"></x-rich>')
+    b = gate(b, 'INSIDE', 'hasStory')
+    b = rep(b, '<p class="sub">{{ provLine }}</p>', '<sc-if value="{{ provLine }}"><p class="sub">{{ provLine }}</p></sc-if>')
+    b = gate(b, 'IN THEIR WORDS', 'hasReviews')
+    b = rep(b, '<p class="sub">Partner since {{ b.since }}</p><span class="draft">Draft copy</span>', '<p class="sub">Partner since {{ b.since }}</p>')
+    b = gate(b, 'SINCE ALPHA', 'hasSince')
+    b = gate(b, 'STATS', 'hasStats')
+    b = gate(b, 'OPEN ROLES', 'hasRoles')
+    b = rep(b, '<a href="#sibling" style="display: block; text-decoration: none"><div class="img ph" style="background: {{ sib.tone }}; color: rgba(232,228,218,.6)">{{ sib.city }} interior</div></a>',
+            '<a href="{{ sib.href }}" style="display: block; text-decoration: none"><div class="img ph" style="background: {{ sib.tone }}; color: rgba(232,228,218,.6); position: relative; overflow: hidden"><sc-if value="{{ sib.img }}"><img class="ph_img" src="{{ sib.img }}" alt="" loading="lazy"></sc-if></div></a>')
+    b = rep(b, '<a href="#sibling">View {{ b.short }} {{ sib.city }} →</a>', '<a href="{{ sib.href }}">View {{ b.short }} {{ sib.city }} →</a>')
+    return b
+
+
+def location_engine(e):
+    e = sub(r'\n  brand\(\) \{.*?\n  \}\n', '\n  brand() { return this.props.data.b; }\n', e)
+    e = rep(e, '  li() { return this.props.denver ? 1 : 0; }', '  li() { return this.props.data.li; }')
+    e = rep(e, "sb = B.locations[1 - li];", "sb = B.locations[(li + 1) % B.locations.length];")
+    e = rep(e, "galOn: !loc.noGallery,", "galOn: false, hasStory: !!loc.storyHtml, storyHtml: loc.storyHtml, hasReviews: false, hasStats: false, hasRoles: false, hasSince: (loc.ms || []).length > 0 || !!(loc.quote && loc.quote.t),")
+    e = rep(e, "sib: Object.assign({}, sb, { place: sb.city + ', ' + sb.st }),", "sib: Object.assign({}, sb, { place: sb.city + ', ' + sb.st }),")
+    e = sub(r"visit: \{ hours: .*?arrive: loc\.arrive \|\| '\[Parking and entrance note\.\]' \},",
+            "visit: { hours: (loc.hours || []).map((h) => ({ d: h[0], t: h[1] })), hasHours: (loc.hours || []).length > 0, phone: loc.phone || '', tel: 'tel:' + String(loc.phone || '').replace(/[^0-9+]/g, ''), arrive: loc.arrive || '' },", e)
+    e = rep(e, "ms: (loc.ms || [['[Year]', '[Milestone at this address.]']]).map((m) => ({ y: m[0], t: m[1] })),", "ms: (loc.ms || []).map((m) => ({ y: m[0], t: m[1] })),")
+    e = rep(e, "const n = m.reduce((a, x) => a + x[1], 0) || loc.providers; return n + ' providers'", "const n = m.reduce((a, x) => a + x[1], 0) || loc.providers; if (!n) return ''; return n + ' providers'")
+    e = sub(r"leads: \[.*?\]\.map\(\(p\) => \(\{ \.\.\.p,", "leads: B.leads(loc).map((p) => ({ ...p,", e) if False else e
+    e = sub(r"leads: \[\s*\{ name: B\.founder.*?\n      \]\.map",
+            "leads: [B.founder ? { name: B.founder, role: 'Founder', cred: B.cred, img: B.founderImg || '', href: B.founderHref } : null, loc.lead && loc.lead.name ? Object.assign({ role: 'Lead provider, ' + loc.city }, loc.lead) : null].filter(Boolean).map", e)
+    return e
+
+
+def main_markup(b):
+    b, n = cut(b, r'<header class="wrap">', 'header', '<x-nav></x-nav>'); assert n == 1
+    i = b.find('<!-- ============ THEATER'); assert i > 0
+    b = b[:i]  # theater + board player: films play on brand pages, audio in the site player
+    # hero numbers from the CMS
+    for k, lab in (('15', 'Brands'), ('36', 'Locations'), ('12', 'States')):
+        b = rep(b, '<div class="stat_num">' + k + '<svg', '<div class="stat_num">{{ net.' + lab.lower() + ' }}<svg')
+    b = rep(b, '<a class="ulink" href="#how">How partnership works</a>', '<a class="ulink" href="/how-it-works">How partnership works</a>')
+    # reel: brand hero posters in join order until the network reel is cut
+    b = sub(r'<div class="reel_spec ph">.*?</div>', '<sc-for list="{{ reel }}" as="r"><img class="{{ r.cls }}" src="{{ r.src }}" alt="" loading="lazy"></sc-for>', b)
+    b = sub(r'<button class="btn btn-light reel_unmute".*?</button>', '', b)
+    # partners: rows and frame link to the brand page
+    b = rep(b, '<button class="{{ p.cls }}" onMouseEnter="{{ p.hover }}" onFocus="{{ p.focus }}" onClick="{{ p.open }}" role="listitem"><span>{{ p.n }}</span><span class="nm">{{ p.name }}</span><span class="ct">{{ p.city }}</span><span class="yr">{{ p.yr }}</span></button>',
+            '<a class="{{ p.cls }}" href="{{ p.href }}" onMouseEnter="{{ p.hover }}" onFocus="{{ p.focus }}" role="listitem" style="text-decoration: none"><span>{{ p.n }}</span><span class="nm">{{ p.name }}</span><span class="ct">{{ p.city }}</span><span class="yr">{{ p.yr }}</span></a>')
+    b = rep(b, '<button class="{{ frameCls }}" onClick="{{ openCur }}" aria-label="Play {{ cur.name }} film">', '<a class="{{ frameCls }}" href="{{ cur.href }}" aria-label="{{ cur.name }}" style="display: block">')
+    b = sub(r'<span class="p_dur">1:30</span>\s*</button>', '</a>', b)
+    b = sub(r'<span class="p_pv"><i></i>Preview</span>\s*<span class="p_play" aria-hidden="true">.*?</span>\s*', '', b)
+    b = rep(b, '<span>Partnered [Mo YYYY]</span>', '<span>{{ cur.since }}</span>')
+    b = rep(b, '<a class="p_who" href="/locations#founders">', '<a class="p_who" href="{{ cur.founderHref }}">')
+    b = rep(b, '<div class="p_pile" aria-label="Team"><i></i><i></i><i></i><i></i></div>', '')
+    b = rep(b, '<a class="btn" href="#partner">Open partner page</a>', '<a class="btn" href="{{ cur.href }}">Open partner page</a>')
+    # people: CMS departments with real faces
+    b = rep(b, '<a class="btn" href="/team" style="align-self: flex-start; height: 28px; padding: 0 12px; font-size: 10px">Meet department</a>', '<a class="btn" href="{{ d.href }}" style="align-self: flex-start; height: 28px; padding: 0 12px; font-size: 10px">Meet department</a>')
+    b = rep(b, '<div class="dept_avs"><span class="av">··</span><span class="av">··</span><span class="av">··</span><span class="av">··</span></div> <span class="dept_count">[N] people</span>'.replace(' <', '\n<') if False else '<div class="dept_avs"><span class="av">··</span><span class="av">··</span><span class="av">··</span><span class="av">··</span></div>',
+            '<div class="dept_avs"><sc-for list="{{ d.avs }}" as="a"><span class="av" style="overflow: hidden; position: relative">' + ph_img('a.img', '{{ a.iOnly }}') + '</span></sc-for></div>')
+    b = rep(b, '<span class="dept_count">[N] people</span>', '<span class="dept_count">{{ d.count }}</span>')
+    b = rep(b, '<a class="btn" href="#team-all">Meet the whole team</a>', '<a class="btn" href="/team">Meet the whole team</a>')
+    # stories
+    b = sub(r'<span class="story_ph ph">.*?</span>\s*', '', b)
+    b = sub(r'<div style="display: flex; justify-content: flex-end; margin-top: 36px"><a class="btn" href="#stories-all">See more stories</a></div>', '', b)
+    # practice
+    b = sub(r'<span class="practice_ph ph">.*?</span>', '', b)
+    b = sub(r'<a class="btn btn-light" href="#classes"[^>]*>See classes</a>', '', b)
+    # podcasts: CMS shows and covers
+    b = sub(r'<div class="stat"><div class="stat_num">7</div><div class="stat_label">Shows</div></div>\s*<div class="stat"><div class="stat_num">\[#\]</div><div class="stat_label">Episodes</div></div>\s*<div class="stat"><div class="stat_num">\[#\]</div><div class="stat_label">Listens</div></div>',
+            '<div class="stat"><div class="stat_num">{{ nShows }}</div><div class="stat_label">Shows</div></div>', b)
+    i = b.index('<div class="track" style="gap: 8px; transform: translateX({{ podShift }})">'); j = b.index('</div>\n</div>\n<p class="ph"', i) if '</div>\n</div>\n<p class="ph"' in b[i:] else None
+    k = b.index('<p class="ph" style="margin: 18px 0 0; color: #5C5952">[Typographic stand-ins / swap for real cover art]</p>')
+    seg = b[i:k]
+    close = seg.rindex('</div>', 0, seg.rindex('</div>'))  # track closes before rail closes
+    b = b[:i] + '<div class="track" style="gap: 8px; transform: translateX({{ podShift }})"><sc-for list="{{ shows }}" as="c"><a class="cover" href="{{ c.href }}" style="text-decoration: none"><div class="cover_art" style="background: {{ c.bg }}; padding: 0; overflow: hidden; position: relative"><sc-if value="{{ c.art }}"><img class="ph_img" src="{{ c.art }}" alt="{{ c.name }}" loading="lazy"></sc-if></div><div class="cover_meta"><span class="mono" style="font-size: 10px">{{ c.name }}</span></div></a></sc-for></div>\n</div>\n' + b[k:]
+    b = sub(r'<p class="ph" style="margin: 18px 0 0; color: #5C5952">\[Typographic stand-ins / swap for real cover art\]</p>', '', b)
+    b = rep(b, '<div id="how" class="start">', '<sc-if value="{{ hasEps }}"><div id="how" class="start">')
+    b = rep(b, '<a class="btn" href="#episodes">All shows and episodes</a></div> </div> </div>'.replace(' <', '\n<') if False else '<a class="btn" href="#episodes">All shows and episodes</a></div>', '<a class="btn" href="/podcasts">All shows and episodes</a></div>')
+    m = re.search(r'(<a class="btn" href="/podcasts">All shows and episodes</a></div>\s*</div>\s*</div>)', b); assert m
+    b = b[:m.end()] + '</sc-if>' + b[m.end():]
+    # qualifier
+    b = sub(r'<p class="ph" style="color: #9B978E; margin-top: 28px">Routes to GHL.*?</p>', '', b)
+    return qualifier_markup(b)
+
+
+def main_engine(e):
+    e = qualifier_engine(e)
+    D = "(this.props.data || {})"
+    e = rep(e, "const P = [\n", "const P = " + D + ".P || [\n")
+    e = rep(e, "const P = D.P;", "const P = D.P, X = " + D + ";")
+    e = rep(e, "const partners = P.map((p, i) => ({ n: p.n, name: p.name, city: p.city, yr: '[yr]',", "const partners = P.map((p, i) => ({ href: p.href, n: p.n, name: p.name, city: p.city, yr: p.yr || '',")
+    e = rep(e, "const cur = { n: c.n,", "const cur = { href: c.href, since: c.since ? 'Partnered ' + c.since : '', founderHref: c.founderHref || '/locations#founders', n: c.n,")
+    e = sub(r"const depts = \[.*?\n    \];", "const depts = X.depts || [];", e)
+    e = rep(e, "const di = s.dept ?? 0, dMax = 2;", "const di = s.dept ?? 0, dMax = Math.max(0, depts.length - 3);")
+    e = sub(r"(const stories = \[.*?\n    \])", r"\1.filter((x) => x.quote.indexOf('[') < 0).map((x) => Object.assign({}, x, { brand: x.brand.charAt(0) === '[' ? '' : x.brand }))", e)
+    e = rep(e, "const si = s.story ?? 0, sMax = 3,", "const si = s.story ?? 0, sMax = Math.max(0, stories.length - 4),")
+    e = sub(r"const EP = \[.*?\n    \];", "const EP = X.eps || [];", e)
+    e = rep(e, "const eps = EP.map((e, i) => ({ ...e, btnCls: i === playing ? 'ep_play is-on' : 'ep_play', play: () => set({ playing: i }) }));",
+            "const eps = EP.map((e, i) => ({ ...e, btnCls: i === playing ? 'ep_play is-on' : 'ep_play', play: () => { set({ playing: i }); if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('alpha:play', { detail: e.ep })); } }));")
+    e = rep(e, "return {\n      openMenu:", "return {\n      net: X.net || { brands: '15', locations: '36', states: '12' }, shows: X.shows || [], nShows: String((X.shows || []).length), hasEps: EP.length > 0,\n      reel: P.map((p, i) => ({ src: p.poster || p.img, cls: 'reel_img' + (i === cut ? ' is-on' : '') })).filter((r) => r.src),\n      openMenu:")
+    return e
+
+
+MAIN_CSS = IMG_CSS + """
+.reel{position:relative;overflow:hidden}
+.reel_img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.2s var(--ease)}
+.reel_img.is-on{opacity:1}
+.reel_hud{z-index:2}
+a.p_row{display:grid;color:inherit}
+"""
+
+
+PLAY_EVENT = "if (typeof window !== 'undefined' && ep) window.dispatchEvent(new CustomEvent('alpha:play', { detail: ep }))"
+
+
+def podcasts_markup(b):
+    b = rep(b, '<span class="tv_art" style="color: {{ s.fg }}">{{ s.short }}</span>', '<sc-if value="{{ s.art }}"><img class="tv_img" src="{{ s.art }}" alt=""></sc-if><sc-if value="{{ s.noArt }}"><span class="tv_art" style="color: {{ s.fg }}">{{ s.short }}</span></sc-if>')
+    b = sub(r'<span class="ph tv_ph">.*?</span>\s*', '', b)
+    b = rep(b, '<p class="mono tv_latest"><span>Latest</span>EP {{ hs.ep.n }} / {{ hs.ep.title }}</p>', '<sc-if value="{{ hs.ep.title }}"><p class="mono tv_latest"><span>Latest</span>{{ hs.ep.label }}</p></sc-if>')
+    b = rep(b, '<a class="btn" href="/podcasts">All episodes</a>', '<a class="btn" href="{{ hs.href }}">All episodes</a>')
+    b = rep(b, '<div class="paths">', '<sc-if value="{{ hasPaths }}"><div class="paths">')
+    b = rep(b, '<button class="{{ p.cls }}" onClick="{{ p.go }}">{{ p.t }}</button></sc-for></div>', '<button class="{{ p.cls }}" onClick="{{ p.go }}">{{ p.t }}</button></sc-for></div></sc-if>')
+    b = rep(b, '<a class="r_main" href="/podcasts"><b>{{ e.title }}</b><span class="mono">{{ e.show }} · EP {{ e.n }} · {{ e.date }}</span></a>', '<a class="r_main" href="{{ e.href }}"><b>{{ e.title }}</b><span class="mono">{{ e.meta }}</span></a>')
+    b = rep(b, '<span class="r_art">{{ e.short }}</span>', '<sc-if value="{{ e.art }}"><img class="ph_img" src="{{ e.art }}" alt="" loading="lazy"></sc-if><span class="r_art">{{ e.artText }}</span>')
+    b = sub(r'<p class="ph" style="color: #9B978E; margin-top: 18px">Sample data\..*?</p>', '', b)
+    b = sub(r'<!-- mini player.*?-->\s*<sc-if value="\{\{ hasNow \}\}".*?</sc-if>', '', b)
+    b = rep(b, 'Every episode is tagged by topic, by who it&#39;s for and by who&#39;s talking. Stack filters to find the conversation you need, then share the exact list.', 'Every episode from every show, newest first. Filter by show, search by title, then share the exact list.')
+    return b
+
+
+def podcasts_engine(e):
+    e = rep(e, "lat = D.E.filter((e) => e.show === hk)[0];", "lat = D.E.filter((e) => e.show === hk)[0] || { title: '', n: '', label: '' };")
+    e = rep(e, "const play = (id) => { if (s.now === id) set({ playing: !s.playing }); else set({ now: id, t: 0, playing: true }); };",
+            "const play = (id) => { const ep = (D.E.find((x) => x.id === id) || {}).ep; " + PLAY_EVENT + "; };")
+    e = rep(e, "hs: Object.assign({}, hs, { ep: lat, play: () => play(lat.id) }),", "hs: Object.assign({}, hs, { ep: lat, play: () => play(lat.id) }), hasPaths: D.paths.length > 0,")
+    e = rep(e, "slides: D.feat.map((k, i) => ({ cls: 'tv_slide' + (i === hi ? ' is-on' : ''), bg: D.S[k].bg, fg: D.S[k].fg, short: D.S[k].short,",
+            "slides: D.feat.map((k, i) => ({ art: D.S[k].art, noArt: !D.S[k].art, cls: 'tv_slide' + (i === hi ? ' is-on' : ''), bg: D.S[k].bg, fg: D.S[k].fg, short: D.S[k].short,")
+    e = rep(e, "epCount: '130+',", "epCount: String(D.E.length),")
+    e = rep(e, "return { title: e.title, n: e.n, show: sh.name, short: sh.short, bg: sh.bg, fg: sh.fg, date: this.dfmt(e.date), len: e.len,",
+            "return { href: e.href, art: sh.art, artText: sh.art ? '' : sh.short, meta: sh.name + (e.n ? ' · EP ' + e.n : '') + ' · ' + this.dfmt(e.date), title: e.title, n: e.n, show: sh.name, short: sh.short, bg: sh.bg, fg: sh.fg, date: this.dfmt(e.date), len: e.len,")
+    e = rep(e, "hasNow: !!now,", "hasNow: false,")
+    e = rep(e, "if (this.props.autoplay !== false && !s.paused && !this.rm) { const he = (s.he || 0) + 100; if (he >= 7000) { o.hi = ((s.hi || 0) + 1) % 4;",
+            "if (this.props.autoplay !== false && !s.paused && !this.rm) { const he = (s.he || 0) + 100; if (he >= 7000) { o.hi = ((s.hi || 0) + 1) % this.data().feat.length;")
+    e = rep(e, "if (s.playing && s.now != null) { const e = this.data().E[s.now]; o.t = Math.min(e.sec, (s.t || 0) + .1); dirty = true; }", "")
+    return e
+
+
+PODCAST_CSS = IMG_CSS + """
+.tv_img{position:absolute;right:clamp(16px,6vw,96px);top:50%;transform:translateY(-50%);height:min(70%,440px);aspect-ratio:1;object-fit:cover;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+.r_play{position:relative;overflow:hidden}
+.r_play .r_pi{position:relative;z-index:1}
+@media (max-width:820px){.tv_img{opacity:.25;height:60%}}
+"""
+
+
+def after_nav(b, content):
+    i = b.index('</x-nav>') + len('</x-nav>')
+    return b[:i] + '\n' + content + '\n'
+
+
+SHOW_BODY = """
+<section class="sh_h"><div class="wrap sh_grid">
+<div class="sh_art" style="background: {{ show.bg }}; color: {{ show.fg }}; position: relative; overflow: hidden"><sc-if value="{{ show.art }}"><img class="ph_img" src="{{ show.art }}" alt="{{ show.name }}"></sc-if><sc-if value="{{ show.noArt }}"><span>{{ show.name }}</span><em>ALPHA®</em></sc-if></div>
+<div>
+<span class="mono sh_k">Alpha podcast network<sc-if value="{{ show.sched }}"> · {{ show.sched }}</sc-if></span>
+<h1 class="sh_t">{{ show.name }}</h1>
+<sc-if value="{{ show.tag }}"><p class="sh_d">{{ show.tag }}</p></sc-if>
+<div class="sh_row"><sc-if value="{{ hasEps }}"><button class="tv_play" onClick="{{ playLatest }}"><svg width="11" height="13" viewBox="0 0 11 13" aria-hidden="true"><path d="M0 0l11 6.5L0 13z" fill="currentColor"></path></svg>Play latest</button></sc-if><sc-for list="{{ plats }}" as="p"><a class="plat light" href="{{ p.href }}" target="_blank" rel="noopener">{{ p.t }} ↗</a></sc-for></div>
+<div class="sh_stats"><div><b>{{ count }}</b><span>Episodes</span></div><sc-if value="{{ since }}"><div><b>{{ since }}</b><span>Since</span></div></sc-if></div>
+</div></div></section>
+<sc-if value="{{ hasEps }}">
+<section class="sec"><div class="wrap"><div class="latest" style="grid-template-columns: 1fr">
+<div><span class="k">Latest · {{ lat.label }} · {{ lat.date }}</span><h3>{{ lat.title }}</h3><sc-if value="{{ lat.sum }}"><p>{{ lat.sum }}</p></sc-if><div style="display: flex; gap: 8px"><button class="btn" onClick="{{ playLatest }}">Play</button><a class="btn" href="{{ lat.href }}">Episode page</a></div></div>
+</div></div></section>
+<section style="padding-bottom: clamp(90px, 10vw, 150px)"><div class="wrap">
+<div class="split_head"><h2 class="display h2">Every episode</h2></div>
+<div class="res_bar" style="padding-bottom: 10px"><p class="res_n"><b>{{ nRes }}</b> <span class="mono">episodes</span></p><a class="lnk k" href="/podcasts">Search the whole network →</a></div>
+<div class="rows"><sc-for list="{{ rows }}" as="e"><div class="{{ e.cls }}">
+<button class="r_play" onClick="{{ e.play }}" aria-label="Play {{ e.title }}" style="background: {{ e.bg }}; color: {{ e.fg }}; position: relative; overflow: hidden"><sc-if value="{{ e.art }}"><img class="ph_img" src="{{ e.art }}" alt="" loading="lazy"></sc-if><i class="r_pi" aria-hidden="true" style="position: relative">▶</i></button>
+<a class="r_main" href="{{ e.href }}"><b>{{ e.title }}</b><span class="mono">{{ e.meta }}</span></a><span></span><span></span><span class="mono r_len">{{ e.len }}</span>
+</div></sc-for></div>
+<sc-if value="{{ hasMore }}"><div class="more" style="display: flex; justify-content: center; margin-top: 28px"><button class="btn" onClick="{{ loadMore }}">Load more</button></div></sc-if>
+</div></section>
+</sc-if>
+<section style="padding-bottom: clamp(90px, 10vw, 150px)"><div class="wrap">
+<div class="nw_h"><h2 class="h3">More from the network</h2><a class="lnk mono" href="/podcasts" style="font-size: 10.5px; text-transform: uppercase; letter-spacing: .05em">All shows</a></div>
+<hr class="rule" style="margin: 20px 0 24px">
+<div class="nw"><sc-for list="{{ shows }}" as="s"><a class="nw_c" href="{{ s.href }}"><div class="nw_art" style="background: {{ s.bg }}; color: {{ s.fg }}; position: relative; overflow: hidden"><sc-if value="{{ s.art }}"><img class="ph_img" src="{{ s.art }}" alt="{{ s.name }}" loading="lazy"></sc-if></div><div class="nw_cap"><span>{{ s.name }}</span><span>{{ s.count }}</span></div></a></sc-for></div>
+</div></section>
+"""
+
+
+def show_markup(b):
+    return after_nav(b, SHOW_BODY)
+
+
+def show_engine(e):
+    i, j = e.index('  st() {'), e.rindex('}')
+    return e[:i] + """  st() { return this.state || {}; }
+  renderVals() {
+    const D = this.props.data, s = this.st(), E = D.eps, shown = s.shown || 20;
+    const play = (ep) => { """ + PLAY_EVENT + """; };
+    return {
+      show: D.show, plats: D.plats, count: String(E.length), since: D.since, hasEps: E.length > 0,
+      lat: E[0] || {}, playLatest: () => E[0] && play(E[0].ep),
+      nRes: E.length, rows: E.slice(0, shown).map((x) => Object.assign({}, x, { cls: 'row', play: () => play(x.ep), bg: D.show.bg, fg: D.show.fg, art: D.show.art })),
+      hasMore: E.length > shown, loadMore: () => this.setState({ shown: shown + 20 }),
+      shows: D.shows
+    };
+  }
+""" + e[j:]
+
+
+EPISODE_BODY = """
+<section class="eh"><div class="wrap eh_grid">
+<div class="art eh_art" style="background: {{ show.bg }}; position: relative; overflow: hidden" aria-label="{{ show.name }} cover"><sc-if value="{{ show.art }}"><img class="ph_img" src="{{ show.art }}" alt=""></sc-if></div>
+<div class="eh_info">
+<h1 class="eh_t">{{ ep.title }}</h1>
+<p class="eh_m mono"><a href="{{ show.href }}" style="color: inherit">{{ show.name }}</a><sc-if value="{{ ep.n }}"> // EP {{ ep.n }}</sc-if> <span>{{ ep.date }}<sc-if value="{{ ep.len }}"> · {{ ep.len }}</sc-if></span></p>
+<div class="plats" style="margin-top: 18px"><button class="tv_play" onClick="{{ play }}"><svg width="11" height="13" viewBox="0 0 11 13" aria-hidden="true"><path d="M0 0l11 6.5L0 13z" fill="currentColor"></path></svg>Play episode</button><sc-for list="{{ plats }}" as="p"><a class="plat" href="{{ p.href }}" target="_blank" rel="noopener">{{ p.t }}<span aria-hidden="true">↗</span></a></sc-for></div>
+</div>
+</div></section>
+<sc-if value="{{ ep.video }}"><section class="vid" aria-label="Episode video"><a class="vid_btn" href="{{ ep.video }}" target="_blank" rel="noopener"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1l10 6-10 6z" fill="#0E0E0D"></path></svg><span>Watch the episode</span></a></section></sc-if>
+<section class="sec"><div class="wrap about">
+<div class="about_l">
+<p class="eyebrow">About this episode</p>
+<sc-if value="{{ pq.text }}"><blockquote class="pq">“{{ pq.text }}”</blockquote><sc-if value="{{ pq.at }}"><button class="pq_play mono" onClick="{{ playQuote }}"><span aria-hidden="true">▶</span> Hear it at {{ pq.at }}</button></sc-if></sc-if>
+<div class="share mono"><span>Share</span><a href="{{ share.x }}" target="_blank" rel="noopener">X</a><a href="{{ share.li }}" target="_blank" rel="noopener">LinkedIn</a><a href="{{ share.fb }}" target="_blank" rel="noopener">Facebook</a><button onClick="{{ copy }}">{{ copyLabel }}</button></div>
+</div>
+<div class="about_r">
+<div class="body ep_body"><p>{{ ep.sum }}</p></div>
+<sc-if value="{{ hasChapters }}"><h2 class="list_h">In this episode</h2><ol class="chap"><sc-for list="{{ chapters }}" as="c"><li><button onClick="{{ c.go }}"><span class="mono">{{ c.at }}</span><span>{{ c.t }}</span><span class="chap_go" aria-hidden="true">▶</span></button></li></sc-for></ol></sc-if>
+<sc-if value="{{ trHtml }}"><button class="tr_btn mono" onClick="{{ toggleTr }}" aria-expanded="{{ trOpenS }}">{{ trLabel }}</button><sc-if value="{{ trOpen }}"><x-rich class="tr" html="{{ trHtml }}"></x-rich></sc-if></sc-if>
+</div>
+</div></section>
+<section class="show"><div class="wrap show_grid">
+<div class="art" style="background: {{ show.bg }}; position: relative; overflow: hidden" aria-label="{{ show.name }} cover"><sc-if value="{{ show.art }}"><img class="ph_img" src="{{ show.art }}" alt="" loading="lazy"></sc-if></div>
+<div><p class="eyebrow">About the show</p><h2 class="show_n">{{ show.name }}</h2></div>
+<div><p class="body" style="margin-top: 0">{{ show.tag }}</p><p class="mono" style="font-size: 10.5px; color: #5C5952; margin: 18px 0 22px">{{ show.count }}<sc-if value="{{ show.sched }}"> · {{ show.sched }}</sc-if></p><a class="btn" href="{{ show.href }}">All episodes</a></div>
+</div></section>
+<sc-if value="{{ hasMore }}"><section class="sec"><div class="wrap">
+<h2 class="h3" style="margin-bottom: clamp(24px, 2.4vw, 36px)">More from {{ show.name }}</h2>
+<div class="eps"><sc-for list="{{ more }}" as="e"><div class="ep">
+<div class="art art_sm" style="background: {{ show.bg }}; position: relative; overflow: hidden"><sc-if value="{{ show.art }}"><img class="ph_img" src="{{ show.art }}" alt="" loading="lazy"></sc-if></div>
+<div class="ep_d"><b class="mono">{{ e.title }}</b><span class="mono">{{ show.name }}</span><span class="mono ep_date">{{ e.date }}<sc-if value="{{ e.len }}"> · {{ e.len }}</sc-if></span></div>
+<span class="mono ep_no">{{ e.n }}</span><span></span><span></span>
+<span class="ep_links"><a class="btn" href="{{ e.href }}">View episode</a><button class="btn" onClick="{{ e.play }}">Play</button></span>
+</div></sc-for></div>
+<div style="display: flex; justify-content: center; margin-top: clamp(28px, 3vw, 44px)"><a class="btn" href="{{ show.href }}">See show</a></div>
+</div></section></sc-if>
+<section style="padding-bottom: clamp(90px, 10vw, 150px)"><div class="wrap">
+<h2 class="h3">Explore other shows</h2><hr class="rule" style="margin: clamp(20px, 2vw, 30px) 0 clamp(24px, 2.4vw, 36px)">
+<div class="shows"><sc-for list="{{ shows }}" as="s"><a class="tile" href="{{ s.href }}" style="background: {{ s.bg }}; color: {{ s.fg }}; position: relative; overflow: hidden"><sc-if value="{{ s.art }}"><img class="ph_img" src="{{ s.art }}" alt="{{ s.name }}" loading="lazy"></sc-if><sc-if value="{{ s.noArt }}"><span class="tile_t">{{ s.name }}</span></sc-if></a></sc-for></div>
+</div></section>
+"""
+
+
+def episode_markup(b):
+    return after_nav(b, EPISODE_BODY)
+
+
+def episode_engine(e):
+    i, j = e.index('  componentDidMount() {'), e.rindex('}')
+    return e[:i] + """  st() { return this.state || {}; }
+  sec(a) { return String(a || '0').split(':').reduce((v, n) => v * 60 + +n, 0); }
+  renderVals() {
+    const D = this.props.data, s = this.st(), ep = D.ep.player;
+    const playAt = (at) => { const x = Object.assign({}, ep); if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('alpha:play', { detail: x })); if (at && typeof window !== 'undefined') setTimeout(() => { const a = document.querySelector('audio'); if (a) a.currentTime = at; }, 400); };
+    return {
+      show: D.show, ep: D.ep, plats: D.plats, pq: D.pq, share: D.share,
+      play: () => playAt(0), playQuote: () => playAt(this.sec(D.pq.at)),
+      hasChapters: D.chapters.length > 0, chapters: D.chapters.map((c) => ({ at: c.at, t: c.t, go: () => playAt(this.sec(c.at)) })),
+      trHtml: D.trHtml, trOpen: !!s.tr, trOpenS: s.tr ? 'true' : 'false', trLabel: s.tr ? 'Hide transcript' : 'Read the full transcript', toggleTr: () => this.setState({ tr: !s.tr }),
+      copy: () => { try { navigator.clipboard.writeText(location.href); } catch (err) {} this.setState({ copied: true }); setTimeout(() => this.setState({ copied: false }), 1600); },
+      copyLabel: s.copied ? 'Copied' : 'Copy link',
+      hasMore: D.more.length > 0, more: D.more.map((m) => Object.assign({}, m, { play: () => { if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('alpha:play', { detail: m.ep })); } })),
+      shows: D.shows
+    };
+  }
+""" + e[j:]
+
+
+PAGES = {
+    # name: route dir, board, options
+    'About': dict(dir='about', board='About', markup=about_markup, engine=about_engine, css=IMG_CSS + '.ex_i{position:relative;overflow:hidden}'),
+    'Pathway': dict(dir='how-it-works', board='Pathway'),
+    'Talk': dict(dir='talk', board='Talk', markup=talk_markup, engine=talk_engine),
+    'Resources': dict(dir='resources', board='Resources'),
+    # 'Landing': campaign template, ported when the first campaign exists
+    'Legal': dict(dir='legal/[slug]', board='Legal', markup=legal_markup, engine=legal_engine),
+    'NotFound': dict(dir='_notfound', board='NotFound'),
+    'Team': dict(dir='team', board='Team', data=True, markup=team_markup, engine=team_engine, css=IMG_CSS),
+    'Dept': dict(dir='team/[dept]', board='Dept', data=True, markup=dept_markup, engine=dept_engine, css=IMG_CSS),
+    'Profile': dict(dir='team/[dept]/[person]', board='Profile', data=True, markup=profile_markup, engine=profile_engine, css=IMG_CSS),
+    'Newswire': dict(dir='newswire', board='Newswire', data=True, markup=newswire_markup, engine=newswire_engine, css=IMG_CSS),
+    'Article': dict(dir='newswire/[slug]', board='Article', markup=article_markup, engine=article_engine, css=IMG_CSS + '.ar_body img{max-width:100%;height:auto}'),
+    'Founder': dict(dir='founders/[slug]', board='Founder', data=True, markup=founder_markup, engine=founder_engine),
+    'Locations': dict(dir='locations', board='Locations', data=True, markup=locations_markup, engine=locations_engine, css=IMG_CSS),
+    'Location': dict(dir='locations/[slug]', board='Location', markup=location_markup, engine=location_engine, css=IMG_CSS),
+    'Podcasts': dict(dir='podcasts', board='Podcasts', data=True, markup=podcasts_markup, engine=podcasts_engine, css=PODCAST_CSS),
+    'Show': dict(dir='podcasts/[show]', board='Show', markup=show_markup, engine=show_engine, css=IMG_CSS),
+    'Episode': dict(dir='podcasts/[show]/[episode]', board='Episode', markup=episode_markup, engine=episode_engine, css=IMG_CSS),
+    # 'Speaker': ported when the Speakers collection has people in it
+    'Main': dict(dir='_home', board='Main', markup=main_markup, engine=main_engine, css=MAIN_CSS),
+}
+
+
+def find_block(s, start, tag):
+    """Index just past the element that opens at `start` (balanced on `tag`)."""
+    depth, i = 0, start
+    pat = re.compile(r'<(/?)' + tag + r'\b[^>]*?(/?)>', re.S)
+    for m in pat.finditer(s, start):
+        if m.group(2):
+            continue
+        depth += -1 if m.group(1) else 1
+        if depth == 0:
+            return m.end()
+    raise ValueError('unbalanced ' + tag)
+
+
+def cut(s, pattern, tag, repl=''):
+    """Remove (or replace) every element whose opening tag matches `pattern`."""
+    out = 0
+    while True:
+        m = re.search(pattern, s, re.S)
+        if not m:
+            return s, out
+        end = find_block(s, m.start(), tag)
+        r = repl(s[m.start():end]) if callable(repl) else repl
+        s = s[:m.start()] + r + s[end:]
+        out += 1
+
+
+def markup(name, body):
+    b = body
+    # outer motion wrapper
+    m = re.match(r'\s*<div ref="\{\{ moRoot \}\}"[^>]*>', b)
+    assert m, name + ': no moRoot wrapper'
+    b = b[m.end():]
+    i = b.find('<!-- ============ SITE MENU')
+    b = b[:i] if i >= 0 else b
+    b = b[:b.rindex('</div>')]
+    # nav -> <x-nav>, keeping anything under the nav row (crumbs)
+    def nav(h):
+        dark = ' dark' if 'dark_top' in h[:80] else ''
+        inner = re.sub(r'^<header[^>]*>', '', h)[:-len('</header>')]
+        inner = re.sub(r'\s*<div class="wrap"><nav class="nav".*?</nav></div>', '', inner, count=1, flags=re.S)
+        return '<x-nav' + dark + '>' + inner.strip() + '</x-nav>'
+    b, n = cut(b, r'<header class="b_top', 'header', nav)
+    has_nav = n > 0
+    b, _ = cut(b, r'<footer class="foot', 'footer')
+    b, _ = cut(b, r'<footer class="closer', 'footer')
+    b, closer = cut(b, r'<section class="closer', 'section')
+    b, _ = cut(b, r'<section[^>]*aria-label="Let', 'section') if False else (b, 0)
+    # links
+    ids = set(re.findall(r'\bid="([\w-]+)"', b))
+    def href(m):
+        h = m.group(1)
+        return 'href="' + (h if h[1:] in ids else HREF.get(h, h)) + '"'
+    b = re.sub(r'href="(#[\w-]+)"', href, b)
+    # board assets -> public files
+    def blob(m):
+        k = m.group(1)
+        assert k in ASSETS, name + ': unmapped asset ' + k
+        return ASSETS[k]
+    b = re.sub(r'/_blob/([0-9a-f]{32})', blob, b)
+    return b, has_nav, closer > 0
+
+
+def css_for(name, css, cls):
+    c = re.sub(r'@font-face\{[^}]*\}', '', css)
+    c = re.sub(r'/\* motion \(shared.*?/\* /motion \*/\n?', '', c, flags=re.S)
+    if '/* site menu (shared' in c:
+        i = c.index('/* site menu (shared')
+        m = re.search(r'/\* (overlay|motion|closer background|touch)', c[i + 10:])
+        j = i + 10 + m.start() if m else len(c)
+        c = c[:i] + c[j:]
+    c = re.sub(r'/\* closer background waits.*?(?=/\*|$)', '', c, flags=re.S)
+    c = re.sub(r'/_blob/([0-9a-f]{32})', lambda m: ASSETS.get(m.group(1), m.group(0)), c)
+    return scope_css(c, cls)
+
+
+def engine_for(name, js, cfg):
+    e = strip_injected(js)
+    e = e.replace('renderVals() { return Object.assign(this._rv(), this.mnVals(), this.moVals()); }', '')
+    e = e.replace('renderVals() { return Object.assign(this._rv(), this.moVals()); }', '')
+    for fn in ('moVals', 'mnVals', 'ctaVals'):
+        m = re.search(r'\n  ' + fn + r'\(\) \{', e)
+        if m:
+            k, depth = e.index('{', m.start()) + 1, 1
+            while depth:
+                depth += {'{': 1, '}': -1}.get(e[k], 0); k += 1
+            e = e[:m.start()] + e[k:]
+    if '_rv() {' in e:
+        e = e.replace('  _rv() {', '  renderVals() {', 1)
+    if cfg.get('data'):
+        m = re.search(r'\n  data\(\) \{', e)
+        assert m, name + ': no data() to swap'
+        k, depth = e.index('{', m.start()) + 1, 1
+        while depth:
+            depth += {'{': 1, '}': -1}.get(e[k], 0); k += 1
+        e = e[:m.start()] + '\n  data() { return this.props.data; }' + e[k:]
+    e = re.sub(r'/_blob/([0-9a-f]{32})', lambda m: ASSETS.get(m.group(1), m.group(0)), e)
+    e = re.sub(r"(['\"])(#[\w-]+)\1", lambda m: m.group(1) + HREF.get(m.group(2), m.group(2)) + m.group(1), e)
+    if cfg.get('engine'):
+        e = cfg['engine'](e)
+    cname = name + 'Engine'
+    assert 'class Component extends DCLogic {' in e, name
+    e = e.replace('class Component extends DCLogic {', 'export class ' + cname + ' extends DCLogic {', 1)
+    for bad in ('mnVals', 'ctaVals', 'moVals', 'moRoot'):
+        assert bad not in e, name + ': leftover ' + bad
+    return "// @ts-nocheck\n/* Generated from design/boards/" + cfg['board'] + ".dc.html by tools/port/port_pages.py. */\nimport { DCLogic } from '@/lib/dc'\n\n" + e.strip() + '\n', cname
+
+
+def port(name):
+    cfg = PAGES[name]
+    t = open(f"{ROOT}/design/boards/{cfg['board']}.dc.html").read()
+    css = re.search(r'<style>(.*?)</style>', t, re.S).group(1)
+    body = t[t.index('</helmet>') + 9:t.rindex('</x-dc>')]
+    js = re.search(r'data-dc-script[^>]*>(.*?)</script>', t, re.S).group(1)
+    slug = re.sub(r'[^a-z0-9]+', '-', name.lower())
+    cls = 'pg-' + slug
+    b, has_nav, closer = markup(name, body)
+    hook = cfg.get('markup')  # noqa
+    if hook:
+        b = hook(b)
+    jsx = convert(b)
+    assert 'moRoot' not in jsx and 'mnOpen' not in jsx, name + ': chrome left in markup'
+    scss = css_for(name, css + cfg.get('css', ''), cls)
+    eng, cname = engine_for(name, js, cfg)
+    d = APP + cfg['dir'] + ('/' if cfg['dir'] else '')
+    os.makedirs(d, exist_ok=True)
+    view = f"""'use client'
+/* Generated from design/boards/{cfg['board']}.dc.html by tools/port/port_pages.py. Edit the board or the porter, not this file. */
+import React from 'react'
+import {{ Nav }} from '@/components/site/Nav'
+import {{ useDC }} from '@/lib/dc'
+import {{ {cname} }} from './engine'
+import './page.css'
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default function {name}View(props: any) {{
+  const v = useDC({cname}, props)
+  return (
+    <div className="{cls}">
+{jsx}
+    </div>
+  )
+}}
+"""
+    open(d + name + 'View.tsx', 'w').write(view)
+    open(d + 'page.css', 'w').write(scss)
+    open(d + 'engine.ts', 'w').write(eng)
+    return dict(name=name, dir=d, closer=closer, nav=has_nav, view=len(view), css=len(scss), engine=len(eng))
+
+
+if __name__ == '__main__':
+    names = sys.argv[1:] or list(PAGES)
+    for n in names:
+        r = port(n)
+        print(f"{n:10} closer={r['closer']!s:5} nav={r['nav']!s:5} view={r['view']:>6} css={r['css']:>6} engine={r['engine']:>6}")

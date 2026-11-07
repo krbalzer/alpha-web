@@ -7,9 +7,9 @@ import { buildConfig } from 'payload'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
-import { Articles, Network, Resources } from './collections/content'
+import { Articles, Leads, Legal, Network, Resources } from './collections/content'
 import { Media } from './collections/Media'
-import { Brands, CtaImages, Founders, Locations } from './collections/network'
+import { Brands, CtaImages, Founders, Locations, TuckIns } from './collections/network'
 import { Episodes, Shows, Speakers, Tags } from './collections/podcast'
 import { Departments, Team } from './collections/team'
 import { Users } from './collections/Users'
@@ -32,13 +32,15 @@ export default buildConfig({
   },
   collections: [
     // network
-    Brands, Locations, Founders, CtaImages,
+    Brands, Locations, TuckIns, Founders, CtaImages,
     // alpha team
     Departments, Team,
     // podcasts
     Shows, Episodes, Speakers, Tags,
     // content
-    Articles, Resources,
+    Articles, Resources, Legal,
+    // inbox
+    Leads,
     // system
     Media, Users,
   ],
@@ -53,7 +55,7 @@ export default buildConfig({
   plugins: [
     vercelBlobStorage({
       enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
-      collections: { media: true },
+      collections: { media: { disablePayloadAccessControl: true } }, // files served straight from the Blob CDN, not proxied through a function
       alwaysInsertFields: true, // same schema with or without the token, so migrations never drift
       token: process.env.BLOB_READ_WRITE_TOKEN || '',
     }),

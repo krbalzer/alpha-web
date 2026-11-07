@@ -35,6 +35,9 @@ importers:
       graphql:
         specifier: ^16.8.1
         version: 16.14.2
+      mapbox-gl:
+        specifier: 3.34.1
+        version: 3.34.1
       next:
         specifier: 16.3.3
         version: 16.3.3(@babel/core@7.29.7)(@playwright/test@1.63.0)(@types/node@22.19.9)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(sass@1.77.4)
@@ -3238,6 +3241,9 @@ packages:
 
   magic-string@0.30.21:
     resolution: {integrity: sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==}
+
+  mapbox-gl@3.34.1:
+    resolution: {integrity: sha512-r4UbcZyEljltuMkMoHhwBSpbWnflHKFBUAfhvjEGxlR2mBjNxI0OBFzrr4AlbHsXnMVPMCWAvdHD5HWtMThWPg==}
 
   marked@14.0.0:
     resolution: {integrity: sha512-uIj4+faQ+MgHgwUW1l2PsPglZLOLOT1uErt06dAPtx2kjteLAkbsd/0FiYg/MGS+i7ZKLb7w2WClxHkzOOuryQ==}
@@ -7707,6 +7713,8 @@ snapshots:
   magic-string@0.30.21:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.6.0
+
+  mapbox-gl@3.34.1: {}
 
   marked@14.0.0: {}
 

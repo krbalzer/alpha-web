@@ -142,6 +142,15 @@ export function SiteProvider({ children, net, latest }: { children: React.ReactN
     load(e, at ?? 0)
   }
 
+  // board templates (ported DC logic) start playback with: window.dispatchEvent(new CustomEvent('alpha:play', { detail: ep }))
+  const playRef = useRef(play)
+  playRef.current = play
+  useEffect(() => {
+    const on = (ev: Event) => { const e = (ev as CustomEvent<Ep>).detail; if (e && e.audio) playRef.current(e) }
+    window.addEventListener('alpha:play', on)
+    return () => window.removeEventListener('alpha:play', on)
+  }, [])
+
   // body flag so the mobile dock reserves space
   useEffect(() => { document.body.classList.toggle('has-mpp', !!ep) }, [ep])
 

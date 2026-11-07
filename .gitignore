@@ -54,3 +54,5 @@ node_modules/
 *.db
 *.db-journal
 /media
+__pycache__/
+/.video-cache

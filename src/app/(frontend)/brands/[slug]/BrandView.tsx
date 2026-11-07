@@ -6,23 +6,24 @@ import { Nav } from '@/components/site/Nav'
 import { useDC } from '@/lib/dc'
 import type { BrandData } from '@/lib/data'
 import { BrandEngine } from './engine'
+import { MapboxStage, hasMapbox } from './MapboxStage'
 import './brand.css'
 
 export default function BrandView({ brand }: { brand: BrandData }) {
-  const v = useDC(BrandEngine, { brand, singleLocation: false })
+  const v = useDC(BrandEngine, { brand, singleLocation: false, mapbox: hasMapbox })
   return (
     <div className="pg-brand">
 <Nav><div className="crumb"><div className="wrap"><span>{v.b.ptr}</span><span>{v.b.name}</span><span>{v.b.sinceLine}</span></div></div></Nav>
 
 {/* ============ HERO: silent loop, everything pinned to the bottom of the fold ============ */}
 <section className="hero dark" style={{"height": `${v.heroH}`}} aria-label={v.b.name}>
-{v.hasVideo ? (<><video className="hero_vid" src={v.b.heroVideo} poster={v.b.heroPoster} autoPlay muted loop playsInline aria-hidden="true"></video></>) : null}{v.posterOnly ? (<><img className="hero_vid" src={v.b.heroPoster} alt="" aria-hidden="true" fetchPriority="high" /></>) : null}{v.noMedia ? (<><div className="hero_media" aria-hidden="true"></div></>) : null}
+{v.hasVideo ? (<><video className="hero_vid" ref={v.vidRef} poster={v.b.heroPoster || undefined} autoPlay muted loop playsInline preload="auto" disablePictureInPicture aria-hidden="true">{v.b.hero.av1 ? <source src={v.b.hero.av1} type={'video/mp4; codecs="av01.0.08M.08"'} /> : null}{v.b.hero.small ? <source src={v.b.hero.small} type="video/mp4" media="(max-width: 820px)" /> : null}<source src={v.b.hero.src || v.b.heroVideo} type="video/mp4" /></video></>) : null}{v.posterOnly ? (<><img className="hero_vid" src={v.b.heroPoster} alt="" aria-hidden="true" fetchPriority="high" /></>) : null}{v.noMedia ? (<><div className="hero_media" aria-hidden="true"></div></>) : null}
 <div className="hero_shade" aria-hidden="true"></div>
 <div className="hero_in wrap">
 <span className="pill">{v.b.ptr}</span>
 <h1 className="h1">{v.b.name}</h1>
 <div className="hero_meta">
-<p className="addr">{v.addrLine}<br />{v.metaLine}</p>
+<p className="addr">{v.metaLine}</p>
 <div className="marks">
 <span className="amark" role="img" aria-label="Alpha partner"></span>
 {v.b.logo ? (<><img className="logo_img" src={v.b.logo} alt={v.b.name} /></>) : null}
@@ -30,14 +31,14 @@ export default function BrandView({ brand }: { brand: BrandData }) {
 <span className="est"><small>EST</small>{v.b.est}</span>
 </div>
 <span className="spacer"></span>
-<Link className="btn hero_cta" href="/talk">Let's talk</Link>
+<div className="hero_ctas">{v.b.book ? (<><a className="btn" href={v.b.book} target="_blank" rel="noopener">Book at {v.b.short}<span className="ext" aria-hidden="true">↗</span></a></>) : null}<Link className="btn" href="/talk">Partner with Alpha</Link></div>
 </div>
 </div>
 </section>
 
 {/* ============ MAP: pin per location, carousel when there are more than one ============ */}
 <section className="map dark" ref={v.setMap} aria-label="Locations">
-<canvas className="map_cv" ref={v.setCanvas} aria-hidden="true"></canvas>
+{hasMapbox ? <MapboxStage locs={brand.locations} idx={v.idx} /> : null}<canvas className="map_cv" ref={v.setCanvas} aria-hidden="true"></canvas>
 <div className="map_fade" aria-hidden="true"></div>
 <div className="map_rule wrap"><hr /></div>
 <div className={v.routeCls} aria-hidden="true">{v.route.from}<b>→</b>{v.route.to}<b>/</b>{v.route.mi}</div>
@@ -81,7 +82,7 @@ export default function BrandView({ brand }: { brand: BrandData }) {
 <hr className="rule" />
 <div className="bar"><span>{v.b.ptr}</span><span>{v.b.short} story</span></div>
 <div className="film">
-{v.b.filmPoster ? (<><img className="fill" src={v.b.filmPoster} alt="" loading="lazy" /></>) : null}
+{v.b.filmPoster ? (<><img className="fill" src={v.b.filmPoster} alt="" loading="lazy" decoding="async" /></>) : null}
 <button className="play" onClick={v.playFilm} aria-label={`Play the ${v.b.short} story`}><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1l10 6-10 6z" fill="#0E0E0D"></path></svg></button>
 </div>
 {v.b.filmCaption ? (<><div className="body" style={{"marginTop": "clamp(28px, 3vw, 44px)"}}><p>{v.b.filmCaption}</p></div></>) : null}
@@ -91,7 +92,7 @@ export default function BrandView({ brand }: { brand: BrandData }) {
 {/* ============ STATS ============ */}
 {v.hasStats ? (<><section style={{"paddingBottom": "clamp(90px, 10vw, 160px)"}}>
 <div className="wrap">
-<div className="stats">
+<div className="stats" ref={v.setStats}>
 {(v.stats || []).map((s: any, s_i: number) => (<React.Fragment key={s_i}>
 <div className="stat">
 <span className="stat_k">{s.k}</span>
@@ -103,6 +104,27 @@ export default function BrandView({ brand }: { brand: BrandData }) {
 </div>
 </div>
 </section></>) : null}
+
+{/* ============ LOCATIONS INDEX: only for multi-location brands ============ */}
+{v.multi ? (<>
+<section style={{"paddingBottom": "clamp(90px, 10vw, 160px)"}}>
+<div className="wrap">
+<div className="lx_head"><h2 className="h3">{v.locHead}</h2><span className="eyebrow" style={{"margin": "0"}}>{v.locCount}</span></div>
+<div className="lx_wrap">
+<div className={v.lxCls} ref={v.setLx}>
+{(v.locRows || []).map((l: any, l_i: number) => (<React.Fragment key={l_i}>
+<a className="lx" href={l.href}>
+<span className="lx_n">{l.n}</span>
+<span className="lx_t"><span className="lx_c"><span className="lx_ci" style={{"transitionDelay": `${l.d}`}}>{l.city}</span></span><span className="lx_a" style={{"transitionDelay": `${l.d2}`}}>{l.addr}</span></span>
+<span className="lx_go" aria-hidden="true"><svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5h10M7 1l4 4-4 4" stroke="currentColor" fill="none" strokeWidth="1.2"></path></svg></span>
+</a>
+</React.Fragment>))}
+</div>
+<div className="lx_prev" aria-hidden="true">{(v.locRows || []).map((l: any, l_i: number) => (<React.Fragment key={l_i}><div className="lx_pv" style={{"background": `${l.bg}`}}><span>{l.n} / {l.city}</span></div></React.Fragment>))}</div>
+</div>
+</div>
+</section>
+</>) : null}
 
 {/* ============ FOUNDER ============ */}
 {v.b.founder ? (<><section style={{"paddingBottom": "clamp(90px, 10vw, 160px)"}}>

@@ -47,6 +47,8 @@ button{font:inherit;color:inherit}
 @keyframes kb{from{transform:scale(1) translate(0,0)}to{transform:scale(1.08) translate(-1.5%,-1%)}}
 .hero_shade{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(21,21,19,0) 30%,rgba(21,21,19,.55) 66%,var(--map) 100%)}
 .hero_ph{position:absolute;top:24px;right:clamp(16px,4.5vw,64px)}
+.hero_vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
 .hero_in{position:relative;width:100%;padding-bottom:clamp(28px,3.4vw,52px)}
 .pill{display:inline-flex;align-items:center;height:28px;padding:0 13px;border:1px solid rgba(232,228,218,.7);border-radius:999px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em}
 .h1{font-family:var(--disp);font-weight:900;text-transform:uppercase;font-size:clamp(46px,6.3vw,124px);line-height:.86;letter-spacing:-.005em;margin:clamp(14px,1.3vw,20px) 0 clamp(16px,1.6vw,24px);text-box:trim-both cap alphabetic}
@@ -154,7 +156,30 @@ button{font:inherit;color:inherit}
 .crumb.loc .wrap span:nth-child(4){visibility:hidden}
 .hero_ctas{display:flex;gap:8px;justify-self:end;flex-wrap:wrap}
 .btn .ext{font-size:12px;margin-left:2px}
-.inside_head{margin-bottom:clamp(26px,2.6vw,40px)}
+.inside_head{margin-bottom:clamp(36px,3.6vw,56px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:start}
+.inside_story{max-width:34rem}
+.draft{display:inline-block;font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border:1px dashed currentColor;padding:3px 7px 2px;margin:0 0 14px}
+.visit{padding:clamp(48px,5vw,72px) 0 0}
+.visit_in{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) auto;gap:clamp(20px,2.4vw,40px);align-items:start}
+.visit .eyebrow{margin-bottom:12px}
+.v_t{font-size:13px;line-height:1.55;margin:0;max-width:22ch}
+.v_t a{color:inherit;text-decoration:none}
+.v_link{display:inline-block;margin-top:10px;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line)}
+.v_rows{font-size:13px;line-height:1.55}
+.v_rows div{display:flex;justify-content:space-between;gap:16px;max-width:15rem}
+.v_rows span{color:var(--muted)}
+.v_rows b{font-weight:400}
+.v_cta{justify-self:end;align-self:end}
+.since{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:start}
+.since .sub{margin-bottom:14px}
+.ms{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.ms li{display:grid;grid-template-columns:7.5rem minmax(0,1fr);gap:16px;padding:16px 0;border-bottom:1px solid var(--line)}
+.ms span{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+.ms p{margin:0;font-size:15px;line-height:1.5}
+.ms_q{margin:clamp(30px,3vw,44px) 0 0}
+.ms_q blockquote{margin:0;font-family:var(--h3);font-weight:700;font-size:clamp(20px,1.8vw,26px);line-height:1.2;letter-spacing:-.01em}
+@media (max-width:980px){.visit_in{grid-template-columns:repeat(2,minmax(0,1fr))}.v_cta{justify-self:start}}
+@media (max-width:820px){.inside_head,.since{grid-template-columns:1fr}.ms li{grid-template-columns:5.5rem minmax(0,1fr)}}
 .sub{font-size:13px;color:var(--muted);margin:10px 0 0}
 .gal{display:grid;gap:12px}
 .gal.two{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -165,6 +190,15 @@ button{font:inherit;color:inherit}
 .gal.three .img{aspect-ratio:.86/1}
 .cap{margin-top:12px;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
 .cap b{color:var(--ink);font-weight:700;margin-right:6px}
+.leads{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(20px,3vw,48px);margin-top:clamp(30px,3vw,48px);border-top:1px solid var(--line)}
+.lead{display:grid;grid-template-columns:clamp(88px,8vw,120px) minmax(0,1fr);gap:clamp(18px,2vw,28px);align-items:center;padding:clamp(22px,2.2vw,32px) 0;text-decoration:none;color:inherit}
+.lead .prov_img{width:100%;margin:0}
+.lead_t{display:flex;flex-direction:column;gap:4px}
+.lead_t b{font-family:var(--h3);font-weight:700;font-size:clamp(20px,1.7vw,26px);line-height:1.1;letter-spacing:-.01em}
+.lead_r,.lead_c,.lead_go{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.lead_go{margin-top:8px;color:var(--ink);transition:transform .35s var(--ease)}
+.lead:hover .lead_go{transform:translateX(4px)}
+@media (max-width:820px){.leads{grid-template-columns:1fr}.lead+.lead{border-top:1px solid var(--line)}}
 .team{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:clamp(28px,3vw,44px) clamp(16px,2vw,28px);margin-top:clamp(30px,3vw,48px)}
 .prov{text-align:center;font-family:var(--mono);font-size:10.5px;line-height:1.5;letter-spacing:.03em;text-transform:uppercase}
 .prov_img{width:min(100%,128px);aspect-ratio:1;border-radius:50%;margin:0 auto 16px;overflow:hidden;background:#C9C3B8;border:1px solid var(--line);display:grid;place-items:center;font-family:var(--disp);font-weight:900;font-size:26px;color:rgba(14,14,13,.35)}
@@ -250,10 +284,111 @@ button{font:inherit;color:inherit}
 @media (prefers-reduced-motion:reduce){.cta_bg{animation:none;opacity:1;transform:scale(1.12)}}
 .closer_media::after{z-index:1}
 .closer_media>h2{position:relative;z-index:2}.closer_media>.lock{z-index:2}
+
+/* closer: lockup centered, CTA under it */
+.closer_media{justify-content:center;padding-top:0}
+.closer_media>.lock{position:relative;left:auto;top:auto;transform:none}
+.closer_media>.btn{margin-top:clamp(22px,2.2vw,32px)}
+
+
+.card_img:has(img),.prac_img:has(img){padding:0;overflow:hidden}
+.card_img img,.prac_img img{width:100%;height:100%;object-fit:cover;display:block}
+
+.pair{display:inline-flex;align-items:center;gap:10px}
+.pair i{display:block;width:1px;height:18px;background:currentColor;opacity:.4}
+/* partner marks + state flags (masked, take currentColor) */
+.bmark{display:inline-block;flex:0 0 auto;height:26px;aspect-ratio:var(--ar,1);background:currentColor;-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat}
+.state:is(.s-CA,.s-CO,.s-DE,.s-FL,.s-KY,.s-MA,.s-NM,.s-NH,.s-NC,.s-NY,.s-OH,.s-VA){border:0;font-size:0;background:currentColor;-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat}
+.b-001{--m:url(/_blob/acd758d2c7d28315fa698dbe9ec586a4);--ar:1.0}
+.b-002{--m:url(/_blob/bf0cb09e099ffd08e157c7a2527b15d4);--ar:4.1729}
+.b-003{--m:url(/_blob/07d6f47cf04c5b870d08c19fa405707c);--ar:1.0}
+.b-005{--m:url(/_blob/6c3dcd041432729a9e78c6149fb45208);--ar:0.6843}
+.b-006{--m:url(/_blob/11fbe015cfb3fcfcd247c3ad2077da5b);--ar:1.4658}
+.b-007{--m:url(/_blob/0ccb40da91f47ad8a407ce8a848d0b91);--ar:1.0}
+.b-008{--m:url(/_blob/ca83c659da266b70ecee710da39049b6);--ar:1.4291}
+.b-009{--m:url(/_blob/977a1e28842c7d0f1ceaf158d7508117);--ar:1.0}
+.b-010{--m:url(/_blob/36bfaaba5b556cdc3a1bacb6332ec4e9);--ar:3.3176}
+.b-012{--m:url(/_blob/bd38895f64cedccb4f3a4f4880cf0e2e);--ar:1.0935}
+.b-013{--m:url(/_blob/61c4a276b75d751e772edb7967178138);--ar:1.3213}
+.b-014{--m:url(/_blob/3338152bcddce0a2936289bcc6c757f6);--ar:2.7449}
+.b-015{--m:url(/_blob/bb52fb236297e65167cc48c9b7bcb464);--ar:1.2903}
+.b-016{--m:url(/_blob/7d9fc18ce1e5d3c17694677090383529);--ar:1.3014}
+.s-CA{--m:url(/_blob/5c2f783b104265b2c6e9562f3eb4f621)}
+.s-CO{--m:url(/_blob/665cf124e8d188f0e1b4e2ca99e77e2c)}
+.s-FL{--m:url(/_blob/bae0b6be719992cdd9892d52c36d04d8)}
+.s-KY{--m:url(/_blob/6e4190e3ab8ef90d1e919116e7078896)}
+.s-MA{--m:url(/_blob/bdf586eddbc7ef6132f6d55fd4b419b2)}
+.s-NM{--m:url(/_blob/ae40483b705fad39169507edfbaa5e10)}
+.s-NH{--m:url(/_blob/f32aa0c65e959e9336129660ebe1f0f5)}
+.s-NC{--m:url(/_blob/f57f5aca62e663ce2a61b96c79039011)}
+.s-OH{--m:url(/_blob/655561b57b4d7f83885092cd9602941d)}
+.s-VA{--m:url(/_blob/edd291f97a4b9dcf1cb54005db25b79b)}
+.s-NY{--m:url(/_blob/9f1d94c76e661935ebb5182369b414bf)}
+.s-DE{--m:url(/_blob/d71613cf8f128140ab5b526aa892a46e)}
+/* motion (shared system, see motion_inject.py). Reveal once, fast, no bounce. */
+:root{--mo-e:cubic-bezier(.16,1,.3,1)}
+[data-mo] :is(h1,h2,.h1,.h2,.h3,.display,.tv_t,.pg_h,blockquote):not([data-mo-in]):not(:is(.b_top,.mn,.pp,.mpp,.map,.lx_list,.closer_tags,.demo_bar,.crumb) *){clip-path:inset(-.25em -.25em 100% -.25em);transform:translateY(.28em)}
+[data-mo] :is(.eyebrow,.pill,.lede,.body,.sub,.addr,.marks,.hero_ctas,.hero_cta,.stat,.chiprow,.field,.qual,.role,.ms li,.lead,.v_col,.v_cta,.foot_links,.foot_meta,figcaption,.closer_media>.btn,.cta_cr,.lock):not([data-mo-in]):not(:is(.b_top,.mn,.pp,.mpp,.map,.lx_list,.closer_tags,.demo_bar,.crumb) *){opacity:0;transform:translateY(12px)}
+[data-mo] :is(.img,.founder_img,.film,.card_img,figure>img):not([data-mo-in]):not(:is(.b_top,.mn,.pp,.mpp,.map,.lx_list,.closer_tags,.demo_bar,.crumb) *){opacity:0;clip-path:inset(4% 3% 4% 3%)}
+[data-mo] :is(.img,.founder_img,.film,.card_img):not([data-mo-in]):not(:is(.b_top,.mn,.pp,.mpp,.map,.lx_list,.closer_tags,.demo_bar,.crumb) *) img{transform:scale(1.06)}
+[data-mo] .rule:not([data-mo-in]):not(:is(.b_top,.mn,.pp,.mpp,.map,.demo_bar) *){transform:scaleX(0);transform-origin:0 50%}
+[data-mo-in="1"]{transition:opacity .45s var(--mo-e) var(--mo-d,0ms),transform .6s var(--mo-e) var(--mo-d,0ms),clip-path .65s var(--mo-e) var(--mo-d,0ms)!important;transform-origin:0 50%}
+[data-mo-in="1"]:is(h1,h2,.h1,.h2,.h3,.display,.tv_t,.pg_h,blockquote){clip-path:inset(-.25em -.25em -.25em -.25em)}
+[data-mo-in="1"]:is(.img,.founder_img,.film,.card_img,figure>img){clip-path:inset(0 0 0 0)}
+[data-mo-in="1"] img{transition:transform .9s var(--mo-e) var(--mo-d,0ms)}
+/* closer background waits until it is on screen */
+[data-mo] .closer_media:not([data-mo-in]) .cta_bg{animation-play-state:paused}
+/* touch: quick press feedback, slow image settle on linked media */
+.btn,.tv_play{transition:background .2s,color .2s,transform .15s var(--mo-e)}
+.btn:active,.tv_play:active{transform:scale(.97)}
+a .img img,a .card_img img,a.card img{transition:transform .7s var(--mo-e)}
+a:hover .img img,a:hover .card_img img{transform:scale(1.025)}
+@media (prefers-reduced-motion:reduce){[data-mo] *{clip-path:none!important}}
+/* /motion */
+/* ---------- map as hero (no loop, no photos) ---------- */
+.map.is-hero .carousel,.map.is-hero .map_note,.map.is-hero .map_link,.map.is-hero .route,.map.is-hero .map_rule{display:none}
+.map.is-hero .map_fade{background:linear-gradient(to bottom,rgba(21,21,19,.4) 0%,rgba(21,21,19,0) 20%,rgba(21,21,19,0) 48%,rgba(21,21,19,.85) 84%,var(--map) 100%)}
+.map.is-hero .pin,.map.is-hero .pin_dot{top:40%}
+.map_hin{position:absolute;left:0;right:0;bottom:0;margin:0 auto;z-index:3}
+.map_hph{position:absolute;top:24px;right:clamp(16px,4.5vw,64px);z-index:3}
+/* ---------- REVIEWS: synced from Google Business Profile nightly, auto-picked ---------- */
+.rv_head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:32px;align-items:end;margin-bottom:clamp(28px,3vw,44px)}
+.rv_head .sub{max-width:30rem}
+.rv_agg{display:grid;grid-template-columns:auto auto;column-gap:16px;align-items:end;text-align:left}
+.rv_n{font-family:var(--disp);font-weight:900;font-size:clamp(48px,5vw,76px);line-height:.86;font-variant-numeric:tabular-nums;grid-row:span 2}
+.rv_c{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.rv_all{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:2px;justify-self:start;margin-top:6px}
+.rv{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.rv_i{margin:0;padding:clamp(22px,2.2vw,32px) clamp(18px,2vw,28px) clamp(20px,2vw,28px);display:flex;flex-direction:column;gap:14px;border-left:1px solid var(--line);border-top:1px solid var(--line)}
+.rv_i.rv_top{grid-column:span 2;grid-row:span 2;border-left:0;border-top:0;padding-left:0;justify-content:space-between}
+.rv_i:nth-child(2),.rv_i:nth-child(3){border-top:0}
+.rv_i:nth-child(4){border-left:0;padding-left:0}
+.rv_i:nth-child(5):last-child{grid-column:span 2}
+.rv.three .rv_i{border-top:0}.rv.three .rv_i:first-child{border-left:0;padding-left:0}
+.rv_tag{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.rv_i blockquote{margin:0;font-size:15px;line-height:1.5;color:#2E2C28}
+.rv_i.rv_top blockquote{font-family:var(--h3);font-weight:700;font-size:clamp(22px,2vw,30px);line-height:1.2;letter-spacing:-.01em;color:var(--ink);max-width:22em}
+.rv_f{display:flex;justify-content:space-between;gap:12px;margin-top:auto;font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.rv_f b{font-weight:700;color:var(--ink)}
+.rv_s{letter-spacing:.14em;color:var(--ink)}
+.rv_note{display:inline-block;font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border:1px dashed currentColor;padding:3px 7px 2px;margin:16px 0 0}
+.rv_i blockquote{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:5;overflow:hidden}
+.rv_i.rv_top blockquote{-webkit-line-clamp:6}
+.rv_i:has(.rv_x:checked) blockquote{-webkit-line-clamp:unset;display:block}
+.rv_more{align-self:flex-start;margin-top:-4px;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);border-bottom:1px solid var(--line);padding-bottom:2px;cursor:pointer;user-select:none}
+.rv_more input{position:absolute;opacity:0;pointer-events:none}
+.rv_more:has(input:focus-visible){outline:1px solid var(--ink);outline-offset:3px}
+.rv_more .rv_l{display:none}.rv_more:has(input:checked) .rv_m{display:none}.rv_more:has(input:checked) .rv_l{display:inline}
+.rv_agg .rv_n{grid-row:span 3}
+.rv_st{position:relative;display:inline-block;font-size:15px;line-height:1;letter-spacing:.12em;color:var(--line);align-self:end;margin-bottom:6px}
+.rv_st::before{content:"★★★★★"}
+.rv_st i{position:absolute;inset:0 auto 0 0;overflow:hidden;white-space:nowrap;color:var(--ink);font-style:normal}
+.rv_st i::before{content:"★★★★★"}
+@media (max-width:820px){.rv_head{grid-template-columns:1fr}.rv,.rv.three{grid-template-columns:1fr}.rv_i,.rv_i.rv_top{grid-column:auto;grid-row:auto;border-left:0;padding-left:0;padding-right:0;border-top:1px solid var(--line)}.rv_i.rv_top{border-top:0}.rv_i:nth-child(n+5){display:none}.rv .rv_i:nth-child(n+2){border-top:1px solid var(--line)}.rv.three .rv_i+.rv_i{border-top:1px solid var(--line)}}
 </style>
 </helmet>
 
-<div id="top">
+<div ref="{{ moRoot }}" id="top">
 <header class="b_top">
 <div class="wrap"><nav class="nav" aria-label="Primary">
 <button class="nav_menu" aria-label="Open menu" aria-expanded="{{ mnExp }}" aria-controls="site-menu" onClick="{{ mnOpen }}"><span></span><span></span></button>
@@ -264,19 +399,18 @@ button{font:inherit;color:inherit}
 </header>
 
 <!-- ============ HERO ============ -->
+<sc-if value="{{ hasVid }}" hint-placeholder-val="{{ true }}">
 <section class="hero dark" style="height: {{ heroH }}" aria-label="{{ title }}">
-<div class="hero_media" aria-hidden="true"></div>
+<sc-if value="{{ loc.heroVideo }}" hint-placeholder-val="{{ true }}"><video class="hero_vid" ref="{{ vidRef }}" src="{{ loc.heroVideo }}" poster="{{ loc.heroPoster }}" autoplay muted loop playsinline aria-hidden="true"></video></sc-if><sc-if value="{{ loc.noVideo }}" hint-placeholder-val="{{ false }}"><div class="hero_media" aria-hidden="true"></div></sc-if>
 <div class="hero_shade" aria-hidden="true"></div>
-<span class="hero_ph ph">Hero / silent MP4 loop of this location<br>Muted, playsinline, poster first</span>
 <div class="hero_in wrap">
 <span class="pill">{{ b.ptr }} location</span>
 <h1 class="h1">{{ title }}</h1>
 <div class="hero_meta">
 <p class="addr">{{ loc.a1 }}, {{ loc.a2 }} /<br>{{ servicesLine }}</p>
 <div class="marks">
-<span class="amark" role="img" aria-label="Alpha partner"></span>
-<span class="logo_slot">Brand mark</span>
-<span class="states"><i class="state" title="State flag slot">{{ loc.st }}</i></span>
+<span class="pair" role="group" aria-label="Alpha partner {{ b.name }}"><span class="amark" aria-hidden="true"></span><i aria-hidden="true"></i><span class="bmark b-{{ b.n }}" aria-hidden="true"></span></span>
+<span class="states"><i class="state s-{{ loc.st }}" title="{{ loc.st }}">{{ loc.st }}</i></span>
 <span class="est"><small>EST</small>{{ loc.est }}</span>
 </div>
 <span class="spacer"></span>
@@ -284,9 +418,11 @@ button{font:inherit;color:inherit}
 </div>
 </div>
 </section>
+</sc-if>
 
 <!-- ============ MAP (single pin) ============ -->
-<section class="map dark" ref="{{ setMap }}" aria-label="Location">
+<!-- No hero loop: the location map is the hero. Same section, so the map never appears twice. -->
+<section class="{{ mapCls }}" ref="{{ setMap }}" aria-label="{{ mapAria }}" style="height: {{ mapH }}">
 <canvas class="map_cv" ref="{{ setCanvas }}" aria-hidden="true"></canvas>
 <div class="map_fade" aria-hidden="true"></div>
 <div class="map_rule wrap"><hr></div>
@@ -296,42 +432,105 @@ button{font:inherit;color:inherit}
 <div class="carousel">
 <div class="track">
 <a class="card is-on" href="{{ loc.dir }}" target="_blank" rel="noopener" style="text-decoration: none" aria-label="Directions to {{ title }}">
-<span class="card_img ph" style="background: {{ loc.tone }}">{{ loc.city }}<br>photo</span>
-<span class="card_txt"><b>{{ b.name }}</b><span class="card_addr">{{ loc.a1 }}<br>{{ loc.a2 }}</span><span class="card_marks"><i class="state">{{ loc.st }}</i><span class="amark" aria-hidden="true"></span><span class="est"><small>EST</small>{{ loc.est }}</span></span></span>
+<span class="card_img ph" style="background: {{ loc.tone }}"><sc-if value="{{ loc.img }}" hint-placeholder-val="{{ false }}"><img src="{{ loc.img }}" alt="" loading="lazy"></sc-if><sc-if value="{{ loc.noImg }}" hint-placeholder-val="{{ true }}">{{ loc.city }}<br>photo</sc-if></span>
+<span class="card_txt"><b>{{ b.name }}</b><span class="card_addr">{{ loc.a1 }}<br>{{ loc.a2 }}</span><span class="card_marks"><i class="state s-{{ loc.st }}" title="{{ loc.st }}">{{ loc.st }}</i><span class="amark" aria-hidden="true"></span><span class="est"><small>EST</small>{{ loc.est }}</span></span></span>
 </a>
 </div>
 </div>
+<sc-if value="{{ mapHero }}" hint-placeholder-val="{{ false }}">
+<span class="ph map_hph">No loop or photos for this location / the map stands in</span>
+<div class="hero_in wrap map_hin">
+<span class="pill">{{ b.ptr }} location</span>
+<h1 class="h1">{{ title }}</h1>
+<div class="hero_meta">
+<p class="addr">{{ loc.a1 }}, {{ loc.a2 }} /<br>{{ servicesLine }}</p>
+<div class="marks">
+<span class="pair" role="group" aria-label="Alpha partner {{ b.name }}"><span class="amark" aria-hidden="true"></span><i aria-hidden="true"></i><span class="bmark b-{{ b.n }}" aria-hidden="true"></span></span>
+<span class="states"><i class="state s-{{ loc.st }}" title="{{ loc.st }}">{{ loc.st }}</i></span>
+<span class="est"><small>EST</small>{{ loc.est }}</span>
+</div>
+<span class="spacer"></span>
+<div class="hero_ctas"><a class="btn" href="{{ b.book }}" target="_blank" rel="noopener">Book at {{ b.short }}<span class="ext" aria-hidden="true">↗</span></a><a class="btn" href="#talk">Partner with Alpha</a></div>
+</div>
+</div>
+</sc-if>
 <span class="map_note ph">Card opens directions / production: Mapbox GL</span>
 <a class="map_link" href="#network">See partner map</a>
+</section>
+
+<!-- ============ VISIT ============ -->
+<section class="visit" aria-label="Visit {{ title }}">
+<div class="wrap visit_in">
+<div class="v_col"><p class="eyebrow">Address</p><p class="v_t">{{ loc.a1 }}<br>{{ loc.a2 }}</p><a class="v_link" href="{{ loc.dir }}" target="_blank" rel="noopener">Directions<span class="ext" aria-hidden="true">↗</span></a></div>
+<div class="v_col"><p class="eyebrow">Hours</p><div class="v_rows"><sc-for list="{{ visit.hours }}" as="h" hint-placeholder-count="3"><div><span>{{ h.d }}</span><b>{{ h.t }}</b></div></sc-for></div></div>
+<div class="v_col"><p class="eyebrow">Phone</p><p class="v_t"><a href="{{ visit.tel }}">{{ visit.phone }}</a></p></div>
+<div class="v_col"><p class="eyebrow">Arriving</p><p class="v_t">{{ visit.arrive }}</p></div>
+<div class="v_cta"><a class="btn" href="{{ b.book }}" target="_blank" rel="noopener">Book at {{ b.short }}<span class="ext" aria-hidden="true">↗</span></a></div>
+</div>
 </section>
 
 <!-- ============ INSIDE ============ -->
 <section class="sec">
 <div class="wrap">
 <hr class="rule" style="margin-bottom: clamp(36px, 4vw, 60px)">
-<div class="inside_head"><h2 class="h3">Inside {{ b.name }} {{ loc.city }}</h2><p class="sub">{{ loc.facts }}</p></div>
+<div class="inside_head"><div><h2 class="h3">Inside {{ b.name }} {{ loc.city }}</h2><p class="sub">{{ loc.facts }}</p></div><div class="body inside_story"><span class="draft">Draft copy</span><sc-for list="{{ story }}" as="p" hint-placeholder-count="2"><p>{{ p.t }}</p></sc-for></div></div>
+<sc-if value="{{ galOn }}" hint-placeholder-val="{{ true }}">
 <div class="gal two">
 <sc-for list="{{ gal2 }}" as="g" hint-placeholder-count="2"><figure><div class="img ph">{{ g.ph }}</div><figcaption class="cap"><b>{{ g.k }}</b>{{ g.t }}</figcaption></figure></sc-for>
 </div>
 <div class="gal three">
 <sc-for list="{{ gal3 }}" as="g" hint-placeholder-count="3"><figure><div class="img ph">{{ g.ph }}</div><figcaption class="cap"><b>{{ g.k }}</b>{{ g.t }}</figcaption></figure></sc-for>
 </div>
+</sc-if>
 </div>
 </section>
 
-<!-- ============ PROVIDERS ============ -->
+<!-- ============ WHO LEADS HERE ============ -->
 <section style="padding-bottom: clamp(90px, 10vw, 150px)">
 <div class="wrap">
 <hr class="rule" style="margin-bottom: clamp(36px, 4vw, 60px)">
-<h2 class="h3">Who practices here</h2>
-<p class="sub">{{ provCount }}</p>
-<div class="team">
-<sc-for list="{{ providers }}" as="p" hint-placeholder-count="9">
-<div class="prov">
+<h2 class="h3">Who leads here</h2>
+<p class="sub">{{ provLine }}</p>
+<div class="leads">
+<sc-for list="{{ leads }}" as="p" hint-placeholder-count="2">
+<a class="lead" href="{{ p.href }}">
 <div class="prov_img"><sc-if value="{{ p.hasImg }}" hint-placeholder-val="{{ false }}"><img src="{{ p.img }}" alt="{{ p.name }}"></sc-if><sc-if value="{{ p.noImg }}" hint-placeholder-val="{{ true }}">{{ p.init }}</sc-if></div>
-<b>{{ p.name }}</b><span>{{ p.role }}</span><span>{{ p.focus }}</span>
-</div>
+<div class="lead_t"><span class="lead_r">{{ p.role }}</span><b>{{ p.name }}</b><span class="lead_c">{{ p.cred }}</span><span class="lead_go" aria-hidden="true">Profile →</span></div>
+</a>
 </sc-for>
+</div>
+</div>
+</section>
+
+<!-- ============ IN THEIR WORDS: Google reviews, synced nightly, top 6 auto-picked. Hidden under 3 qualifying reviews. ============ -->
+<section style="padding-bottom: clamp(90px, 10vw, 150px)">
+<div class="wrap">
+<hr class="rule" style="margin-bottom: clamp(36px, 4vw, 60px)">
+<div class="rv_head">
+<div><h2 class="h3">In their words</h2><p class="sub">From patients of {{ b.short }} {{ loc.city }}, on Google.</p></div>
+<div class="rv_agg"><span class="rv_n">4.9</span><span class="rv_st" role="img" aria-label="4.9 out of 5 stars"><i style="width: 98.0%"></i></span><span class="rv_c">238 Google reviews</span><a class="rv_all" href="#google" target="_blank" rel="noopener">Read all on Google<span class="ext" aria-hidden="true">↗</span></a></div>
+</div>
+<div class="rv">
+<figure class="rv_i rv_top"><span class="rv_tag">Moxi</span><blockquote>I just had a Moxi treatment with Torri and couldn’t be happier! She’s so knowledgeable and really takes the time to listen to your goals and explain what’s best for you. She made the whole experience feel easy and comfortable, and even helped me plan out a full treatment timeline leading up to my wedding. I feel so taken care of and confident that I’m in the best hands :)</blockquote><label class="rv_more"><input type="checkbox" class="rv_x"><span class="rv_m">Read more</span><span class="rv_l">Show less</span></label><figcaption class="rv_f"><span><b>[First L.]</b> / [Date]</span><span>via Google</span></figcaption></figure>
+<figure class="rv_i"><span class="rv_tag">Sculptra</span><blockquote>I’ve been loving my results with Sculptra at Preva! My skin looks and feels so much smoother! I’ve been getting so many compliments about my glow lately. Mackenzie is truly amazing! She’s incredibly gentle to the touch, which makes the whole experience comfortable. Highly recommend Mackenzie and the team at Preva. 🙌🏽</blockquote><label class="rv_more"><input type="checkbox" class="rv_x"><span class="rv_m">Read more</span><span class="rv_l">Show less</span></label><figcaption class="rv_f"><span><b>[First L.]</b> / [Date]</span><span>via Google</span></figcaption></figure>
+<figure class="rv_i"><span class="rv_tag">Tox + filler / membership</span><blockquote>I look forward to my quarterly treatments at Preva! Tori is the best injector and I have recommended her to countless friends. Natural looking results with tox and filler are their top priority and it shows! 🩵 Definitely recommend taking advantage of their member pricing structure and discounts.</blockquote><label class="rv_more"><input type="checkbox" class="rv_x"><span class="rv_m">Read more</span><span class="rv_l">Show less</span></label><figcaption class="rv_f"><span><b>[First L.]</b> / [Date]</span><span>via Google</span></figcaption></figure>
+<figure class="rv_i"><span class="rv_tag">Returning patient</span><blockquote>McKenzie is simply the BEST! I’ve gone to see her a couple times now and can confidently say I have no plans on switching up anytime soon. …</blockquote><figcaption class="rv_f"><span><b>[First L.]</b> / [Date]</span><span>via Google</span></figcaption></figure>
+<figure class="rv_i"><span class="rv_tag">First consult</span><blockquote>I had such a great experience here. McKenzie took her time really understanding what I was looking for and walked me through everything in a way that felt thoughtful and honest. I never felt rushed or pushed, which I really appreciated. You can tell she genuinely cares about her clients and I love my results! I’ll definitely be back - highly recommend!</blockquote><figcaption class="rv_f"><span><b>[First L.]</b> / [Date]</span><span>via Google</span></figcaption></figure>
+</div>
+<span class="rv_note">Real Google data, pulled Nov 5 2026 (Places: 5 reviews, Google’s pick, no names or dates). Full set + scorer arrive with the Business Profile sync</span>
+</div>
+</section>
+
+<!-- ============ SINCE ALPHA ============ -->
+<section style="padding-bottom: clamp(56px, 6vw, 90px)">
+<div class="wrap">
+<hr class="rule" style="margin-bottom: clamp(36px, 4vw, 60px)">
+<div class="since">
+<div><h2 class="h3">Since Alpha</h2><p class="sub">Partner since {{ b.since }}</p><span class="draft">Draft copy</span></div>
+<div>
+<ol class="ms"><sc-for list="{{ ms }}" as="m" hint-placeholder-count="3"><li><span>{{ m.y }}</span><p>{{ m.t }}</p></li></sc-for></ol>
+<sc-if value="{{ q.t }}"><figure class="ms_q"><blockquote>“{{ q.t }}”</blockquote><figcaption class="cap">{{ q.s }}</figcaption></figure></sc-if>
+</div>
 </div>
 </div>
 </section>
@@ -378,9 +577,8 @@ button{font:inherit;color:inherit}
 <div class="closer_media">
 <img class="cta_bg is-stand" src="{{ cta.src }}" alt="" aria-hidden="true">
 <span class="ph cta_cr"><b>{{ cta.ptr }}</b> / {{ cta.name }}<br>{{ cta.city }}</span>
-<h2 class="closer_t">What&#39;s holding you back?</h2>
-<a class="btn" href="#talk" style="position: relative; z-index: 2">Let&#39;s talk</a>
 <div class="lock" aria-label="Alpha, Stronger Together"><span class="amark" style="height: 40px" aria-hidden="true"></span><span class="badge">ST</span><span class="lock_w">STRONGER<br>TOGETHER</span></div>
+<a class="btn" href="#talk" style="position: relative; z-index: 2">Let&#39;s talk</a>
 </div>
 <div class="closer_mark"><img src="/_blob/8c6e58a26569a1b0aff6a21dd2464ff0" alt="Alpha"></div>
 <div class="closer_tags"><span>Stronger together</span><span>Stronger together</span><span>Stronger together</span><span>Stronger together</span><span>Stronger together</span><span>Stronger together</span></div>
@@ -403,7 +601,7 @@ button{font:inherit;color:inherit}
 <p class="mn_k"><span>{{ mnLiveK }}</span><sc-if value="{{ mnPlaying }}" hint-placeholder-val="{{ false }}"><i>Live</i></sc-if></p>
 <div class="mn_ep"><span class="mn_art" style="background: #1D1B1A; color: #fff; border: 1px solid rgba(232,228,218,.14)">Dear<br>Tiffany</span><div><b>You don&#39;t have a spending problem</b><span>Dear Tiffany // EP 018</span></div></div>
 <div class="mn_pl"><button class="mn_pb" onClick="{{ mnToggle }}" aria-label="{{ mnPlayLabel }}"><sc-if value="{{ mnPlaying }}" hint-placeholder-val="{{ false }}"><svg width="9" height="11" viewBox="0 0 10 12" aria-hidden="true"><path d="M1 0h3v12H1zM6 0h3v12H6z" fill="currentColor"></path></svg></sc-if><sc-if value="{{ mnPaused }}" hint-placeholder-val="{{ true }}"><svg width="10" height="12" viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z" fill="currentColor"></path></svg></sc-if></button><div class="mn_tr"><i style="width: 33%"></i></div><span class="mn_t">17:12 / 52:00</span></div>
-<div class="mn_net"><div><b>16</b>Brands</div><div><b>36</b>Locations</div><div><b>8</b>States</div></div>
+<div class="mn_net"><div><b>15</b>Brands</div><div><b>36</b>Locations</div><div><b>12</b>States</div></div>
 </div>
 <div>
 <div class="mn_dep"><p class="mn_k"><span>Alpha team</span><span>SSO</span></p><ul><sc-for list="{{ mnDepts }}" as="d" hint-placeholder-count="7"><li><a href="#dept">{{ d }}</a></li></sc-for></ul></div>
@@ -429,12 +627,18 @@ class Component extends DCLogic {
   brand() {
     if (this._b) return this._b;
     this._b = {
-      n: '016', ptr: 'PTR\u00a0016', book: 'https://prevaaesthetics.com', name: 'Preva Aesthetics', short: 'Preva', since: 'June 2025', est: '2016',
+      n: '016', ptr: 'PTR\u00a0016', book: 'https://www.bookpreva.com/', name: 'Preva Aesthetics', short: 'Preva', since: 'June 2025', est: '2022',
       founder: 'Michelle Paty', cred: 'MSN, CPNP-AC, FNP-C',
-      services: ['Injectables', 'Lasers', 'Facials', 'Skincare'], states: ['CA', 'CO'],
+      services: ['Neuromodulators', 'Fillers', 'Sculptra', 'Lasers', 'Facials'], states: ['CA', 'CO'],
       locations: [
-        { city: 'Encinitas', st: 'CA', est: '2020', facts: 'Two thousand square feet. Six rooms. Opened 2021.', providers: 9, a1: '760 Garden View Ct, Ste 100', a2: 'Encinitas, CA 92024', lng: -117.262, lat: 33.052, ang: .38, hmax: 16, seed: 11, tone: 'linear-gradient(160deg,#8C7F6B,#4D463C)', streets: ['Santa Fe Dr', 'Garden View Rd', 'Munevar Rd', 'Windsor Rd', 'Melba Rd'] },
-        { city: 'Denver', st: 'CO', est: '[Year]', facts: '[Square feet. Rooms. Year opened.]', providers: 10, a1: '4045 N Pecos St, Unit 100', a2: 'Denver, CO 80211', lng: -105.006, lat: 39.773, ang: 0, hmax: 34, seed: 29, tone: 'linear-gradient(160deg,#6F7276,#393B3E)', streets: ['N Pecos St', 'W 41st Ave', 'W 38th Ave', 'Tejon St', 'W 44th Ave'] }
+        { city: 'Encinitas', st: 'CA', img: '/_blob/ee303de323f7205891247505038a8fc6', heroVideo: '/_blob/f68c9761ffed0a5974ddcd8336d36cb2', heroPoster: '/_blob/ab3fae011dc111df354aa145cb866800', est: '2020', facts: 'Two thousand square feet. Six rooms. Opened 2021.', providers: 9,
+          mix: [['[NPs]', 4], ['[RNs]', 3], ['[Aestheticians]', 2]], lead: { name: '[Location lead]', role: 'Lead provider, Encinitas', cred: '[Credential]', img: '' },
+          story: ['Preva Encinitas sits in a quiet business park off Garden View Court, minutes from downtown Encinitas and its shops. It came second, but it reads like the flagship: tall ceilings, a long hallway of treatment rooms, Himalayan salt, pampas grass, light wood and warm beige finishes.', 'Much of the team moved from Denver to open it, and it shows. A brand born in a Denver room translated to the coast without changing what it is, and the clinic runs like a well-oiled machine, treatments moving in step down the hall.'],
+          hours: [['Mon, Wed', '8am to 6pm'], ['Tue, Thu', '8am to 5pm'], ['Fri', '8am to 4pm'], ['Sat, Sun', 'Closed']], phone: '(760) 407-4420', arrive: 'Business park with plenty of parking. Suite 100.',
+          ms: [['2021', 'Opened at Garden View Court with six treatment rooms.'], ['Jun 2025', 'Joined Alpha as partner 016.'], ['[2026]', '[What changed here since. A room, a hire, a new service line, a number that moved.]']],
+          quote: { t: '[Verbatim line from the provider who leads this location.]', s: '[Source / interview, date]' }, a1: '760 Garden View Ct, Ste 100', a2: 'Encinitas, CA 92024', lng: -117.262, lat: 33.052, ang: .38, hmax: 16, seed: 11, tone: 'linear-gradient(160deg,#8C7F6B,#4D463C)', streets: ['Santa Fe Dr', 'Garden View Rd', 'Munevar Rd', 'Windsor Rd', 'Melba Rd'] },
+        { city: 'Denver', st: 'CO', est: '2022', phone: '(720) 415-3992', facts: 'Where Preva began. Two treatment rooms, a massage room and a lounge.',
+          story: ['Preva Denver is where the brand began. Michelle built it on the energy of the Pilates and wellness studios she loved, and hired much of her first team from those same places. The clinic on North Pecos Street, just outside downtown, carries that through: clean and modern, with light wood and warm lighting that feel closer to a high-end spa than a clinic.', 'Guests are greeted at the front desk and wait in a lobby to the left, with a lounge and massage chairs tucked behind it. The treatment rooms are large and full of natural light.'], providers: 10, a1: '4045 N Pecos St, Unit 100', a2: 'Denver, CO 80211', lng: -105.006, lat: 39.773, ang: 0, hmax: 34, seed: 29, tone: 'linear-gradient(160deg,#6F7276,#393B3E)', streets: ['N Pecos St', 'W 41st Ave', 'W 38th Ave', 'Tejon St', 'W 44th Ave'] }
       ]
     };
     return this._b;
@@ -614,7 +818,52 @@ class Component extends DCLogic {
     }
   }
 
-  renderVals() { return Object.assign(this._rv(), this.mnVals(), this.ctaVals()); }
+  renderVals() { return Object.assign(this._rv(), this.mnVals(), this.ctaVals(), this.moVals()); }
+  moVals() {
+    return { moRoot: (el) => {
+      if (!el || el === this._moEl || typeof window === 'undefined') return;
+      if (this._moStop) this._moStop();
+      this._moEl = el;
+      this._moStop = (function () {
+        function moStart(root) {
+          if (!root || typeof IntersectionObserver === 'undefined') return null;
+          if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { root.removeAttribute('data-mo'); return null; }
+          var SEL = 'h1,h2,.h1,.h2,.h3,.display,.tv_t,.pg_h,blockquote,.eyebrow,.pill,.lede,.body,.sub,.addr,.marks,.hero_ctas,.hero_cta,.stat,.chiprow,.field,.qual,.role,.ms li,.lead,.v_col,.v_cta,.foot_links,.foot_meta,figcaption,.closer_media>.btn,.cta_cr,.img,.founder_img,.film,.card_img,figure>img,.rule,.lock';
+          var TRIG = '.closer_media';
+          var SKIP = '.b_top,.mn,.pp,.mpp,.map,.lx_list,.closer_tags,.demo_bar,.crumb';
+          root.setAttribute('data-mo', '');
+          var done = function (el) { el.setAttribute('data-mo-in', '2'); el.style.removeProperty('--mo-d'); };
+          var io = new IntersectionObserver(function (es) {
+            var vis = es.filter(function (e) { return e.isIntersecting; }).map(function (e) { return e.target; });
+            vis.sort(function (a, b) { return a.compareDocumentPosition(b) & 4 ? -1 : 1; });
+            vis.forEach(function (el, i) {
+              io.unobserve(el);
+              el.style.setProperty('--mo-d', Math.min(i, 6) * 55 + 'ms');
+              el.setAttribute('data-mo-in', '1');
+              setTimeout(function () { done(el); }, 1100 + Math.min(i, 6) * 55);
+            });
+          }, { rootMargin: '0px 0px -6% 0px', threshold: 0 });
+          var add = function (n) {
+            if (n.nodeType !== 1) return;
+            var ALL = SEL + ',' + TRIG;
+            var list = n.matches(ALL) ? [n] : [];
+            n.querySelectorAll(ALL).forEach(function (x) { list.push(x); });
+            list.forEach(function (x) {
+              if (x.hasAttribute('data-mo-in') || x.closest(SKIP)) return;
+              var up = x.parentElement && x.parentElement.closest(SEL);
+              if (up && up !== root && root.contains(up)) { x.setAttribute('data-mo-in', '2'); return; }
+              io.observe(x);
+            });
+          };
+          add(root);
+          var mo = new MutationObserver(function (ms) { ms.forEach(function (m) { m.addedNodes.forEach(add); }); });
+          mo.observe(root, { childList: true, subtree: true });
+          return function () { io.disconnect(); mo.disconnect(); };
+        }
+        return moStart;
+      })()(el);
+    } };
+  }
   ctaVals() {
     if (!this._cta) {
       const L = [['011', 'InBloom', 'Londonderry, NH', '4d98d100087709e99a2681f05a716a09'], ['012', 'Flawless', 'Albuquerque, NM', '117fafec37d91a9f4b567818a404cc24'], ['013', 'Mint + Needle', 'Middletown, DE', '6f9f59949585d33d629e1880f88442e4'], ['014', 'Privé Med Spa', 'Lexington, KY', '42e63922522a3aeb100987e90907ea6d'], ['015', 'LexRx', 'Boston, MA', '572e07793bb191e6cb70ac4b8f17dd11'], ['016', 'Preva Aesthetics', 'Encinitas, CA', '0e6c422690914b59a6eff7dc7db00550']];
@@ -626,7 +875,7 @@ class Component extends DCLogic {
   mnVals() {
     const s = this.state || {}, set = (o) => this.setState(o), open = !!s.mnO;
     if (!this._mnK && typeof document !== 'undefined') { this._mnK = (e) => { if (e.key === 'Escape' && (this.state || {}).mnO) this.setState({ mnO: false }); }; document.addEventListener('keydown', this._mnK); }
-    const items = [['PARTNERS', '#brands', '/brands', '16 brands, in join order'], ['MAP', '#locations', '/locations', '36 locations across 8 states'], ['PATHWAY', '#how', '/how-it-works', 'From first call to fully integrated'], ['PODCASTS', '#podcasts', '/podcasts', '8 shows, one network'], ['ABOUT', '#about', '/about', 'Built by operators'], ['NEWS', '#newswire', '/newswire', 'Latest: Preva joins the network']];
+    const items = [['PARTNERS', '#brands', '/brands', '15 brands, in join order'], ['MAP', '#locations', '/locations', '36 locations across 12 states'], ['PATHWAY', '#how', '/how-it-works', 'From first call to fully integrated'], ['PODCASTS', '#podcasts', '/podcasts', '8 shows, one network'], ['ABOUT', '#about', '/about', 'Built by operators'], ['NEWS', '#newswire', '/newswire', 'Latest: Preva joins the network']];
     return {
       mnCls: 'mn' + (open ? ' is-on' : ''), mnExp: open ? 'true' : 'false',
       mnOpen: () => set({ mnO: true }), mnClose: () => set({ mnO: false }),
@@ -644,20 +893,29 @@ class Component extends DCLogic {
     const li = this.li();
     if (this._li == null) this._li = li;
     else if (this._li !== li) { this._li = li; if (this.started && typeof window !== 'undefined') setTimeout(() => { this.F = null; this.fly(0, false); }, 0); }
-    const loc = Object.assign({}, B.locations[li], { place: B.locations[li].city + ', ' + B.locations[li].st }), sb = B.locations[1 - li];
+    const loc = Object.assign({}, B.locations[li], { place: B.locations[li].city + ', ' + B.locations[li].st, noVideo: !B.locations[li].heroVideo, noImg: !B.locations[li].img }), sb = B.locations[1 - li];
     loc.dir = 'https://maps.google.com/?q=' + encodeURIComponent(loc.a1 + ', ' + loc.a2);
-    const P0 = [['Michelle Paty', 'Founder · MSN, CPNP-AC, FNP-C', 'Tox, filler, prevention', '/_blob/661a270e1aad64eb71378028e78df048']];
-    for (let i = 1; i < loc.providers; i++) P0.push(['[Provider ' + (i + 1) + ']', '[Role · credential]', '[Focus areas]', '']);
     if (F && !F.intro) this._route = route;
+    const heroH = this.tall ? '820px' : 'calc(100svh - 126px)', mapHero = !loc.heroVideo;
     return {
+      hasVid: !mapHero, mapHero, mapCls: 'map dark' + (mapHero ? ' is-hero' : ''), mapH: mapHero ? heroH : 'clamp(560px, 54vw, 820px)', mapAria: mapHero ? B.short + ' / ' + loc.place : 'Location',
+      galOn: !loc.noGallery,
       b: B, loc, title: B.short + ' / ' + loc.place, hasSib: B.locations.length > 1,
       sib: Object.assign({}, sb, { place: sb.city + ', ' + sb.st }),
-      provCount: loc.providers + ' providers',
-      providers: P0.map((p) => ({ name: p[0], role: p[1], focus: p[2], img: p[3], hasImg: !!p[3], noImg: !p[3], init: p[0][0] === '[' ? '' : p[0].split(' ').map((w) => w[0]).join('').slice(0, 2) })),
+      story: (loc.story || ['[Place story. Why this address, when it opened, the neighborhood, what the space is built for. 80 to 120 words, true of this location only.]']).map((t) => ({ t })),
+      visit: { hours: (loc.hours || [['[Days]', '[Hours]']]).map((h) => ({ d: h[0], t: h[1] })), phone: loc.phone || '[Phone]', tel: 'tel:' + String(loc.phone || '').replace(/[^0-9+]/g, ''), arrive: loc.arrive || '[Parking and entrance note.]' },
+      ms: (loc.ms || [['[Year]', '[Milestone at this address.]']]).map((m) => ({ y: m[0], t: m[1] })),
+      q: loc.quote || { t: '', s: '' },
+      provLine: (() => { const m = loc.mix || []; const n = m.reduce((a, x) => a + x[1], 0) || loc.providers; return n + ' providers' + (m.length ? ' / ' + m.map((x) => x[1] + ' ' + x[0]).join(', ') : ''); })(),
+      leads: [
+        { name: B.founder, role: 'Founder', cred: B.cred, img: B.founderImg || '/_blob/349cff5ef32ec7580bd1cbfc7dedcdac', href: '#founder' },
+        Object.assign({ name: '[Location lead]', role: 'Lead provider, ' + loc.city, cred: '[Credential]', img: '' }, loc.lead || {}, { href: '#lead' })
+      ].map((p) => ({ ...p, hasImg: !!p.img, noImg: !p.img, init: p.name[0] === '[' ? '' : p.name.split(' ').map((w) => w[0]).join('').slice(0, 2) })),
       gal2: [{ k: 'Arrival', t: '[Caption about the arrival]', ph: 'Place image / exterior or entry' }, { k: 'Front desk', t: '[Caption]', ph: 'Place image / reception' }],
       gal3: [{ k: 'Treatment room', t: '[Caption]', ph: 'Place image' }, { k: 'Consult', t: '[Caption]', ph: 'Place image' }, { k: 'Retail', t: '[Caption]', ph: 'Place image' }],
       roles: [{ t: 'Injector · Full time', where: loc.place }, { t: '[Role] · [Type]', where: loc.place }],
-      heroH: this.tall ? '820px' : 'calc(100svh - 126px)',
+      heroH,
+      vidRef: (el) => { if (el && el !== this._vid) { this._vid = el; el.muted = true; const p = el.play && el.play(); if (p && p.catch) p.catch(() => {}); } },
       servicesLine: B.services.join(' '),
       setCanvas: (el) => { if (el && el !== this.cv) { this.cv = el; this.ctx = el.getContext('2d'); if (!this.raf && typeof requestAnimationFrame !== 'undefined') this.loop(); } },
       setMap: (el) => {

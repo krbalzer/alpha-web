@@ -474,6 +474,7 @@ button{font:inherit;color:inherit}
 .pan_dl{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;margin:16px 0 18px;padding-top:14px;border-top:1px solid var(--line-d)}
 .pan_dl dt{font-size:9px;color:var(--muted-d)}
 .pan_dl dd{margin:3px 0 0;font-size:13px}
+.pan_dl .pan_f{grid-column:1 / -1}
 .pan_ctas{display:flex;gap:6px;flex-wrap:wrap}
 .pan .btn:hover{background:var(--paper);color:var(--ink)}
 .pan_sib{display:block;margin-top:14px;border:0;background:none;color:var(--paper);font-size:10px;cursor:pointer;padding:0;border-bottom:1px solid currentColor}
@@ -504,6 +505,9 @@ button{font:inherit;color:inherit}
 .lc{position:relative;display:grid;grid-template-columns:104px minmax(0,1fr);gap:12px;padding:6px;background:#D3CFC4;transition:background .25s}
 .lc:hover,.lc.is-on{background:#C9C4B8}
 .lc_img{aspect-ratio:1;display:grid;place-items:center;text-align:center;color:rgba(232,228,218,.7)!important;text-decoration:none;font-size:9px}
+.lc_img{position:relative;overflow:hidden}
+.lc_or{font-size:8.5px;letter-spacing:.06em;border:1px solid currentColor;padding:3px 6px 2px;color:var(--muted);line-height:1}
+.lc_still{position:absolute;inset:0;width:100%;height:100%;display:block}
 .lc_txt{display:flex;flex-direction:column;padding:6px 0 2px;min-width:0}
 .lc_b{font-size:11px;font-weight:700;letter-spacing:.05em;text-decoration:none}
 .lc_a{font-size:12.5px;line-height:1.4;margin-top:6px;color:#2E2C28}
@@ -514,12 +518,36 @@ button{font:inherit;color:inherit}
 .lc_map{position:absolute;right:8px;top:8px;height:24px;padding:0 9px;border-radius:999px;border:1px solid rgba(14,14,13,.35);background:transparent;font-size:9px;cursor:pointer;opacity:0;transition:opacity .2s}
 .lc:hover .lc_map,.lc_map:focus{opacity:1}
 .lc_map:hover{background:var(--ink);color:var(--bone)}
+/* location card hover: the whole card reads as a link */
+.lc_img>*{transition:transform .7s var(--ease)}
+.lc_img{transition:filter .4s}
+.lc_b{background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;padding-bottom:2px;align-self:flex-start;transition:background-size .45s var(--ease)}
+.lc_go{position:absolute;right:12px;bottom:10px;font-size:9.5px;letter-spacing:.06em;text-decoration:none;opacity:0;transform:translateX(-6px);transition:opacity .3s,transform .4s var(--ease)}
+.lc_go i{display:inline-block;font-style:normal;transition:transform .4s var(--ease)}
+.lc:is(:hover,:focus-within) .lc_img>*{transform:scale(1.08)}
+.lc:is(:hover,:focus-within) .lc_b{background-size:100% 1px}
+.lc:is(:hover,:focus-within) .lc_go{opacity:1;transform:none}
+.lc:is(:hover,:focus-within) .lc_go i{transform:translateX(3px)}
+@media (hover:none){.lc_go{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.lc_img>*,.lc_go,.lc_go i{transition:none}.lc:hover .lc_img>*{transform:none}}
 .fgrid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:clamp(18px,2vw,30px) 14px}
 .fc{display:flex;flex-direction:column;align-items:center;text-align:center;gap:3px;text-decoration:none;transition:opacity .3s}
 .fc.dim{opacity:.3}
 .fav{width:min(100%,132px);aspect-ratio:1;border-radius:50%;overflow:hidden;background:#C9C3B8;display:grid;place-items:center;font-family:var(--disp);font-weight:900;font-size:24px;color:rgba(14,14,13,.35);margin-bottom:12px;transition:transform .5s var(--ease)}
 .fav img{width:100%;height:100%;object-fit:cover}
-.fc:hover{opacity:1}.fc:hover .fav{transform:translateY(-4px)}
+.fav{outline:1px solid transparent;outline-offset:10px;transition:transform .5s var(--ease),outline-color .35s,outline-offset .45s var(--ease)}
+.fav img{transition:transform .7s var(--ease)}
+.fc b{background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;padding-bottom:2px;transition:background-size .45s var(--ease)}
+.f_go{font-size:9.5px;letter-spacing:.06em;margin-top:8px;opacity:0;transform:translateY(-4px);transition:opacity .3s,transform .4s var(--ease)}
+.f_go i{display:inline-block;font-style:normal;transition:transform .4s var(--ease)}
+.fc:hover,.fc:focus-visible{opacity:1;outline:none}
+.fc:is(:hover,:focus-visible) .fav{transform:translateY(-4px);outline-color:var(--ink);outline-offset:5px}
+.fc:is(:hover,:focus-visible) .fav img{transform:scale(1.06)}
+.fc:is(:hover,:focus-visible) b{background-size:100% 1px}
+.fc:is(:hover,:focus-visible) .f_go{opacity:1;transform:none}
+.fc:is(:hover,:focus-visible) .f_go i{transform:translateX(3px)}
+@media (hover:none){.f_go{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.fav,.fav img,.f_go,.f_go i{transition:none}.fc:is(:hover,:focus-visible) .fav{transform:none}}
 .fc b{font-size:11px;font-weight:700;letter-spacing:.04em}
 .f_c{font-size:10px;color:var(--muted)}
 .f_b{font-size:12.5px;color:#2E2C28;margin-top:4px}
@@ -594,10 +622,61 @@ button{font:inherit;color:inherit}
 
 @media (max-width:900px){.mn_body{grid-template-columns:1fr}.mn_side{display:none}}
 @media (prefers-reduced-motion:reduce){.mn,.mn.is-on{clip-path:none;transition:opacity .3s,visibility 0s}.mn{opacity:0}.mn.is-on{opacity:1}.mn_w span{transform:none!important}}
+
+
+/* partner marks + state flags (masked, take currentColor) */
+.bmark{display:inline-block;flex:0 0 auto;height:26px;aspect-ratio:var(--ar,1);background:currentColor;-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat}
+.state:is(.s-CA,.s-CO,.s-DE,.s-FL,.s-KY,.s-MA,.s-NM,.s-NH,.s-NC,.s-NY,.s-OH,.s-VA){border:0;font-size:0;background:currentColor;-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat}
+.b-001{--m:url(/_blob/acd758d2c7d28315fa698dbe9ec586a4);--ar:1.0}
+.b-002{--m:url(/_blob/bf0cb09e099ffd08e157c7a2527b15d4);--ar:4.1729}
+.b-003{--m:url(/_blob/07d6f47cf04c5b870d08c19fa405707c);--ar:1.0}
+.b-005{--m:url(/_blob/6c3dcd041432729a9e78c6149fb45208);--ar:0.6843}
+.b-006{--m:url(/_blob/11fbe015cfb3fcfcd247c3ad2077da5b);--ar:1.4658}
+.b-007{--m:url(/_blob/0ccb40da91f47ad8a407ce8a848d0b91);--ar:1.0}
+.b-008{--m:url(/_blob/ca83c659da266b70ecee710da39049b6);--ar:1.4291}
+.b-009{--m:url(/_blob/977a1e28842c7d0f1ceaf158d7508117);--ar:1.0}
+.b-010{--m:url(/_blob/36bfaaba5b556cdc3a1bacb6332ec4e9);--ar:3.3176}
+.b-012{--m:url(/_blob/bd38895f64cedccb4f3a4f4880cf0e2e);--ar:1.0935}
+.b-013{--m:url(/_blob/61c4a276b75d751e772edb7967178138);--ar:1.3213}
+.b-014{--m:url(/_blob/3338152bcddce0a2936289bcc6c757f6);--ar:2.7449}
+.b-015{--m:url(/_blob/bb52fb236297e65167cc48c9b7bcb464);--ar:1.2903}
+.b-016{--m:url(/_blob/7d9fc18ce1e5d3c17694677090383529);--ar:1.3014}
+.s-CA{--m:url(/_blob/5c2f783b104265b2c6e9562f3eb4f621)}
+.s-CO{--m:url(/_blob/665cf124e8d188f0e1b4e2ca99e77e2c)}
+.s-FL{--m:url(/_blob/bae0b6be719992cdd9892d52c36d04d8)}
+.s-KY{--m:url(/_blob/6e4190e3ab8ef90d1e919116e7078896)}
+.s-MA{--m:url(/_blob/bdf586eddbc7ef6132f6d55fd4b419b2)}
+.s-NM{--m:url(/_blob/ae40483b705fad39169507edfbaa5e10)}
+.s-NH{--m:url(/_blob/f32aa0c65e959e9336129660ebe1f0f5)}
+.s-NC{--m:url(/_blob/f57f5aca62e663ce2a61b96c79039011)}
+.s-OH{--m:url(/_blob/655561b57b4d7f83885092cd9602941d)}
+.s-VA{--m:url(/_blob/edd291f97a4b9dcf1cb54005db25b79b)}
+.s-NY{--m:url(/_blob/9f1d94c76e661935ebb5182369b414bf)}
+.s-DE{--m:url(/_blob/d71613cf8f128140ab5b526aa892a46e)}
+/* motion (shared system, see motion_inject.py). Reveal once, fast, no bounce. */
+:root{--mo-e:cubic-bezier(.16,1,.3,1)}
+[data-mo] :is(h1,h2,.h1,.h2,.h3,.display,.tv_t,.pg_h,blockquote):not([data-mo-in]):not(:is(.b_top,.mn,.pp,.mpp,.map,.lx_list,.closer_tags,.demo_bar,.crumb) *){clip-path:inset(-.25em -.25em 100% -.25em);transform:translateY(.28em)}
+[data-mo] :is(.eyebrow,.pill,.lede,.body,.sub,.addr,.marks,.hero_ctas,.hero_cta,.stat,.chiprow,.field,.qual,.role,.ms li,.lead,.v_col,.v_cta,.foot_links,.foot_meta,figcaption,.closer_media>.btn,.cta_cr,.lock):not([data-mo-in]):not(:is(.b_top,.mn,.pp,.mpp,.map,.lx_list,.closer_tags,.demo_bar,.crumb) *){opacity:0;transform:translateY(12px)}
+[data-mo] :is(.img,.founder_img,.film,.card_img,figure>img):not([data-mo-in]):not(:is(.b_top,.mn,.pp,.mpp,.map,.lx_list,.closer_tags,.demo_bar,.crumb) *){opacity:0;clip-path:inset(4% 3% 4% 3%)}
+[data-mo] :is(.img,.founder_img,.film,.card_img):not([data-mo-in]):not(:is(.b_top,.mn,.pp,.mpp,.map,.lx_list,.closer_tags,.demo_bar,.crumb) *) img{transform:scale(1.06)}
+[data-mo] .rule:not([data-mo-in]):not(:is(.b_top,.mn,.pp,.mpp,.map,.demo_bar) *){transform:scaleX(0);transform-origin:0 50%}
+[data-mo-in="1"]{transition:opacity .45s var(--mo-e) var(--mo-d,0ms),transform .6s var(--mo-e) var(--mo-d,0ms),clip-path .65s var(--mo-e) var(--mo-d,0ms)!important;transform-origin:0 50%}
+[data-mo-in="1"]:is(h1,h2,.h1,.h2,.h3,.display,.tv_t,.pg_h,blockquote){clip-path:inset(-.25em -.25em -.25em -.25em)}
+[data-mo-in="1"]:is(.img,.founder_img,.film,.card_img,figure>img){clip-path:inset(0 0 0 0)}
+[data-mo-in="1"] img{transition:transform .9s var(--mo-e) var(--mo-d,0ms)}
+/* closer background waits until it is on screen */
+[data-mo] .closer_media:not([data-mo-in]) .cta_bg{animation-play-state:paused}
+/* touch: quick press feedback, slow image settle on linked media */
+.btn,.tv_play{transition:background .2s,color .2s,transform .15s var(--mo-e)}
+.btn:active,.tv_play:active{transform:scale(.97)}
+a .img img,a .card_img img,a.card img{transition:transform .7s var(--mo-e)}
+a:hover .img img,a:hover .card_img img{transform:scale(1.025)}
+@media (prefers-reduced-motion:reduce){[data-mo] *{clip-path:none!important}}
+/* /motion */
 </style>
 </helmet>
 
-<div id="top">
+<div ref="{{ moRoot }}" id="top">
 <header class="b_top dark_top">
 <div class="wrap"><nav class="nav" aria-label="Primary">
 <button class="nav_menu" aria-label="Open menu" aria-expanded="{{ mnExp }}" aria-controls="site-menu" onClick="{{ mnOpen }}"><span></span><span></span></button>
@@ -622,11 +701,11 @@ button{font:inherit;color:inherit}
 <sc-if value="{{ hasSel }}" hint-placeholder-val="{{ false }}">
 <aside class="{{ panelCls }}" aria-label="{{ sel.brand }}, {{ sel.city }}">
 <button class="mono pan_back" onClick="{{ home }}">← All locations</button>
-<div class="pan_img ph" style="background: {{ sel.tone }}">{{ sel.city }} photo</div>
+<sc-if value="{{ sel.photo }}" hint-placeholder-val="{{ true }}"><div class="pan_img ph" style="background: {{ sel.tone }}">{{ sel.city }} photo</div></sc-if>
 <span class="mono pan_k">PTR {{ sel.n }} · {{ sel.st }}</span>
 <h2 class="pan_t">{{ sel.brand }}</h2>
 <p class="pan_a">{{ sel.a1 }}<br>{{ sel.a2 }}</p>
-<dl class="pan_dl"><div><dt class="mono">Founder</dt><dd>{{ sel.founder }}</dd></div><div><dt class="mono">Partner since</dt><dd>{{ sel.since }}</dd></div><div><dt class="mono">Locations</dt><dd>{{ sel.locs }}</dd></div><div><dt class="mono">Est</dt><dd>{{ sel.est }}</dd></div></dl>
+<dl class="pan_dl"><sc-if value="{{ sel.founder }}" hint-placeholder-val="{{ true }}"><div class="pan_f"><dt class="mono">Founder</dt><dd>{{ sel.founder }}</dd></div></sc-if><div><dt class="mono">Google</dt><dd>{{ sel.rating }}</dd></div><div><dt class="mono">Partner since</dt><dd>{{ sel.since }}</dd></div><div><dt class="mono">Locations</dt><dd>{{ sel.locs }}</dd></div><div><dt class="mono">Est</dt><dd>{{ sel.est }}</dd></div></dl>
 <div class="pan_ctas"><a class="btn" href="#location">Location page</a><a class="btn" href="#brand">Brand</a></div>
 <sc-if value="{{ sel.hasSib }}" hint-placeholder-val="{{ false }}"><button class="mono pan_sib" onClick="{{ sel.nextSib }}">Next {{ sel.brandShort }} location →</button></sc-if>
 </aside>
@@ -663,11 +742,11 @@ button{font:inherit;color:inherit}
 <div class="dgrid">
 <sc-for list="{{ g.items }}" as="c" hint-placeholder-count="3">
 <div class="{{ c.cls }}">
-<a class="lc_img ph" href="#location" style="background: {{ c.tone }}">{{ c.city }}</a>
+<a class="lc_img ph" href="#location" style="background: {{ c.tone }}"><sc-if value="{{ c.photo }}" hint-placeholder-val="{{ true }}">{{ c.city }}</sc-if><sc-if value="{{ c.still }}" hint-placeholder-val="{{ false }}"><img class="lc_still" src="{{ c.still }}" alt=""></sc-if></a>
 <div class="lc_txt">
-<a class="lc_b mono" href="#location">{{ c.brand }}</a>
+<a class="lc_b mono" href="#location">{{ c.brand }}</a><a class="lc_go mono" href="#location" aria-label="View {{ c.brand }} {{ c.city }}">Location <i>→</i></a>
 <span class="lc_a">{{ c.a1 }}<br>{{ c.a2 }}</span>
-<span class="card_marks"><i class="state">{{ c.st }}</i><span class="amark" aria-hidden="true"></span><span class="est"><small>EST</small>{{ c.est }}</span></span>
+<span class="card_marks"><i class="state s-{{ c.st }}" title="{{ c.st }}">{{ c.st }}</i><span class="amark" aria-hidden="true"></span><span class="est"><small>EST</small>{{ c.est }}</span><sc-if value="{{ c.origin }}" hint-placeholder-val="{{ false }}"><span class="lc_or mono">{{ c.origin }}</span></sc-if></span>
 </div>
 <button class="lc_map mono" onClick="{{ c.map }}" aria-label="Show {{ c.brand }} {{ c.city }} on the map">Map</button>
 </div>
@@ -684,7 +763,7 @@ button{font:inherit;color:inherit}
 <div class="wrap">
 <div class="split_head"><h2 class="display h2">Founder partners</h2><p class="body" style="margin: 0; max-width: 24rem">The people who built these practices, and still lead them.</p></div>
 <div class="fgrid">
-<sc-for list="{{ founders }}" as="f" hint-placeholder-count="12"><a class="{{ f.cls }}" href="#founder"><span class="fav"><sc-if value="{{ f.hasImg }}" hint-placeholder-val="{{ false }}"><img src="{{ f.img }}" alt="{{ f.name }}"></sc-if><sc-if value="{{ f.noImg }}" hint-placeholder-val="{{ true }}">{{ f.init }}</sc-if></span><b class="mono">{{ f.name }}</b><span class="mono f_c">{{ f.cred }}</span><span class="f_b">{{ f.brand }} · {{ f.city }}</span></a></sc-for>
+<sc-for list="{{ founders }}" as="f" hint-placeholder-count="12"><a class="{{ f.cls }}" href="#founder"><span class="fav"><sc-if value="{{ f.hasImg }}" hint-placeholder-val="{{ false }}"><img src="{{ f.img }}" alt="{{ f.name }}"></sc-if><sc-if value="{{ f.noImg }}" hint-placeholder-val="{{ true }}">{{ f.init }}</sc-if></span><b class="mono">{{ f.name }}</b><span class="mono f_c">{{ f.cred }}</span><span class="f_b">{{ f.brand }} · {{ f.city }}</span><span class="mono f_go" aria-hidden="true">Profile <i>→</i></span></a></sc-for>
 </div>
 </div>
 </section>
@@ -692,7 +771,7 @@ button{font:inherit;color:inherit}
 <!-- ============ BRANDS ============ -->
 <section style="padding-bottom: clamp(90px, 10vw, 150px)">
 <div class="wrap">
-<div class="split_head"><h2 class="display h2">Partner brands</h2><p class="body" style="margin: 0; max-width: 24rem">Sixteen brands, each kept intact. Numbered in the order they joined.</p></div>
+<div class="split_head"><h2 class="display h2">Partner brands</h2><p class="body" style="margin: 0; max-width: 24rem">Fifteen brands, each kept intact. Numbered in the order they joined.</p></div>
 <div class="bgrid">
 <sc-for list="{{ brands }}" as="b" hint-placeholder-count="16"><a class="{{ b.cls }}" href="#brand" style="background: {{ b.tone }}"><span class="mono bt_n">PTR {{ b.n }}</span><span class="bt_name">{{ b.name }}</span><span class="mono bt_m">{{ b.locs }} · {{ b.states }}</span><span class="mono bt_go">View brand →</span></a></sc-for>
 </div>
@@ -721,7 +800,7 @@ button{font:inherit;color:inherit}
 <p class="mn_k"><span>{{ mnLiveK }}</span><sc-if value="{{ mnPlaying }}" hint-placeholder-val="{{ false }}"><i>Live</i></sc-if></p>
 <div class="mn_ep"><span class="mn_art" style="background: #1D1B1A; color: #fff; border: 1px solid rgba(232,228,218,.14)">Dear<br>Tiffany</span><div><b>You don&#39;t have a spending problem</b><span>Dear Tiffany // EP 018</span></div></div>
 <div class="mn_pl"><button class="mn_pb" onClick="{{ mnToggle }}" aria-label="{{ mnPlayLabel }}"><sc-if value="{{ mnPlaying }}" hint-placeholder-val="{{ false }}"><svg width="9" height="11" viewBox="0 0 10 12" aria-hidden="true"><path d="M1 0h3v12H1zM6 0h3v12H6z" fill="currentColor"></path></svg></sc-if><sc-if value="{{ mnPaused }}" hint-placeholder-val="{{ true }}"><svg width="10" height="12" viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z" fill="currentColor"></path></svg></sc-if></button><div class="mn_tr"><i style="width: 33%"></i></div><span class="mn_t">17:12 / 52:00</span></div>
-<div class="mn_net"><div><b>16</b>Brands</div><div><b>36</b>Locations</div><div><b>8</b>States</div></div>
+<div class="mn_net"><div><b>15</b>Brands</div><div><b>36</b>Locations</div><div><b>12</b>States</div></div>
 </div>
 <div>
 <div class="mn_dep"><p class="mn_k"><span>Alpha team</span><span>SSO</span></p><ul><sc-for list="{{ mnDepts }}" as="d" hint-placeholder-count="7"><li><a href="#dept">{{ d }}</a></li></sc-for></ul></div>
@@ -740,45 +819,88 @@ class Component extends DCLogic {
   now() { return typeof performance !== 'undefined' ? performance.now() : Date.now(); }
   W(lng, lat) { return { x: (lng + 125.5) * 20.338, y: (50 - lat) * 25.81 + 20 }; }
 
-  /* CMS: Locations (lat/lng) referencing Brands and Founders. Sample cities marked [ ] are placeholders. */
+  /* CMS: Locations (lat/lng) referencing Brands and Founders. [Brackets] mark values still to confirm. */
   data() {
     if (this._d) return this._d;
+    /* Brands: founder line, est and partner since from the CMS + founder interviews. 010 shows no founder by design. */
     const B = {
-      '001': { name: 'Esthetics Center', founder: '[Founder]', tone: '#3B3A35' },
-      '002': { name: 'Holden Timeless Beauty', founder: 'Amanda Holden, MD', tone: '#61788A' },
-      '003': { name: 'Refined Aesthetics', founder: 'Sarah Safa', tone: '#4C5949' },
-      '005': { name: 'Laser Center of Marin', founder: '[Founder]', tone: '#2F4550' },
-      '006': { name: 'Williams Center', founder: 'Ed Williams, MD', tone: '#4B4038' },
-      '007': { name: 'Anne Therese Aesthetics', founder: '[Founder]', tone: '#6B5A55' },
-      '008': { name: 'Dontage', founder: '[Founder]', tone: '#3D3D45' },
-      '009': { name: 'RN Esthetics', founder: 'Michelle Doran', tone: '#52606B' },
-      '010': { name: 'CAMI Aesthetics', founder: '[Founder]', tone: '#5B4E44' },
-      '011': { name: 'InBloom Health + Medispa', founder: 'Dr. Tanya Lawson, ND', tone: '#7A2A1E' },
-      '012': { name: 'Flawless', founder: 'Heather Badal', tone: '#7B3C26' },
-      '013': { name: 'Mint + Needle', founder: 'Brandi Gregge, MSN, FNP-BC', tone: '#6E6E5C' },
-      '014': { name: 'Privé Med Spa', founder: 'Brandice Harrison, PA-C', tone: '#5A5A55' },
-      '015': { name: 'LexRx', founder: 'Alexa Nicholls Costa, NP', tone: '#56646E' },
-      '016': { name: 'Preva Aesthetics', founder: 'Michelle Paty', tone: '#8C7350' }
+      '001': { name: 'Esthetics Center', founder: 'Dr. Reginald Rice, MD, FACS', est: '[Year]', since: 'March 2023', tone: '#3B3A35' },
+      '002': { name: 'Holden Timeless Beauty', founder: 'Dr. Amanda Holden, MD', est: '2017', since: 'June 2023', tone: '#61788A' },
+      '003': { name: 'Refined Aesthetics', founder: 'Sarah Safa, MS, PA-C', est: '[Year]', since: 'July 2023', tone: '#4C5949' },
+      '005': { name: 'The Laser Center of Marin', founder: 'Kevin Jones and Denise Jones, NP', est: '[Year]', since: 'November 2023', tone: '#2F4550' },
+      '006': { name: 'Williams Center', founder: 'Dr. Edwin F. Williams, MD, FACS', est: '[Year]', since: 'December 2023', tone: '#4B4038' },
+      '007': { name: 'Anne Therese Aesthetic Medicine', founder: 'Dr. Anne Therese Stubbs, MD', est: '2004', since: 'January 2024', tone: '#6B5A55' },
+      '008': { name: 'RN Esthetics', founder: 'Michelle Doran, MSN, APRN', est: '2012', since: 'May 2024', tone: '#52606B' },
+      '009': { name: 'Dontage', founder: 'Waseem Garbia, PA-C', est: '[Year]', since: 'May 2024', tone: '#3D3D45' },
+      '010': { name: 'CAMI Aesthetics', founder: '', est: '[Year]', since: 'November 2024', tone: '#5B4E44' },
+      '011': { name: 'InBloom Health + Medispa', founder: 'Dr. Tanya Lawson, ND', est: '[Year]', since: 'December 2024', tone: '#7A2A1E' },
+      '012': { name: 'Flawless Med Spa + Wellness', founder: 'Heather Badal', est: '[2012]', since: 'January 2025', tone: '#7B3C26' },
+      '013': { name: 'Mint + Needle', founder: 'Brandi Gregge, MSN, FNP-BC', est: '2019', since: 'March 2025', tone: '#6E6E5C' },
+      '014': { name: 'Privé Med Spa', founder: 'Brandice Harrison, PA-C and Becky McDonald', est: '2011', since: 'November 2025', tone: '#5A5A55' },
+      '015': { name: 'LexRx', founder: 'Alexa Nicholls Costa, NP', est: '2015', since: 'December 2025', tone: '#56646E' },
+      '016': { name: 'Preva Aesthetics', founder: 'Michelle Paty, MSN, CPNP-AC, FNP-C', est: '2022', since: 'June 2025', tone: '#8C7350' }
     };
+    /* Locations: [ptr, city, st, lat, lng, street, city/zip line, Google rating, review count]. Addresses, coordinates and ratings from Google, Nov 5 2026. */
     const R = [
-      ['001','Sacramento','CA',38.58,-121.49],['002','[North County 1]','CA',33.13,-117.25],['002','[North County 2]','CA',33.0,-117.27],['002','[North County 3]','CA',32.95,-117.21],['002','[North County 4]','CA',33.2,-117.33],
-      ['003','Leesburg','VA',39.115,-77.564],['003','Winchester','VA',39.185,-78.163],['005','Corte Madera','CA',37.925,-122.527],['006','Latham','NY',42.747,-73.759],['007','Columbus','OH',39.96,-82.999],
-      ['008','Fairfax','VA',38.846,-77.306],['009','Salem','MA',42.519,-70.896],['009','[North Shore 2]','MA',42.56,-70.87],['009','[North Shore 3]','MA',42.47,-70.95],['010','Huntersville','NC',35.41,-80.84],
-      ['010','[Charlotte area]','NC',35.22,-80.84],['011','Londonderry','NH',42.865,-71.374],['012','Albuquerque','NM',35.084,-106.65],['012','[Albuquerque 2]','NM',35.15,-106.58],['013','Middletown','DE',39.449,-75.716],
-      ['013','Lewes','DE',38.774,-75.139],['014','Lexington','KY',38.04,-84.5],['015','Boston','MA',42.36,-71.06],['015','Nantucket','MA',41.283,-70.099],['015','[Boston 2]','MA',42.35,-71.1],
-      ['015','[Boston 3]','MA',42.39,-71.12],['016','Encinitas','CA',33.052,-117.262],['016','Denver','CO',39.773,-105.006]
+      ['001','El Dorado Hills','CA',38.7101,-121.0832,'2211 Francisco Dr','El Dorado Hills, CA 95762',4.9,1370],
+      ['001','Fair Oaks','CA',38.6647,-121.2252,'5442 Hazel Ave, Ste 504','Fair Oaks, CA 95628',4.9,84],
+      ['001','Sacramento','CA',38.5738,-121.4139,'2224 Fair Oaks Blvd, #707','Sacramento, CA 95825',4.9,790],
+      ['001','Rocklin','CA',38.8006,-121.2034,'5428 Crossings Dr, #105','Loomis, CA 95650',5.0,615],
+      ['002','San Marcos','CA',33.1336,-117.1238,'711 Center Dr, Ste 106','San Marcos, CA 92069',4.9,698],
+      ['002','Fallbrook','CA',33.3801,-117.2516,'301 S Main Ave','Fallbrook, CA 92028',5.0,65],
+      ['002','Carlsbad','CA',33.1638,-117.3407,'1207 Carlsbad Village Dr, Ste S','Carlsbad, CA 92008',5.0,126],
+      ['002','San Diego','CA',32.7769,-117.1478,'7995 Civita Blvd, Ste 9','San Diego, CA 92108',4.9,413],
+      ['003','Leesburg','VA',39.1131,-77.5636,'108 Church St SE, Ste B','Leesburg, VA 20175',5.0,96],
+      ['003','Winchester','VA',39.1872,-78.1648,'8 W Fairfax Ln','Winchester, VA 22601',4.9,161],
+      ['005','Corte Madera','CA',37.9262,-122.517,'770 Tamalpais Dr, Ste 301','Corte Madera, CA 94925',4.9,391],
+      ['006','Saratoga Springs','NY',43.0816,-73.7876,'60 Railroad Pl','Saratoga Springs, NY 12866',5.0,45],
+      ['006','Latham','NY',42.7647,-73.8112,'1072 Troy-Schenectady Rd, Ste 201','Latham, NY 12110',4.7,226],
+      ['007','Bonita Springs','FL',26.3496,-81.8089,'26841 S Bay Dr, #154','Bonita Springs, FL 34134',4.9,28,1],
+      ['007','Cape Coral','FL',26.563,-81.9565,'831 Cape Coral Pkwy E','Cape Coral, FL 33904',4.9,294],
+      ['007','Gahanna','OH',40.0468,-82.8628,'438 Beecher Rd','Gahanna, OH 43230',4.9,191],
+      ['007','Lewis Center','OH',40.1599,-83.009,'8706 Cotter St','Lewis Center, OH 43035',4.8,238],
+      ['008','Salem','MA',42.5056,-70.8905,'331 Lafayette St','Salem, MA 01970',5.0,694],
+      ['008','Newburyport','MA',42.8123,-70.8749,'2 Market St','Newburyport, MA 01950',5.0,391],
+      ['008','Lynnfield','MA',42.5121,-71.035,'40 Salem St, Bldg 3','Lynnfield, MA 01940',5.0,602],
+      ['008','Boston','MA',42.3494,-71.1536,'425 Market St, Ste 101','Boston, MA 02135',4.9,67,1],
+      ['009','Fairfax','VA',38.8673,-77.2338,'3040 Williams Dr, #105','Fairfax, VA 22031',5.0,1288],
+      ['010','Huntersville','NC',35.4383,-80.8707,'16315 Northcross Dr, Ste A','Huntersville, NC 28078',4.9,901],
+      ['010','Greensboro','NC',36.0934,-79.8161,'1507 Westover Terrace, Ste B','Greensboro, NC 27408',4.9,157,1],
+      ['011','Londonderry','NH',42.8519,-71.3587,'25 Buttrick Rd, #C1','Londonderry, NH 03053',5.0,155],
+      ['012','West Albuquerque','NM',35.1638,-106.6968,'6941 Taylor Ranch Rd NW','Albuquerque, NM 87120',5.0,89],
+      ['012','East Albuquerque','NM',35.1101,-106.6071,'3301 Menaul Blvd NE, Ste 30','Albuquerque, NM 87107',4.8,431],
+      ['013','Middletown','DE',39.4483,-75.7205,'219 W Green St','Middletown, DE 19709',5.0,263],
+      ['013','Lewes','DE',38.7747,-75.1404,'116 3rd St','Lewes, DE 19958',4.7,27],
+      ['014','Lexington','KY',37.9926,-84.4958,'3399 Tates Creek Rd, Ste 230','Lexington, KY 40502',5.0,823],
+      ['015','Charlestown','MA',42.3737,-71.0624,'69 Main St','Charlestown, MA 02129',4.0,4],
+      ['015','Nantucket','MA',41.2841,-70.0976,'5 S Water St, #6','Nantucket, MA 02554',4.3,4,1],
+      ['015','Beacon Hill','MA',42.3597,-71.0705,'121 Charles St, Ste 1','Boston, MA 02114',4.1,45],
+      ['015','South Boston','MA',42.3372,-71.0487,'395 W Broadway','Boston, MA 02127',5.0,11],
+      ['016','Encinitas','CA',33.0603,-117.2614,'760 Garden View Ct, Ste 100','Encinitas, CA 92024',4.9,238],
+      ['016','Denver','CO',39.7727,-105.0069,'4045 N Pecos St, Unit 100','Denver, CO 80211',4.8,616]
     ];
-    const known = { Encinitas: '760 Garden View Ct, Ste 100', Denver: '4045 N Pecos St, Unit 100' };
-    const L = R.map((r, i) => ({ i, n: r[0], brand: B[r[0]].name, founder: B[r[0]].founder, tone: B[r[0]].tone, city: r[1], st: r[2], lat: r[3], lng: r[4], est: '[Year]', since: '[Month Year]',
-      a1: known[r[1]] || '[Street address]', a2: r[1].replace(/[\[\]]/g, '') + ', ' + r[2], ang: (i * .37) % 1 - .5, hmax: 14 + (i * 7) % 20, seed: 7 + i * 13,
-      streets: ['[Main St]', '[2nd Ave]', '[Oak St]', '[Park Rd]', '[Elm St]'] }));
+    const L = R.map((r, i) => ({ i, n: r[0], brand: B[r[0]].name, founder: B[r[0]].founder, tone: B[r[0]].tone, city: r[1], st: r[2], lat: r[3], lng: r[4], est: B[r[0]].est, since: B[r[0]].since,
+      a1: r[5], a2: r[6], rating: r[7], reviews: r[8], noMedia: !!r[9], origin: ({ 'Fair Oaks': 'De novo', 'San Diego': 'De novo', 'Winchester': 'Joined', 'Boston': 'Joined' })[r[1]] || '', ang: (i * .37) % 1 - .5, hmax: 14 + (i * 7) % 20, seed: 7 + i * 13,
+      streets: [r[5].replace(/^[0-9-]+\s+/, '').replace(/,.*$/, '')] }));
+    /* Founder partners: active founders only (005's founders are no longer with the practice; 010 shows none). */
     const F = [
-      ['Michelle Paty','MSN, CPNP-AC, FNP-C','016','/_blob/661a270e1aad64eb71378028e78df048'],['Michelle Doran','[Credentials]','009'],['Waseem Garbia','[Credentials]',''],
-      ['Brandice Harrison','PA-C','014'],['Sarah Safa','[Credentials]','003'],['Ed Williams','MD','006'],['Amanda Holden','MD','002'],
-      ['Heather Badal','[Credentials]','012','/_blob/b01ba67d9cc798eec47b72024735b1ee'],['Tanya Lawson','ND','011','/_blob/bc7eacb4548f2042cbc209c1c6976dc4'],
-      ['Brandi Gregge','MSN, FNP-BC','013','/_blob/1b354147334e88988c4a8270e418cf97'],['Alexa Nicholls Costa','NP','015','/_blob/1924a95bd36f0e78bd18f6faf42721f6']
+      ['Michelle Paty','MSN, CPNP-AC, FNP-C','016','/_blob/661a270e1aad64eb71378028e78df048'],['Alexa Nicholls Costa','NP','015','/_blob/1924a95bd36f0e78bd18f6faf42721f6'],
+      ['Brandice Harrison','PA-C','014'],['Becky McDonald','Co-founder','014'],['Brandi Gregge','MSN, FNP-BC','013','/_blob/1b354147334e88988c4a8270e418cf97'],
+      ['Heather Badal','Founder','012','/_blob/b01ba67d9cc798eec47b72024735b1ee'],['Dr. Tanya Lawson','ND','011','/_blob/bc7eacb4548f2042cbc209c1c6976dc4'],
+      ['Waseem Garbia','PA-C','009'],['Michelle Doran','MSN, APRN, BC, CANS','008'],['Dr. Anne Therese Stubbs','MD','007'],
+      ['Dr. Edwin F. Williams','MD, FACS','006'],['Sarah Safa','MS, PA-C','003'],['Dr. Amanda Holden','MD','002'],['Dr. Reginald Rice','MD, FACS','001']
     ];
     return (this._d = { B, L, F });
+  }
+  /* Map still for locations with no photos: same street-grid language as the fly-in map, rendered once as SVG. */
+  still(l) {
+    this._still = this._still || {}; if (this._still[l.i]) return this._still[l.i];
+    let s = l.seed; const rnd = () => { s |= 0; s = (s + 0x6D2B79F5) | 0; let t = Math.imul(s ^ (s >>> 15), 1 | s); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+    const deg = l.ang * 57.3, B = 22, o = (rnd() * B) | 0; let g = '';
+    for (let y = -B * 3 + o; y < 220; y += B) for (let x = -B * 3 + o; x < 220; x += B) if (rnd() > .18) g += '<rect x="' + (x + 3) + '" y="' + (y + 3) + '" width="' + (B - 6) + '" height="' + (B - 6) + '" fill="rgba(232,228,218,' + (.04 + rnd() * .07).toFixed(3) + ')"/>';
+    for (let k = -B * 3 + o, n = 0; k < 220; k += B, n++) { const m = n % 4 === 0, c = m ? 'rgba(232,228,218,.22)' : 'rgba(232,228,218,.09)', w = m ? 1.6 : .8; g += '<path d="M' + k + ' -60V280M-60 ' + k + 'H280" stroke="' + c + '" stroke-width="' + w + '"/>'; }
+    const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160"><rect width="160" height="160" fill="#151513"/><g transform="rotate(' + deg.toFixed(1) + ' 80 80) translate(-30 -30)">' + g + '</g><ellipse cx="80" cy="86" rx="9" ry="3" fill="rgba(232,228,218,.25)"/><path d="M80 52c-6.6 0-12 5.2-12 11.9C68 72.7 80 85 80 85s12-12.3 12-21.1C92 57.2 86.6 52 80 52z" fill="#E8E4DA"/><circle cx="80" cy="64" r="4.5" fill="#151513"/></svg>';
+    return (this._still[l.i] = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg));
   }
   locs() { return this.data().L; }
   dots() {
@@ -967,11 +1089,56 @@ class Component extends DCLogic {
   }
 
 
-  renderVals() { return Object.assign(this._rv(), this.mnVals()); }
+  renderVals() { return Object.assign(this._rv(), this.mnVals(), this.moVals()); }
+  moVals() {
+    return { moRoot: (el) => {
+      if (!el || el === this._moEl || typeof window === 'undefined') return;
+      if (this._moStop) this._moStop();
+      this._moEl = el;
+      this._moStop = (function () {
+        function moStart(root) {
+          if (!root || typeof IntersectionObserver === 'undefined') return null;
+          if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { root.removeAttribute('data-mo'); return null; }
+          var SEL = 'h1,h2,.h1,.h2,.h3,.display,.tv_t,.pg_h,blockquote,.eyebrow,.pill,.lede,.body,.sub,.addr,.marks,.hero_ctas,.hero_cta,.stat,.chiprow,.field,.qual,.role,.ms li,.lead,.v_col,.v_cta,.foot_links,.foot_meta,figcaption,.closer_media>.btn,.cta_cr,.img,.founder_img,.film,.card_img,figure>img,.rule,.lock';
+          var TRIG = '.closer_media';
+          var SKIP = '.b_top,.mn,.pp,.mpp,.map,.lx_list,.closer_tags,.demo_bar,.crumb';
+          root.setAttribute('data-mo', '');
+          var done = function (el) { el.setAttribute('data-mo-in', '2'); el.style.removeProperty('--mo-d'); };
+          var io = new IntersectionObserver(function (es) {
+            var vis = es.filter(function (e) { return e.isIntersecting; }).map(function (e) { return e.target; });
+            vis.sort(function (a, b) { return a.compareDocumentPosition(b) & 4 ? -1 : 1; });
+            vis.forEach(function (el, i) {
+              io.unobserve(el);
+              el.style.setProperty('--mo-d', Math.min(i, 6) * 55 + 'ms');
+              el.setAttribute('data-mo-in', '1');
+              setTimeout(function () { done(el); }, 1100 + Math.min(i, 6) * 55);
+            });
+          }, { rootMargin: '0px 0px -6% 0px', threshold: 0 });
+          var add = function (n) {
+            if (n.nodeType !== 1) return;
+            var ALL = SEL + ',' + TRIG;
+            var list = n.matches(ALL) ? [n] : [];
+            n.querySelectorAll(ALL).forEach(function (x) { list.push(x); });
+            list.forEach(function (x) {
+              if (x.hasAttribute('data-mo-in') || x.closest(SKIP)) return;
+              var up = x.parentElement && x.parentElement.closest(SEL);
+              if (up && up !== root && root.contains(up)) { x.setAttribute('data-mo-in', '2'); return; }
+              io.observe(x);
+            });
+          };
+          add(root);
+          var mo = new MutationObserver(function (ms) { ms.forEach(function (m) { m.addedNodes.forEach(add); }); });
+          mo.observe(root, { childList: true, subtree: true });
+          return function () { io.disconnect(); mo.disconnect(); };
+        }
+        return moStart;
+      })()(el);
+    } };
+  }
   mnVals() {
     const s = this.state || {}, set = (o) => this.setState(o), open = !!s.mnO;
     if (!this._mnK && typeof document !== 'undefined') { this._mnK = (e) => { if (e.key === 'Escape' && (this.state || {}).mnO) this.setState({ mnO: false }); }; document.addEventListener('keydown', this._mnK); }
-    const items = [['PARTNERS', '#brands', '/brands', '16 brands, in join order'], ['MAP', '#locations', '/locations', '36 locations across 8 states'], ['PATHWAY', '#how', '/how-it-works', 'From first call to fully integrated'], ['PODCASTS', '#podcasts', '/podcasts', '8 shows, one network'], ['ABOUT', '#about', '/about', 'Built by operators'], ['NEWS', '#newswire', '/newswire', 'Latest: Preva joins the network']];
+    const items = [['PARTNERS', '#brands', '/brands', '15 brands, in join order'], ['MAP', '#locations', '/locations', '36 locations across 12 states'], ['PATHWAY', '#how', '/how-it-works', 'From first call to fully integrated'], ['PODCASTS', '#podcasts', '/podcasts', '8 shows, one network'], ['ABOUT', '#about', '/about', 'Built by operators'], ['NEWS', '#newswire', '/newswire', 'Latest: Preva joins the network']];
     return {
       mnCls: 'mn' + (open ? ' is-on' : ''), mnExp: open ? 'true' : 'false',
       mnOpen: () => set({ mnO: true }), mnClose: () => set({ mnO: false }),
@@ -989,7 +1156,7 @@ class Component extends DCLogic {
     this._match = hasF ? new Set(res.map((l) => l.i)) : null;
     const uniq = (a) => a.filter((v, i) => a.indexOf(v) === i);
     const states = uniq(L.map((l) => l.st)).sort();
-    const card = (l) => ({ cls: 'lc' + (s.sel === l.i ? ' is-on' : ''), tone: l.tone, city: l.city.replace(/[\[\]]/g, ''), brand: l.brand, a1: l.a1, a2: l.a2, st: l.st, est: l.est,
+    const card = (l) => ({ cls: 'lc' + (s.sel === l.i ? ' is-on' : ''), tone: l.tone, still: l.noMedia ? this.still(l) : '', photo: !l.noMedia, origin: l.origin, city: l.city.replace(/[\[\]]/g, ''), brand: l.brand, a1: l.a1, a2: l.a2, st: l.st, est: l.est,
       map: () => { this.flyTo(l.i); if (this.mapEl && typeof window !== 'undefined') window.scrollTo({ top: this.mapEl.getBoundingClientRect().top + window.scrollY - 20, behavior: 'smooth' }); } });
     let groups;
     if (sort === 'state') groups = uniq(res.map((l) => l.st)).sort().map((st) => { const it = res.filter((l) => l.st === st); return { hasHead: true, t: st, n: it.length, items: it.map(card) }; });
@@ -1023,11 +1190,11 @@ class Component extends DCLogic {
       pinCls: 'pin' + (this.landed ? ' is-on' : '') + (this.pinG ? ' gA' : ' gB'),
       routeCls: 'route' + (this.F && this.F.arc ? ' is-on' : ''), route: this.F && this.F.arc && this.F.fromLoc && this.F.toLoc ? this.F.fromLoc.city.replace(/[\[\]]/g, '') + ' → ' + this.F.toLoc.city.replace(/[\[\]]/g, '') : '',
       hasSel: !!sel, panelCls: 'pan' + (this.landed ? ' is-on' : ''), home: () => this.home(),
-      sel: sel ? { n: sel.n, st: sel.st, city: sel.city.replace(/[\[\]]/g, ''), brand: sel.brand, brandShort: sel.brand.split(' ')[0], a1: sel.a1, a2: sel.a2, tone: sel.tone, founder: sel.founder, since: sel.since, est: sel.est, locs: String(sibs.length),
+      sel: sel ? { n: sel.n, st: sel.st, city: sel.city.replace(/[\[\]]/g, ''), brand: sel.brand, brandShort: sel.brand.split(' ')[0], a1: sel.a1, a2: sel.a2, tone: sel.tone, founder: sel.founder, photo: !sel.noMedia, rating: sel.rating.toFixed(1) + ' (' + sel.reviews.toLocaleString('en-US') + ')', since: sel.since, est: sel.est, locs: String(sibs.length),
         hasSib: sibs.length > 1, nextSib: () => { const j = sibs.indexOf(sel); this.flyTo(sibs[(j + 1) % sibs.length].i); } } : {},
       stats: [
         { k: 'Reach', n: String(res.length), l: res.length === 1 ? 'Location' : 'Locations', rows: [{ k: 'States', v: String(nStates) }, { k: 'Brands', v: String(nBrands) }, { k: 'Providers', v: hasF ? '[n]' : '145' }] },
-        { k: 'Demand', n: '10.7K', l: 'Social followers', rows: [{ k: 'Followers per weekly visit', v: '21' }, { k: 'Annual practice visits', v: '[n]' }, { k: 'Avg rating', v: '[n]' }] },
+        { k: 'Demand', n: '10.7K', l: 'Social followers', rows: [{ k: 'Followers per weekly visit', v: '21' }, { k: 'Annual practice visits', v: '[n]' }, { k: 'Google rating', v: (() => { const t = res.reduce((a, l) => a + l.reviews, 0); return t ? (res.reduce((a, l) => a + l.rating * l.reviews, 0) / t).toFixed(1) + ' / ' + t.toLocaleString('en-US') : '–'; })() }] },
         { k: 'Depth', n: '235K', l: '[Label: per year?]', rows: [{ k: 'Filler syringes / year', v: '2,500' }, { k: 'Skincare items / year', v: '14,000' }, { k: 'Retail attach rate', v: '1 in 2 visits' }] }
       ],
       statsNote: hasF ? 'Reach reflects your filters' : 'Network totals. Filter the directory to narrow them.',

@@ -62,9 +62,23 @@ const lightness = (c?: string | null) => {
   return ((Math.max(r, g, b) + Math.min(r, g, b)) / 2 / 255) * 100
 }
 
+/* Portfolio facts that are not in Webflow (confirmed by Kevin, Nov 2026) */
+const BUSINESS_FOUNDERS = new Set(['6799087d6cc7f250af0020cf', '69431c039139201d1daf7e59']) // Flawless (012), Prive co-founder (014)
+const UNANNOUNCED = new Set([1]) // Esthetics Center: set up first, never formally launched
+const DE_NOVO = new Set(['6697007ce94ab14a2d563b6c']) // Holden Timeless Beauty, San Diego (a draft in Webflow: imported unpublished)
+const TUCK_INS: { ptr: number; formerName: string; kind: 'location' | 'merged'; city: string; state: string; slug: string; draft?: boolean; loc?: { city: string; lat: number; lng: number; name: string } }[] = [
+  { ptr: 3, formerName: 'Blossom Medical', kind: 'location', city: 'Winchester', state: 'VA', slug: 'blossom-medical', loc: { city: 'Winchester', lat: 39.1857, lng: -78.1633, name: 'Refined at Blossom' } },
+  { ptr: 12, formerName: 'Bair Medical', kind: 'location', city: 'Albuquerque', state: 'NM', slug: 'bair-medical', draft: true }, // becomes a new Flawless location (Dec 2026); unpublished until then
+  { ptr: 8, formerName: 'Seaside', kind: 'merged', city: 'Marblehead', state: 'MA', slug: 'seaside' },
+  { ptr: 8, formerName: 'Demma', kind: 'location', city: 'Brighton', state: 'MA', slug: 'demma', loc: { city: 'Brighton', lat: 42.3484, lng: -71.1523, name: 'Brighton' } },
+]
+
+const STATE_NAMES: Record<string, string> = { ohio: 'OH', 'new hampshire': 'NH', florida: 'FL', massachusetts: 'MA', virginia: 'VA', california: 'CA', 'new york': 'NY', colorado: 'CO', kentucky: 'KY', delaware: 'DE', 'new mexico': 'NM', 'north carolina': 'NC' }
+const stateCode = (s: string) => STATE_NAMES[s.trim().toLowerCase()] || s.trim().slice(0, 2).toUpperCase()
+
 export async function importWebflow(p: Payload) {
   const log = (m: string) => p.logger.info(`webflow import: ${m}`)
-  for (const c of ['cta-images', 'episodes', 'shows', 'speakers', 'locations', 'brands', 'founders', 'team', 'departments', 'articles', 'media'] as const) {
+  for (const c of ['cta-images', 'episodes', 'shows', 'speakers', 'tuck-ins', 'locations', 'brands', 'founders', 'team', 'departments', 'articles', 'media'] as const) {
     await p.delete({ collection: c, where: { id: { exists: true } } })
   }
 
@@ -125,6 +139,7 @@ export async function importWebflow(p: Payload) {
   await Promise.all(data.kol.filter((k) => k.live).map(async (k) => {
     const doc = await p.create({ collection: 'founders', data: {
       name: k.name, slug: k.slug, credentials: k.cred || undefined, headline: k.title || undefined,
+      kind: BUSINESS_FOUNDERS.has(k.id) ? 'business' : 'provider',
       headshot: await media(k.headshot, k.name) as number, portrait: await media(k.portrait, k.name) as number,
       bio: htmlToLexical(k.bio), live: true,
     } })
@@ -148,7 +163,7 @@ export async function importWebflow(p: Payload) {
     const founders = [b.keyKol, ...b.kol].filter((x, i, a) => x && a.indexOf(x) === i).map((x) => founderId.get(x!)).filter(Boolean)
     const [practiceImg, whyImg, filmPoster, logo] = await Promise.all([media(b.practiceImg, b.name), media(b.whyImg, b.name), media(b.filmPoster, b.name), media(b.logo, b.name)])
     const brand = await p.create({ collection: 'brands', data: {
-      name: b.name, short: b.name, ptr: b.ptr, slug: b.slug, live: true,
+      name: b.name, short: b.name, ptr: b.ptr, slug: b.slug, live: true, announced: !UNANNOUNCED.has(Number(b.ptr)),
       since: monthYear(b.since), established: Number(b.est) || undefined,
       founders: founders as number[], intro: firstPara(b.story),
       practice: { eyebrow: 'The practice', body: htmlToLexical(b.story), image: practiceImg as number },
@@ -159,14 +174,26 @@ export async function importWebflow(p: Payload) {
       quote: q ? { text: plain(q.copy).replace(/^"|"$/g, ''), source: `${q.author}, partnership announcement (Webflow testimonial)` } : undefined,
     } })
     let first: number | string | undefined
-    for (const l of data.locations.filter((x) => x.live && x.partner === b.id)) {
+    // flagship (Webflow "main location") first: it is the one the brand hero names
+    const mine = data.locations.filter((x) => (x.live || DE_NOVO.has(x.id)) && x.partner === b.id) // de novo builds come in unpublished until they open
+    mine.sort((x, y) => Number(y.name === b.main) - Number(x.name === b.main))
+    for (const l of mine) {
       const [city, st] = l.name.split(',').map((x) => x.trim())
       const loc = await p.create({ collection: 'locations', data: {
-        brand: brand.id, city, state: (st || l.state || '').slice(0, 2), ...coords(l.a, l.b),
-        slug: `${b.slug}-${l.slug}`, photo: await media(l.photo, `${b.name}, ${l.name}`) as number, bookingUrl: l.maps || undefined, live: true,
+        brand: brand.id, city, state: stateCode(st || l.state || ''), ...coords(l.a, l.b),
+        slug: `${b.slug}-${l.slug}`, photo: await media(l.photo, `${b.name}, ${l.name}`) as number, live: !!l.live,
+        origin: DE_NOVO.has(l.id) ? 'de-novo' : 'original',
       } })
       first ??= loc.id
       locN++
+    }
+    for (const t of TUCK_INS.filter((x) => x.ptr === Number(b.ptr))) {
+      const loc = t.loc ? await p.create({ collection: 'locations', data: {
+        brand: brand.id, city: t.loc.city, state: t.state, lat: t.loc.lat, lng: t.loc.lng, origin: 'tuck-in', formerName: t.formerName,
+        slug: `${b.slug}-${t.loc.city.toLowerCase().replace(/\W+/g, '-')}`, live: true,
+      } }) : undefined
+      if (loc) locN++
+      await p.create({ collection: 'tuck-ins', data: { formerName: t.formerName, brand: brand.id, kind: t.kind, location: loc?.id as number, city: t.city, state: t.state, slug: t.slug, live: !t.draft } })
     }
     const cta = await media(b.cta, b.name)
     if (cta) await p.create({ collection: 'cta-images', data: { label: b.name, image: cta as number, location: first as number, active: true } })

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Alpha / Review: Brand pages</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"NHD";src:url(/_blob/bf901fbfee077add5b8fbd5af7b4b4a7) format("woff2");font-weight:900;font-display:swap;ascent-override:85.7%;descent-override:14.3%;line-gap-override:0%}@font-face{font-family:"NHD";src:url(/_blob/630fc1e4ee22b0eecfe2535aceaaad9c) format("woff2");font-weight:700;font-display:swap;ascent-override:85.7%;descent-override:14.3%;line-gap-override:0%}
+@font-face{font-family:"Diatype Mono";src:url(/_blob/bad569f2d2757d8e40320972d9f13e4b) format("opentype");font-weight:400;font-display:swap}
+@font-face{font-family:"Diatype Mono";src:url(/_blob/888f2a0a7a1517cff04dd7bb1810c18d) format("opentype");font-weight:700;font-display:swap}
+:root{--ink:#0E0E0D;--paper:#E8E4DA;--bone:#DEDAD1;--muted-d:#9B978E;--line-d:rgba(232,228,218,.14);--mono:"Diatype Mono",ui-monospace,Menlo,monospace;--disp:"NHD","Helvetica Neue",Arial,sans-serif}
+body{margin:0;background:#1B1A18}
+*{box-sizing:border-box}
+.rv_bar{position:sticky;top:0;z-index:20;height:64px;background:#0E0E0D;color:var(--paper);border-bottom:1px solid var(--line-d);display:grid;grid-template-columns:auto auto 1fr auto;gap:18px;align-items:center;padding:0 24px;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase}
+.rv_k{color:var(--muted-d)}
+.rv_pick{position:relative}
+.rv_cur{display:flex;align-items:center;gap:12px;height:38px;padding:0 14px 0 16px;border:1px solid rgba(232,228,218,.4);border-radius:999px;background:none;color:var(--paper);font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer;min-width:320px;justify-content:space-between}
+.rv_cur b{font-family:var(--disp);font-weight:900;font-size:15px;letter-spacing:0}
+.rv_cur em{font-style:normal;color:var(--muted-d)}
+.rv_list{position:absolute;top:46px;left:0;width:360px;max-height:560px;overflow:auto;background:#141412;border:1px solid var(--line-d);border-radius:6px;padding:6px;box-shadow:0 20px 40px rgba(0,0,0,.4)}
+.rv_list button{display:grid;grid-template-columns:44px 1fr;width:100%;text-align:left;padding:10px 10px;border:0;border-radius:4px;background:none;color:#B5B1A8;font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer}
+.rv_list button:hover{background:#1F1E1B;color:var(--paper)}
+.rv_list button.is-on{color:var(--paper);background:#24231F}
+.rv_nav{display:flex;gap:6px}
+.rv_nav button{width:38px;height:38px;border-radius:50%;border:1px solid rgba(232,228,218,.4);background:none;color:var(--paper);cursor:pointer;font-size:14px}
+.rv_src{justify-self:end;color:var(--muted-d);text-align:right;line-height:1.5}
+.rv_stage{position:relative;width:1440px;margin:0 auto;background:#DEDAD1}
+.rv_stage img{display:block;width:1440px;height:auto}
+.rg{position:absolute;left:0;right:0;outline:1px dashed transparent;outline-offset:-1px;transition:outline-color .15s,background .15s}
+.rg:hover{outline-color:rgba(201,162,107,.9);background:rgba(201,162,107,.06)}
+.rg span{position:absolute;left:8px;top:8px;font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;background:#0E0E0D;color:var(--paper);padding:4px 8px;border-radius:3px;opacity:0;transition:opacity .15s}
+.rg:hover span{opacity:1}
+</style>
+</helmet>
+<div>
+<div class="rv_bar">
+<span class="rv_k">Review / Brand template</span>
+<div class="rv_pick"><button class="rv_cur" onClick="{{ toggle }}"><span><em>{{ cur.ptr }}</em>&#160;&#160;<b>{{ cur.name }}</b></span><span>{{ caret }}</span></button>
+<sc-if value="{{ open }}" hint-placeholder-val="{{ false }}"><div class="rv_list"><sc-for list="{{ list }}" as="o" hint-placeholder-count="15"><button class="{{ o.cls }}" onClick="{{ o.go }}"><em style="font-style: normal; color: #9B978E">{{ o.ptr }}</em><span>{{ o.name }}</span></button></sc-for></div></sc-if>
+</div>
+<div class="rv_nav"><button onClick="{{ prev }}" aria-label="Previous brand">←</button><button onClick="{{ next }}" aria-label="Next brand">→</button><span class="rv_k" style="align-self: center; margin-left: 8px">{{ pos }}</span></div>
+<span class="rv_src">Captured Nov 4 from the latest build / real CMS content<br>Comment on any section to request a change</span>
+</div>
+<div class="rv_stage" style="height: {{ cur.H }}px">
+<img src="{{ cur.img }}" alt="{{ cur.name }} brand page" width="1440">
+<sc-for list="{{ secs }}" as="r" hint-placeholder-count="10"><div class="rg" style="top: {{ r.y }}px; height: {{ r.h }}px" data-section="{{ r.tag }}"><span>{{ r.tag }}</span></div></sc-for>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":7400}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const P = [{"slug":"esthetics-center","name":"Esthetics Center","ptr":"PTR\u00a0001","H":7086,"img":"/_blob/87a7ce8afafd2415ad3b7aeb2e1563ab","secs":[{"label":"Nav and crumb","y":1,"h":127},{"label":"Hero","y":128,"h":774},{"label":"Map","y":902,"h":778},{"label":"The practice","y":1680,"h":1500},{"label":"Brand film","y":3179,"h":714},{"label":"Stats","y":3893,"h":429},{"label":"Locations index","y":4322,"h":708},{"label":"Founder","y":5030,"h":782},{"label":"Closer","y":5812,"h":576},{"label":"Footer","y":6388,"h":698}]},{"slug":"holden-timeless-beauty","name":"Holden Timeless Beauty","ptr":"PTR\u00a0002","H":6965,"img":"/_blob/9c8f83300be47debb0237a1259f84356","secs":[{"label":"Nav and crumb","y":1,"h":127},{"label":"Hero","y":128,"h":774},{"label":"Map","y":902,"h":778},{"label":"The practice","y":1680,"h":1624},{"label":"Brand film","y":3304,"h":714},{"label":"Stats","y":4017,"h":429},{"label":"Locations index","y":4446,"h":547},{"label":"Founder","y":4993,"h":698},{"label":"Closer","y":5691,"h":576},{"label":"Footer","y":6267,"h":698}]},{"slug":"refined-aesthetics","name":"Refined Aesthetics","ptr":"PTR\u00a0003","H":7182,"img":"/_blob/b3c0a457674f3caf351feffeb7c5f26c","secs":[{"label":"Nav and crumb","y":1,"h":127},{"label":"Hero","y":128,"h":774},{"label":"Map","y":902,"h":778},{"label":"The practice","y":1680,"h":1461},{"label":"Brand film","y":3141,"h":714},{"label":"Stats","y":3855,"h":429},{"label":"Locations index","y":4283,"h":494},{"label":"Founder","y":4777,"h":698},{"label":"Quote","y":5476,"h":433},{"label":"Closer","y":5908,"h":576},{"label":"Footer","y":6484,"h":698}]},{"slug":"the-laser-center-of-marin","name":"the Laser Center of Marin","ptr":"PTR\u00a0005","H":6090,"img":"/_blob/a29d3fd3c2105a178758b5fcd1afb8a9","secs":[{"label":"Nav and crumb","y":1,"h":127},{"label":"Hero","y":128,"h":774},{"label":"Map","y":902,"h":778},{"label":"The practice","y":1680,"h":1561},{"label":"Brand film","y":3241,"h":714},{"label":"Stats","y":3954,"h":429},{"label":"Quote","y":4383,"h":433},{"label":"Closer","y":4816,"h":576},{"label":"Footer","y":5392,"h":698}]},{"slug":"williams-center","name":"Williams Center","ptr":"PTR\u00a0006","H":7310,"img":"/_blob/10194193d609c96273647623c2257673","secs":[{"label":"Nav and crumb","y":1,"h":127},{"label":"Hero","y":128,"h":774},{"label":"Map","y":902,"h":778},{"label":"The practice","y":1680,"h":1453},{"label":"Brand film","y":3133,"h":714},{"label":"Stats","y":3846,"h":429},{"label":"Locations index","y":4275,"h":494},{"label":"Founder","y":4769,"h":875},{"label":"Quote","y":5644,"h":392},{"label":"Closer","y":6036,"h":576},{"label":"Footer","y":6612,"h":698}]},{"slug":"anne-therese-aesthetic-medicine","name":"Anne Therese Aesthetic Medicine","ptr":"PTR\u00a0007","H":6382,"img":"/_blob/140138bc4dd7d81b7e72f47913c28ede","secs":[{"label":"Nav and crumb","y":1,"h":127},{"label":"Hero","y":128,"h":774},{"label":"Map","y":902,"h":778},{"label":"The practice","y":1680,"h":928},{"label":"Brand film","y":2608,"h":714},{"label":"Stats","y":3321,"h":429},{"label":"Locations index","y":3750,"h":659},{"label":"Founder","y":4409,"h":698},{"label":"Closer","y":5108,"h":576},{"label":"Footer","y":5684,"h":698}]},{"slug":"rn-esthetics","name":"RN Esthetics","ptr":"PTR\u00a0008","H":6418,"img":"/_blob/0b19915298556546bf114a1edff5fe1a","secs":[{"label":"Nav and crumb","y":1,"h":127},{"label":"Hero","y":128,"h":774},{"label":"Map","y":902,"h":778},{"label":"The practice","y":1680,"h":928},{"label":"Brand film","y":2608,"h":714},{"label":"Stats","y":3321,"h":429},{"label":"Locations index","y":3750,"h":659},{"label":"Founder","y":4409,"h":735},{"label":"Closer","y":5145,"h":576},{"label":"Footer","y":5721,"h":698}]},{"slug":"dontage","name":"Dontage","ptr":"PTR\u00a0009","H":5495,"img":"/_blob/00dfc041ff730cb51cba86cf6acfa7c8","secs":[{"label":"Nav and crumb","y":1,"h":127},{"label":"Hero","y":128,"h":774},{"label":"Map","y":902,"h":778},{"label":"The practice","y":1680,"h":1129},{"label":"Brand film","y":2809,"h":714},{"label":"Founder","y":3522,"h":698},{"label":"Closer","y":4221,"h":576},{"label":"Footer","y":4797,"h":698}]},{"slug":"cami","name":"Cami Aesthetics","ptr":"PTR\u00a0010","H":5510,"img":"/_blob/6d88389d9ec7aca87096e75f6f88fc73","secs":[{"label":"Nav and crumb","y":1,"h":127},{"label":"Hero","y":128,"h":774},{"label":"Map","y":902,"h":778},{"label":"The practice","y":1680,"h":920},{"label":"Brand film","y":2599,"h":714},{"label":"Stats","y":3313,"h":429},{"label":"Locations index","y":3742,"h":494},{"label":"Closer","y":4236,"h":576},{"label":"Footer","y":4812,"h":698}]},{"slug":"inbloom","name":"Inbloom Health + Medispa","ptr":"PTR\u00a0011","H":6156,"img":"/_blob/04680774ef0605e6cf47dba597e1f16c","secs":[{"label":"Nav and crumb","y":1,"h":127},{"label":"Hero","y":128,"h":774},{"label":"Map","y":902,"h":778},{"label":"The practice","y":1680,"h":1362},{"label":"Brand film","y":3041,"h":714},{"label":"Stats","y":3755,"h":429},{"label":"Founder","y":4184,"h":698},{"label":"Closer","y":4882,"h":576},{"label":"Footer","y":5458,"h":698}]},{"slug":"flawless-medspa-wellness","name":"Flawless Medspa + Wellness","ptr":"PTR\u00a0012","H":6704,"img":"/_blob/ca55f0d3b75a7fa547bea51fda83ac34","secs":[{"label":"Nav and crumb","y":1,"h":127},{"label":"Hero","y":128,"h":774},{"label":"Map","y":902,"h":778},{"label":"The practice","y":1680,"h":1377},{"label":"Brand film","y":3056,"h":714},{"label":"Stats","y":3770,"h":429},{"label":"Locations index","y":4199,"h":533},{"label":"Founder","y":4732,"h":698},{"label":"Closer","y":5430,"h":576},{"label":"Footer","y":6006,"h":698}]},{"slug":"mint-needle","name":"Mint + Needle","ptr":"PTR\u00a0013","H":5997,"img":"/_blob/4e7f38f61719549671830a11eafaaa14","secs":[{"label":"Nav and crumb","y":1,"h":127},{"label":"Hero","y":128,"h":774},{"label":"Map","y":902,"h":778},{"label":"The practice","y":1680,"h":1137},{"label":"Brand film","y":2817,"h":714},{"label":"Locations index","y":3531,"h":494},{"label":"Founder","y":4024,"h":698},{"label":"Closer","y":4723,"h":576},{"label":"Footer","y":5299,"h":698}]},{"slug":"prive","name":"Prive","ptr":"PTR\u00a0014","H":5970,"img":"/_blob/6a45319c90d59d95d6fc2ad3e6166696","secs":[{"label":"Nav and crumb","y":1,"h":127},{"label":"Hero","y":128,"h":774},{"label":"Map","y":902,"h":778},{"label":"The practice","y":1680,"h":1176},{"label":"Brand film","y":2855,"h":714},{"label":"Stats","y":3569,"h":429},{"label":"Founder","y":3998,"h":698},{"label":"Closer","y":4696,"h":576},{"label":"Footer","y":5272,"h":698}]},{"slug":"lexrx","name":"LexRx","ptr":"PTR\u00a0015","H":6644,"img":"/_blob/e0f821100fcec0d818f8bb3a794cc68e","secs":[{"label":"Nav and crumb","y":1,"h":127},{"label":"Hero","y":128,"h":774},{"label":"Map","y":902,"h":778},{"label":"The practice","y":1680,"h":1029},{"label":"Brand film","y":2709,"h":714},{"label":"Stats","y":3423,"h":429},{"label":"Locations index","y":3851,"h":659},{"label":"Founder","y":4511,"h":860},{"label":"Closer","y":5370,"h":576},{"label":"Footer","y":5946,"h":698}]},{"slug":"preva","name":"Preva","ptr":"PTR\u00a0016","H":6207,"img":"/_blob/b83c14b878761f7d8f6f184841fd9a9e","secs":[{"label":"Nav and crumb","y":1,"h":127},{"label":"Hero","y":128,"h":774},{"label":"Map","y":902,"h":778},{"label":"The practice","y":1680,"h":858},{"label":"Brand film","y":2538,"h":714},{"label":"Stats","y":3252,"h":429},{"label":"Locations index","y":3680,"h":494},{"label":"Founder","y":4174,"h":759},{"label":"Closer","y":4933,"h":576},{"label":"Footer","y":5509,"h":698}]}];
+    const s = this.state || {}, i = s.i || 0, set = (o) => this.setState(o), cur = P[i];
+    const go = (k) => () => set({ i: (k + P.length) % P.length, open: false });
+    return {
+      cur, open: !!s.open, caret: s.open ? '▴' : '▾', toggle: () => set({ open: !s.open }),
+      list: P.map((p, k) => ({ ptr: p.ptr.replace('PTR', '').trim(), name: p.name, cls: k === i ? 'is-on' : '', go: go(k) })),
+      prev: go(i - 1), next: go(i + 1), pos: String(i + 1).padStart(2, '0') + ' / ' + String(P.length).padStart(2, '0'),
+      secs: cur.secs.map((r) => ({ y: r.y, h: r.h, tag: 'Brand / ' + cur.name + ' / ' + r.label }))
+    };
+  }
+}
+</script>
+</body>
+</html>

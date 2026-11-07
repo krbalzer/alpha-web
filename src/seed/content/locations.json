@@ -1,0 +1,376 @@
+{
+  "_note": "Addresses, coordinates and phones from Google Business Profiles, pulled Nov 5 2026. \"fill\" only writes empty fields; \"set\" always applies (Kevin, Nov 6: Fair Oaks is a de novo, HTB San Diego is live, RN Brighton is RN Boston).",
+  "locations": {
+    "1|El Dorado Hills": {
+      "fill": {
+        "address1": "2211 Francisco Dr",
+        "address2": null,
+        "zip": "95762",
+        "lat": 38.7101,
+        "lng": -121.0832,
+        "phone": "(916) 259-9966"
+      }
+    },
+    "1|Fair Oaks": {
+      "fill": {
+        "address1": "5442 Hazel Ave",
+        "address2": "Ste 504",
+        "zip": "95628",
+        "lat": 38.6647,
+        "lng": -121.2252,
+        "phone": "(279) 258-5207"
+      },
+      "set": {
+        "origin": "de-novo"
+      }
+    },
+    "1|Sacramento": {
+      "fill": {
+        "address1": "2224 Fair Oaks Blvd",
+        "address2": "#707",
+        "zip": "95825",
+        "lat": 38.5738,
+        "lng": -121.4139,
+        "phone": "(916) 259-9971"
+      }
+    },
+    "1|Rocklin": {
+      "fill": {
+        "address1": "5428 Crossings Dr",
+        "address2": "#105",
+        "zip": "95650",
+        "lat": 38.8006,
+        "lng": -121.2034,
+        "phone": "(916) 259-9967"
+      }
+    },
+    "2|San Marcos": {
+      "fill": {
+        "address1": "711 Center Dr",
+        "address2": "Ste 106",
+        "zip": "92069",
+        "lat": 33.1336,
+        "lng": -117.1238,
+        "phone": "(760) 507-2948"
+      }
+    },
+    "2|Fallbrook": {
+      "fill": {
+        "address1": "301 S Main Ave",
+        "address2": null,
+        "zip": "92028",
+        "lat": 33.3801,
+        "lng": -117.2516,
+        "phone": "(760) 507-2948"
+      }
+    },
+    "2|Carlsbad": {
+      "fill": {
+        "address1": "1207 Carlsbad Village Dr",
+        "address2": "Ste S",
+        "zip": "92008",
+        "lat": 33.1638,
+        "lng": -117.3407,
+        "phone": "(760) 507-2948"
+      }
+    },
+    "3|Leesburg": {
+      "fill": {
+        "address1": "108 Church St SE",
+        "address2": "Ste B",
+        "zip": "20175",
+        "lat": 39.1131,
+        "lng": -77.5636,
+        "phone": "(703) 777-2220"
+      }
+    },
+    "3|Winchester": {
+      "fill": {
+        "address1": "8 W Fairfax Ln",
+        "address2": null,
+        "zip": "22601",
+        "lat": 39.1872,
+        "lng": -78.1648,
+        "phone": "(540) 323-7254"
+      }
+    },
+    "5|Corte Madera": {
+      "fill": {
+        "address1": "770 Tamalpais Dr",
+        "address2": "Ste 301",
+        "zip": "94925",
+        "lat": 37.9262,
+        "lng": -122.517,
+        "phone": "(415) 945-9875"
+      }
+    },
+    "6|Saratoga Springs": {
+      "fill": {
+        "address1": "60 Railroad Pl",
+        "address2": null,
+        "zip": "12866",
+        "lat": 43.0816,
+        "lng": -73.7876,
+        "phone": "(518) 278-6932"
+      }
+    },
+    "6|Latham": {
+      "fill": {
+        "address1": "1072 Troy-Schenectady Rd",
+        "address2": "Ste 201",
+        "zip": "12110",
+        "lat": 42.7647,
+        "lng": -73.8112,
+        "phone": "(518) 722-3877"
+      }
+    },
+    "7|Bonita Springs": {
+      "fill": {
+        "address1": "26841 S Bay Dr",
+        "address2": "#154",
+        "zip": "34134",
+        "lat": 26.3496,
+        "lng": -81.8089,
+        "phone": "(239) 323-6916"
+      }
+    },
+    "7|Cape Coral": {
+      "fill": {
+        "address1": "831 Cape Coral Pkwy E",
+        "address2": null,
+        "zip": "33904",
+        "lat": 26.563,
+        "lng": -81.9565,
+        "phone": "(239) 323-6916"
+      }
+    },
+    "7|Gahanna": {
+      "fill": {
+        "address1": "438 Beecher Rd",
+        "address2": null,
+        "zip": "43230",
+        "lat": 40.0468,
+        "lng": -82.8628,
+        "phone": "(380) 262-6051"
+      }
+    },
+    "7|Lewis Center": {
+      "fill": {
+        "address1": "8706 Cotter St",
+        "address2": null,
+        "zip": "43035",
+        "lat": 40.1599,
+        "lng": -83.009,
+        "phone": "(380) 262-6051"
+      }
+    },
+    "8|Salem": {
+      "fill": {
+        "address1": "331 Lafayette St",
+        "address2": null,
+        "zip": "01970",
+        "lat": 42.5056,
+        "lng": -70.8905,
+        "phone": "(978) 615-9336"
+      }
+    },
+    "8|Newburyport": {
+      "fill": {
+        "address1": "2 Market St",
+        "address2": null,
+        "zip": "01950",
+        "lat": 42.8123,
+        "lng": -70.8749,
+        "phone": "(978) 386-4024"
+      }
+    },
+    "8|Lynnfield": {
+      "fill": {
+        "address1": "40 Salem St",
+        "address2": "Bldg 3",
+        "zip": "01940",
+        "lat": 42.5121,
+        "lng": -71.035,
+        "phone": "(781) 365-8450"
+      }
+    },
+    "8|Brighton": {
+      "fill": {
+        "address1": "425 Market St",
+        "address2": "Ste 101",
+        "zip": "02135",
+        "lat": 42.3494,
+        "lng": -71.1536,
+        "phone": "(857) 380-6761"
+      },
+      "set": {
+        "city": "Boston",
+        "slug": "rn-esthetics-boston",
+        "formerName": "Demma Aesthetics"
+      }
+    },
+    "9|Fairfax": {
+      "fill": {
+        "address1": "3040 Williams Dr",
+        "address2": "#105",
+        "zip": "22031",
+        "lat": 38.8673,
+        "lng": -77.2338,
+        "phone": "(571) 500-5680"
+      }
+    },
+    "10|Huntersville": {
+      "fill": {
+        "address1": "16315 Northcross Dr",
+        "address2": "Ste A",
+        "zip": "28078",
+        "lat": 35.4383,
+        "lng": -80.8707,
+        "phone": "(336) 203-6942"
+      }
+    },
+    "10|Greensboro": {
+      "fill": {
+        "address1": "1507 Westover Terrace",
+        "address2": "Ste B",
+        "zip": "27408",
+        "lat": 36.0934,
+        "lng": -79.8161,
+        "phone": "(336) 203-6942"
+      }
+    },
+    "11|Londonderry": {
+      "fill": {
+        "address1": "25 Buttrick Rd",
+        "address2": "#C1",
+        "zip": "03053",
+        "lat": 42.8519,
+        "lng": -71.3587,
+        "phone": "(802) 416-4151"
+      }
+    },
+    "12|West Albuquerque": {
+      "fill": {
+        "address1": "6941 Taylor Ranch Rd NW",
+        "address2": null,
+        "zip": "87120",
+        "lat": 35.1638,
+        "lng": -106.6968,
+        "phone": "(505) 560-8075"
+      }
+    },
+    "12|East Albuquerque": {
+      "fill": {
+        "address1": "3301 Menaul Blvd NE",
+        "address2": "Ste 30",
+        "zip": "87107",
+        "lat": 35.1101,
+        "lng": -106.6071,
+        "phone": "(505) 560-8075"
+      }
+    },
+    "13|Middletown": {
+      "fill": {
+        "address1": "219 W Green St",
+        "address2": null,
+        "zip": "19709",
+        "lat": 39.4483,
+        "lng": -75.7205,
+        "phone": "(302) 496-4123"
+      }
+    },
+    "13|Lewes": {
+      "fill": {
+        "address1": "116 3rd St",
+        "address2": null,
+        "zip": "19958",
+        "lat": 38.7747,
+        "lng": -75.1404,
+        "phone": "(302) 496-4123"
+      }
+    },
+    "14|Lexington": {
+      "fill": {
+        "address1": "3399 Tates Creek Rd",
+        "address2": "Ste 230",
+        "zip": "40502",
+        "lat": 37.9926,
+        "lng": -84.4958,
+        "phone": "(859) 523-5893"
+      }
+    },
+    "15|Charlestown": {
+      "fill": {
+        "address1": "69 Main St",
+        "address2": null,
+        "zip": "02129",
+        "lat": 42.3737,
+        "lng": -71.0624,
+        "phone": "(857) 452-1501"
+      }
+    },
+    "15|Nantucket": {
+      "fill": {
+        "address1": "5 S Water St",
+        "address2": "#6",
+        "zip": "02554",
+        "lat": 41.2841,
+        "lng": -70.0976,
+        "phone": "(857) 452-1501"
+      }
+    },
+    "15|Beacon Hill": {
+      "fill": {
+        "address1": "121 Charles St",
+        "address2": "Ste 1",
+        "zip": "02114",
+        "lat": 42.3597,
+        "lng": -71.0705,
+        "phone": "(857) 452-1501"
+      }
+    },
+    "15|South Boston": {
+      "fill": {
+        "address1": "395 W Broadway",
+        "address2": null,
+        "zip": "02127",
+        "lat": 42.3372,
+        "lng": -71.0487,
+        "phone": "(857) 452-1501"
+      }
+    },
+    "16|Encinitas": {
+      "fill": {
+        "address1": "760 Garden View Ct",
+        "address2": "Ste 100",
+        "zip": "92024",
+        "lat": 33.0603,
+        "lng": -117.2614,
+        "phone": "(760) 407-4420"
+      }
+    },
+    "16|Denver": {
+      "fill": {
+        "address1": "4045 N Pecos St",
+        "address2": "Unit 100",
+        "zip": "80211",
+        "lat": 39.7727,
+        "lng": -105.0069,
+        "phone": "(720) 415-3992"
+      }
+    },
+    "2|San Diego": {
+      "fill": {
+        "address1": "7995 Civita Blvd",
+        "address2": "Ste 9",
+        "zip": "92108",
+        "lat": 32.7769,
+        "lng": -117.1478,
+        "phone": "(760) 507-2948"
+      },
+      "set": {
+        "live": true
+      }
+    }
+  }
+}

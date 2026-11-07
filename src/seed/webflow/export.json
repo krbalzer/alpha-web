@@ -35,7 +35,8 @@
 "dysport": "186K",
 "dysportOn": true
 },
-"logo": null
+"logo": null,
+"main": "Encinitas, CA"
 },
 {
 "id": "69b8e433af341be8d498364f",
@@ -74,7 +75,8 @@
 "dysport": null,
 "dysportOn": false
 },
-"logo": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/69bad9be3ae9bbc376891131_lexrx.svg"
+"logo": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/69bad9be3ae9bbc376891131_lexrx.svg",
+"main": "Charlestown, MA"
 },
 {
 "id": "6941d6dd2d8f2ed15bd354ad",
@@ -111,7 +113,8 @@
 "dysport": null,
 "dysportOn": false
 },
-"logo": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/69bad892de873681d04a9ad5_prive.svg"
+"logo": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/69bad892de873681d04a9ad5_prive.svg",
+"main": "Lexington, KY"
 },
 {
 "id": "67d31eea2a77144cbba80ed3",
@@ -148,7 +151,8 @@
 "dysport": null,
 "dysportOn": false
 },
-"logo": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/69bad82639f2e905968af1fb_mint1.svg"
+"logo": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/69bad82639f2e905968af1fb_mint1.svg",
+"main": "Middletown, DE"
 },
 {
 "id": "6797de30b34f552a1ea354b2",
@@ -185,7 +189,8 @@
 "dysport": null,
 "dysportOn": false
 },
-"logo": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/67a0f218c09ad4d1a53cd284_flawlesslogo.svg"
+"logo": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/67a0f218c09ad4d1a53cd284_flawlesslogo.svg",
+"main": "Albuquerque, NM"
 },
 {
 "id": "6767133bedb869e511a7a98f",
@@ -221,7 +226,8 @@
 "dysport": null,
 "dysportOn": false
 },
-"logo": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/69bad753c299fabae717798b_inbloom2.svg"
+"logo": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/69bad753c299fabae717798b_inbloom2.svg",
+"main": "Londonderry, NH"
 },
 {
 "id": "674f3b7921d683c969334881",
@@ -242,10 +248,8 @@
 "674f42341c914208a84a81cd",
 "6751f3009435f44f2e846d7e"
 ],
-"kol": [
-"674f3e7b9133642ca4569462"
-],
-"keyKol": "674f3e7b9133642ca4569462",
+"kol": [],
+"keyKol": null,
 "hideStats": false,
 "stats": {
 "weekly": "310",
@@ -258,7 +262,8 @@
 "dysport": null,
 "dysportOn": false
 },
-"logo": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/6752188d1060c5b80b7a1774_cami.svg"
+"logo": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/6752188d1060c5b80b7a1774_cami.svg",
+"main": "Huntersville, NC"
 },
 {
 "id": "6658f2219b34db91ca63c984",
@@ -294,7 +299,8 @@
 "dysport": null,
 "dysportOn": false
 },
-"logo": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/6682ba902c0b49f964f8b305_Asset%202.svg"
+"logo": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/6682ba902c0b49f964f8b305_Asset%202.svg",
+"main": "Fairfax, VG"
 },
 {
 "id": "66439aae6783b9cf5d7cfb7c",
@@ -332,7 +338,8 @@
 "dysport": null,
 "dysportOn": false
 },
-"logo": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/6696cc95efb6de8c0f2150fc_rn-e.svg"
+"logo": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/6696cc95efb6de8c0f2150fc_rn-e.svg",
+"main": "Salem, MA"
 },
 {
 "id": "65b805f9f322b8d6a31be125",
@@ -371,7 +378,8 @@
 "dysport": "550K",
 "dysportOn": true
 },
-"logo": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/6696cca0e0eff7d7b9c8f1d9_atam.svg"
+"logo": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/6696cca0e0eff7d7b9c8f1d9_atam.svg",
+"main": "Columbus ohio"
 },
 {
 "id": "6580934b2d2ca2ad496fc74f",
@@ -408,7 +416,8 @@
 "dysport": null,
 "dysportOn": false
 },
-"logo": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/6696cca7505dcf90c685fa2e_williams.svg"
+"logo": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/6696cca7505dcf90c685fa2e_williams.svg",
+"main": "Albany, New York"
 },
 {
 "id": "65567bab059aae9e4abb9c81",
@@ -442,44 +451,8 @@
 "dysport": null,
 "dysportOn": false
 },
-"logo": "https://uploads-ssl.webflow.com/641dfbb4342ca749a5c98e26/6696cce174f1ce4bfa0cf614_lcm.svg"
-},
-{
-"id": "64c9296f54dac39f0f630010",
-"live": false,
-"ptr": 4,
-"name": "Barbarino Surgical Arts",
-"slug": "barabarino-surgical-arts",
-"story": "<p id=\"\">Barbarino Surgical Arts, established by Sheila Barbarino, MD, FAAO, FAACS, FACS, is a premier cosmetic surgery institution spanning across two locations – the vivacious city of Austin, Texas, and the tranquil South Bay of California. The centers uphold a singular aim: enabling patients to fully realize their aesthetic aspirations. Dr. Barbarino, who is recognized far and wide as an exceptional cosmetic surgeon, navigates the field with her extensive knowledge and experience.</p><p id=\"\">Sheila Barbarino, MD, FAAO, FAACS, FACS, is not merely a proficient cosmetic surgeon but also a recognized opinion leader in her field. Her techniques, which range from subtly enhancing features to conducting complete facelifts, are a testament to her mastery. Her ability to harness the latest technology and methods to deliver natural-looking results helps her patients feel their absolute best about their appearance.</p><p id=\"\">The clinics, located in the heart of Austin and the South Bay, reflect the vibrant character of Dr. Barbarino. The bright, stylish interiors exude an air of classy sophistication that immediately puts visitors at ease. The clinics are often filled with the melodies of the 80s, Dr. Barbarino's favorite era, creating an inviting and relaxed atmosphere for patients.</p><p id=\"\">The popularity of Barbarino Surgical Arts is well-documented in the numerous glowing reviews that abound on their website and social media platforms. Patients express appreciation for Dr. Barbarino's methodical approach to consultation, her comprehensive understanding of cosmetic surgery, and her balanced, scientific methodology for aesthetic enhancement.</p><p id=\"\">One memorable review by a satisfied patient encapsulates the trust and admiration for Dr. Barbarino. The review lauds her for her meticulous attention to detail, her readiness to answer questions, and her dedicated patient care throughout the treatment journey. The patient further praised the state-of-the-art clinic facilities, the convenient location, and the supportive, friendly staff.</p><p id=\"\">Sheila Barbarino, MD, FAAO, FAACS, FACS, is also a distinguished educator. Her numerous scholarly articles, studies, and publications in the field of cosmetic surgery reflect her unflagging dedication to the advancement of her field. Her unique techniques and soft touch transform each treatment into an experience that is both comfortable and rewarding.</p><p id=\"\">Barbarino Surgical Arts represents more than a cosmetic surgery clinic – it is a sanctuary for those wishing to enhance their self-image and boost their confidence. With its two convenient locations, a dedicated team, and a commitment to helping patients achieve their best look, Barbarino Surgical Arts is a trendsetter in cosmetic surgery. At its helm, Sheila Barbarino, MD, FAAO, FAACS, FACS, continues to make her mark in the field, changing lives one patient at a time.</p>",
-"est": "est 2016",
-"since": "August 2023",
-"hero": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/653c2de361898f974b892949_bsaintro-511-653c2ac1a5e7b.webp",
-"cta": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/64ca65ed5a0181f9baf5599f_CA1_1559.jpg",
-"practiceImg": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/64c929f59c7f937765944cf1_CA1_1098.jpg",
-"whyImg": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/64c929e2b17cd26d73a1eee1_CA1_1955.jpg",
-"filmPoster": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/64c929cb29069924f1462f1f_CA1_1950.jpg",
-"film": "https://vimeo.com/850378005",
-"locations": [
-"64c928dfe415c70166f43657",
-"64c928ffb4578e1238f805f8"
-],
-"kol": [
-"64c928c33220dfc34b90b4a8"
-],
-"keyKol": "64c928c33220dfc34b90b4a8",
-"hideStats": true,
-"stats": {
-"weekly": "90",
-"providers": "2",
-"locs": "2",
-"skincare": "1.1k",
-"syringes": "1.5k",
-"followers": "11.8k",
-"botox": "150k",
-"dysport": null,
-"dysportOn": false
-},
-"logo": null
+"logo": "https://uploads-ssl.webflow.com/641dfbb4342ca749a5c98e26/6696cce174f1ce4bfa0cf614_lcm.svg",
+"main": "Corte Madera, CA"
 },
 {
 "id": "64ac34a8df8d9105d5fcb003",
@@ -515,7 +488,8 @@
 "dysport": null,
 "dysportOn": false
 },
-"logo": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/6696cceab75e52f7e5d50c30_ra.svg"
+"logo": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/6696cceab75e52f7e5d50c30_ra.svg",
+"main": "Leesburg, VA"
 },
 {
 "id": "64ac349cc7f2457e91d8f42e",
@@ -556,7 +530,8 @@
 "dysport": null,
 "dysportOn": false
 },
-"logo": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/6696ccf3d30643c440e6ec00_htb.svg"
+"logo": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/6696ccf3d30643c440e6ec00_htb.svg",
+"main": "San Marcos, CA"
 },
 {
 "id": "64a8a30da43224831fc4502d",
@@ -595,7 +570,8 @@
 "dysport": null,
 "dysportOn": false
 },
-"logo": null
+"logo": null,
+"main": "El Dorado Hills, CA"
 }
 ],
 "locations": [
@@ -936,30 +912,6 @@
 "photo": "https://uploads-ssl.webflow.com/641dfbb4342ca749a5c98e26/669eae17206e07823f2bb874_marin.webp"
 },
 {
-"id": "64c928ffb4578e1238f805f8",
-"live": false,
-"name": "Redondo Beach, CA",
-"slug": "rodando-beach-ca",
-"state": "CA",
-"partner": "64c9296f54dac39f0f630010",
-"a": "33.867809",
-"b": "-118.382950",
-"maps": null,
-"photo": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/669eae0317abeca72bdac312_redondo.webp"
-},
-{
-"id": "64c928dfe415c70166f43657",
-"live": false,
-"name": "Austin, TX",
-"slug": "austin-tx",
-"state": "TX",
-"partner": "64c9296f54dac39f0f630010",
-"a": "30.300560",
-"b": "-97.836983",
-"maps": null,
-"photo": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/669eadfba45bf51cdc858d5a_austin.webp"
-},
-{
 "id": "64aee6921e90f7b223b3a20a",
 "live": true,
 "name": "Sacramento, CA",
@@ -1161,19 +1113,6 @@
 "years": 18
 },
 {
-"id": "674f3e7b9133642ca4569462",
-"live": false,
-"name": "Dr. Stephen Giordano",
-"slug": "dr-stephen-giordano",
-"cred": null,
-"title": "Founder of CAMI",
-"headshot": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/677c471eb27affb73e45e06d_CAMI-Web-Images-larger_dr.g-1.jpg",
-"portrait": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/674f4c92b492ca9b29dd7a37_CAMI-Web-Images-larger_dr.-g-closeup.jpg",
-"bio": "<p id=\"\">Dr. Stephen Giordano, known affectionately as Dr. G, is the founder and medical director of Carolina Age Management Institute (CAMI) in North Carolina. Board-certified in Internal Medicine and a Diplomat of the American Academy of Anti-Aging and Regenerative Medicine (A4M), Dr. G specializes in a broad spectrum of minimally invasive and invasive procedures, including SmartLipo, skin tightening, and advanced hair restoration techniques. Since establishing CAMI, Dr. G has received multiple \"Best of the City\" and \"Best Non-Surgical Facelift\" awards, underscoring his excellence in aesthetic medicine. His practice is a pivotal training center for aesthetic medicine in North Carolina, reflecting his commitment to advancing the field. Outside the clinic, Dr. G, a former Division I Pole Vaulter and a lover of music, enjoys attending acoustic concerts and spending time with his family. His holistic approach to wellness is evident both in his personal life and professional practice, where he aims to enhance both the inner and outer beauty of his patients.</p>",
-"partner": "674f3b7921d683c969334881",
-"years": 15
-},
-{
 "id": "6658ed9a43a6ce3a0cfd3063",
 "live": true,
 "name": "Waseem Garbia",
@@ -1224,19 +1163,6 @@
 "bio": "<p id=\"\">Edwin Williams III, MD, FACS, a distinguished figure in facial plastic surgery, boasts a career marked by academic and clinical excellence since 1993. He holds dual board certifications in Facial Plastic and Reconstructive Surgery and Otolaryngology – Head and Neck Surgery. Specializing in Facial Rejuvenation and Rhinoplasty, Dr. Williams founded the Williams Center Plastic Surgery Specialists, overseeing its growth into a 21,000 square foot facility with over 75 staff members. His leadership extends to being the primary shareholder and managing partner, including the recent expansion to acquire Saratoga Hair Transplant Center.</p><p id=\"\">Nationally and internationally recognized, Dr. Williams frequently presents at conferences and has been a pivotal member of the American Academy of Facial Plastic Surgery's Board of Directors for over a decade, serving as its President from 2015-2016. His expertise has earned him the Castle Connelly Top Doctors award in New York for Facial Plastic Surgery from 2016 to 2019. An active member of the Entrepreneur Organization, he contributes extensively to medical literature and educates resident doctors at Albany Medical Center. Dr. Williams, with over 30 years of practice, continues to mentor physicians, holding an academic appointment as Clinical Professor in the Department of Surgery and has been acknowledged with the American Medical Association Physician Recognition Award for his contributions to medical teaching.</p>",
 "partner": "6580934b2d2ca2ad496fc74f",
 "years": 30
-},
-{
-"id": "64c928c33220dfc34b90b4a8",
-"live": false,
-"name": "Dr. Sheila Barbarino",
-"slug": "sheila-barbarino",
-"cred": "MD, FAAO, FAACS, FACS, ",
-"title": "Founder & Medical Director",
-"headshot": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/64c9339e4940e5af19e4a115_CA1_2272-2.jpg",
-"portrait": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/669eb034ab45fc8dae63da2e_sheila.webp",
-"bio": "<p>Meet Sheila Barbarino, MD, FAAO, FAACS, FACS, a true star in the world of aesthetics and an industry trailblazer! With numerous awards under her belt, Dr. Barbarino is a highly-skilled, results-driven cosmetic surgeon who has left her mark on the global stage as a world-renowned lecturer and key opinion and thought leader. She also has a passion for training, where she shares her knowledge of cutting-edge techniques for injectables, lasers, and aesthetic devices.</p><p>Dr. Barbarino is also a prolific author, with over 15 articles published in prestigious peer-reviewed journals. Her dedication to research and her passion for the artful fusion of medicine and aesthetics make her a force to be reckoned with.</p><p>Patients from near and far flock to her Austin and Los Angeles offices to experience her compassionate care and benefit from her years of clinical experience. Whether surgical or non-surgical, Dr. Barbarino's expertise shines through, helping her patients achieve the natural-looking facial and full body rejuvenation they've always dreamed of.</p>",
-"partner": "64c9296f54dac39f0f630010",
-"years": 19
 },
 {
 "id": "64ac9658cff7a7967aef98a8",
@@ -2419,15 +2345,6 @@
 "cover": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/67819c70ce74c25a678731f1_PRThumbnails_RN%20Esthetics.jpg"
 },
 {
-"id": "677c46be4589199acf5b3666",
-"live": true,
-"title": "ALPHA AESTHETICS PARTNERS ANNOUNCES STRATEGIC PARTNERSHIP WITH CAROLINA AGE MANAGEMENT INSTITUTE (CAMI), LED BY DR. STEPHEN GIORDANO",
-"slug": "alpha-aesthetics-partners-announces-strategic-partnership-with-carolina-age-management-institute-cami-led-by-dr-stephen-giordano",
-"body": "<p><strong>SACRAMENTO, Calif., December 3, 2024 /PRNewswire/</strong> — Alpha Aesthetics Partners, a leader in the medical aesthetics industry and a member of the Thurston Group portfolio, is pleased to announce its partnership with Carolina Age Management Institute (CAMI), a renowned aesthetic medicine practice with locations in Greensboro and Huntersville, North Carolina.</p><p>CAMI specializes in a range of minimally invasive and advanced aesthetic procedures. The practice’s commitment to clinical excellence and the latest advancements has earned multiple awards, including “Best of the City” and recognition for “Best Non-Surgical Facelift 2017” at The Aesthetic Show in Las Vegas.</p><p>John Wheeler, CEO of Alpha Aesthetics Partners, expressed his enthusiasm about the collaboration, stating, “Our partnership with CAMI enriches our network significantly. The team’s commitment to clinical excellence and comprehensive patient care perfectly aligns with our mission. We are excited about the innovative and enhanced care this partnership will bring to our patients.”</p><p>The CAMI team also commented on the partnership, stating, “Joining forces with Alpha Aesthetics Partners marks a significant advancement for our practice. This collaboration broadens our reach and deepens our capabilities, allowing us to deliver cutting-edge treatments to a larger patient base. We are enthusiastic about the future and the successes our combined efforts will achieve.”</p><p><strong>About Carolina Age Management Institute (CAMI):</strong><br>Carolina Age Management Institute offers a comprehensive range of services, from injectables to energy-based devices, and operates in Greensboro and Huntersville, NC. The practice is dedicated to providing innovative treatments and exceptional patient care, guided by a commitment to excellence and continuous advancement.</p><p><strong>About Alpha Aesthetics Partners:</strong><br>Founded in 2023, Alpha Aesthetics Partners aims to advance the medical aesthetics industry through best-in-class partner support and clinical training. With a vision to build the best operating and largest network of medical aesthetics partners in the world, Alpha Aesthetics Partners focuses on making medical spa ownership simpler and more collaborative, allowing partners to concentrate on providing world-class patient care. The company is a portfolio company of Thurston Group, with a rapidly growing presence across 22 locations in 8 states.</p><p><strong>About Thurston Group:</strong><br>Thurston Group is a private equity firm that focuses on building industry-leading companies in the healthcare services sector. Founded by Chairman and CEO Patrick J. Haynes III in 1986, Thurston Group has returned over $4 billion of invested capital in its 38-year history. Thurston has an extensive track record of partnering with physicians and building fast-growing businesses, including Smile Doctors, US Endodontics Partners, US Oral Surgery Management, SGA Dental Partners, US Orthopedic Partners, Gen4 Dental Partners, ARC Health, Options Medical Weight Loss, Alpha Aesthetics Partners, and Modis Dental Partners, among others.</p><p>‍</p>",
-"date": "2024-12-03T00:00:00.000Z",
-"cover": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/674f414913014ef136c7a83b_CAMI%20Web%20Images%20larger_How%20it%20works.jpg"
-},
-{
 "id": "65b9199f28f1f816bf812878",
 "live": true,
 "title": "ANNE THERESE AESTHETIC MEDICINE JOINS ALPHA AESTHETICS PARTNERS",
@@ -2473,15 +2390,6 @@
 "cover": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/67819adf1bfaff462745b5ec_PRThumbnails_HTB.jpg"
 },
 {
-"id": "6532fb7430bb1c10e4ae49ae",
-"live": false,
-"title": "ALPHA AESTHETICS PARTNERS EXPANDS NATIONAL PRESENCE THROUGH STRATEGIC PARTNERSHIP WITH BARBARINO SURGICAL ARTS",
-"slug": "alpha-aesthetics-partners-expands-national-presence-through-strategic-partnership-with-barbarino-surgical-arts",
-"body": "<figure id=\"\" class=\"w-richtext-figure-type-video w-richtext-align-fullwidth\" style=\"padding-bottom:56.33802816901409%\" data-rt-type=\"video\" data-rt-align=\"fullwidth\" data-rt-max-width=\"\" data-rt-max-height=\"56.33802816901409%\" data-rt-dimensions=\"426:240\" data-page-url=\"https://vimeo.com/850378005\"><div id=\"\"><iframe src=\"https://player.vimeo.com/video/850378005\" title=\"Alpha Partner 004: Barbarino Surgical Arts\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\"></iframe></div></figure><p id=\"\">SACRAMENTO, Calif., Aug. 2, 2023 -- Alpha Aesthetics Partners, the industry's leading medical aesthetics platform, is excited to announce its partnership with Barbarino Surgical Arts, a prominent medical aesthetics practice with locations in Austin, Texas and Redondo Beach, California. This strategic collaboration reinforces Alpha Aesthetics Partners' growth in the rapidly evolving medical aesthetics industry.</p><p id=\"\">Alpha Aesthetics Partners, backed by the Thurston Group, is setting new industry standards in medical aesthetics consolidation. The company provides medical spas with unparalleled support, resources, and expertise to accelerate growth. The newly forged partnership with Barbarino Surgical Arts, led by esteemed physician Dr. Sheila Barbarino, further underscores Alpha Aesthetics Partners' mission to offer autonomous partnerships that fuse the benefits of a nationwide aesthetic chain with the independence of solo ownership.</p><p id=\"\">John Wheeler, CEO of Alpha Aesthetics Partners, articulated his enthusiasm for the new alliance, stating, \"Dr. Sheila Barbarino is not merely a name in the aesthetics field; she's a celebrated force, widely known and highly regarded. Her contributions from speaking on international podiums to chairing important industry meetings have shaped the discourse in medical aesthetics. We are overjoyed to welcome such an influential and respected figure into the Alpha family.</p><p id=\"\">Dr. Sheila Barbarino, Founder of Barbarino Surgical Arts, shares the excitement, remarking, \"Our partnership with Alpha Aesthetics Partners marks a significant milestone for Barbarino Surgical Arts. Their comprehensive support and innovative approach will allow us to enhance our service offerings, expand our reach, and cultivate a successful future in the medical aesthetics industry.\"</p><p id=\"\">This partnership signifies a major industry advancement, largely facilitated by Alpha Aesthetics Partners' innovative approach. By incorporating Barbarino Surgical Arts' unique skill set into its robust and industry-leading platform, Alpha Aesthetics Partners expands its national footprint and advances its mission to revolutionize the medical aesthetics landscape. This strategic move amplifies opportunities for innovation, growth, and industry leadership, highlighting Alpha Aesthetics' unwavering commitment to shaping the future of the medical aesthetics industry.</p><p id=\"\"><strong>About Alpha Aesthetics Partners:</strong><br>Alpha Aesthetics Partners is the industry's premier medical aesthetics platform, providing partners with world-class clinical training, administrative support, strategic insights, branding, team culture, leadership development, marketing, industry connections, and an unmatched partner experience. Alpha Aesthetics Partners enables practices to leverage the advantages of a nationwide aesthetic chain while preserving the autonomy of solo ownership. The company is backed by Thurston Group, a private equity firm specializing in healthcare consolidation.</p><p id=\"\"><strong>About Barbarino Surgical Arts:</strong><br>Barbarino Surgical Arts, led by Dr. Sheila Barbarino, is a distinguished medical aesthetics practice with locations in Austin, Texas, and Redondo Beach, California. Dr. Barbarino's comprehensive medical expertise and the practice's commitment to excellence contribute significantly to Alpha Aesthetics Partners' mission to redefine the medical aesthetics industry.</p>",
-"date": "2023-08-02T00:00:00.000Z",
-"cover": "https://cdn.prod.website-files.com/641dfbb4342ca749a5c98e26/67819abcb8f5195fdf92c53b_PRThumbnails_Barbarino.jpg"
-},
-{
 "id": "6532f8f52070401a8553c3c4",
 "live": true,
 "title": "alpha aesthetics partners announces partnership with refined aesthetics",
@@ -2503,12 +2411,6 @@
 "copy": "\"This strategic alliance with Alpha Aesthetics Partners represents an exciting new chapter in our growth, enabling us to tap into a broader range of resources and expertise.\"",
 "author": "Denise Jones, COO",
 "name": "Denise Jones, COO"
-},
-{
-"partner": "64c9296f54dac39f0f630010",
-"copy": "\"Alpha's comprehensive support and innovative approach will allow us to enhance our service offerings, expand our reach, and cultivate a successful future in the medical aesthetics industry.\"",
-"author": "Dr Sheila Barbarino, MD",
-"name": "Dr Sheila Barbarino MD, FAO, FAACS, FACS"
 },
 {
 "partner": "64ac34a8df8d9105d5fcb003",

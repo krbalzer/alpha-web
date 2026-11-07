@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     brands: Brand;
     locations: Location;
+    'tuck-ins': TuckIn;
     founders: Founder;
     'cta-images': CtaImage;
     departments: Department;
@@ -79,6 +80,8 @@ export interface Config {
     tags: Tag;
     articles: Article;
     resources: Resource;
+    legal: Legal;
+    leads: Lead;
     media: Media;
     users: User;
     'payload-kv': PayloadKv;
@@ -89,9 +92,11 @@ export interface Config {
   collectionsJoins: {
     brands: {
       locations: 'locations';
+      tuckIns: 'tuck-ins';
     };
     founders: {
       brands: 'brands';
+      tuckIns: 'tuck-ins';
     };
     departments: {
       members: 'team';
@@ -100,6 +105,7 @@ export interface Config {
   collectionsSelect: {
     brands: BrandsSelect<false> | BrandsSelect<true>;
     locations: LocationsSelect<false> | LocationsSelect<true>;
+    'tuck-ins': TuckInsSelect<false> | TuckInsSelect<true>;
     founders: FoundersSelect<false> | FoundersSelect<true>;
     'cta-images': CtaImagesSelect<false> | CtaImagesSelect<true>;
     departments: DepartmentsSelect<false> | DepartmentsSelect<true>;
@@ -110,6 +116,8 @@ export interface Config {
     tags: TagsSelect<false> | TagsSelect<true>;
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
     resources: ResourcesSelect<false> | ResourcesSelect<true>;
+    legal: LegalSelect<false> | LegalSelect<true>;
+    leads: LeadsSelect<false> | LeadsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -172,6 +180,9 @@ export interface Brand {
   ptr: number;
   since?: string | null;
   established?: number | null;
+  /**
+   * Drives the "Book at" button on brand pages.
+   */
   website?: string | null;
   services?:
     | (
@@ -187,6 +198,10 @@ export interface Brand {
         | 'Hair'
       )[]
     | null;
+  /**
+   * Partnership publicly launched. Off: the page can exist, but the brand is left out of "new partner" moments (homepage, newswire, menu).
+   */
+  announced?: boolean | null;
   founders?: (number | Founder)[] | null;
   /**
    * One or two sentences under the H1.
@@ -213,6 +228,13 @@ export interface Brand {
     image?: (number | null) | Media;
   };
   film?: {
+    /**
+     * Brand film, played on the page. Set by pnpm ingest:video with 720p / 1080p / 2160p renditions.
+     */
+    video?: (number | null) | Media;
+    /**
+     * Only used when no video is uploaded.
+     */
     url?: string | null;
     poster?: (number | null) | Media;
     /**
@@ -285,6 +307,11 @@ export interface Brand {
     hasNextPage?: boolean;
     totalDocs?: number;
   };
+  tuckIns?: {
+    docs?: (number | TuckIn)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   /**
    * Off hides it everywhere on the site.
    */
@@ -308,12 +335,22 @@ export interface Brand {
 export interface Founder {
   id: number;
   name: string;
+  kind?: ('provider' | 'business') | null;
+  /**
+   * Former founders keep their story, framed in the past tense.
+   */
+  status?: ('active' | 'former') | null;
   /**
    * e.g. MSN, CPNP-AC, FNP-C. Confirm with the founder.
    */
   credentials?: string | null;
   brands?: {
     docs?: (number | Brand)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  tuckIns?: {
+    docs?: (number | TuckIn)[];
     hasNextPage?: boolean;
     totalDocs?: number;
   };
@@ -378,11 +415,203 @@ export interface Founder {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tuck-ins".
+ */
+export interface TuckIn {
+  id: number;
+  formerName: string;
+  brand: number | Brand;
+  closed?: string | null;
+  kind: 'location' | 'merged';
+  location?: (number | null) | Location;
+  city?: string | null;
+  state?: string | null;
+  founders?: (number | Founder)[] | null;
+  /**
+   * Packaged as joining the brand and Alpha.
+   */
+  story?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  film?: string | null;
+  quote?: {
+    /**
+     * Verbatim only.
+     */
+    text?: string | null;
+    source?: string | null;
+  };
+  /**
+   * Off hides it everywhere on the site.
+   */
+  live?: boolean | null;
+  /**
+   * URL segment. Lowercase, hyphens. Usually from former name.
+   */
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "locations".
+ */
+export interface Location {
+  id: number;
+  title?: string | null;
+  brand: number | Brand;
+  city: string;
+  state: string;
+  zip?: string | null;
+  origin?: ('original' | 'tuck-in' | 'de-novo') | null;
+  opened?: string | null;
+  /**
+   * e.g. Blossom Medical
+   */
+  formerName?: string | null;
+  address1?: string | null;
+  address2?: string | null;
+  lat: number;
+  lng: number;
+  /**
+   * Map rotation in degrees when flying to this pin.
+   */
+  mapBearing?: number | null;
+  /**
+   * Lead paragraph under "Inside". 80 to 120 words, true of this location only.
+   */
+  story?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  phone?: string | null;
+  bookingUrl?: string | null;
+  /**
+   * One row per day range, e.g. "Mon to Fri" / "9am to 6pm".
+   */
+  hours?:
+    | {
+        days: string;
+        time: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Parking and entrance, one or two lines.
+   */
+  arrivalNote?: string | null;
+  /**
+   * What changed at this address. Dated, one line each.
+   */
+  milestones?:
+    | {
+        /**
+         * e.g. Jun 2025
+         */
+        when: string;
+        line: string;
+        id?: string | null;
+      }[]
+    | null;
+  quote?: {
+    /**
+     * Verbatim only, from the provider who leads this location.
+     */
+    text?: string | null;
+    /**
+     * Where the line comes from (interview, date).
+     */
+    source?: string | null;
+  };
+  /**
+   * The provider who runs this location. The founder shows automatically; no full roster on purpose.
+   */
+  lead?: {
+    name?: string | null;
+    credentials?: string | null;
+    /**
+     * e.g. Lead provider
+     */
+    title?: string | null;
+    photo?: (number | null) | Media;
+    /**
+     * Only if they have a Founder page.
+     */
+    profile?: (number | null) | Founder;
+  };
+  /**
+   * Counts only, no names. Renders as "9 providers / 4 NPs, 3 RNs, 2 aestheticians".
+   */
+  roleMix?:
+    | {
+        /**
+         * Plural, e.g. NPs
+         */
+        role: string;
+        count: number;
+        id?: string | null;
+      }[]
+    | null;
+  photo?: (number | null) | Media;
+  /**
+   * Silent loop, 100vh hero. Leave empty and the map becomes the hero.
+   */
+  heroVideo?: (number | null) | Media;
+  heroPoster?: (number | null) | Media;
+  /**
+   * Off hides it everywhere on the site.
+   */
+  live?: boolean | null;
+  /**
+   * URL segment. Lowercase, hyphens. Usually from brand + city.
+   */
+  slug: string;
+  seo?: {
+    title?: string | null;
+    description?: string | null;
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
   id: number;
   alt: string;
+  /**
+   * Web renditions, written by pnpm ingest:video. This file is the H.264 1080p default.
+   */
+  variants?: {
+    av1?: (number | null) | Media;
+    small?: (number | null) | Media;
+    uhd?: (number | null) | Media;
+  };
   prefix?: string | null;
   _objectKey?: string | null;
   updatedAt: string;
@@ -585,6 +814,10 @@ export interface Team {
    */
   leader?: boolean | null;
   headshot?: (number | null) | Media;
+  /**
+   * Two to four words. Shows on hover on the Team page, e.g. "the 90-day plan".
+   */
+  askAbout?: string | null;
   bio?: {
     root: {
       type: string;
@@ -728,52 +961,6 @@ export interface Tag {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "locations".
- */
-export interface Location {
-  id: number;
-  title?: string | null;
-  brand: number | Brand;
-  city: string;
-  state: string;
-  zip?: string | null;
-  address1?: string | null;
-  address2?: string | null;
-  lat: number;
-  lng: number;
-  /**
-   * Map rotation in degrees when flying to this pin.
-   */
-  mapBearing?: number | null;
-  phone?: string | null;
-  bookingUrl?: string | null;
-  providers?:
-    | {
-        name?: string | null;
-        title?: string | null;
-        photo?: (number | null) | Media;
-        id?: string | null;
-      }[]
-    | null;
-  photo?: (number | null) | Media;
-  /**
-   * Off hides it everywhere on the site.
-   */
-  live?: boolean | null;
-  /**
-   * URL segment. Lowercase, hyphens. Usually from brand + city.
-   */
-  slug: string;
-  seo?: {
-    title?: string | null;
-    description?: string | null;
-    image?: (number | null) | Media;
-  };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "cta-images".
  */
 export interface CtaImage {
@@ -866,6 +1053,77 @@ export interface Resource {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "legal".
+ */
+export interface Legal {
+  id: number;
+  title: string;
+  updated: string;
+  order?: number | null;
+  sections?:
+    | {
+        heading: string;
+        body: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Off hides it everywhere on the site.
+   */
+  live?: boolean | null;
+  /**
+   * URL segment. Lowercase, hyphens. Usually from title.
+   */
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "leads".
+ */
+export interface Lead {
+  id: number;
+  kind: 'partner' | 'other';
+  status?: ('new' | 'contacted' | 'qualified' | 'closed') | null;
+  name?: string | null;
+  practice?: string | null;
+  email: string;
+  phone?: string | null;
+  topic?: string | null;
+  message?: string | null;
+  /**
+   * Qualifier answers.
+   */
+  answers?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  page?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -923,6 +1181,10 @@ export interface PayloadLockedDocument {
         value: number | Location;
       } | null)
     | ({
+        relationTo: 'tuck-ins';
+        value: number | TuckIn;
+      } | null)
+    | ({
         relationTo: 'founders';
         value: number | Founder;
       } | null)
@@ -961,6 +1223,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'resources';
         value: number | Resource;
+      } | null)
+    | ({
+        relationTo: 'legal';
+        value: number | Legal;
+      } | null)
+    | ({
+        relationTo: 'leads';
+        value: number | Lead;
       } | null)
     | ({
         relationTo: 'media';
@@ -1024,6 +1294,7 @@ export interface BrandsSelect<T extends boolean = true> {
   established?: T;
   website?: T;
   services?: T;
+  announced?: T;
   founders?: T;
   intro?: T;
   practice?:
@@ -1037,6 +1308,7 @@ export interface BrandsSelect<T extends boolean = true> {
   film?:
     | T
     | {
+        video?: T;
         url?: T;
         poster?: T;
         caption?: T;
@@ -1074,6 +1346,7 @@ export interface BrandsSelect<T extends boolean = true> {
   logo?: T;
   tone?: T;
   locations?: T;
+  tuckIns?: T;
   live?: T;
   slug?: T;
   seo?:
@@ -1096,22 +1369,57 @@ export interface LocationsSelect<T extends boolean = true> {
   city?: T;
   state?: T;
   zip?: T;
+  origin?: T;
+  opened?: T;
+  formerName?: T;
   address1?: T;
   address2?: T;
   lat?: T;
   lng?: T;
   mapBearing?: T;
+  story?: T;
   phone?: T;
   bookingUrl?: T;
-  providers?:
+  hours?:
+    | T
+    | {
+        days?: T;
+        time?: T;
+        id?: T;
+      };
+  arrivalNote?: T;
+  milestones?:
+    | T
+    | {
+        when?: T;
+        line?: T;
+        id?: T;
+      };
+  quote?:
+    | T
+    | {
+        text?: T;
+        source?: T;
+      };
+  lead?:
     | T
     | {
         name?: T;
+        credentials?: T;
         title?: T;
         photo?: T;
+        profile?: T;
+      };
+  roleMix?:
+    | T
+    | {
+        role?: T;
+        count?: T;
         id?: T;
       };
   photo?: T;
+  heroVideo?: T;
+  heroPoster?: T;
   live?: T;
   slug?: T;
   seo?:
@@ -1126,12 +1434,41 @@ export interface LocationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tuck-ins_select".
+ */
+export interface TuckInsSelect<T extends boolean = true> {
+  formerName?: T;
+  brand?: T;
+  closed?: T;
+  kind?: T;
+  location?: T;
+  city?: T;
+  state?: T;
+  founders?: T;
+  story?: T;
+  film?: T;
+  quote?:
+    | T
+    | {
+        text?: T;
+        source?: T;
+      };
+  live?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "founders_select".
  */
 export interface FoundersSelect<T extends boolean = true> {
   name?: T;
+  kind?: T;
+  status?: T;
   credentials?: T;
   brands?: T;
+  tuckIns?: T;
   headshot?: T;
   portrait?: T;
   headline?: T;
@@ -1234,6 +1571,7 @@ export interface TeamSelect<T extends boolean = true> {
   order?: T;
   leader?: T;
   headshot?: T;
+  askAbout?: T;
   bio?: T;
   ownsForYou?:
     | T
@@ -1429,10 +1767,55 @@ export interface ResourcesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "legal_select".
+ */
+export interface LegalSelect<T extends boolean = true> {
+  title?: T;
+  updated?: T;
+  order?: T;
+  sections?:
+    | T
+    | {
+        heading?: T;
+        body?: T;
+        id?: T;
+      };
+  live?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "leads_select".
+ */
+export interface LeadsSelect<T extends boolean = true> {
+  kind?: T;
+  status?: T;
+  name?: T;
+  practice?: T;
+  email?: T;
+  phone?: T;
+  topic?: T;
+  message?: T;
+  answers?: T;
+  page?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  variants?:
+    | T
+    | {
+        av1?: T;
+        small?: T;
+        uhd?: T;
+      };
   prefix?: T;
   _objectKey?: T;
   updatedAt?: T;
@@ -1565,6 +1948,15 @@ export interface Network {
   address?: string | null;
   instagram?: string | null;
   linkedin?: string | null;
+  /**
+   * People who must not appear anywhere on the site. Any save that mentions one of these names is blocked. Staff only; never sent to the site.
+   */
+  suppressed?:
+    | {
+        name: string;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1579,6 +1971,12 @@ export interface NetworkSelect<T extends boolean = true> {
   address?: T;
   instagram?: T;
   linkedin?: T;
+  suppressed?:
+    | T
+    | {
+        name?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
