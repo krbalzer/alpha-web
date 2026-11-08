@@ -50,7 +50,7 @@ export default buildConfig({
   typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },
   // Postgres (Neon via Vercel) in production, SQLite file locally.
   db: DB.startsWith('postgres')
-    ? postgresAdapter({ pool: { connectionString: DB }, migrationDir: path.resolve(dirname, 'migrations'), prodMigrations: migrations })
+    ? postgresAdapter({ pool: { connectionString: DB }, push: false, migrationDir: path.resolve(dirname, 'migrations'), prodMigrations: migrations })
     : sqliteAdapter({ client: { url: DB } }),
   plugins: [
     vercelBlobStorage({

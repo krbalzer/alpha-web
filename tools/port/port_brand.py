@@ -41,10 +41,20 @@ b = sub(r'<span class="ph">Brand film / Vimeo, loads on play</span>',
 b = b.replace('<button class="play" aria-label="Play the {{ b.short }} story">', '<button class="play" onClick="{{ playFilm }}" aria-label="Play the {{ b.short }} story">')
 b = sub(r'<div class="body" style="margin-top: clamp\(28px, 3vw, 44px\)"><p>\[Film caption.*?</div>',
         '<sc-if value="{{ b.filmCaption }}"><div class="body" style="margin-top: clamp(28px, 3vw, 44px)"><p>{{ b.filmCaption }}</p></div></sc-if>', b)
+b = b.replace('<sc-if value="{{ c.noImg }}" hint-placeholder-val="{{ true }}">{{ c.city }}<br>photo</sc-if>', '<sc-if value="{{ c.noImg }}">{{ c.city }}</sc-if>')
+b = b.replace('<img class="fill" src="{{ b.filmPoster }}" alt="" loading="lazy">', '<img class="fill" src="{{ b.filmPoster }}" alt="" loading="lazy" decoding="async">')
+# quote caption: no board timecode
+b = sub(r'<figcaption>\{\{ b.founder \}\} / \{\{ b.short \}\} founder[^<]*</figcaption>', '<figcaption>{{ b.founder }} / {{ b.short }} founder</figcaption>', b)
+# EST only when the CMS has the year
+b = b.replace('<span class="est"><small>EST</small>{{ b.est }}</span>', '<sc-if value="{{ b.est }}"><span class="est"><small>EST</small>{{ b.est }}</span></sc-if>')
+b = b.replace('<span class="est"><small>EST</small>{{ c.est }}</span>', '<sc-if value="{{ c.est }}"><span class="est"><small>EST</small>{{ c.est }}</span></sc-if>')
+assert b.count('sc-if value="{{ b.est }}"') == 1 and b.count('sc-if value="{{ c.est }}"') == 1
 # stats only when filled
 b = sub(r'(<!-- ============ STATS ============ -->\s*)(<section.*?</section>)', r'\1<sc-if value="{{ hasStats }}">\2</sc-if>', b)
+# reviews: left out until the Google Business Profile sync writes them (same rule as Location)
+b = sub(r'<!-- ============ IN THEIR WORDS.*?-->\s*<section.*?</section>\s*', '', b)
 # founder
-b = b.replace('<img src="/_blob/661a270e1aad64eb71378028e78df048" alt="{{ b.founder }}">', '<sc-if value="{{ b.founderImg }}"><img src="{{ b.founderImg }}" alt="{{ b.founder }}" loading="lazy"></sc-if>')
+b = sub(r'<img src="/_blob/\w+" alt="\{\{ b.founder \}\}"[^>]*>', '<sc-if value="{{ b.founderImg }}"><img src="{{ b.founderImg }}" alt="{{ b.founder }}" style="object-position: 50% 20%" loading="lazy"></sc-if>', b)
 b = sub(r'(<p class="founder_cred">\{\{ b.cred \}\}</p>\s*)<div class="body">.*?</div>', r'\1<x-rich class="body" html="{{ b.founderHtml }}"></x-rich>', b)
 b = b.replace('<a class="btn" href="#founder" style="margin-top: 10px">Learn more</a>', '<x-link class="btn" href="{{ founderHref }}" style="margin-top: 10px">Learn more</x-link>')
 b = sub(r'(<!-- ============ FOUNDER ============ -->\s*)(<section.*?</section>)', r'\1<sc-if value="{{ b.founder }}">\2</sc-if>', b)
@@ -52,8 +62,7 @@ b = sub(r'(<!-- ============ FOUNDER ============ -->\s*)(<section.*?</section>)
 b = sub(r'<blockquote>“.*?”</blockquote>', '<blockquote>“{{ b.quote }}”</blockquote>', b)
 b = sub(r'(<!-- ============ QUOTE ============ -->\s*)(<section.*?</section>)', r'\1<sc-if value="{{ b.quote }}">\2</sc-if>', b)
 # why alpha
-b = b.replace('<h2 class="h3">[Why she chose Alpha, in her words.]</h2>', '<h2 class="h3">{{ b.whyHeadline }}</h2>')
-b = sub(r'<div class="body"><p>\[Two short paragraphs.*?</div>', '<x-rich class="body" html="{{ b.whyHtml }}"></x-rich>', b)
+b = sub(r'(<p class="eyebrow">Why Alpha</p>\s*)<h2 class="h3">.*?</h2>\s*<div class="body">.*?</div>', r'\1<h2 class="h3">{{ b.whyHeadline }}</h2>\n<x-rich class="body" html="{{ b.whyHtml }}"></x-rich>', b)
 b = sub(r'<div class="img ph" style="aspect-ratio: 4 / 5.2">.*?</div>',
         '<div class="img ph" style="aspect-ratio: 4 / 5.2"><sc-if value="{{ b.whyImg }}"><img class="fill" src="{{ b.whyImg }}" alt="" loading="lazy"></sc-if></div>', b)
 b = sub(r'(<!-- ============ WHY ALPHA ============ -->\s*)(<section.*?</section>)', r'\1<sc-if value="{{ b.whyHeadline }}">\2</sc-if>', b)
@@ -79,6 +88,10 @@ if '/* site menu (shared' in c:  # drop only the injected menu block; keep page 
     c = c[:i] + c[j + 1:]
 c = re.sub(r'/\* CTA background.*?(?=\.closer_media>h2)', '', c, flags=re.S)
 c += '\n.map_gl{position:absolute;inset:0}\n.map_gl .mapboxgl-ctrl-attrib{background:rgba(14,14,13,.5)}\n.map_gl .mapboxgl-ctrl-attrib a{color:rgba(232,228,218,.6)}\n.hero_vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}\n.logo_img{height:26px;width:auto;display:block}\n.card_img img,.fill{width:100%;height:100%;object-fit:cover;display:block}\n.img{position:relative;overflow:hidden}\n.film{overflow:hidden}\n.film .fill{position:absolute;inset:0}\n'
+import json
+ASSETS = json.load(open(os.path.join(os.path.dirname(__file__), 'assets.json')))
+c = re.sub(r'/_blob/([0-9a-f]{32})', lambda m: ASSETS.get(m.group(1), m.group(0)), c)
+missing = set(re.findall(r'/_blob/([0-9a-f]{32})', c))
 scss = scope_css(c, 'pg-brand')
 
 # ---------- logic ----------
@@ -90,6 +103,15 @@ e = e.replace("cards: L.map((l, i) => ({ cls:", "cards: L.map((l, i) => ({ img: 
 assert "metaLine: [[L[0].a1" in e
 assert e.count('this.tick(now, dt); this.draw(now);') == 1
 e = e.replace('this.tick(now, dt); this.draw(now);', 'this.tick(now, dt); if (!this.props.mapbox) this.draw(now);')
+VR = "      vidRef: (el) => { if (el && el !== this._vid) { this._vid = el; el.muted = true; const p = el.play && el.play(); if (p && p.catch) p.catch(() => {}); } },\n"
+assert VR in e
+e = e.replace(VR, """      vidRef: (el) => {
+        if (!el || el === this._vid) return;
+        this._vid = el; el.muted = true;
+        if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) { el.removeAttribute('autoplay'); el.pause(); return; }
+        const p = el.play && el.play(); if (p && p.catch) p.catch(() => {});
+      },
+""")
 e = e.replace('class Component extends DCLogic {', 'export class BrandEngine extends DCLogic {', 1)
 assert 'mnVals' not in e and 'ctaVals' not in e
 
@@ -125,4 +147,4 @@ os.makedirs(APP, exist_ok=True)
 open(APP + 'BrandView.tsx', 'w').write(view)
 open(APP + 'brand.css', 'w').write(scss)
 open(APP + 'engine.ts', 'w').write(engine)
-print('ok', len(view), len(scss), len(engine))
+print('missing assets', sorted(missing)); print('ok', len(view), len(scss), len(engine))
