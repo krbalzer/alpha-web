@@ -259,6 +259,11 @@ def locations_markup(b):
 
 
 def locations_engine(e):
+    # real streets fade in under the canvas as it zooms to a location (FocusMap); the canvas keeps the US dot field and pins
+    e = rep(e, "ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.fillStyle = '#151513'; ctx.fillRect(0, 0, Wc, Hc);", "ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, Wc, Hc);")
+    e = rep(e, "    this._k = k;\n", "    this._k = k;\n    const real = !!this.rmap && this.rmap.dataset.ready === '1';\n    if (this.rmap) this.rmap.style.opacity = String(cityA);\n    ctx.fillStyle = 'rgba(21,21,19,' + (real ? 1 - cityA : 1).toFixed(3) + ')'; ctx.fillRect(0, 0, Wc, Hc);\n")
+    e = rep(e, "    if (cityA > .01) {\n      ctx.globalAlpha = cityA; ctx.lineCap = 'butt';", "    if (cityA > .01 && !real) {\n      ctx.globalAlpha = cityA; ctx.lineCap = 'butt';")
+    e = rep(e, "hasSel: !!sel,", "setRealMap: (el) => { this.rmap = el; }, realFocus: this.selLoc || (this.F && this.F.toLoc) || null, hasSel: !!sel,")
     e = rep(e, "const card = (l) => ({ cls:", "const card = (l) => ({ href: l.href, brandHref: l.brandHref, img: l.img, noPhoto: !l.noMedia && !l.img, cls:")
     e = rep(e, "rating: sel.rating.toFixed(1) + ' (' + sel.reviews.toLocaleString('en-US') + ')',", "rating: sel.rating ? sel.rating.toFixed(1) + ' (' + sel.reviews.toLocaleString('en-US') + ')' : '', href: sel.href, brandHref: sel.brandHref, img: sel.img,")
     e = rep(e, "{ k: 'Providers', v: hasF ? '[n]' : '145' }", "{ k: 'Providers', v: hasF ? '–' : '145' }")
@@ -373,7 +378,24 @@ def location_engine(e):
     e = sub(r"leads: \[.*?\]\.map\(\(p\) => \(\{ \.\.\.p,", "leads: B.leads(loc).map((p) => ({ ...p,", e) if False else e
     e = sub(r"leads: \[\s*\{ name: B\.founder.*?\n      \]\.map",
             "leads: [B.founder ? { name: B.founder, role: 'Founder', cred: B.cred, img: B.founderImg || '', href: B.founderHref } : null, loc.lead && loc.lead.name ? Object.assign({ role: 'Lead provider, ' + loc.city }, loc.lead) : null].filter(Boolean).map", e)
+    e = rep(e, 'this.tick(now, dt); this.draw(now);', 'this.tick(now, dt); // the real map (MapStage) renders the scene; draw() stays as the fallback reference')
     return e
+
+
+MAP_CSS = ('.map_gl{position:absolute;inset:0}\n.map_gl .maplibregl-ctrl-attrib{background:rgba(14,14,13,.5);color:rgba(232,228,218,.5)}\n'
+           '.map_gl .maplibregl-ctrl-attrib a{color:rgba(232,228,218,.6)}\n.map_gl .maplibregl-ctrl-attrib-button{filter:invert(1);opacity:.5}\n')
+MAP_IMPORT = "import { MapStage } from '@/components/site/MapStage'\n"
+
+
+def locations_jsx(j):
+    i = j.index('<canvas className="map_cv"')
+    return j[:i] + '<FocusMap loc={v.realFocus} setRef={v.setRealMap} />' + j[i:]
+
+
+def location_jsx(j):
+    cv = '<canvas className="map_cv" ref={v.setCanvas} aria-hidden="true"></canvas>'
+    assert j.count(cv) == 1
+    return j.replace(cv, '<MapStage locs={[props.data.b.locations[props.data.li]]} idx={0} />' + cv)
 
 
 def main_markup(b):
@@ -639,8 +661,9 @@ PAGES = {
     'Newswire': dict(dir='newswire', board='Newswire', data=True, markup=newswire_markup, engine=newswire_engine, css=IMG_CSS),
     'Article': dict(dir='newswire/[slug]', board='Article', markup=article_markup, engine=article_engine, css=IMG_CSS + '.ar_body img{max-width:100%;height:auto}'),
     'Founder': dict(dir='founders/[slug]', board='Founder', data=True, markup=founder_markup, engine=founder_engine),
-    'Locations': dict(dir='locations', board='Locations', data=True, markup=locations_markup, engine=locations_engine, css=IMG_CSS),
-    'Location': dict(dir='locations/[slug]', board='Location', markup=location_markup, engine=location_engine, css=IMG_CSS),
+    'Locations': dict(dir='locations', board='Locations', data=True, markup=locations_markup, engine=locations_engine, jsx=locations_jsx, imports="import { FocusMap } from '@/components/site/MapStage'\n",
+                      css=IMG_CSS + MAP_CSS + '.map_focus{opacity:0;pointer-events:none}\n.map_focus .maplibregl-canvas-container{transition:opacity .7s}\n.map_focus:not([data-ready="1"]) .maplibregl-canvas-container{opacity:0;transition:opacity .2s}\n'),
+    'Location': dict(dir='locations/[slug]', board='Location', markup=location_markup, engine=location_engine, jsx=location_jsx, imports=MAP_IMPORT, css=IMG_CSS + MAP_CSS),
     'Podcasts': dict(dir='podcasts', board='Podcasts', data=True, markup=podcasts_markup, engine=podcasts_engine, css=PODCAST_CSS),
     'Show': dict(dir='podcasts/[show]', board='Show', markup=show_markup, engine=show_engine, css=IMG_CSS),
     'Episode': dict(dir='podcasts/[show]/[episode]', board='Episode', markup=episode_markup, engine=episode_engine, css=IMG_CSS),
@@ -769,6 +792,8 @@ def port(name):
     if hook:
         b = hook(b)
     jsx = convert(b)
+    if cfg.get('jsx'):
+        jsx = cfg['jsx'](jsx)
     assert 'moRoot' not in jsx and 'mnOpen' not in jsx, name + ': chrome left in markup'
     scss = css_for(name, css + cfg.get('css', ''), cls)
     eng, cname = engine_for(name, js, cfg)
@@ -780,7 +805,7 @@ import React from 'react'
 import {{ Nav }} from '@/components/site/Nav'
 import {{ useDC }} from '@/lib/dc'
 import {{ {cname} }} from './engine'
-import './page.css'
+{cfg.get('imports', '')}import './page.css'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function {name}View(props: any) {{

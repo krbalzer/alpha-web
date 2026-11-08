@@ -97,7 +97,7 @@ export class LocationEngine extends DCLogic {
     this.raf = requestAnimationFrame(() => this.loop());
     if (!this.inView || (typeof document !== 'undefined' && document.hidden)) { this.last = 0; return; }
     const now = this.now(), dt = this.last ? Math.min(64, now - this.last) : 16; this.last = now;
-    this.tick(now, dt); this.draw(now);
+    this.tick(now, dt); // the real map (MapStage) renders the scene; draw() stays as the fallback reference
   }
 
   /* ---------- render ---------- */

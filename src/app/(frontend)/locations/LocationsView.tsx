@@ -4,6 +4,7 @@ import React from 'react'
 import { Nav } from '@/components/site/Nav'
 import { useDC } from '@/lib/dc'
 import { LocationsEngine } from './engine'
+import { FocusMap } from '@/components/site/MapStage'
 import './page.css'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -16,7 +17,7 @@ export default function LocationsView(props: any) {
 
 {/* ============ MAP: every location ============ */}
 <section className="dmap dark" ref={v.setMap} aria-label="Partner map">
-<canvas className="map_cv" ref={v.setCanvas} onMouseMove={v.onMove} onMouseLeave={v.onLeave} onClick={v.onClick} style={{"cursor": `${v.cursor}`} as React.CSSProperties} aria-hidden="true"></canvas>
+<FocusMap loc={v.realFocus} setRef={v.setRealMap} /><canvas className="map_cv" ref={v.setCanvas} onMouseMove={v.onMove} onMouseLeave={v.onLeave} onClick={v.onClick} style={{"cursor": `${v.cursor}`} as React.CSSProperties} aria-hidden="true"></canvas>
 <div className="map_fade2" aria-hidden="true"></div>
 <div className="wrap dmap_head">
 <div><p className="eyebrow">The portfolio</p><h1 className="display dmap_t">Every partner,<br />on one map</h1></div>

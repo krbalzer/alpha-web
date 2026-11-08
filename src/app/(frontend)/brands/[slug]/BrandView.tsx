@@ -6,7 +6,7 @@ import { Nav } from '@/components/site/Nav'
 import { useDC } from '@/lib/dc'
 import type { BrandData } from '@/lib/data'
 import { BrandEngine } from './engine'
-import { MapStage, hasRealMap } from './MapStage'
+import { MapStage, hasRealMap } from '@/components/site/MapStage'
 import './brand.css'
 
 export default function BrandView({ brand }: { brand: BrandData }) {

@@ -105,7 +105,7 @@ export class LocationsEngine extends DCLogic {
     const dpr = Math.min(2, window.devicePixelRatio || 1), Wc = cv.clientWidth, Hc = cv.clientHeight; if (!Wc || !Hc) return;
     if (cv.width !== Math.round(Wc * dpr) || cv.height !== Math.round(Hc * dpr)) { cv.width = Math.round(Wc * dpr); cv.height = Math.round(Hc * dpr); }
     this.cw = Wc; this.ch = Hc;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.fillStyle = '#151513'; ctx.fillRect(0, 0, Wc, Hc);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, Wc, Hc);
     const cam = this.cam0(), z = cam.z, zc = this.zc(), zu = this.zu();
     const k = Math.max(0, Math.min(1, (Math.log(z) - Math.log(zu)) / (Math.log(zc) - Math.log(zu))));
     const sm = (a, b, x) => { const t = Math.max(0, Math.min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
@@ -119,6 +119,9 @@ export class LocationsEngine extends DCLogic {
     };
     const L = this.locs();
     this._k = k;
+    const real = !!this.rmap && this.rmap.dataset.ready === '1';
+    if (this.rmap) this.rmap.style.opacity = String(cityA);
+    ctx.fillStyle = 'rgba(21,21,19,' + (real ? 1 - cityA : 1).toFixed(3) + ')'; ctx.fillRect(0, 0, Wc, Hc);
 
     /* the home page dot field, repeated at finer scales so the zoom never goes empty */
     const D = this.dots(), fade = 1 - cityA * .9;
@@ -132,7 +135,7 @@ export class LocationsEngine extends DCLogic {
       for (let gy = y0; gy <= y1; gy++) for (let gx = x0; gx <= x1; gx++) { const x = (gx + .5) * g, y = (gy + .5) * g; if (g < 1 || this.inUS(x, y)) dot(x, y); }
     });
     /* street layer */
-    if (cityA > .01) {
+    if (cityA > .01 && !real) {
       ctx.globalAlpha = cityA; ctx.lineCap = 'butt';
       [this.selLoc, this.F && this.F.toLoc, this.F && this.F.fromLoc].filter((l, i, a) => l && a.indexOf(l) === i).forEach((l) => {
         const C = this.city(l);
@@ -252,7 +255,7 @@ export class LocationsEngine extends DCLogic {
       hasTip: !!tip && !this.F, tip: tip || { x: 0, y: 0, t: '', s: '', cta: '' },
       pinCls: 'pin' + (this.landed ? ' is-on' : '') + (this.pinG ? ' gA' : ' gB'),
       routeCls: 'route' + (this.F && this.F.arc ? ' is-on' : ''), route: this.F && this.F.arc && this.F.fromLoc && this.F.toLoc ? this.F.fromLoc.city.replace(/[\[\]]/g, '') + ' → ' + this.F.toLoc.city.replace(/[\[\]]/g, '') : '',
-      hasSel: !!sel, panelCls: 'pan' + (this.landed ? ' is-on' : ''), home: () => this.home(),
+      setRealMap: (el) => { this.rmap = el; }, realFocus: this.selLoc || (this.F && this.F.toLoc) || null, hasSel: !!sel, panelCls: 'pan' + (this.landed ? ' is-on' : ''), home: () => this.home(),
       sel: sel ? { n: sel.n, st: sel.st, city: sel.city.replace(/[\[\]]/g, ''), brand: sel.brand, brandShort: sel.brand.split(' ')[0], a1: sel.a1, a2: sel.a2, tone: sel.tone, founder: sel.founder, photo: !sel.noMedia, rating: sel.rating ? sel.rating.toFixed(1) + ' (' + sel.reviews.toLocaleString('en-US') + ')' : '', href: sel.href, brandHref: sel.brandHref, img: sel.img, since: sel.since, est: sel.est, locs: String(sibs.length),
         hasSib: sibs.length > 1, nextSib: () => { const j = sibs.indexOf(sel); this.flyTo(sibs[(j + 1) % sibs.length].i); } } : {},
       stats: [

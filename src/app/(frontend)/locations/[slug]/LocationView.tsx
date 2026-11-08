@@ -4,6 +4,7 @@ import React from 'react'
 import { Nav } from '@/components/site/Nav'
 import { useDC } from '@/lib/dc'
 import { LocationEngine } from './engine'
+import { MapStage } from '@/components/site/MapStage'
 import './page.css'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -39,7 +40,7 @@ export default function LocationView(props: any) {
 {/* ============ MAP (single pin) ============ */}
 {/* No hero loop: the location map is the hero. Same section, so the map never appears twice. */}
 <section className={v.mapCls} ref={v.setMap} aria-label={v.mapAria} style={{"height": `${v.mapH}`} as React.CSSProperties}>
-<canvas className="map_cv" ref={v.setCanvas} aria-hidden="true"></canvas>
+<MapStage locs={[props.data.b.locations[props.data.li]]} idx={0} /><canvas className="map_cv" ref={v.setCanvas} aria-hidden="true"></canvas>
 <div className="map_fade" aria-hidden="true"></div>
 <div className="map_rule wrap"><hr /></div>
 <div className={v.routeCls} aria-hidden="true">{v.route.from}<b>→</b>{v.route.to}<b>/</b>{v.route.mi}</div>
