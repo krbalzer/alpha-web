@@ -380,4 +380,5 @@
 .pg-main .reel_img.is-on{opacity:1}
 .pg-main .reel_hud{z-index:2}
 .pg-main a.p_row{display:grid;color:inherit}
+.pg-main .th_vid{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;z-index:2}
 

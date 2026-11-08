@@ -2,6 +2,9 @@ import type { CollectionConfig } from 'payload'
 import { guard } from './guard'
 import { img, live, publicRead, seo, slug } from './fields'
 
+// 'Oh' and 'OH' must be the same state: flags, grouping and filters key on the code
+const upperState = ({ value }: { value?: unknown }) => (typeof value === 'string' ? value.trim().toUpperCase() : value)
+
 const SERVICES = ['Injectables', 'Lasers', 'Facials', 'Skincare', 'Wellness', 'Weight loss', 'Hormone therapy', 'Body', 'Surgery', 'Hair']
 
 /** One partner brand. PTR number is join order and drives every "PTR 016" label. */
@@ -78,7 +81,7 @@ export const Locations: CollectionConfig = {
     { name: 'brand', type: 'relationship', relationTo: 'brands', required: true, index: true },
     { type: 'row', fields: [
       { name: 'city', type: 'text', required: true },
-      { name: 'state', type: 'text', required: true, maxLength: 2 },
+      { name: 'state', type: 'text', required: true, maxLength: 2, hooks: { beforeValidate: [upperState] } },
       { name: 'zip', type: 'text' },
     ] },
     { type: 'row', fields: [
@@ -198,7 +201,7 @@ export const TuckIns: CollectionConfig = {
       ] },
       { name: 'location', type: 'relationship', relationTo: 'locations', admin: { condition: (_, s) => s?.kind === 'location' } },
     ] },
-    { type: 'row', fields: [{ name: 'city', type: 'text' }, { name: 'state', type: 'text', maxLength: 2 }] },
+    { type: 'row', fields: [{ name: 'city', type: 'text' }, { name: 'state', type: 'text', maxLength: 2, hooks: { beforeValidate: [upperState] } }] },
     { name: 'founders', type: 'relationship', relationTo: 'founders', hasMany: true },
     { name: 'story', type: 'richText', admin: { description: 'Packaged as joining the brand and Alpha.' } },
     { name: 'film', type: 'text', label: 'Founder story video (Stream ID)' },

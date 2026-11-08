@@ -116,14 +116,15 @@ export default function MainView(props: any) {
 </React.Fragment>))}
 </div>
 <div className="p_viewer">
-<a className={v.frameCls} href={v.cur.href} aria-label={v.cur.name} style={{"display": "block"} as React.CSSProperties}>
+<button className={v.frameCls} onClick={v.openCur} aria-label={v.cur.frameLabel}>
 {(v.posters || []).map((q: any, q_i: number) => (<React.Fragment key={q_i}>
 <div className={q.cls} style={{"background": `${q.tone}`} as React.CSSProperties}>
 {q.hasImg ? (<><img src={q.img} alt="" /></>) : null}
 {q.noImg ? (<><div className="tcard"><div className="mono" style={{"fontSize": "10px", "letterSpacing": ".14em", "marginBottom": "10px"} as React.CSSProperties}>Partner {q.n}</div><div className="tcard_name">{q.name}</div><div className="tcard_rule"></div><div className="mono" style={{"fontSize": "10px", "letterSpacing": ".1em", "opacity": ".85"} as React.CSSProperties}>{q.cityLong}</div></div></>) : null}
 </div>
 </React.Fragment>))}
-</a>
+{v.cur.film ? (<><span className="p_play" aria-hidden="true"><svg width="18" height="20" viewBox="0 0 18 20"><path d="M2 1.5v17L16.5 10z" fill="currentColor"></path></svg></span></>) : null}
+</button>
 <div className="p_meta"><span>{v.cur.n}&nbsp;&nbsp;&nbsp;<b>{v.cur.name}</b></span><span>{v.cur.since}</span></div>
 <div className="p_bar">
 <a className="p_who" href={v.cur.founderHref}><span className="av">{v.cur.hasHead ? (<><img src={v.cur.head} alt="" /></>) : null}{v.cur.noHead ? (<><span>{v.cur.init}</span></>) : null}</span><span><b>{v.cur.founder}</b><span>{v.cur.role}</span></span></a>
@@ -304,6 +305,27 @@ export default function MainView(props: any) {
 
 
 
+
+{/* ============ THEATER ============ */}
+{v.thOpen ? (<>
+<div className="theater" role="dialog" aria-modal="true" aria-label="Brand film" tabIndex={-1} ref={v.thRef} onKeyDown={v.thKey}>
+<div className="th_bar"><span>Film {v.th.idx} of {v.th.total}</span><button className="th_close" onClick={v.thClose}>Close <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" strokeWidth="1.4"></path></svg></button></div>
+<div className="th_stage">
+<button className="th_arrow" aria-label="Previous film" onClick={v.thPrev}><svg width="14" height="12" viewBox="0 0 14 12" aria-hidden="true"><path d="M13 6H1M6 1L1 6l5 5" stroke="currentColor" fill="none" strokeWidth="1.3"></path></svg></button>
+<div className="th_screen">{v.th.src ? (<><video className="th_vid" src={v.th.src} poster={v.th.poster} ref={v.thVid} autoPlay controls playsInline></video></>) : null}
+<div className={v.th.pcls} style={{"background": `${v.th.tone}`} as React.CSSProperties}>
+{v.th.hasImg ? (<><img src={v.th.img} alt="" /></>) : null}
+{v.th.noImg ? (<><div className="tcard"><div className="mono" style={{"fontSize": "11px", "letterSpacing": ".14em", "marginBottom": "12px"} as React.CSSProperties}>Partner {v.th.n}</div><div className="tcard_name" style={{"fontSize": "clamp(36px, 5vw, 80px)"} as React.CSSProperties}>{v.th.name}</div><div className="tcard_rule"></div><div className="mono" style={{"fontSize": "11px", "letterSpacing": ".1em", "opacity": ".85"} as React.CSSProperties}>{v.th.cityLong}</div></div></>) : null}
+</div>
+</div>
+<button className="th_arrow" aria-label="Next film" onClick={v.thNext}><svg width="14" height="12" viewBox="0 0 14 12" aria-hidden="true"><path d="M1 6h12M8 1l5 5-5 5" stroke="currentColor" fill="none" strokeWidth="1.3"></path></svg></button>
+</div>
+<div className="th_foot">
+<div className="th_foot_l"><span>PTR {v.th.n}</span><b>{v.th.name}</b>{v.th.founder ? (<><span>{v.th.founder} · {v.th.role}</span></>) : null}</div>
+<div style={{"display": "flex", "gap": "16px", "alignItems": "center"} as React.CSSProperties}><span className="th_keys">← → to browse · Esc to close</span><a className="btn btn-light" href={v.cur.href} onClick={v.thClose} style={{"color": "#F3F0E9"} as React.CSSProperties}>Open partner page</a></div>
+</div>
+</div>
+</>) : null}
 
 
     </div>

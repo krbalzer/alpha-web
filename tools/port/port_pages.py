@@ -400,8 +400,15 @@ def location_jsx(j):
 
 def main_markup(b):
     b, n = cut(b, r'<header class="wrap">', 'header', '<x-nav></x-nav>'); assert n == 1
-    i = b.find('<!-- ============ THEATER'); assert i > 0
-    b = b[:i]  # theater + board player: films play on brand pages, audio in the site player
+    i = b.find('<!-- ============ PLAYER'); assert i > 0
+    b = b[:i]  # board audio player: episodes play in the site player
+    # theater: the real brand film (renditions from the CMS); no simulated timeline or captions
+    b = sub(r'<div class="th_cap" style="opacity: \{\{ th.capOp \}\}">\{\{ th.cap \}\}</div>\s*', '', b)
+    b = sub(r'<div class="th_ctrl">.*?<span class="th_time">.*?</span>\s*</div>\s*', '', b)
+    b = rep(b, '<div class="th_screen">', '<div class="th_screen"><sc-if value="{{ th.src }}"><video class="th_vid" src="{{ th.src }}" poster="{{ th.poster }}" ref="{{ thVid }}" autoplay controls playsinline></video></sc-if>')
+    b = rep(b, '<span>{{ th.founder }} · {{ th.role }}</span>', '<sc-if value="{{ th.founder }}"><span>{{ th.founder }} · {{ th.role }}</span></sc-if>')
+    b = rep(b, '<span>Film {{ th.idx }} of 15</span>', '<span>Film {{ th.idx }} of {{ th.total }}</span>')
+    b = rep(b, '<a class="btn btn-light" href="#partner" style="color: #F3F0E9">Open partner page</a>', '<a class="btn btn-light" href="{{ cur.href }}" onClick="{{ thClose }}" style="color: #F3F0E9">Open partner page</a>')
     # hero numbers from the CMS
     for k, lab in (('15', 'Brands'), ('36', 'Locations'), ('12', 'States')):
         b = rep(b, '<div class="stat_num">' + k + '<svg', '<div class="stat_num">{{ net.' + lab.lower() + ' }}<svg')
@@ -412,9 +419,9 @@ def main_markup(b):
     # partners: rows and frame link to the brand page
     b = rep(b, '<button class="{{ p.cls }}" onMouseEnter="{{ p.hover }}" onFocus="{{ p.focus }}" onClick="{{ p.open }}" role="listitem"><span>{{ p.n }}</span><span class="nm">{{ p.name }}</span><span class="ct">{{ p.city }}</span><span class="yr">{{ p.yr }}</span></button>',
             '<a class="{{ p.cls }}" href="{{ p.href }}" onMouseEnter="{{ p.hover }}" onFocus="{{ p.focus }}" role="listitem" style="text-decoration: none"><span>{{ p.n }}</span><span class="nm">{{ p.name }}</span><span class="ct">{{ p.city }}</span><span class="yr">{{ p.yr }}</span></a>')
-    b = rep(b, '<button class="{{ frameCls }}" onClick="{{ openCur }}" aria-label="Play {{ cur.name }} film">', '<a class="{{ frameCls }}" href="{{ cur.href }}" aria-label="{{ cur.name }}" style="display: block">')
-    b = sub(r'<span class="p_dur">1:30</span>\s*</button>', '</a>', b)
-    b = sub(r'<span class="p_pv"><i></i>Preview</span>\s*<span class="p_play" aria-hidden="true">.*?</span>\s*', '', b)
+    b = rep(b, '<button class="{{ frameCls }}" onClick="{{ openCur }}" aria-label="Play {{ cur.name }} film">', '<button class="{{ frameCls }}" onClick="{{ openCur }}" aria-label="{{ cur.frameLabel }}">')
+    b = sub(r'<span class="p_dur">1:30</span>\s*</button>', '</button>', b)
+    b = sub(r'<span class="p_pv"><i></i>Preview</span>\s*(<span class="p_play" aria-hidden="true">.*?</span>)\s*', r'<sc-if value="{{ cur.film }}">\1</sc-if>\n', b)
     b = rep(b, '<span>Partnered [Mo YYYY]</span>', '<span>{{ cur.since }}</span>')
     b = rep(b, '<a class="p_who" href="/locations#founders">', '<a class="p_who" href="{{ cur.founderHref }}">')
     b = rep(b, '<div class="p_pile" aria-label="Team"><i></i><i></i><i></i><i></i></div>', '')
@@ -456,6 +463,14 @@ def main_engine(e):
     e = rep(e, "const P = D.P;", "const P = D.P, X = " + D + ";")
     e = rep(e, "const partners = P.map((p, i) => ({ n: p.n, name: p.name, city: p.city, yr: '[yr]',", "const partners = P.map((p, i) => ({ href: p.href, n: p.n, name: p.name, city: p.city, yr: p.yr || '',")
     e = rep(e, "const cur = { n: c.n,", "const cur = { href: c.href, since: c.since ? 'Partnered ' + c.since : '', founderHref: c.founderHref || '/locations#founders', n: c.n,")
+    e = rep(e, "  thLoad(i) { const S = this.S; const n = this.D.P.length; S.pi = (i + n) % n;",
+            "  thLoad(i) { const S = this.S; const n = this.D.P.length, dir = i < S.pi ? -1 : 1; let j = S.pi; for (let k = 0; k < n; k++) { j = (j + dir + n) % n; if (this.D.P[j].film && this.D.P[j].film.src) break; } S.pi = j;")
+    e = rep(e, "openCur: () => this.thOpen(this.S.pi),", "openCur: () => { const c = P[this.S.pi]; if (c.film && c.film.src) this.thOpen(this.S.pi); else if (typeof window !== 'undefined') window.location.assign(c.href); },")
+    e = rep(e, "else if (e.key === ' ') { e.preventDefault(); this.S.thPlay = !this.S.thPlay; this.bump(); }",
+            "else if (e.key === ' ' && e.target === e.currentTarget) { e.preventDefault(); const vd = this._th && this._th.querySelector('video'); if (vd) { if (vd.paused) vd.play(); else vd.pause(); } }")
+    e = rep(e, "thClose: () => this.thClose(),", "thClose: () => this.thClose(), thVid: (el) => { if (el && el !== this._tv) { this._tv = el; const p = el.play(); if (p && p.catch) p.catch(() => {}); } },")
+    e = rep(e, "const th = { idx: pi + 1,", "const FL = P.filter((p) => p.film && p.film.src), cf = c.film || {}, wide = typeof window === 'undefined' || window.innerWidth > 820;\n    const th = { total: FL.length, src: cf.src ? (wide ? cf.src : (cf.small || cf.src)) : '', poster: c.filmPoster || c.img || '', idx: Math.max(1, FL.indexOf(c) + 1),")
+    e = rep(e, "const cur = { href: c.href,", "const cur = { film: !!(c.film && c.film.src), frameLabel: c.film && c.film.src ? 'Play the ' + c.name + ' film' : 'Open ' + c.name, href: c.href,")
     e = sub(r"const depts = \[.*?\n    \];", "const depts = X.depts || [];", e)
     e = rep(e, "const di = s.dept ?? 0, dMax = 2;", "const di = s.dept ?? 0, dMax = Math.max(0, depts.length - 3);")
     e = sub(r"(const stories = \[.*?\n    \])", r"\1.filter((x) => x.quote.indexOf('[') < 0).map((x) => Object.assign({}, x, { brand: x.brand.charAt(0) === '[' ? '' : x.brand }))", e)
@@ -473,6 +488,7 @@ MAIN_CSS = IMG_CSS + """
 .reel_img.is-on{opacity:1}
 .reel_hud{z-index:2}
 a.p_row{display:grid;color:inherit}
+.th_vid{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;z-index:2}
 """
 
 

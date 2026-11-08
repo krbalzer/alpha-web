@@ -315,6 +315,7 @@ export const getHome = cache(async () => {
       tone: b.tone || '#4D463C', img: STILL[n] || posterUrl(b.heroPoster) || url(b.practice?.image as Media, 'wide') || '', head: f[0] ? url(f[0].headshot as Media, 'card') || '' : '',
       href: `/brands/${b.slug}`, founderHref: f[0] ? `/founders/${f[0].slug}` : '', yr: b.since ? String(new Date(b.since).getUTCFullYear()) : '', since: monthYear(b.since).replace(/^(\w{3})\w*/, '$1'),
       poster: posterUrl(b.heroPoster) || '',
+      film: video(b.film?.video), filmPoster: posterUrl(b.film?.poster) || posterUrl(b.heroPoster) || '',
     }
   })
   const depts = depAll.depts.filter((d) => d.slug !== 'leadership').map((d) => {
