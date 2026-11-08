@@ -6,11 +6,11 @@ import { Nav } from '@/components/site/Nav'
 import { useDC } from '@/lib/dc'
 import type { BrandData } from '@/lib/data'
 import { BrandEngine } from './engine'
-import { MapboxStage, hasMapbox } from './MapboxStage'
+import { MapStage, hasRealMap } from './MapStage'
 import './brand.css'
 
 export default function BrandView({ brand }: { brand: BrandData }) {
-  const v = useDC(BrandEngine, { brand, singleLocation: false, mapbox: hasMapbox })
+  const v = useDC(BrandEngine, { brand, singleLocation: false, mapbox: hasRealMap })
   return (
     <div className="pg-brand">
 <Nav><div className="crumb"><div className="wrap"><span>{v.b.ptr}</span><span>{v.b.name}</span><span>{v.b.sinceLine}</span></div></div></Nav>
@@ -37,7 +37,7 @@ export default function BrandView({ brand }: { brand: BrandData }) {
 
 {/* ============ MAP: pin per location, carousel when there are more than one ============ */}
 <section className="map dark" ref={v.setMap} aria-label="Locations">
-{hasMapbox ? <MapboxStage locs={brand.locations} idx={v.idx} /> : null}<canvas className="map_cv" ref={v.setCanvas} aria-hidden="true"></canvas>
+{hasRealMap ? <MapStage locs={brand.locations} idx={v.idx} /> : null}<canvas className="map_cv" ref={v.setCanvas} aria-hidden="true"></canvas>
 <div className="map_fade" aria-hidden="true"></div>
 <div className="map_rule wrap"><hr /></div>
 <div className={v.routeCls} aria-hidden="true">{v.route.from}<b>→</b>{v.route.to}<b>/</b>{v.route.mi}</div>

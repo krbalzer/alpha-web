@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" payload generate:importmap && cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" NODE_ENV=production payload run src/seed/prebuild.ts && cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build",
+    "postinstall": "node -e \"const f=require('fs');f.mkdirSync('public/vendor',{recursive:true});f.copyFileSync('node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs','public/vendor/maplibre-gl-worker.mjs')\"",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
@@ -30,7 +31,7 @@
     "cross-env": "^7.0.3",
     "dotenv": "16.4.7",
     "graphql": "^16.8.1",
-    "mapbox-gl": "3.34.1",
+    "maplibre-gl": "6.15.0",
     "next": "16.3.3",
     "payload": "3.92.1",
     "react": "19.2.6",

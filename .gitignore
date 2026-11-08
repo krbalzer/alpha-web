@@ -57,3 +57,6 @@ node_modules/
 __pycache__/
 /.video-cache
 .env*
+
+# copied from node_modules on install
+/public/vendor

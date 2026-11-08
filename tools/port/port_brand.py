@@ -76,7 +76,7 @@ b = b.replace('{{ founderLine }} / {{ servicesLine }}', '{{ metaLine }}')
 jsx = convert(b)
 CV = '<canvas className="map_cv" ref={v.setCanvas} aria-hidden="true"></canvas>'
 assert CV in jsx
-jsx = jsx.replace(CV, '{hasMapbox ? <MapboxStage locs={brand.locations} idx={v.idx} /> : null}' + CV)
+jsx = jsx.replace(CV, '{hasRealMap ? <MapStage locs={brand.locations} idx={v.idx} /> : null}' + CV)
 
 # ---------- css ----------
 c = css
@@ -87,7 +87,7 @@ if '/* site menu (shared' in c:  # drop only the injected menu block; keep page 
     j = c.index('\n', c.index('@media (prefers-reduced-motion:reduce){.mn,', i))
     c = c[:i] + c[j + 1:]
 c = re.sub(r'/\* CTA background.*?(?=\.closer_media>h2)', '', c, flags=re.S)
-c += '\n.map_gl{position:absolute;inset:0}\n.map_gl .mapboxgl-ctrl-attrib{background:rgba(14,14,13,.5)}\n.map_gl .mapboxgl-ctrl-attrib a{color:rgba(232,228,218,.6)}\n.hero_vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}\n.logo_img{height:26px;width:auto;display:block}\n.card_img img,.fill{width:100%;height:100%;object-fit:cover;display:block}\n.img{position:relative;overflow:hidden}\n.film{overflow:hidden}\n.film .fill{position:absolute;inset:0}\n'
+c += '\n.map_gl{position:absolute;inset:0}\n.map_gl .maplibregl-ctrl-attrib{background:rgba(14,14,13,.5);color:rgba(232,228,218,.5)}\n.map_gl .maplibregl-ctrl-attrib a{color:rgba(232,228,218,.6)}\n.map_gl .maplibregl-ctrl-attrib-button{filter:invert(1);opacity:.5}\n.hero_vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}\n.logo_img{height:26px;width:auto;display:block}\n.card_img img,.fill{width:100%;height:100%;object-fit:cover;display:block}\n.img{position:relative;overflow:hidden}\n.film{overflow:hidden}\n.film .fill{position:absolute;inset:0}\n'
 import json
 ASSETS = json.load(open(os.path.join(os.path.dirname(__file__), 'assets.json')))
 c = re.sub(r'/_blob/([0-9a-f]{32})', lambda m: ASSETS.get(m.group(1), m.group(0)), c)
@@ -123,11 +123,11 @@ import { Nav } from '@/components/site/Nav'
 import { useDC } from '@/lib/dc'
 import type { BrandData } from '@/lib/data'
 import { BrandEngine } from './engine'
-import { MapboxStage, hasMapbox } from './MapboxStage'
+import { MapStage, hasRealMap } from './MapStage'
 import './brand.css'
 
 export default function BrandView({ brand }: { brand: BrandData }) {
-  const v = useDC(BrandEngine, { brand, singleLocation: false, mapbox: hasMapbox })
+  const v = useDC(BrandEngine, { brand, singleLocation: false, mapbox: hasRealMap })
   return (
     <div className="pg-brand">
 """ + jsx + """
@@ -135,7 +135,7 @@ export default function BrandView({ brand }: { brand: BrandData }) {
   )
 }
 """
-engine = "// @ts-nocheck\n/* Map engine + template logic from the Brand board. Production swap: Mapbox GL for the canvas map. */\nimport { DCLogic } from '@/lib/dc'\n\n" + e.strip() + "\n"
+engine = "// @ts-nocheck\n/* Map engine + template logic from the Brand board. Real map: MapStage (MapLibre); the canvas map is the fallback. */\nimport { DCLogic } from '@/lib/dc'\n\n" + e.strip() + "\n"
 
 # self-hosted video (renditions + in-place film), kept in step with src/lib/data.ts
 view = view.replace('<video className="hero_vid" ref={v.vidRef} src={v.b.heroVideo} poster={v.b.heroPoster} autoPlay muted loop playsInline aria-hidden="true"></video>',

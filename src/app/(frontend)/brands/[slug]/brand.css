@@ -258,8 +258,9 @@
 .pg-brand .rv .rv_i:nth-child(n+2){border-top:1px solid var(--line)}
 .pg-brand .rv.three .rv_i+.rv_i{border-top:1px solid var(--line)}}
 .pg-brand .map_gl{position:absolute;inset:0}
-.pg-brand .map_gl .mapboxgl-ctrl-attrib{background:rgba(14,14,13,.5)}
-.pg-brand .map_gl .mapboxgl-ctrl-attrib a{color:rgba(232,228,218,.6)}
+.pg-brand .map_gl .maplibregl-ctrl-attrib{background:rgba(14,14,13,.5);color:rgba(232,228,218,.5)}
+.pg-brand .map_gl .maplibregl-ctrl-attrib a{color:rgba(232,228,218,.6)}
+.pg-brand .map_gl .maplibregl-ctrl-attrib-button{filter:invert(1);opacity:.5}
 .pg-brand .hero_vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .pg-brand .logo_img{height:26px;width:auto;display:block}
 .pg-brand .card_img img,.pg-brand .fill{width:100%;height:100%;object-fit:cover;display:block}

@@ -1,5 +1,5 @@
 // @ts-nocheck
-/* Map engine + template logic from the Brand board. Production swap: Mapbox GL for the canvas map. */
+/* Map engine + template logic from the Brand board. Real map: MapStage (MapLibre); the canvas map is the fallback. */
 import { DCLogic } from '@/lib/dc'
 
 export class BrandEngine extends DCLogic {
