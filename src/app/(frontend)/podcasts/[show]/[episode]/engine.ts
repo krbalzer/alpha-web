@@ -7,7 +7,7 @@ export class EpisodeEngine extends DCLogic {
   sec(a) { return String(a || '0').split(':').reduce((v, n) => v * 60 + +n, 0); }
   renderVals() {
     const D = this.props.data, s = this.st(), ep = D.ep.player;
-    const playAt = (at) => { const x = Object.assign({}, ep); if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('alpha:play', { detail: x })); if (at && typeof window !== 'undefined') setTimeout(() => { const a = document.querySelector('audio'); if (a) a.currentTime = at; }, 400); };
+    const playAt = (at) => { if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('alpha:play', { detail: Object.assign({}, ep, at ? { at } : {}) })); };
     return {
       show: D.show, ep: D.ep, plats: D.plats, pq: D.pq, share: D.share, people: D.people || [], hasPeople: (D.people || []).length > 0,
       play: () => playAt(0), playQuote: () => playAt(this.sec(D.pq.at)),

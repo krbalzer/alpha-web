@@ -324,11 +324,11 @@ export const getHome = cache(async () => {
     return { name: d.name, line: d.line || '', href: `/team/${d.slug}`, avs: m.map((x) => ({ img: x.img, iOnly: x.img ? '' : x.init, href: x.href, name: x.name })) }
   })
   const p = await db()
-  const [er, SPK] = await Promise.all([p.find({ collection: 'episodes', where: { and: [LIVE, { number: { greater_than: 0 } }] }, sort: '-published', limit: 4, depth: 1 }), getSpeakers()])
+  const [er, SPK, SHW] = await Promise.all([p.find({ collection: 'episodes', where: { and: [LIVE, { number: { greater_than: 0 } }] }, sort: '-published', limit: 4, depth: 1 }), getSpeakers(), getShows()])
   const eps = (er.docs as Episode[]).map((e) => {
     const sh = typeof e.show === 'object' ? (e.show as Show) : null
     const d = e.duration || 0
-    return { ep: toEp(e, SPK), id: String(e.id), title: e.title, show: `${sh?.name || ''}${e.number ? ` · Ep ${String(e.number).padStart(2, '0')}` : ''}`, len: d ? `${Math.floor(d / 60)}:${String(d % 60).padStart(2, '0')}` : '', tone: sh?.bg || '#1D1B1A' }
+    return { ep: toEp(e, SPK, SHW.find((x) => x.slug === sh?.slug)?.art), id: String(e.id), title: e.title, show: `${sh?.name || ''}${e.number ? ` · Ep ${String(e.number).padStart(2, '0')}` : ''}`, len: d ? `${Math.floor(d / 60)}:${String(d % 60).padStart(2, '0')}` : '', tone: sh?.bg || '#1D1B1A' }
   })
   return {
     net: { brands: String(net.brands), locations: String(net.locations), states: String(net.states) },
@@ -386,7 +386,7 @@ export const getEpisodes = cache(async () => {
  *  Files live in /public/podcasts. Static until Shows gets logo + hero upload fields in the CMS. */
 const SHOW_MEDIA: Record<string, { logo?: string; ar?: number; hero?: string }> = {
   'dear-tiffany': { logo: '/podcasts/dear-tiffany-logo.svg', ar: 252.38 / 196.71, hero: '/podcasts/dear-tiffany-hero.jpg' },
-  'holding-time-back': { logo: '/podcasts/holding-time-back-logo.svg', ar: 728.02 / 211.03 },
+  'holding-time-back': { logo: '/podcasts/holding-time-back-logo.svg', ar: 728.02 / 211.03, hero: '/podcasts/holding-time-back-hero.jpg' },
 }
 
 const AUD: Record<string, string> = { owners: 'Practice owners', directors: 'Directors', providers: 'Providers', 'front-desk': 'Front desk', marketers: 'Marketers', patients: 'Patients' }
@@ -411,7 +411,7 @@ export const getPodcasts = cache(async () => {
     return { id: i, show: sh.slug, n: e.number ? String(e.number).padStart(3, '0') : '', title: e.title,
       topics: (e.tags || []).map((t) => (typeof t === 'object' ? t.name : '')).filter(Boolean), aud: (e.audience || []).map((a) => AUD[a]).filter(Boolean),
       spk: ids(e.speakers).filter((x) => SP.has(x)).map(String),
-      date: iso(e.published), len: lenOf(e.duration), sec: e.duration || 0, href: `/podcasts/${sh.slug}/${e.slug}`, ep: toEp(e, SP) }
+      date: iso(e.published), len: lenOf(e.duration), sec: e.duration || 0, href: `/podcasts/${sh.slug}/${e.slug}`, ep: toEp(e, SP, shows.find((x) => x.slug === sh.slug)?.art) }
   }).map((x) => Object.assign(x, { label: (x.n ? `EP ${x.n} / ` : '') + x.title }))
   const withEps = shows.filter((s) => E.some((e) => e.show === s.slug))
   // every show with episodes is a hero slide, featured first, so each shelf card drives the hero
@@ -437,7 +437,7 @@ export const getPodcasts = cache(async () => {
 const platsOf = (s: Show) => [['Spotify', s.links?.spotify], ['Apple Podcasts', s.links?.apple], ['YouTube', s.links?.youtube]].filter((x) => x[1]).map((x) => ({ t: x[0] as string, href: x[1] as string }))
 const showCard = (s: Awaited<ReturnType<typeof getShows>>[number], n: number) => ({ name: s.name, href: s.href, bg: s.bg, fg: s.fg, art: s.art, noArt: !s.art, count: `${n} episodes` })
 const epRow = (e: Episode, sh: Show, SP?: Map<number, PersonCard>) => ({
-  title: e.title, n: e.number ? String(e.number).padStart(3, '0') : '', date: fmtLong(e.published), len: lenOf(e.duration), href: `/podcasts/${sh.slug}/${e.slug}`, ep: toEp(e, SP),
+  title: e.title, n: e.number ? String(e.number).padStart(3, '0') : '', date: fmtLong(e.published), len: lenOf(e.duration), href: `/podcasts/${sh.slug}/${e.slug}`, ep: toEp(e, SP, url(sh.artwork, 'card')),
   label: e.number ? `EP ${String(e.number).padStart(3, '0')}` : 'Episode', sum: firstSentence(e.summary),
   meta: `${sh.name}${e.number ? ` · EP ${String(e.number).padStart(3, '0')}` : ''} · ${fmtLong(e.published)}`,
 })

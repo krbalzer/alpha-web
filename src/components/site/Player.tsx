@@ -33,7 +33,7 @@ export function Player() {
         {e && (
           <>
             <div className="pp_in">
-              <button className="pp_art" style={{ background: e.bg, color: e.fg }} onClick={() => setDrawer(!drawer)} aria-label="Show chapters and up next" aria-expanded={drawer}>{e.showShort || e.show}{s.queue.length > 0 && <i className="pp_qn" aria-label={`${s.queue.length} up next`}>{s.queue.length}</i>}</button>
+              <button className="pp_art" style={{ background: e.bg, color: e.fg }} onClick={() => setDrawer(!drawer)} aria-label="Show chapters and up next" aria-expanded={drawer}>{e.art ? <img src={e.art} alt="" /> : e.showShort || e.show}{s.queue.length > 0 && <i className="pp_qn" aria-label={`${s.queue.length} up next`}>{s.queue.length}</i>}</button>
               <div className="pp_mid">
                 <button className="pp_ti" onClick={() => setDrawer(!drawer)} aria-expanded={drawer}><b>{e.title}</b><span>{e.show}{e.n ? ` // EP ${e.n}` : ''}</span></button>
                 <div className="pp_ctl">
@@ -68,7 +68,7 @@ export function Player() {
                 <div>
                   <h4>Up next{s.queue.length ? ` (${s.queue.length})` : ''}</h4>
                   {s.queue.map((q) => (
-                    <div className="pp_q" key={q.id}><i style={{ background: q.bg }} /><div><b>{q.title}</b><span>{q.show}{q.n ? ` · EP ${q.n}` : ''}</span></div>
+                    <div className="pp_q" key={q.id}><i style={{ background: q.bg }}>{q.art && <img src={q.art} alt="" loading="lazy" />}</i><div><b>{q.title}</b><span>{q.show}{q.n ? ` · EP ${q.n}` : ''}</span></div>
                       <span className="pp_qa"><button onClick={() => s.play(q)}>Play</button><button className="pp_qx" onClick={() => s.dequeue(q.id)} aria-label={`Remove ${q.title} from Up next`}>×</button></span></div>
                   ))}
                   {!s.queue.length && <p className="k" style={{ margin: '10px 0 0' }}>Add episodes with + Queue on any list.</p>}
@@ -84,7 +84,7 @@ export function Player() {
           onPointerDown={(ev) => { swipe.current = ev.clientY }}
           onPointerUp={(ev) => { if (swipe.current !== null && ev.clientY - swipe.current > 40) s.close(); swipe.current = null }}>
           <i className="mpp_grab" aria-hidden="true" />
-          <i className="a" style={{ background: e.bg }} />
+          <i className="a" style={{ background: e.bg }}>{e.art && <img src={e.art} alt="" />}</i>
           {e.href ? <Link className="mpp_t" href={e.href}><b>{e.title}</b><span>{e.show}{e.n ? ` // EP ${e.n}` : ''}</span></Link> : <div><b>{e.title}</b><span>{e.show}{e.n ? ` // EP ${e.n}` : ''}</span></div>}
           <button onClick={s.toggle} aria-label={s.playing ? 'Pause' : 'Play'}>{s.playing ? <Pause /> : <span className="pl"><Play /></span>}</button>
           {s.queue.length > 0 && <button className="mpp_n" onClick={() => s.play(s.queue[0])} aria-label={`Play next: ${s.queue[0].title}`}><Next /></button>}

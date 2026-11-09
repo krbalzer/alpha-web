@@ -21,7 +21,7 @@ export default function ShowView(props: any) {
 <span className="mono sh_k">Alpha podcast network{v.show.sched ? (<> · {v.show.sched}</>) : null}</span>
 <h1 className="sh_t">{v.show.name}</h1>
 {v.show.tag ? (<><p className="sh_d">{v.show.tag}</p></>) : null}
-<div className="sh_row">{v.hasEps ? (<><button className="tv_play" onClick={v.playLatest}><svg width="11" height="13" viewBox="0 0 11 13" aria-hidden="true"><path d="M0 0l11 6.5L0 13z" fill="currentColor"></path></svg>Play latest</button></>) : null}{(v.plats || []).map((p: any, p_i: number) => (<React.Fragment key={p_i}><a className="plat light" href={p.href} target="_blank" rel="noopener">{p.t} ↗</a></React.Fragment>))}</div>
+<div className="sh_row">{v.hasEps ? (<><button className="tv_play" onClick={v.playLatest}><svg width="11" height="13" viewBox="0 0 11 13" aria-hidden="true"><path d="M0 0l11 6.5L0 13z" fill="currentColor"></path></svg>Play latest</button></>) : null}{(v.plats || []).map((p: any, p_i: number) => (<React.Fragment key={p_i}><a className="plat light" href={p.href} target="_blank" rel="noopener">{p.t}<span aria-hidden="true">↗</span></a></React.Fragment>))}</div>
 <div className="sh_stats"><div><b>{v.count}</b><span>Episodes</span></div>{v.since ? (<><div><b>{v.since}</b><span>Since</span></div></>) : null}{v.hasGuests ? (<><div><b>{v.guests}</b><span>Guests</span></div></>) : null}</div>
 </div></div></section>
 {v.hasEps ? (<>
@@ -38,7 +38,7 @@ export default function ShowView(props: any) {
 <div className="res_bar" style={{"paddingBottom": "10px"} as React.CSSProperties}><p className="res_n"><b>{v.nRes}</b> <span className="mono">episodes</span></p><a className="lnk k" href="/podcasts">Search the whole network →</a></div>
 <div className="rows">{(v.rows || []).map((e: any, e_i: number) => (<React.Fragment key={e_i}><div className={e.cls}>
 <button className="r_play" onClick={e.play} aria-label={`Play ${e.title}`} style={{"background": `${e.bg}`, "color": `${e.fg}`, "position": "relative", "overflow": "hidden"} as React.CSSProperties}>{e.art ? (<><img className="ph_img" src={e.art} alt="" loading="lazy" /></>) : null}<i className="r_pi" aria-hidden="true" style={{"position": "relative"} as React.CSSProperties}>▶</i></button>
-<a className="r_main" href={e.href}><b>{e.title}</b><span className="mono">{e.meta}</span></a><span></span><span></span><span className="r_end"><QueueBtn ep={e.ep}></QueueBtn><span className="mono r_len">{e.len}</span></span>
+<a className="r_main" href={e.href}><b>{e.title}</b><span className="mono">{e.meta}</span></a><span className="r_spk">{(e.spk || []).map((p: any, p_i: number) => (<React.Fragment key={p_i}><span className="face" title={p.name}>{p.img ? (<><img src={p.img} alt="" loading="lazy" /></>) : null}{p.init}</span></React.Fragment>))}</span><span className="r_end"><QueueBtn ep={e.ep}></QueueBtn><span className="mono r_len">{e.len}</span></span>
 </div></React.Fragment>))}</div>
 {v.hasMore ? (<><div className="more" style={{"display": "flex", "justifyContent": "center", "marginTop": "28px"} as React.CSSProperties}><button className="btn" onClick={v.loadMore}>Load more</button></div></>) : null}
 </div></section>

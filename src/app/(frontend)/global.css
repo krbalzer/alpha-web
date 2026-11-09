@@ -244,3 +244,10 @@ a .img img,a .card_img img,a.card img{transition:transform .7s var(--mo-e)}
 a:hover .img img,a:hover .card_img img{transform:scale(1.025)}
 @media (prefers-reduced-motion:reduce){[data-mo] *{clip-path:none!important}}
 /* /motion */
+
+/* show artwork in the persistent player: art tile, mobile dock, Up next */
+.pp_art img,.mpp i.a img,.pp_q>i img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.mpp i.a,.pp_q>i{position:relative;overflow:hidden}
+.pp_art{overflow:visible}
+.pp_art img{z-index:0}
+.pp_qn{z-index:1}

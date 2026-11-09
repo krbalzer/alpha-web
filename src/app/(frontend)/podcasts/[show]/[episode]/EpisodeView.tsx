@@ -5,6 +5,7 @@ import { Nav } from '@/components/site/Nav'
 import { useDC } from '@/lib/dc'
 import { EpisodeEngine } from './engine'
 import { QueueBtn } from '@/components/site/QueueBtn'
+import { EpisodeBar } from '@/components/site/EpisodeBar'
 import './page.css'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -24,10 +25,11 @@ export default function EpisodeView(props: any) {
 <div className="plats" style={{"marginTop": "18px"} as React.CSSProperties}><button className="tv_play" onClick={v.play}><svg width="11" height="13" viewBox="0 0 11 13" aria-hidden="true"><path d="M0 0l11 6.5L0 13z" fill="currentColor"></path></svg>Play episode</button><QueueBtn ep={v.ep.player} className="qb_lg"></QueueBtn>{(v.plats || []).map((p: any, p_i: number) => (<React.Fragment key={p_i}><a className="plat" href={p.href} target="_blank" rel="noopener">{p.t}<span aria-hidden="true">↗</span></a></React.Fragment>))}</div>
 </div>
 </div></section>
+<EpisodeBar ep={v.ep.player}></EpisodeBar>
 {v.ep.video ? (<><section className={v.vidCls} aria-label="Episode video">{v.vidOn ? (<><iframe className="vid_ifr" src={v.vidSrc} title={v.ep.title} allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen></iframe></>) : null}{v.vidOff ? (<>{v.ep.poster ? (<><img className="vid_poster" src={v.ep.poster} alt="" loading="lazy" /></>) : null}<button className="vid_btn" onClick={v.watch}><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1l10 6-10 6z" fill="#0E0E0D"></path></svg><span>Watch the episode</span></button></>) : null}</section></>) : null}
 <section className="sec"><div className="wrap about">
 <div className="about_l">
-<p className="eyebrow">About this episode</p>
+<h2 className="about_h">About this episode</h2>
 {v.pq.text ? (<><blockquote className="pq">“{v.pq.text}”</blockquote>{v.pq.at ? (<><button className="pq_play mono" onClick={v.playQuote}><span aria-hidden="true">▶</span> Hear it at {v.pq.at}</button></>) : null}</>) : null}
 <div className="share mono"><span>Share</span><a href={v.share.x} target="_blank" rel="noopener">X</a><a href={v.share.li} target="_blank" rel="noopener">LinkedIn</a><a href={v.share.fb} target="_blank" rel="noopener">Facebook</a><button onClick={v.copy}>{v.copyLabel}</button></div>
 </div>

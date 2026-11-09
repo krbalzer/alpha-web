@@ -54,7 +54,7 @@ export const getNetwork = cache(async (): Promise<NetworkNums & { address: strin
 
 /** Player payload. Pass `faces` (speaker id -> name + photo, see getSpeakers) so the sticky player shows real headshots;
  *  without it, populated speakers fall back to their own headshot, then to initials. */
-export const toEp = (e: Episode, faces?: Map<number, { name: string; img?: string }>): Ep => {
+export const toEp = (e: Episode, faces?: Map<number, { name: string; img?: string }>, art?: string): Ep => {
   const show = (typeof e.show === 'object' ? e.show : null) as Show | null
   const raw = (e.speakers || []) as (Speaker | number)[]
   const speakers = faces
@@ -64,7 +64,7 @@ export const toEp = (e: Episode, faces?: Map<number, { name: string; img?: strin
     id: String(e.id), slug: e.slug, href: show?.slug ? `/podcasts/${show.slug}/${e.slug}` : undefined, title: e.title,
     show: show?.name || '', showShort: show?.short || show?.name || '',
     n: e.number ? String(e.number).padStart(3, '0') : undefined,
-    audio: e.audioUrl, dur: e.duration || 0, bg: show?.bg || '#1D1B1A', fg: show?.fg || '#FFFFFF',
+    audio: e.audioUrl, dur: e.duration || 0, bg: show?.bg || '#1D1B1A', fg: show?.fg || '#FFFFFF', art: art || url(show?.artwork, 'card') || '',
     speakers,
     chapters: (e.chapters || []).map((c) => ({ at: c.at || '0:00', title: c.title || '' })),
   }

@@ -15,6 +15,8 @@ export type Ep = {
   dur: number
   bg: string
   fg: string
+  /** show artwork (card size) */
+  art?: string
   speakers: { name: string; initials: string; img?: string }[]
   chapters: { at: string; title: string }[]
 }
@@ -142,16 +144,19 @@ export function SiteProvider({ children, net, latest }: { children: React.ReactN
   const enqueue = (e: Ep) => setQueue((q) => (q.some((x) => x.id === e.id) || ep?.id === e.id ? q : [...q, e]))
   const dequeue = (id: string) => setQueue((q) => q.filter((x) => x.id !== id))
   const play = (e: Ep, at?: number) => {
-    if (ep?.id === e.id && audio.current?.src) return toggle()
+    if (ep?.id === e.id && audio.current?.src) {
+      if (at == null) return toggle()
+      seek(at); audio.current.play().catch(() => {}); return
+    }
     setQueue((q) => q.filter((x) => x.id !== e.id))
     load(e, at ?? 0)
   }
 
-  // board templates (ported DC logic) start playback with: window.dispatchEvent(new CustomEvent('alpha:play', { detail: ep }))
+  // board templates (ported DC logic) start playback with: window.dispatchEvent(new CustomEvent('alpha:play', { detail: ep })); add `at` (seconds) to start there
   const playRef = useRef(play)
   playRef.current = play
   useEffect(() => {
-    const on = (ev: Event) => { const e = (ev as CustomEvent<Ep>).detail; if (e && e.audio) playRef.current(e) }
+    const on = (ev: Event) => { const d = (ev as CustomEvent<Ep & { at?: number }>).detail; if (d && d.audio) { const { at, ...e } = d; playRef.current(e, at) } }
     // and pause it (e.g. when an episode's YouTube video starts) with: window.dispatchEvent(new CustomEvent('alpha:pause'))
     const off = () => { audio.current?.pause() }
     window.addEventListener('alpha:play', on)

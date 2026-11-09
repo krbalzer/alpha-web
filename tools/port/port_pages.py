@@ -617,7 +617,7 @@ SHOW_BODY = """
 <span class="mono sh_k">Alpha podcast network<sc-if value="{{ show.sched }}"> · {{ show.sched }}</sc-if></span>
 <h1 class="sh_t">{{ show.name }}</h1>
 <sc-if value="{{ show.tag }}"><p class="sh_d">{{ show.tag }}</p></sc-if>
-<div class="sh_row"><sc-if value="{{ hasEps }}"><button class="tv_play" onClick="{{ playLatest }}"><svg width="11" height="13" viewBox="0 0 11 13" aria-hidden="true"><path d="M0 0l11 6.5L0 13z" fill="currentColor"></path></svg>Play latest</button></sc-if><sc-for list="{{ plats }}" as="p"><a class="plat light" href="{{ p.href }}" target="_blank" rel="noopener">{{ p.t }} ↗</a></sc-for></div>
+<div class="sh_row"><sc-if value="{{ hasEps }}"><button class="tv_play" onClick="{{ playLatest }}"><svg width="11" height="13" viewBox="0 0 11 13" aria-hidden="true"><path d="M0 0l11 6.5L0 13z" fill="currentColor"></path></svg>Play latest</button></sc-if><sc-for list="{{ plats }}" as="p"><a class="plat light" href="{{ p.href }}" target="_blank" rel="noopener">{{ p.t }}<span aria-hidden="true">↗</span></a></sc-for></div>
 <div class="sh_stats"><div><b>{{ count }}</b><span>Episodes</span></div><sc-if value="{{ since }}"><div><b>{{ since }}</b><span>Since</span></div></sc-if><sc-if value="{{ hasGuests }}"><div><b>{{ guests }}</b><span>Guests</span></div></sc-if></div>
 </div></div></section>
 <sc-if value="{{ hasEps }}">
@@ -634,7 +634,7 @@ SHOW_BODY = """
 <div class="res_bar" style="padding-bottom: 10px"><p class="res_n"><b>{{ nRes }}</b> <span class="mono">episodes</span></p><a class="lnk k" href="/podcasts">Search the whole network →</a></div>
 <div class="rows"><sc-for list="{{ rows }}" as="e"><div class="{{ e.cls }}">
 <button class="r_play" onClick="{{ e.play }}" aria-label="Play {{ e.title }}" style="background: {{ e.bg }}; color: {{ e.fg }}; position: relative; overflow: hidden"><sc-if value="{{ e.art }}"><img class="ph_img" src="{{ e.art }}" alt="" loading="lazy"></sc-if><i class="r_pi" aria-hidden="true" style="position: relative">▶</i></button>
-<a class="r_main" href="{{ e.href }}"><b>{{ e.title }}</b><span class="mono">{{ e.meta }}</span></a><span></span><span></span><span class="r_end"><x-queue ep="{{ e.ep }}"></x-queue><span class="mono r_len">{{ e.len }}</span></span>
+<a class="r_main" href="{{ e.href }}"><b>{{ e.title }}</b><span class="mono">{{ e.meta }}</span></a><span class="r_spk"><sc-for list="{{ e.spk }}" as="p"><span class="face" title="{{ p.name }}"><sc-if value="{{ p.img }}"><img src="{{ p.img }}" alt="" loading="lazy"></sc-if>{{ p.init }}</span></sc-for></span><span class="r_end"><x-queue ep="{{ e.ep }}"></x-queue><span class="mono r_len">{{ e.len }}</span></span>
 </div></sc-for></div>
 <sc-if value="{{ hasMore }}"><div class="more" style="display: flex; justify-content: center; margin-top: 28px"><button class="btn" onClick="{{ loadMore }}">Load more</button></div></sc-if>
 </div></section>
@@ -644,6 +644,20 @@ SHOW_BODY = """
 <hr class="rule" style="margin: 20px 0 24px">
 <div class="nw"><sc-for list="{{ shows }}" as="s"><a class="nw_c" href="{{ s.href }}"><div class="nw_art" style="background: {{ s.bg }}; color: {{ s.fg }}; position: relative; overflow: hidden"><sc-if value="{{ s.art }}"><img class="ph_img" src="{{ s.art }}" alt="{{ s.name }}" loading="lazy"></sc-if></div><div class="nw_cap"><span>{{ s.name }}</span><span>{{ s.count }}</span></div></a></sc-for></div>
 </div></section>
+"""
+
+
+SHOW_CSS = """
+.plat{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 18px;border:1px solid rgba(14,14,13,.55);border-radius:999px;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:inherit;transition:background .2s,color .2s,border-color .2s}
+.plat:hover{opacity:1;background:var(--ink);color:var(--bone)}
+.plat.light{border-color:rgba(232,228,218,.6);color:var(--paper)}
+.plat.light:hover{background:var(--paper);border-color:var(--paper);color:var(--ink)}
+.r_spk{display:flex;align-items:center}
+.r_spk .face{cursor:default}
+.r_spk .face img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.rows .row{grid-template-columns:64px minmax(0,1fr) minmax(0,150px) 132px}
+@media (max-width:1100px){.rows .row{grid-template-columns:56px minmax(0,1fr) auto 124px}}
+@media (max-width:620px){.rows .row{grid-template-columns:56px minmax(0,1fr) auto}.rows .r_spk{display:none}}
 """
 
 
@@ -661,7 +675,8 @@ def show_engine(e):
       show: D.show, plats: D.plats, count: String(E.length), since: D.since, hasEps: E.length > 0,
       hosts: D.hosts || [], hasHosts: (D.hosts || []).length > 0, hostsLabel: (D.hosts || []).length > 1 ? 'Your hosts' : 'Your host', guests: D.guests, hasGuests: Number(D.guests) > 0,
       lat: E[0] || {}, playLatest: () => E[0] && play(E[0].ep),
-      nRes: E.length, rows: E.slice(0, shown).map((x) => Object.assign({}, x, { cls: 'row', play: () => play(x.ep), bg: D.show.bg, fg: D.show.fg, art: D.show.art })),
+      nRes: E.length, rows: E.slice(0, shown).map((x) => Object.assign({}, x, { cls: 'row', play: () => play(x.ep), bg: D.show.bg, fg: D.show.fg, art: D.show.art,
+        spk: ((x.ep && x.ep.speakers) || []).slice(0, 4).map((p) => ({ name: p.name, img: p.img || '', init: p.img ? '' : p.initials })) })),
       hasMore: E.length > shown, loadMore: () => this.setState({ shown: shown + 20 }),
       shows: D.shows
     };
@@ -676,13 +691,14 @@ EPISODE_BODY = """
 <h1 class="eh_t">{{ ep.title }}</h1>
 <p class="eh_m mono"><a href="{{ show.href }}" style="color: inherit">{{ show.name }}</a><sc-if value="{{ ep.n }}"> // EP {{ ep.n }}</sc-if> <span>{{ ep.date }}<sc-if value="{{ ep.len }}"> · {{ ep.len }}</sc-if></span></p>
 <sc-if value="{{ hasPeople }}"><div class="eh_spk" style="margin-top: 18px"><sc-for list="{{ people }}" as="p"><span class="spk" title="{{ p.name }}"><sc-if value="{{ p.img }}"><img src="{{ p.img }}" alt="" loading="lazy"></sc-if><sc-if value="{{ p.iOnly }}">{{ p.init }}</sc-if></span></sc-for></div></sc-if>
-<div class="plats" style="margin-top: 18px"><button class="tv_play" onClick="{{ play }}"><svg width="11" height="13" viewBox="0 0 11 13" aria-hidden="true"><path d="M0 0l11 6.5L0 13z" fill="currentColor"></path></svg>Play episode</button><x-queue ep="{{ ep.player }}" class="qb_lg"></x-queue><sc-for list="{{ plats }}" as="p"><a class="plat" href="{{ p.href }}" target="_blank" rel="noopener">{{ p.t }}<span aria-hidden="true">↗</span></a></sc-for></div>
+<div class="plats" style="margin-top: 18px"><button class="tv_play" onClick="{{ play }}"><svg width="11" height="13" viewBox="0 0 11 13" aria-hidden="true"><path d="M0 0l11 6.5L0 13z" fill="currentColor"></path></svg>Play episode</button><x-queue ep="{{ ep.player }}" class="btn qb_lg"></x-queue><sc-for list="{{ plats }}" as="p"><a class="plat" href="{{ p.href }}" target="_blank" rel="noopener">{{ p.t }}<span aria-hidden="true">↗</span></a></sc-for></div>
 </div>
 </div></section>
+<x-epbar ep="{{ ep.player }}"></x-epbar>
 <sc-if value="{{ ep.video }}"><section class="{{ vidCls }}" aria-label="Episode video"><sc-if value="{{ vidOn }}"><iframe class="vid_ifr" src="{{ vidSrc }}" title="{{ ep.title }}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></sc-if><sc-if value="{{ vidOff }}"><sc-if value="{{ ep.poster }}"><img class="vid_poster" src="{{ ep.poster }}" alt="" loading="lazy"></sc-if><button class="vid_btn" onClick="{{ watch }}"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1l10 6-10 6z" fill="#0E0E0D"></path></svg><span>Watch the episode</span></button></sc-if></section></sc-if>
 <section class="sec"><div class="wrap about">
 <div class="about_l">
-<p class="eyebrow">About this episode</p>
+<h2 class="about_h">About this episode</h2>
 <sc-if value="{{ pq.text }}"><blockquote class="pq">“{{ pq.text }}”</blockquote><sc-if value="{{ pq.at }}"><button class="pq_play mono" onClick="{{ playQuote }}"><span aria-hidden="true">▶</span> Hear it at {{ pq.at }}</button></sc-if></sc-if>
 <div class="share mono"><span>Share</span><a href="{{ share.x }}" target="_blank" rel="noopener">X</a><a href="{{ share.li }}" target="_blank" rel="noopener">LinkedIn</a><a href="{{ share.fb }}" target="_blank" rel="noopener">Facebook</a><button onClick="{{ copy }}">{{ copyLabel }}</button></div>
 </div>
@@ -711,7 +727,7 @@ EPISODE_BODY = """
 <div class="art art_sm" style="background: {{ show.bg }}; position: relative; overflow: hidden"><sc-if value="{{ show.art }}"><img class="ph_img" src="{{ show.art }}" alt="" loading="lazy"></sc-if></div>
 <div class="ep_d"><b class="mono">{{ e.title }}</b><span class="mono">{{ show.name }}</span><span class="mono ep_date">{{ e.date }}<sc-if value="{{ e.len }}"> · {{ e.len }}</sc-if></span></div>
 <span class="mono ep_no">{{ e.n }}</span><span></span><span></span>
-<span class="ep_links"><a class="btn" href="{{ e.href }}">View episode</a><button class="btn" onClick="{{ e.play }}">Play</button><x-queue ep="{{ e.ep }}"></x-queue></span>
+<span class="ep_links"><a class="btn" href="{{ e.href }}">View episode</a><button class="btn" onClick="{{ e.play }}">Play</button><x-queue ep="{{ e.ep }}" class="btn"></x-queue></span>
 </div></sc-for></div>
 <div style="display: flex; justify-content: center; margin-top: clamp(28px, 3vw, 44px)"><a class="btn" href="{{ show.href }}">See show</a></div>
 </div></section></sc-if>
@@ -719,6 +735,21 @@ EPISODE_BODY = """
 <h2 class="h3">Explore other shows</h2><hr class="rule" style="margin: clamp(20px, 2vw, 30px) 0 clamp(24px, 2.4vw, 36px)">
 <div class="shows"><sc-for list="{{ shows }}" as="s"><a class="tile" href="{{ s.href }}" style="background: {{ s.bg }}; color: {{ s.fg }}; position: relative; overflow: hidden"><sc-if value="{{ s.art }}"><img class="ph_img" src="{{ s.art }}" alt="{{ s.name }}" loading="lazy"></sc-if><sc-if value="{{ s.noArt }}"><span class="tile_t">{{ s.name }}</span></sc-if></a></sc-for></div>
 </div></section>
+"""
+
+
+EPBAR_CSS = """
+.eh .plats{align-items:center;gap:8px}
+.eh .plat{height:44px;padding:0 18px}
+.eh .qb.is-now{display:none}
+.about_h{font-family:var(--h3);font-weight:700;font-size:clamp(22px,1.9vw,28px);line-height:1.1;letter-spacing:-.012em;margin:0 0 clamp(18px,1.8vw,26px)}
+.player .pl_grid{grid-template-columns:auto minmax(0,220px) auto minmax(0,1fr) auto auto}
+.pl_ctl{display:flex;align-items:center;gap:6px}
+.pl_sk{width:30px;height:30px;border:0;border-radius:50%;background:transparent;color:inherit;display:grid;place-items:center;cursor:pointer;padding:0;transition:background .2s}
+.pl_sk:hover{background:rgba(14,14,13,.08)}
+.pl_now b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl_tick{cursor:pointer}
+@media (max-width: 760px){.player .pl_grid{grid-template-columns:auto auto minmax(0,1fr) auto}}
 """
 
 
@@ -732,7 +763,7 @@ def episode_engine(e):
   sec(a) { return String(a || '0').split(':').reduce((v, n) => v * 60 + +n, 0); }
   renderVals() {
     const D = this.props.data, s = this.st(), ep = D.ep.player;
-    const playAt = (at) => { const x = Object.assign({}, ep); if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('alpha:play', { detail: x })); if (at && typeof window !== 'undefined') setTimeout(() => { const a = document.querySelector('audio'); if (a) a.currentTime = at; }, 400); };
+    const playAt = (at) => { if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('alpha:play', { detail: Object.assign({}, ep, at ? { at } : {}) })); };
     return {
       show: D.show, ep: D.ep, plats: D.plats, pq: D.pq, share: D.share, people: D.people || [], hasPeople: (D.people || []).length > 0,
       play: () => playAt(0), playQuote: () => playAt(this.sec(D.pq.at)),
@@ -769,8 +800,8 @@ PAGES = {
                       css=IMG_CSS + MAP_CSS + '.map_focus{opacity:0;pointer-events:none}\n.map_focus .maplibregl-canvas-container{transition:opacity .7s}\n.map_focus:not([data-ready="1"]) .maplibregl-canvas-container{opacity:0;transition:opacity .2s}\n'),
     'Location': dict(dir='locations/[slug]', board='Location', markup=location_markup, engine=location_engine, jsx=location_jsx, imports=MAP_IMPORT, css=IMG_CSS + MAP_CSS),
     'Podcasts': dict(dir='podcasts', board='Podcasts', data=True, markup=podcasts_markup, engine=podcasts_engine, css=PODCAST_CSS + QUEUE_ROW_CSS, imports=QUEUE_IMPORT),
-    'Show': dict(dir='podcasts/[show]', board='Show', markup=show_markup, engine=show_engine, imports=QUEUE_IMPORT, css=QUEUE_ROW_CSS + IMG_CSS + '.spk,.person_av{position:relative;overflow:hidden}\n.spk img,.person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}\n'),
-    'Episode': dict(dir='podcasts/[show]/[episode]', board='Episode', markup=episode_markup, engine=episode_engine, imports=QUEUE_IMPORT, css='.qb_lg{height:44px;padding:0 18px;font-size:11px}\n.ep_links .qb{height:36px}\n' + IMG_CSS + '.vid_poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.82)}\n.vid .vid_btn{position:relative;z-index:1;border:0;cursor:pointer}\n.vid.is-on{aspect-ratio:16/9;background:#000}\n.vid_ifr{position:absolute;inset:0;width:100%;height:100%;border:0}\n' + '.tv_play{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 22px 0 18px;border-radius:999px;border:0;background:var(--ink);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:transform .3s var(--ease)}\n.tv_play:hover{transform:scale(1.04)}\n' + '.spk,.person_av{position:relative;overflow:hidden}\n.spk img,.person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}\n'),
+    'Show': dict(dir='podcasts/[show]', board='Show', markup=show_markup, engine=show_engine, imports=QUEUE_IMPORT, css=SHOW_CSS + QUEUE_ROW_CSS + IMG_CSS + '.spk,.person_av{position:relative;overflow:hidden}\n.spk img,.person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}\n'),
+    'Episode': dict(dir='podcasts/[show]/[episode]', board='Episode', markup=episode_markup, engine=episode_engine, imports=QUEUE_IMPORT + "import { EpisodeBar } from '@/components/site/EpisodeBar'\n", css=EPBAR_CSS + '.qb_lg{height:44px;padding:0 18px}\n.btn.qb.is-q{background:var(--ink);border-color:var(--ink);color:var(--bone)}\n.btn.qb.is-now{opacity:.55;cursor:default}\n' + IMG_CSS + '.vid_poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.82)}\n.vid .vid_btn{position:relative;z-index:1;border:0;cursor:pointer}\n.vid.is-on{aspect-ratio:16/9;background:#000}\n.vid_ifr{position:absolute;inset:0;width:100%;height:100%;border:0}\n' + '.tv_play{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 22px 0 18px;border-radius:999px;border:0;background:var(--ink);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:transform .3s var(--ease)}\n.tv_play:hover{transform:scale(1.04)}\n' + '.spk,.person_av{position:relative;overflow:hidden}\n.spk img,.person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}\n'),
     # 'Speaker': ported when the Speakers collection has people in it
     'Main': dict(dir='_home', board='Main', markup=main_markup, engine=main_engine, css=MAIN_CSS, imports=QUEUE_IMPORT),
 }
