@@ -405,11 +405,11 @@ def location_jsx(j):
 
 
 REEL_CSS = """
-.reel_v{height:auto;aspect-ratio:16/9;max-height:92svh;background:#0E0E0D}
+.reel_v{width:100%;height:min(56.25vw,92svh);background:#0E0E0D}
 .reel_video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .reel_v .reel_unmute{z-index:2;opacity:.85;transition:opacity .3s}
 .reel_v .reel_unmute:hover{opacity:1}
-@media (max-width:720px){.reel_v{aspect-ratio:9/16;max-height:88svh}}
+@media (max-width:720px){.reel_v{height:min(177.78vw,88svh)}}
 """
 
 
