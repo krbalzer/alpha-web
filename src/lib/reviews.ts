@@ -18,10 +18,10 @@ export async function getPlace(id?: string | null): Promise<Place | null> {
   if (!id || !key) return null
   try {
     const r = await fetch(`https://places.googleapis.com/v1/places/${encodeURIComponent(id)}`, {
-      headers: { 'X-Goog-Api-Key': key, 'X-Goog-FieldMask': 'rating,userRatingCount,googleMapsUri,reviews' },
+      headers: { 'X-Goog-Api-Key': key.trim(), 'X-Goog-FieldMask': 'rating,userRatingCount,googleMapsUri,reviews' },
       next: { revalidate: 21600, tags: ['google-places'] },
     })
-    if (!r.ok) return null
+    if (!r.ok) { console.warn(`google places: ${r.status} for ${id}`); return null }
     const j = (await r.json()) as Raw
     return {
       rating: j.rating || 0, count: j.userRatingCount || 0, uri: j.googleMapsUri || '',
