@@ -27,6 +27,9 @@ const blobOk = await checkBlob((m) => console.log(m))
       // chapters drafted from the Drive transcripts (MSM, OMS, GF); fills empty chapters only
       const { importChapters } = await import('./chapters')
       await importChapters(p)
+      // Google place IDs for live ratings and reviews; fills empty IDs only
+      const { importPlaces } = await import('./places')
+      await importPlaces(p)
       // podcast people from the old Webflow site; a no-op once they are in
       const { importSpeakers } = await import('./speakers')
       if (blobOk) await importSpeakers(p)

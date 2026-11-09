@@ -104,6 +104,7 @@ export const Locations: CollectionConfig = {
     { type: 'row', fields: [
       { name: 'phone', type: 'text' },
       { name: 'bookingUrl', type: 'text' },
+      { name: 'googlePlaceId', label: 'Google place ID', type: 'text', admin: { description: 'Google Maps listing for this location. Rating, review count and reviews load from it live (refreshed every 6 hours).' } },
     ] },
     { name: 'hours', type: 'array', admin: { description: 'One row per day range, e.g. "Mon to Fri" / "9am to 6pm".' }, fields: [
       { type: 'row', fields: [{ name: 'days', type: 'text', required: true }, { name: 'time', type: 'text', required: true }] },

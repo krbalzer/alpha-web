@@ -7,6 +7,7 @@ import * as migration_20261107_003536_location_hero_video from './20261107_00353
 import * as migration_20261107_010725_video_renditions from './20261107_010725_video_renditions';
 import * as migration_20261107_014948_pages_legal_leads from './20261107_014948_pages_legal_leads';
 import * as migration_20261109_194524_episode_audience from './20261109_194524_episode_audience';
+import * as migration_20261109_225411_location_google_place from './20261109_225411_location_google_place';
 
 export const migrations = [
   {
@@ -52,6 +53,11 @@ export const migrations = [
   {
     up: migration_20261109_194524_episode_audience.up,
     down: migration_20261109_194524_episode_audience.down,
-    name: '20261109_194524_episode_audience'
+    name: '20261109_194524_episode_audience',
+  },
+  {
+    up: migration_20261109_225411_location_google_place.up,
+    down: migration_20261109_225411_location_google_place.down,
+    name: '20261109_225411_location_google_place'
   },
 ];

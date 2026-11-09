@@ -206,7 +206,7 @@ export class LocationEngine extends DCLogic {
     const heroH = this.tall ? '820px' : 'calc(100svh - 126px)', mapHero = !loc.heroVideo;
     return {
       hasVid: !mapHero, mapHero, mapCls: 'map dark' + (mapHero ? ' is-hero' : ''), mapH: mapHero ? heroH : 'clamp(560px, 54vw, 820px)', mapAria: mapHero ? B.short + ' / ' + loc.place : 'Location',
-      galOn: false, hasStory: !!loc.storyHtml, storyHtml: loc.storyHtml, hasReviews: false, hasStats: false, hasRoles: false, hasSince: (loc.ms || []).length > 0 || !!(loc.quote && loc.quote.t),
+      galOn: false, hasStory: !!loc.storyHtml, storyHtml: loc.storyHtml, hasReviews: !!(loc.rv && loc.rv.items.length >= 3), rv: loc.rv || { items: [] }, hasStats: false, hasRoles: false, hasSince: (loc.ms || []).length > 0 || !!(loc.quote && loc.quote.t),
       b: B, loc, title: B.short + ' / ' + loc.place, hasSib: B.locations.length > 1,
       sib: Object.assign({}, sb, { place: sb.city + ', ' + sb.st }),
       story: (loc.story || ['[Place story. Why this address, when it opened, the neighborhood, what the space is built for. 80 to 120 words, true of this location only.]']).map((t) => ({ t })),

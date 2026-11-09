@@ -168,6 +168,7 @@ export const getArticle = cache(async (slug: string) => {
 /* ---------------- Network: locations, founders ---------------- */
 import type { Founder, Location } from '@/payload-types'
 import { NO_MEDIA, RATINGS } from './content/ratings'
+import { getPlace, pickReviews } from './reviews'
 
 const pad3 = (n?: number | null) => String(n ?? 0).padStart(3, '0')
 const monthYear = (d?: string | null) => (d ? new Date(d).toLocaleDateString('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' }) : '')
@@ -194,8 +195,9 @@ export const getLocationsDir = cache(async () => {
     .map((l) => ({ l, b: typeof l.brand === 'object' ? (l.brand as Brand) : brands.find((x) => x.id === l.brand) }))
     .filter((x): x is { l: Location; b: Brand } => !!x.b && !!B[pad3(x.b.ptr)])
     .sort((a, z) => (a.b.ptr ?? 0) - (z.b.ptr ?? 0) || a.l.city.localeCompare(z.l.city))
+  const live = await Promise.all(rows.map(({ l }) => getPlace(l.googlePlaceId)))
   const L = rows.map(({ l, b }, i) => {
-    const n = pad3(b.ptr), key = `${b.ptr}|${l.city}`, [rating, reviews] = RATINGS[key] || [0, 0]
+    const n = pad3(b.ptr), key = `${b.ptr}|${l.city}`, g = live[i], [rating, reviews] = g && g.count ? [Math.round(g.rating * 10) / 10, g.count] : RATINGS[key] || [0, 0]
     const a1 = l.address1 || '', a2 = l.address2 || `${l.city}, ${l.state} ${l.zip || ''}`.trim()
     return {
       i, n, brand: B[n].name, founder: B[n].founder, tone: B[n].tone, city: l.city, st: l.state, lat: l.lat, lng: l.lng, est: B[n].est, since: B[n].since,
@@ -262,6 +264,7 @@ export const getLocation = cache(async (slug: string) => {
   const f = brandFounders(full).filter((x) => x.status !== 'former').map((x) => founders.find((y) => y.id === x.id) || x)
   const tones = ['linear-gradient(160deg,#8C7F6B,#4D463C)', 'linear-gradient(160deg,#6F7276,#393B3E)', 'linear-gradient(160deg,#7A6E62,#3E3832)']
   const est = full.established ? String(full.established) : ''
+  const rv = pickReviews(await getPlace(cur.googlePlaceId))
   return {
     li: 0,
     b: {
@@ -279,6 +282,7 @@ export const getLocation = cache(async (slug: string) => {
           img: noMedia ? '' : url(l.photo as Media, 'wide') || '', heroVideo: v.src, heroAv1: v.av1, heroSmall: v.small, heroPoster: v.src ? posterUrl(l.heroPoster) : '',
           est, facts: '', providers: 0, mix: (l.roleMix || []).map((r) => [r.role, r.count]), lead, storyHtml: html(l.story),
           hours: (l.hours || []).map((h) => [h.days, h.time]), phone: l.phone || '', arrive: l.arrivalNote || '',
+          rv: l.id === cur.id ? rv : null,
           ms: (l.milestones || []).map((m) => [m.when, m.line]), quote: l.quote?.text ? { t: l.quote.text, s: l.quote.source || '' } : { t: '', s: '' },
           a1, a2, lng: l.lng, lat: l.lat, ang: ((l.mapBearing || 0) * Math.PI) / 180, hmax: 16 + ((i * 7) % 20), seed: 11 + i * 18, tone: tones[i % 3],
           streets: [a1.replace(/^[0-9-]+\s+/, '').replace(/,.*$/, '')].filter(Boolean),

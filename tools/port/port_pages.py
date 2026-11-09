@@ -355,6 +355,12 @@ def location_markup(b):
     b = gate(b, 'INSIDE', 'hasStory')
     b = rep(b, '<p class="sub">{{ provLine }}</p>', '<sc-if value="{{ provLine }}"><p class="sub">{{ provLine }}</p></sc-if>')
     b = gate(b, 'IN THEIR WORDS', 'hasReviews')
+    # live Google reviews (src/lib/reviews.ts): aggregate, up to 6 cards, author linked to their Google profile
+    b = sub(r'<div class="rv_agg">.*?</div>\n<div class="rv">.*?</div>\n<span class="rv_note">.*?</span>',
+            '<div class="rv_agg"><span class="rv_n">{{ rv.rating }}</span><span class="rv_st" role="img" aria-label="{{ rv.rating }} out of 5 stars"><i style="width: {{ rv.pct }}%"></i></span><span class="rv_c">{{ rv.count }} Google reviews</span><a class="rv_all" href="{{ rv.uri }}" target="_blank" rel="noopener">Read all on Google<span class="ext" aria-hidden="true">↗</span></a></div>\n</div>\n'
+            '<div class="rv"><sc-for list="{{ rv.items }}" as="r"><figure class="{{ r.cls }}"><sc-if value="{{ r.tag }}"><span class="rv_tag">{{ r.tag }}</span></sc-if><blockquote>{{ r.t }}</blockquote>'
+            '<sc-if value="{{ r.long }}"><label class="rv_more"><input type="checkbox" class="rv_x"><span class="rv_m">Read more</span><span class="rv_l">Show less</span></label></sc-if>'
+            '<figcaption class="rv_f"><span><a class="rv_who" href="{{ r.whoUri }}" target="_blank" rel="noopener nofollow"><b>{{ r.who }}</b></a> / {{ r.when }}</span><span>via Google</span></figcaption></figure></sc-for></div>', b)
     b = rep(b, '<p class="sub">Partner since {{ b.since }}</p><span class="draft">Draft copy</span>', '<p class="sub">Partner since {{ b.since }}</p>')
     b = gate(b, 'SINCE ALPHA', 'hasSince')
     b = gate(b, 'STATS', 'hasStats')
@@ -369,7 +375,7 @@ def location_engine(e):
     e = sub(r'\n  brand\(\) \{.*?\n  \}\n', '\n  brand() { return this.props.data.b; }\n', e)
     e = rep(e, '  li() { return this.props.denver ? 1 : 0; }', '  li() { return this.props.data.li; }')
     e = rep(e, "sb = B.locations[1 - li];", "sb = B.locations[(li + 1) % B.locations.length];")
-    e = rep(e, "galOn: !loc.noGallery,", "galOn: false, hasStory: !!loc.storyHtml, storyHtml: loc.storyHtml, hasReviews: false, hasStats: false, hasRoles: false, hasSince: (loc.ms || []).length > 0 || !!(loc.quote && loc.quote.t),")
+    e = rep(e, "galOn: !loc.noGallery,", "galOn: false, hasStory: !!loc.storyHtml, storyHtml: loc.storyHtml, hasReviews: !!(loc.rv && loc.rv.items.length >= 3), rv: loc.rv || { items: [] }, hasStats: false, hasRoles: false, hasSince: (loc.ms || []).length > 0 || !!(loc.quote && loc.quote.t),")
     e = rep(e, "sib: Object.assign({}, sb, { place: sb.city + ', ' + sb.st }),", "sib: Object.assign({}, sb, { place: sb.city + ', ' + sb.st }),")
     e = sub(r"visit: \{ hours: .*?arrive: loc\.arrive \|\| '\[Parking and entrance note\.\]' \},",
             "visit: { hours: (loc.hours || []).map((h) => ({ d: h[0], t: h[1] })), hasHours: (loc.hours || []).length > 0, phone: loc.phone || '', tel: 'tel:' + String(loc.phone || '').replace(/[^0-9+]/g, ''), arrive: loc.arrive || '' },", e)
@@ -810,7 +816,7 @@ PAGES = {
     'Founder': dict(dir='founders/[slug]', board='Founder', data=True, markup=founder_markup, engine=founder_engine),
     'Locations': dict(dir='locations', board='Locations', data=True, markup=locations_markup, engine=locations_engine, jsx=locations_jsx, imports="import { FocusMap } from '@/components/site/MapStage'\n",
                       css=IMG_CSS + MAP_CSS + '.map_focus{opacity:0;pointer-events:none}\n.map_focus .maplibregl-canvas-container{transition:opacity .7s}\n.map_focus:not([data-ready="1"]) .maplibregl-canvas-container{opacity:0;transition:opacity .2s}\n'),
-    'Location': dict(dir='locations/[slug]', board='Location', markup=location_markup, engine=location_engine, jsx=location_jsx, imports=MAP_IMPORT, css=IMG_CSS + MAP_CSS),
+    'Location': dict(dir='locations/[slug]', board='Location', markup=location_markup, engine=location_engine, jsx=location_jsx, imports=MAP_IMPORT, css=IMG_CSS + MAP_CSS + '.rv_who{color:inherit;text-decoration:none}\n.rv_who:hover b{text-decoration:underline}\n'),
     'Podcasts': dict(dir='podcasts', board='Podcasts', data=True, markup=podcasts_markup, engine=podcasts_engine, css=PODCAST_CSS + QUEUE_ROW_CSS, imports=QUEUE_IMPORT),
     'Show': dict(dir='podcasts/[show]', board='Show', markup=show_markup, engine=show_engine, imports=QUEUE_IMPORT, css=SHOW_CSS + QUEUE_ROW_CSS + IMG_CSS + '.spk,.person_av{position:relative;overflow:hidden}\n.spk img,.person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}\n'),
     'Episode': dict(dir='podcasts/[show]/[episode]', board='Episode', markup=episode_markup, engine=episode_engine, imports=QUEUE_IMPORT + "import { EpisodeBar } from '@/components/site/EpisodeBar'\n", css=EPBAR_CSS + '.qb_lg{height:44px;padding:0 18px}\n.btn.qb.is-q{background:var(--ink);border-color:var(--ink);color:var(--bone)}\n.btn.qb.is-now{opacity:.55;cursor:default}\n' + IMG_CSS + '.vid_poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.82)}\n.vid .vid_btn{position:relative;z-index:1;border:0;cursor:pointer}\n.vid.is-on{aspect-ratio:16/9;background:#000}\n.vid_ifr{position:absolute;inset:0;width:100%;height:100%;border:0}\n' + '.tv_play{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 22px 0 18px;border-radius:999px;border:0;background:var(--ink);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:transform .3s var(--ease)}\n.tv_play:hover{transform:scale(1.04)}\n' + '.spk,.person_av{position:relative;overflow:hidden}\n.spk img,.person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}\n'),

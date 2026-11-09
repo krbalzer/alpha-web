@@ -510,6 +510,10 @@ export interface Location {
   phone?: string | null;
   bookingUrl?: string | null;
   /**
+   * Google Maps listing for this location. Rating, review count and reviews load from it live (refreshed every 6 hours).
+   */
+  googlePlaceId?: string | null;
+  /**
    * One row per day range, e.g. "Mon to Fri" / "9am to 6pm".
    */
   hours?:
@@ -1383,6 +1387,7 @@ export interface LocationsSelect<T extends boolean = true> {
   story?: T;
   phone?: T;
   bookingUrl?: T;
+  googlePlaceId?: T;
   hours?:
     | T
     | {
