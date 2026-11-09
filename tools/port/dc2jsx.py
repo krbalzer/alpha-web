@@ -5,7 +5,7 @@
 """
 import re, json, sys, html
 
-COMPS = {'x-nav': 'Nav', 'x-link': 'Link', 'x-queue': 'QueueBtn', 'x-epbar': 'EpisodeBar'}
+COMPS = {'x-nav': 'Nav', 'x-link': 'Link', 'x-queue': 'QueueBtn', 'x-epbar': 'EpisodeBar', 'x-homereel': 'HomeReel'}
 VOID = {'img', 'hr', 'br', 'input', 'meta', 'link', 'source'}
 ATTR_MAP = {'class': 'className', 'for': 'htmlFor', 'tabindex': 'tabIndex', 'stroke-width': 'strokeWidth',
             'stroke-linecap': 'strokeLinecap', 'stroke-linejoin': 'strokeLinejoin', 'fill-rule': 'fillRule',

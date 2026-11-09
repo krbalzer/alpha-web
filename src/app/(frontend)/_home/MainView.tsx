@@ -5,6 +5,7 @@ import { Nav } from '@/components/site/Nav'
 import { useDC } from '@/lib/dc'
 import { MainEngine } from './engine'
 import { QueueBtn } from '@/components/site/QueueBtn'
+import { HomeReel } from '@/components/site/HomeReel'
 import './page.css'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -35,16 +36,7 @@ export default function MainView(props: any) {
 </div>
 </section>
 
-<section className="reel" aria-label="Network reel">
-{(v.reel || []).map((r: any, r_i: number) => (<React.Fragment key={r_i}><img className={r.cls} src={r.src} alt="" loading="lazy" /></React.Fragment>))}
-
-<div className="reel_hud">
-<div className="reel_cut"><span>Cut {v.cutNum} / 15</span><b>{v.cutBrand}</b><span>{v.cutCity}</span></div>
-<div className="reel_ticks" aria-hidden="true">
-{(v.ticks || []).map((t: any, t_i: number) => (<React.Fragment key={t_i}><i className={t.cls}></i></React.Fragment>))}
-</div>
-</div>
-</section>
+<HomeReel desktop={v.reelVid.d} mobile={v.reelVid.m}></HomeReel>
 
 {/* ============ NETWORK: last week, replayed ============ */}
 <section id="network" className="net on-dark">

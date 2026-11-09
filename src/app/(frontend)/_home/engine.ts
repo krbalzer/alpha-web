@@ -349,6 +349,7 @@ export class MainEngine extends DCLogic {
     const answered = isContact || !!ans[qq.key];
 
     return {
+      reelVid: X.reel || { d: null, m: null },
       net: X.net || { brands: '15', locations: '36', states: '12' }, shows: X.shows || [], nShows: String((X.shows || []).length), hasEps: EP.length > 0,
       reel: P.map((p, i) => ({ src: p.poster || p.img, cls: 'reel_img' + (i === cut ? ' is-on' : '') })).filter((r) => r.src),
       openMenu: () => set({ menu: true }), closeMenu: () => set({ menu: false }), menuOpen: !!s.menu,

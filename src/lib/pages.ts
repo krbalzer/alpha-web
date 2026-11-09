@@ -307,6 +307,12 @@ export const getShows = cache(async () => {
   return (r.docs as Show[]).map((s) => ({ name: s.name, slug: s.slug, href: `/podcasts/${s.slug}`, bg: s.bg || '#1D1B1A', fg: s.fg || '#fff', art: url(s.artwork as Media, 'card') || '', raw: s }))
 })
 
+/** Home reel: Alpha 2025 film, desktop 16:9 (from the 4K master) and mobile 9:16 cut. AV1 first, H.264 fallback. Files in Blob under home/. */
+const HOME_REEL = {
+  d: { av1: 'https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/home/alpha-2025-d-av1.mp4', h264: 'https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/home/alpha-2025-d-h264.mp4', poster: 'https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/home/alpha-2025-d-poster.jpg' },
+  m: { av1: 'https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/home/alpha-2025-m-av1.mp4', h264: 'https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/home/alpha-2025-m-h264.mp4', poster: 'https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/home/alpha-2025-m-poster.jpg' },
+}
+
 export const getHome = cache(async () => {
   const [{ brands, locations, founders }, net, depAll, shows] = await Promise.all([getNetworkAll(), getNetwork(), getTeamAll(), getShows()])
   const P = brands.map((b) => {
@@ -335,6 +341,7 @@ export const getHome = cache(async () => {
     return { ep: toEp(e, SPK, SHW.find((x) => x.slug === sh?.slug)?.art), id: String(e.id), title: e.title, show: `${sh?.name || ''}${e.number ? ` · Ep ${String(e.number).padStart(2, '0')}` : ''}`, len: d ? `${Math.floor(d / 60)}:${String(d % 60).padStart(2, '0')}` : '', tone: sh?.bg || '#1D1B1A' }
   })
   return {
+    reel: HOME_REEL,
     net: { brands: String(net.brands), locations: String(net.locations), states: String(net.states) },
     P, depts, eps, shows: shows.map(({ raw: _r, ...s }) => s),
   }

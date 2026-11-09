@@ -409,4 +409,9 @@
 .pg-main .dept_avs .av:hover{transform:translateY(-3px) scale(1.08);border-color:var(--ink);z-index:1}
 @media (prefers-reduced-motion:reduce){.pg-main .dept,.pg-main .dept_avs .av{transition:none}
 .pg-main .dept:hover{transform:none}}
+.pg-main .reel_v{height:auto;aspect-ratio:16/9;max-height:92svh;background:#0E0E0D}
+.pg-main .reel_video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.pg-main .reel_v .reel_unmute{z-index:2;opacity:.85;transition:opacity .3s}
+.pg-main .reel_v .reel_unmute:hover{opacity:1}
+@media (max-width:720px){.pg-main .reel_v{aspect-ratio:9/16;max-height:88svh}}
 

@@ -404,6 +404,15 @@ def location_jsx(j):
     return j.replace(cv, '<MapStage locs={[props.data.b.locations[props.data.li]]} idx={0} />' + cv)
 
 
+REEL_CSS = """
+.reel_v{height:auto;aspect-ratio:16/9;max-height:92svh;background:#0E0E0D}
+.reel_video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.reel_v .reel_unmute{z-index:2;opacity:.85;transition:opacity .3s}
+.reel_v .reel_unmute:hover{opacity:1}
+@media (max-width:720px){.reel_v{aspect-ratio:9/16;max-height:88svh}}
+"""
+
+
 def main_markup(b):
     b, n = cut(b, r'<header class="wrap">', 'header', '<x-nav></x-nav>'); assert n == 1
     i = b.find('<!-- ============ PLAYER'); assert i > 0
@@ -422,6 +431,8 @@ def main_markup(b):
     # reel: brand hero posters in join order until the network reel is cut
     b = sub(r'<div class="reel_spec ph">.*?</div>', '<sc-for list="{{ reel }}" as="r"><img class="{{ r.cls }}" src="{{ r.src }}" alt="" loading="lazy"></sc-for>', b)
     b = sub(r'<button class="btn btn-light reel_unmute".*?</button>', '', b)
+    # reel is now the Alpha 2025 film: desktop and mobile cuts, muted loop, Sound on (src/components/site/HomeReel.tsx)
+    b = sub(r'<section class="reel" aria-label="Network reel">.*?</section>', '<x-homereel desktop="{{ reelVid.d }}" mobile="{{ reelVid.m }}"></x-homereel>', b)
     # partners: rows and frame link to the brand page
     b = rep(b, '<button class="{{ p.cls }}" onMouseEnter="{{ p.hover }}" onFocus="{{ p.focus }}" onClick="{{ p.open }}" role="listitem"><span>{{ p.n }}</span><span class="nm">{{ p.name }}</span><span class="ct">{{ p.city }}</span><span class="yr">{{ p.yr }}</span></button>',
             '<a class="{{ p.cls }}" href="{{ p.href }}" onMouseEnter="{{ p.hover }}" onFocus="{{ p.focus }}" role="listitem" style="text-decoration: none"><span>{{ p.n }}</span><span class="nm">{{ p.name }}</span><span class="ct">{{ p.city }}</span><span class="yr">{{ p.yr }}</span></a>')
@@ -490,7 +501,7 @@ def main_engine(e):
     e = sub(r"const EP = \[.*?\n    \];", "const EP = X.eps || [];", e)
     e = rep(e, "const eps = EP.map((e, i) => ({ ...e, btnCls: i === playing ? 'ep_play is-on' : 'ep_play', play: () => set({ playing: i }) }));",
             "const eps = EP.map((e, i) => ({ ...e, btnCls: i === playing ? 'ep_play is-on' : 'ep_play', play: () => { set({ playing: i }); if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('alpha:play', { detail: e.ep })); } }));")
-    e = rep(e, "return {\n      openMenu:", "return {\n      net: X.net || { brands: '15', locations: '36', states: '12' }, shows: X.shows || [], nShows: String((X.shows || []).length), hasEps: EP.length > 0,\n      reel: P.map((p, i) => ({ src: p.poster || p.img, cls: 'reel_img' + (i === cut ? ' is-on' : '') })).filter((r) => r.src),\n      openMenu:")
+    e = rep(e, "return {\n      openMenu:", "return {\n      reelVid: X.reel || { d: null, m: null },\n      net: X.net || { brands: '15', locations: '36', states: '12' }, shows: X.shows || [], nShows: String((X.shows || []).length), hasEps: EP.length > 0,\n      reel: P.map((p, i) => ({ src: p.poster || p.img, cls: 'reel_img' + (i === cut ? ' is-on' : '') })).filter((r) => r.src),\n      openMenu:")
     e = rep(e, "const posters = P.map((p, i) => ({ cls: 'p_poster' + (i === pi ? ' is-on' : ''), tone: p.tone, hasImg: !!p.img, noImg: !p.img, img: p.img || '',",
             "const posters = P.map((p, i) => { const im = (p.film && p.film.src && p.cover) || p.img || ''; return { cls: 'p_poster' + (i === pi ? ' is-on' : '') + (p.film && p.film.src ? ' is-film' : ''), tone: p.tone, hasImg: !!im, noImg: !im, img: im,")
     e = rep(e, "cityLong: p.city }));", "cityLong: p.city }; });")
@@ -821,7 +832,7 @@ PAGES = {
     'Show': dict(dir='podcasts/[show]', board='Show', markup=show_markup, engine=show_engine, imports=QUEUE_IMPORT, css=SHOW_CSS + QUEUE_ROW_CSS + IMG_CSS + '.spk,.person_av{position:relative;overflow:hidden}\n.spk img,.person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}\n'),
     'Episode': dict(dir='podcasts/[show]/[episode]', board='Episode', markup=episode_markup, engine=episode_engine, imports=QUEUE_IMPORT + "import { EpisodeBar } from '@/components/site/EpisodeBar'\n", css=EPBAR_CSS + '.qb_lg{height:44px;padding:0 18px}\n.btn.qb.is-q{background:var(--ink);border-color:var(--ink);color:var(--bone)}\n.btn.qb.is-now{opacity:.55;cursor:default}\n' + IMG_CSS + '.vid_poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.82)}\n.vid .vid_btn{position:relative;z-index:1;border:0;cursor:pointer}\n.vid.is-on{aspect-ratio:16/9;background:#000}\n.vid_ifr{position:absolute;inset:0;width:100%;height:100%;border:0}\n' + '.tv_play{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 22px 0 18px;border-radius:999px;border:0;background:var(--ink);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:transform .3s var(--ease)}\n.tv_play:hover{transform:scale(1.04)}\n' + '.spk,.person_av{position:relative;overflow:hidden}\n.spk img,.person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}\n'),
     # 'Speaker': ported when the Speakers collection has people in it
-    'Main': dict(dir='_home', board='Main', markup=main_markup, engine=main_engine, css=MAIN_CSS, imports=QUEUE_IMPORT),
+    'Main': dict(dir='_home', board='Main', markup=main_markup, engine=main_engine, css=MAIN_CSS + REEL_CSS, imports=QUEUE_IMPORT + "import { HomeReel } from '@/components/site/HomeReel'\n"),
 }
 
 
