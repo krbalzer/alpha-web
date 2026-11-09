@@ -52,22 +52,27 @@ export const getNetwork = cache(async (): Promise<NetworkNums & { address: strin
   }
 })
 
-export const toEp = (e: Episode): Ep => {
+/** Player payload. Pass `faces` (speaker id -> name + photo, see getSpeakers) so the sticky player shows real headshots;
+ *  without it, populated speakers fall back to their own headshot, then to initials. */
+export const toEp = (e: Episode, faces?: Map<number, { name: string; img?: string }>): Ep => {
   const show = (typeof e.show === 'object' ? e.show : null) as Show | null
-  const spk = ((e.speakers || []) as (Speaker | string)[]).filter((s): s is Speaker => typeof s === 'object')
+  const raw = (e.speakers || []) as (Speaker | number)[]
+  const speakers = faces
+    ? raw.map((s) => faces.get(typeof s === 'object' ? s.id : s)).filter((x): x is { name: string; img?: string } => !!x).map((x) => ({ name: x.name, initials: initials(x.name), img: x.img || '' }))
+    : raw.filter((s): s is Speaker => typeof s === 'object').map((s) => ({ name: s.name, initials: initials(s.name), img: url(s.headshot, 'card') || '' }))
   return {
     id: String(e.id), slug: e.slug, title: e.title,
     show: show?.name || '', showShort: show?.short || show?.name || '',
     n: e.number ? String(e.number).padStart(3, '0') : undefined,
     audio: e.audioUrl, dur: e.duration || 0, bg: show?.bg || '#1D1B1A', fg: show?.fg || '#FFFFFF',
-    speakers: spk.map((s) => ({ name: s.name, initials: initials(s.name) })),
+    speakers,
     chapters: (e.chapters || []).map((c) => ({ at: c.at || '0:00', title: c.title || '' })),
   }
 }
 
 export const getLatestEpisode = cache(async (): Promise<Ep | null> => {
   const p = await db()
-  const r = await p.find({ collection: 'episodes', where: LIVE, sort: '-published', limit: 1, depth: 1 })
+  const r = await p.find({ collection: 'episodes', where: LIVE, sort: '-published', limit: 1, depth: 2 })
   return r.docs[0] ? toEp(r.docs[0]) : null
 })
 
@@ -96,7 +101,7 @@ export const getBrand = cache(async (slug: string) => {
   const est = b.established ? String(b.established) : ''
   return {
     id: String(b.id), slug: b.slug,
-    n: String(b.ptr).padStart(3, '0'), ptr: ptr(b.ptr), name: b.name, short: b.short || b.name,
+    n: String(b.ptr).padStart(3, '0'), ptr: ptr(b.ptr), name: b.name, short: b.short || b.name, story: (b.short || b.name).replace(/^the\s+/i, ''),
     book: b.website || locs.docs.find((l) => l.bookingUrl)?.bookingUrl || '',
     since: fmtSince(b.since), est,
     founder: f?.name || '', cred: f?.credentials || '', founderSlug: f?.slug || '',

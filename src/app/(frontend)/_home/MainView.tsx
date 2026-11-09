@@ -116,14 +116,14 @@ export default function MainView(props: any) {
 </React.Fragment>))}
 </div>
 <div className="p_viewer">
-<button className={v.frameCls} onClick={v.openCur} aria-label={v.cur.frameLabel}>
+<button className={v.frameCls} onClick={v.openCur} onMouseMove={v.frameMove} aria-label={v.cur.frameLabel}>
 {(v.posters || []).map((q: any, q_i: number) => (<React.Fragment key={q_i}>
 <div className={q.cls} style={{"background": `${q.tone}`} as React.CSSProperties}>
 {q.hasImg ? (<><img src={q.img} alt="" /></>) : null}
 {q.noImg ? (<><div className="tcard"><div className="mono" style={{"fontSize": "10px", "letterSpacing": ".14em", "marginBottom": "10px"} as React.CSSProperties}>Partner {q.n}</div><div className="tcard_name">{q.name}</div><div className="tcard_rule"></div><div className="mono" style={{"fontSize": "10px", "letterSpacing": ".1em", "opacity": ".85"} as React.CSSProperties}>{q.cityLong}</div></div></>) : null}
 </div>
 </React.Fragment>))}
-{v.cur.film ? (<><span className="p_play" aria-hidden="true"><svg width="18" height="20" viewBox="0 0 18 20"><path d="M2 1.5v17L16.5 10z" fill="currentColor"></path></svg></span></>) : null}
+{v.cur.film ? (<><div className="film_card" aria-hidden="true"><span className="film_mark"><span className="amark"></span></span><i className="film_rule"></i><span className="film_name">The {v.cur.story} Story</span></div><span className="film_cur" aria-hidden="true"><svg width="12" height="14" viewBox="0 0 12 14"><path d="M1 1l10 6-10 6z" fill="#0E0E0D"></path></svg><span>Play</span></span></>) : null}
 </button>
 <div className="p_meta"><span>{v.cur.n}&nbsp;&nbsp;&nbsp;<b>{v.cur.name}</b></span><span>{v.cur.since}</span></div>
 <div className="p_bar">
@@ -156,9 +156,9 @@ export default function MainView(props: any) {
 <article className="dept">
 <div className="mono" style={{"fontSize": "10px", "letterSpacing": ".08em"} as React.CSSProperties}>{d.name}</div>
 <p className="dept_line">{d.line}</p>
-<a className="btn" href={d.href} style={{"alignSelf": "flex-start", "height": "28px", "padding": "0 12px", "fontSize": "10px"} as React.CSSProperties}>Meet department</a>
-<div className="dept_avs">{(d.avs || []).map((a: any, a_i: number) => (<React.Fragment key={a_i}><span className="av" style={{"overflow": "hidden", "position": "relative"} as React.CSSProperties}>{a.img ? (<><img className="ph_img" src={a.img} alt="" loading="lazy" /></>) : null}{a.iOnly}</span></React.Fragment>))}</div>
-<span className="dept_count">{d.count}</span>
+<a className="btn dept_go" href={d.href} style={{"alignSelf": "flex-start", "height": "28px", "padding": "0 12px", "fontSize": "10px"} as React.CSSProperties}>Meet department</a>
+<div className="dept_avs">{(d.avs || []).map((a: any, a_i: number) => (<React.Fragment key={a_i}><a className="av" href={a.href} title={a.name} aria-label={a.name} style={{"overflow": "hidden", "position": "relative"} as React.CSSProperties}>{a.img ? (<><img className="ph_img" src={a.img} alt="" loading="lazy" /></>) : null}{a.iOnly}</a></React.Fragment>))}</div>
+
 </article>
 </React.Fragment>))}
 </div>

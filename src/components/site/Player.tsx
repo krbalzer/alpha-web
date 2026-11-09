@@ -47,7 +47,7 @@ export function Player() {
                   <span className="pp_time">{fmt(e.dur)}</span>
                 </div>
               </div>
-              <div className="pp_faces">{e.speakers.map((p) => <span key={p.name} title={p.name}>{p.initials}</span>)}</div>
+              <div className="pp_faces">{e.speakers.slice(0, 4).map((p) => <span key={p.name} title={p.name}>{p.img ? <img src={p.img} alt="" loading="lazy" /> : p.initials}</span>)}</div>
               <div className="pp_right">
                 <button className="pp_pill" onClick={s.cycleRate} aria-label="Playback speed">{s.rate}x</button>
                 <button className="pp_x" onClick={s.close} aria-label="Close player">×</button>

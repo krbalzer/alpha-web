@@ -59,7 +59,7 @@ export class PodcastsEngine extends DCLogic {
       groups: D.G.map((g) => { const open = s['g_' + g.key] !== false, sel = f[g.key] || [];
         return { t: g.t, badge: sel.length ? sel.length + ' on' : (open ? '−' : '+'), open, exp: open ? 'true' : 'false', toggle: () => set({ ['g_' + g.key]: !open }), listCls: 'fl' + (g.face ? ' tall' : ''),
           opts: g.opts.map((o) => { const on = sel.indexOf(o.v) >= 0, n = D.E.filter((e) => this.hit(e, Object.assign({}, f, { [g.key]: [o.v] }), q, null) ).length;
-            return { t: o.t, n: on ? '' : n, on: on ? 'true' : 'false', dis: !on && n === 0, cls: 'opt2' + (on ? ' is-on' : ''), go: () => setF(g.key, o.v), faceCls: g.face ? 'of' : 'nf', init: g.face ? this.init(o.t) : '' }; }) }; }),
+            return { t: o.t, n: on ? '' : n, on: on ? 'true' : 'false', dis: !on && n === 0, cls: 'opt2' + (on ? ' is-on' : ''), go: () => setF(g.key, o.v), faceCls: g.face ? 'of' : 'nf', img: g.face ? (D.PI || {})[o.v] || '' : '', init: g.face && !(D.PI || {})[o.v] ? this.init(o.t) : '' }; }) }; }),
       nRes: res.length, nResLabel: res.length === 1 ? 'episode' : 'episodes',
       activeCountLabel: nAct ? '(' + nAct + ')' : '',
       sorts: [['new', 'Newest'], ['old', 'Oldest'], ['short', 'Shortest']].map((o) => ({ t: o[1], cls: 'sb' + (sort === o[0] ? ' is-on' : ''), go: () => set({ sort: o[0] }) })),
@@ -68,7 +68,7 @@ export class PodcastsEngine extends DCLogic {
       shareLabel: s.shared ? 'Link copied' : 'Share this list',
       rows: res.slice(0, shown).map((e) => { const sh = D.S[e.show]; return { href: e.href, art: sh.art, artText: sh.art ? '' : sh.short, meta: sh.name + (e.n ? ' · EP ' + e.n : '') + ' · ' + this.dfmt(e.date), title: e.title, n: e.n, show: sh.name, short: sh.short, bg: sh.bg, fg: sh.fg, date: this.dfmt(e.date), len: e.len,
         cls: 'row' + (s.now === e.id ? ' is-now' : ''), icon: s.now === e.id && s.playing ? '❚❚' : '▶', play: () => play(e.id),
-        spk: e.spk.map((p) => ({ name: D.P[p], init: this.init(D.P[p]), go: () => setF('spk', p) })),
+        spk: e.spk.slice(0, 3).map((p) => { const img = (D.PI || {})[p] || ''; return { name: D.P[p], img, init: img ? '' : this.init(D.P[p]), go: () => setF('spk', p) }; }),
         tags: e.topics.slice(0, 2).map((t) => ({ t, cls: 'tg' + ((f.topics || []).indexOf(t) >= 0 ? ' is-on' : ''), go: () => setF('topics', t) })) }; }),
       empty: res.length === 0, dropLast: () => last && last.go(), lastLabel: last ? last.t : '',
       hasMore: res.length > shown, shownN: Math.min(shown, res.length), loadMore: () => set({ shown: shown + 10 }),

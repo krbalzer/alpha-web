@@ -13,7 +13,7 @@ export type Ep = {
   dur: number
   bg: string
   fg: string
-  speakers: { name: string; initials: string }[]
+  speakers: { name: string; initials: string; img?: string }[]
   chapters: { at: string; title: string }[]
 }
 
@@ -147,8 +147,11 @@ export function SiteProvider({ children, net, latest }: { children: React.ReactN
   playRef.current = play
   useEffect(() => {
     const on = (ev: Event) => { const e = (ev as CustomEvent<Ep>).detail; if (e && e.audio) playRef.current(e) }
+    // and pause it (e.g. when an episode's YouTube video starts) with: window.dispatchEvent(new CustomEvent('alpha:pause'))
+    const off = () => { audio.current?.pause() }
     window.addEventListener('alpha:play', on)
-    return () => window.removeEventListener('alpha:play', on)
+    window.addEventListener('alpha:pause', off)
+    return () => { window.removeEventListener('alpha:play', on); window.removeEventListener('alpha:pause', off) }
   }, [])
 
   // body flag so the mobile dock reserves space

@@ -316,18 +316,19 @@ export const getHome = cache(async () => {
       href: `/brands/${b.slug}`, founderHref: f[0] ? `/founders/${f[0].slug}` : '', yr: b.since ? String(new Date(b.since).getUTCFullYear()) : '', since: monthYear(b.since).replace(/^(\w{3})\w*/, '$1'),
       poster: posterUrl(b.heroPoster) || '',
       film: video(b.film?.video), filmPoster: posterUrl(b.film?.poster) || posterUrl(b.heroPoster) || '',
+      cover: posterUrl(b.film?.poster) || '', story: (b.short || b.name).replace(/^the\s+/i, ''),
     }
   })
   const depts = depAll.depts.filter((d) => d.slug !== 'leadership').map((d) => {
     const m = depAll.people.filter((x) => x.dept === d.slug)
-    return { name: d.name, line: d.line || '', href: `/team/${d.slug}`, avs: m.slice(0, 4).map((x) => ({ img: x.img, iOnly: x.img ? '' : x.init })), count: `${m.length} ${m.length === 1 ? 'person' : 'people'}` }
+    return { name: d.name, line: d.line || '', href: `/team/${d.slug}`, avs: m.map((x) => ({ img: x.img, iOnly: x.img ? '' : x.init, href: x.href, name: x.name })) }
   })
   const p = await db()
-  const er = await p.find({ collection: 'episodes', where: { and: [LIVE, { number: { greater_than: 0 } }] }, sort: '-published', limit: 4, depth: 1 })
+  const [er, SPK] = await Promise.all([p.find({ collection: 'episodes', where: { and: [LIVE, { number: { greater_than: 0 } }] }, sort: '-published', limit: 4, depth: 1 }), getSpeakers()])
   const eps = (er.docs as Episode[]).map((e) => {
     const sh = typeof e.show === 'object' ? (e.show as Show) : null
     const d = e.duration || 0
-    return { ep: toEp(e), id: String(e.id), title: e.title, show: `${sh?.name || ''}${e.number ? ` · Ep ${String(e.number).padStart(2, '0')}` : ''}`, len: d ? `${Math.floor(d / 60)}:${String(d % 60).padStart(2, '0')}` : '', tone: sh?.bg || '#1D1B1A' }
+    return { ep: toEp(e, SPK), id: String(e.id), title: e.title, show: `${sh?.name || ''}${e.number ? ` · Ep ${String(e.number).padStart(2, '0')}` : ''}`, len: d ? `${Math.floor(d / 60)}:${String(d % 60).padStart(2, '0')}` : '', tone: sh?.bg || '#1D1B1A' }
   })
   return {
     net: { brands: String(net.brands), locations: String(net.locations), states: String(net.states) },
@@ -388,6 +389,15 @@ const SHOW_MEDIA: Record<string, { logo?: string; ar?: number; hero?: string }> 
   'holding-time-back': { logo: '/podcasts/holding-time-back-logo.svg', ar: 728.02 / 211.03 },
 }
 
+const AUD: Record<string, string> = { owners: 'Practice owners', directors: 'Directors', providers: 'Providers', 'front-desk': 'Front desk', marketers: 'Marketers', patients: 'Patients' }
+const TOPIC_ORDER = ['Leadership', 'Clinical', 'Cosmetic surgery', 'Culture', 'Financials', 'Growth', 'KPIs', 'Marketing', 'Private equity', 'Public speaking', 'Sales', 'Technology', 'Entertainment']
+const PATHS: { t: string; f: { topics?: string[]; aud?: string[] } }[] = [
+  { t: 'New to ownership', f: { aud: ['Practice owners'], topics: ['Leadership', 'Financials'] } },
+  { t: 'Train your front desk', f: { aud: ['Front desk'] } },
+  { t: 'Thinking about partnering', f: { topics: ['Private equity'] } },
+  { t: 'Marketing that books', f: { topics: ['Marketing', 'Sales'] } },
+]
+
 export const getPodcasts = cache(async () => {
   const [shows, eps, SP] = await Promise.all([getShows(), getEpisodes(), getSpeakers()])
   const S: Record<string, { name: string; short: string; sched: string; hosts: string; bg: string; fg: string; tag: string; art: string; href: string; logo: string; noLogo: boolean; ar: string; hero: string }> = {}
@@ -398,20 +408,36 @@ export const getPodcasts = cache(async () => {
   }
   const E = eps.map((e, i) => {
     const sh = e.show as Show
-    return { id: i, show: sh.slug, n: e.number ? String(e.number).padStart(3, '0') : '', title: e.title, topics: [] as string[], aud: [] as string[], spk: [] as string[],
-      date: iso(e.published), len: lenOf(e.duration), sec: e.duration || 0, href: `/podcasts/${sh.slug}/${e.slug}`, ep: toEp(e) }
+    return { id: i, show: sh.slug, n: e.number ? String(e.number).padStart(3, '0') : '', title: e.title,
+      topics: (e.tags || []).map((t) => (typeof t === 'object' ? t.name : '')).filter(Boolean), aud: (e.audience || []).map((a) => AUD[a]).filter(Boolean),
+      spk: ids(e.speakers).filter((x) => SP.has(x)).map(String),
+      date: iso(e.published), len: lenOf(e.duration), sec: e.duration || 0, href: `/podcasts/${sh.slug}/${e.slug}`, ep: toEp(e, SP) }
   }).map((x) => Object.assign(x, { label: (x.n ? `EP ${x.n} / ` : '') + x.title }))
   const withEps = shows.filter((s) => E.some((e) => e.show === s.slug))
   // every show with episodes is a hero slide, featured first, so each shelf card drives the hero
   const feat = [...withEps.filter((s) => s.raw.featured), ...withEps.filter((s) => !s.raw.featured)].map((s) => s.slug)
-  const G = [{ key: 'show', t: 'Show', opts: shows.map((s) => ({ v: s.slug, t: s.name })) }]
-  return { S, P: {}, E, G, paths: [], feat }
+  // filter groups from the board: topic and audience in a fixed order, speakers by how often they're on the mic
+  const used = (k: 'topics' | 'aud' | 'spk') => { const c = new Map<string, number>(); E.forEach((e) => e[k].forEach((v) => c.set(v, (c.get(v) || 0) + 1))); return c }
+  const tc = used('topics'), ac = used('aud'), sc = used('spk')
+  const topics = [...TOPIC_ORDER.filter((t) => tc.has(t)), ...[...tc.keys()].filter((t) => !TOPIC_ORDER.includes(t)).sort()]
+  const spk = [...sc.keys()].sort((a, b) => sc.get(b)! - sc.get(a)! || SP.get(+a)!.name.localeCompare(SP.get(+b)!.name))
+  const P: Record<string, string> = {}, PI: Record<string, string> = {}
+  spk.forEach((k) => { const x = SP.get(+k)!; P[k] = x.name; PI[k] = x.img })
+  const G = [
+    { key: 'show', t: 'Show', opts: shows.filter((s) => E.some((e) => e.show === s.slug)).map((s) => ({ v: s.slug, t: s.name })) },
+    { key: 'topics', t: 'Topic', opts: topics.map((v) => ({ v, t: v })) },
+    { key: 'aud', t: 'Who it’s for', opts: Object.values(AUD).filter((v) => ac.has(v)).map((v) => ({ v, t: v })) },
+    { key: 'spk', t: 'Speakers', face: true, opts: spk.map((v) => ({ v, t: P[v] })) },
+  ].filter((g) => g.opts.length)
+  // the board's starter paths, kept only when every value they filter on exists
+  const paths = PATHS.filter((x) => (x.f.topics || []).every((t) => tc.has(t)) && (x.f.aud || []).every((a) => ac.has(a)))
+  return { S, P, PI, E, G, paths, feat }
 })
 
 const platsOf = (s: Show) => [['Spotify', s.links?.spotify], ['Apple Podcasts', s.links?.apple], ['YouTube', s.links?.youtube]].filter((x) => x[1]).map((x) => ({ t: x[0] as string, href: x[1] as string }))
 const showCard = (s: Awaited<ReturnType<typeof getShows>>[number], n: number) => ({ name: s.name, href: s.href, bg: s.bg, fg: s.fg, art: s.art, noArt: !s.art, count: `${n} episodes` })
-const epRow = (e: Episode, sh: Show) => ({
-  title: e.title, n: e.number ? String(e.number).padStart(3, '0') : '', date: fmtLong(e.published), len: lenOf(e.duration), href: `/podcasts/${sh.slug}/${e.slug}`, ep: toEp(e),
+const epRow = (e: Episode, sh: Show, SP?: Map<number, PersonCard>) => ({
+  title: e.title, n: e.number ? String(e.number).padStart(3, '0') : '', date: fmtLong(e.published), len: lenOf(e.duration), href: `/podcasts/${sh.slug}/${e.slug}`, ep: toEp(e, SP),
   label: e.number ? `EP ${String(e.number).padStart(3, '0')}` : 'Episode', sum: firstSentence(e.summary),
   meta: `${sh.name}${e.number ? ` · EP ${String(e.number).padStart(3, '0')}` : ''} · ${fmtLong(e.published)}`,
 })
@@ -428,10 +454,20 @@ export const getShow = cache(async (slug: string) => {
     plats: platsOf(s.raw), since: first?.published ? String(new Date(first.published).getUTCFullYear()) : '',
     hosts: withLabel(peopleOf(SP, s.raw.hosts), ids(s.raw.hosts)),
     guests: String(new Set(mine.flatMap((e) => ids(e.speakers)).filter((i) => !ids(s.raw.hosts).includes(i))).size),
-    eps: mine.map((e) => epRow(e, s.raw)),
+    eps: mine.map((e) => epRow(e, s.raw, SP)),
     shows: shows.filter((x) => x.slug !== slug).slice(0, 4).map((x) => showCard(x, count(x.slug))),
   }
 })
+
+/** YouTube id from any watch/share/embed/shorts/live URL. */
+const ytId = (u?: string | null) => { const m = (u || '').match(/(?:youtu\.be\/|[?&]v=|\/(?:embed|shorts|live)\/)([\w-]{11})/); return m ? m[1] : '' }
+/** Poster frame for the click-to-load embed: the HD thumbnail when YouTube has one, else the always-present HQ one. */
+const ytPoster = async (id: string) => {
+  if (!id) return ''
+  const hd = `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`
+  try { const r = await fetch(hd, { method: 'HEAD', next: { revalidate: 86400 } }); if (r.ok) return hd } catch {}
+  return `https://i.ytimg.com/vi/${id}/hqdefault.jpg`
+}
 
 export const getEpisodePage = cache(async (showSlug: string, slug: string) => {
   const [shows, eps, SP] = await Promise.all([getShows(), getEpisodes(), getSpeakers()])
@@ -441,17 +477,18 @@ export const getEpisodePage = cache(async (showSlug: string, slug: string) => {
   const mine = eps.filter((x) => (x.show as Show).slug === showSlug)
   const count = (k: string) => eps.filter((x) => (x.show as Show).slug === k).length
   const u = encodeURIComponent(`${process.env.NEXT_PUBLIC_SITE_URL || 'https://partnerwithalpha.com'}/podcasts/${showSlug}/${slug}`)
-  const row = epRow(e, s.raw)
+  const row = epRow(e, s.raw, SP)
+  const yt = ytId(e.video)
   return {
     show: { name: s.name, href: s.href, bg: s.bg, art: url(s.raw.artwork as Media, 'wide') || s.art, sched: cleanSched(s.raw.schedule), tag: firstSentence(s.raw.tagline), count: `${mine.length} episodes` },
-    ep: { title: e.title, n: row.n, date: row.date, len: row.len, sum: e.summary || '', video: e.video || '', player: row.ep },
+    ep: { title: e.title, n: row.n, date: row.date, len: row.len, sum: e.summary || '', video: e.video || '', yt, poster: await ytPoster(yt), player: row.ep },
     plats: platsOf(s.raw),
     people: withLabel(peopleOf(SP, e.speakers), ids(s.raw.hosts)),
     pq: e.pullQuotes?.[0] ? { text: e.pullQuotes[0].text || '', at: e.pullQuotes[0].at || '' } : { text: '', at: '' },
     chapters: (e.chapters || []).map((c) => ({ at: c.at || '0:00', t: c.title || '' })),
     trHtml: html(e.transcript),
     share: { li: `https://www.linkedin.com/sharing/share-offsite/?url=${u}`, x: `https://x.com/intent/post?url=${u}&text=${encodeURIComponent(e.title)}`, fb: `https://www.facebook.com/sharer/sharer.php?u=${u}` },
-    more: mine.filter((x) => x.id !== e.id).slice(0, 4).map((x) => epRow(x, s.raw)),
+    more: mine.filter((x) => x.id !== e.id).slice(0, 4).map((x) => epRow(x, s.raw, SP)),
     shows: shows.filter((x) => x.slug !== showSlug).slice(0, 6).map((x) => showCard(x, count(x.slug))),
   }
 })

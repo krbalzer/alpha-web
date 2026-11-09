@@ -16,7 +16,10 @@ export class EpisodeEngine extends DCLogic {
       copy: () => { try { navigator.clipboard.writeText(location.href); } catch (err) {} this.setState({ copied: true }); setTimeout(() => this.setState({ copied: false }), 1600); },
       copyLabel: s.copied ? 'Copied' : 'Copy link',
       hasMore: D.more.length > 0, more: D.more.map((m) => Object.assign({}, m, { play: () => { if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('alpha:play', { detail: m.ep })); } })),
-      shows: D.shows
+      shows: D.shows,
+      vidOn: !!s.vid, vidOff: !s.vid, vidCls: 'vid' + (s.vid ? ' is-on' : ''),
+      vidSrc: D.ep.yt ? 'https://www.youtube-nocookie.com/embed/' + D.ep.yt + '?autoplay=1&rel=0&modestbranding=1&playsinline=1' : '',
+      watch: () => { if (typeof window === 'undefined') return; if (D.ep.yt) { window.dispatchEvent(new CustomEvent('alpha:pause')); this.setState({ vid: true }); } else window.open(D.ep.video, '_blank', 'noopener'); }
     };
   }
 }

@@ -310,10 +310,10 @@ export class MainEngine extends DCLogic {
       hover: () => { const T = this.S; if (T.pi !== i) { T.pi = i; T.pvFrom = T.tk + 2; this.bump(); } },
       focus: () => { this.S.pi = i; this.bump(); },
       open: () => this.thOpen(i) }));
-    const posters = P.map((p, i) => ({ cls: 'p_poster' + (i === pi ? ' is-on' : ''), tone: p.tone, hasImg: !!p.img, noImg: !p.img, img: p.img || '', n: p.n, name: p.name, cityLong: p.city }));
+    const posters = P.map((p, i) => { const im = (p.film && p.film.src && p.cover) || p.img || ''; return { cls: 'p_poster' + (i === pi ? ' is-on' : '') + (p.film && p.film.src ? ' is-film' : ''), tone: p.tone, hasImg: !!im, noImg: !im, img: im, n: p.n, name: p.name, cityLong: p.city }; });
     const c = P[pi];
     const init = c.founder.replace(/^(Dr\.|\[)/, '').split(/[\s,]+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
-    const cur = { film: !!(c.film && c.film.src), frameLabel: c.film && c.film.src ? 'Play the ' + c.name + ' film' : 'Open ' + c.name, href: c.href, since: c.since ? 'Partnered ' + c.since : '', founderHref: c.founderHref || '/locations#founders', n: c.n, name: c.name, founder: c.founder, role: c.role || 'Founder', hasHead: !!c.head, noHead: !c.head, head: c.head || '', init,
+    const cur = { story: c.story || c.name, film: !!(c.film && c.film.src), frameLabel: c.film && c.film.src ? 'Play the ' + c.name + ' film' : 'Open ' + c.name, href: c.href, since: c.since ? 'Partnered ' + c.since : '', founderHref: c.founderHref || '/locations#founders', n: c.n, name: c.name, founder: c.founder, role: c.role || 'Founder', hasHead: !!c.head, noHead: !c.head, head: c.head || '', init,
       locLine: (c.locs ? c.locs + (c.locs > 1 ? ' locations' : ' location') : '[N] locations') + ' · ' + c.area };
     const pv = S.tk >= S.pvFrom && S.tk < S.pvFrom + 16;
     const tsec = Math.floor(S.tt), capIdx = Math.floor(S.tt / 6) % 4;
@@ -359,6 +359,7 @@ export class MainEngine extends DCLogic {
       nodes, chips,
       setCanvas: (el) => { if (el && el !== this.cv) { this.cv = el; this.ctx = el.getContext('2d'); if (!this.raf && typeof requestAnimationFrame !== 'undefined') this.loop(); } }, snaps, moment, feed, clock, days,
       c1: S.c1.toLocaleString(), c2: String(S.ans), c3: med,
+      frameMove: (ev) => { const r = ev.currentTarget.getBoundingClientRect(); ev.currentTarget.style.setProperty('--cx', (ev.clientX - r.left) + 'px'); ev.currentTarget.style.setProperty('--cy', (ev.clientY - r.top) + 'px'); },
       partners, posters, cur, frameCls: 'p_frame' + (pv ? ' is-preview' : ''), openCur: () => { const c = P[this.S.pi]; if (c.film && c.film.src) this.thOpen(this.S.pi); else if (typeof window !== 'undefined') window.location.assign(c.href); },
       thOpen: S.th, th,
       thRef: (el) => { if (el && el !== this._th) { this._th = el; el.focus(); } },

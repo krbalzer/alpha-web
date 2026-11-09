@@ -674,6 +674,7 @@ export interface Episode {
   summary?: string | null;
   speakers?: (number | Speaker)[] | null;
   tags?: (number | Tag)[] | null;
+  audience?: ('owners' | 'directors' | 'providers' | 'front-desk' | 'marketers' | 'patients')[] | null;
   brands?: (number | Brand)[] | null;
   chapters?:
     | {
@@ -946,6 +947,8 @@ export interface Department {
   createdAt: string;
 }
 /**
+ * Episode topics. Each one is a filter on /podcasts.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "tags".
  */
@@ -1663,6 +1666,7 @@ export interface EpisodesSelect<T extends boolean = true> {
   summary?: T;
   speakers?: T;
   tags?: T;
+  audience?: T;
   brands?: T;
   chapters?:
     | T

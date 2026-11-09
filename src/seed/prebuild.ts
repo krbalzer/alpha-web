@@ -21,6 +21,9 @@ const blobOk = await checkBlob((m) => console.log(m))
       const p = await getPayload({ config: await config })
       const { importEpisodes } = await import('./episodes')
       await importEpisodes(p)
+      // topics, audience and YouTube links from the old Webflow site; fills empty fields only
+      const { importTopics } = await import('./topics')
+      await importTopics(p)
       // podcast people from the old Webflow site; a no-op once they are in
       const { importSpeakers } = await import('./speakers')
       if (blobOk) await importSpeakers(p)

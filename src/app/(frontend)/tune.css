@@ -29,10 +29,17 @@
 /* full-bleed spreads (brand film) break out of .wrap; never let them add a sideways scroll */
 :root [class*="pg-"] { overflow-x: clip; }
 
-/* brand film: lights down while the film holds the screen (class set by the brand engine) */
-.pg-brand { transition: background-color .9s ease; }
-.pg-brand section { transition: opacity .9s ease; }
-.pg-brand.lights-down { background-color: #0E0E0D; }
-.pg-brand.lights-down section:not(.film_sec) { opacity: .14; }
-.pg-brand.lights-down .film_sec { color: rgba(237, 234, 226, .72); }
-@media (prefers-reduced-motion: reduce) { .pg-brand, .pg-brand section { transition: none; } }
+/* brand film: lights down while the film holds the screen (class set by the brand engine).
+   The page flips to its dark palette instead of fading out: the theme tokens are registered so they animate,
+   and everything drawn with them (type, rules, buttons) turns light with the background. */
+@property --ink { syntax: '<color>'; inherits: true; initial-value: #0E0E0D; }
+@property --bone { syntax: '<color>'; inherits: true; initial-value: #DEDAD1; }
+@property --line { syntax: '<color>'; inherits: true; initial-value: rgba(14, 14, 13, .16); }
+@property --muted { syntax: '<color>'; inherits: true; initial-value: #5C5952; }
+@property --copy { syntax: '<color>'; inherits: true; initial-value: #2E2C28; }
+.pg-brand { --copy: #2E2C28; transition: background-color .9s ease, --ink .9s ease, --bone .9s ease, --line .9s ease, --muted .9s ease, --copy .9s ease; }
+.pg-brand .body, .pg-brand .rv_i blockquote, .pg-brand .lx_a { color: var(--copy); }
+.pg-brand.lights-down { --ink: #ECE8DF; --bone: #0E0E0D; --line: rgba(232, 228, 218, .16); --muted: #A39F96; --copy: rgba(236, 232, 223, .78); }
+/* surfaces that are already dark, and the light top bar + brand dock, keep their own palette */
+.pg-brand.lights-down .dark, .pg-brand.lights-down .b_top, .pg-brand.lights-down .crumb { --ink: #0E0E0D; --bone: #DEDAD1; --line: rgba(14, 14, 13, .16); --muted: #5C5952; --copy: #2E2C28; }
+@media (prefers-reduced-motion: reduce) { .pg-brand { transition: none; } }

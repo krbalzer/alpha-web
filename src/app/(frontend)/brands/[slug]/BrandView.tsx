@@ -47,10 +47,10 @@ export default function BrandView({ brand, brands }: { brand: BrandData; brands:
 <div className="carousel">
 <div className="track" style={{"transform": `translateX(calc(${v.idx} * (var(--cw) + 16px) * -1))`} as React.CSSProperties}>
 {(v.cards || []).map((c: any, c_i: number) => (<React.Fragment key={c_i}>
-<button className={c.cls} onClick={c.go} aria-label={c.aria} aria-current={c.cur}>
+<a className={c.cls} href={c.href} onClick={c.go} aria-label={c.aria} aria-current={c.cur}>
 <span className="card_img ph" style={{"background": `${c.tone}`} as React.CSSProperties}>{c.img ? (<><img src={c.img} alt="" loading="lazy" /></>) : null}{c.noImg ? (<>{c.city}</>) : null}</span>
 <span className="card_txt"><b>{c.name}</b><span className="card_addr">{c.a1}<br />{c.a2}</span><span className="card_marks"><i className={`state s-${c.st}`} title={c.st}>{c.st}</i><span className="amark" aria-hidden="true"></span>{c.est ? (<><span className="est"><small>EST</small>{c.est}</span></>) : null}</span></span>
-</button>
+</a>
 </React.Fragment>))}
 </div>
 {v.multi ? (<>
@@ -81,7 +81,7 @@ export default function BrandView({ brand, brands }: { brand: BrandData; brands:
 <div className="wrap">
 <div className="film">
 {v.b.filmPoster ? (<><img className="fill" src={v.b.filmPoster} alt="" loading="lazy" decoding="async" /></>) : null}
-<div className="film_card" aria-hidden="true"><span className="film_mark"><span className="amark"></span></span><i className="film_rule"></i><span className="film_name">The {v.b.short} Story</span></div><button className="play" onClick={v.playFilm} onMouseMove={v.filmMove} aria-label={`Play the ${v.b.short} story`}><span className="film_cur"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1l10 6-10 6z" fill="#0E0E0D"></path></svg><span>Play</span></span></button>
+<div className="film_card" aria-hidden="true"><span className="film_mark"><span className="amark"></span></span><i className="film_rule"></i><span className="film_name">The {v.b.story} Story</span></div><button className="play" onClick={v.playFilm} onMouseMove={v.filmMove} aria-label={`Play the ${v.b.story} story`}><span className="film_cur"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1l10 6-10 6z" fill="#0E0E0D"></path></svg><span>Play</span></span></button>
 </div>
 {v.b.filmCaption ? (<><div className="body" style={{"marginTop": "clamp(28px, 3vw, 44px)"} as React.CSSProperties}><p>{v.b.filmCaption}</p></div></>) : null}
 </div>

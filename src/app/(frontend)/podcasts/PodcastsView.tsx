@@ -54,7 +54,7 @@ export default function PodcastsView(props: any) {
 <div className="wrap">
 <div className="db_head">
 <div><p className="eyebrow">Episode database</p><h2 className="display h2">What the network<br />knows, searchable.</h2></div>
-<p className="lede" style={{"margin": "0"} as React.CSSProperties}>Every episode from every show, newest first. Filter by show, search by title, then share the exact list.</p>
+<p className="lede" style={{"margin": "0"} as React.CSSProperties}>Every episode is tagged by topic, by who it&#39;s for and by who&#39;s talking. Stack filters to find the conversation you need, then share the exact list.</p>
 </div>
 
 {v.hasPaths ? (<><div className="paths"><span className="mono paths_k">Start with a path</span>{(v.paths || []).map((p: any, p_i: number) => (<React.Fragment key={p_i}><button className={p.cls} onClick={p.go}>{p.t}</button></React.Fragment>))}</div></>) : null}
@@ -69,7 +69,7 @@ export default function PodcastsView(props: any) {
 <button className="fg_h mono" onClick={g.toggle} aria-expanded={g.exp}><span>{g.t}</span><span>{g.badge}</span></button>
 {g.open ? (<>
 <div className={g.listCls}>
-{(g.opts || []).map((o: any, o_i: number) => (<React.Fragment key={o_i}><button className={o.cls} onClick={o.go} aria-pressed={o.on} disabled={o.dis}><i className="cb" aria-hidden="true"></i><span className={o.faceCls}>{o.init}</span><span className="o_t">{o.t}</span><span className="o_n mono">{o.n}</span></button></React.Fragment>))}
+{(g.opts || []).map((o: any, o_i: number) => (<React.Fragment key={o_i}><button className={o.cls} onClick={o.go} aria-pressed={o.on} disabled={o.dis}><i className="cb" aria-hidden="true"></i><span className={o.faceCls}>{o.img ? (<><img src={o.img} alt="" loading="lazy" /></>) : null}{o.init}</span><span className="o_t">{o.t}</span><span className="o_n mono">{o.n}</span></button></React.Fragment>))}
 </div>
 </>) : null}
 </div>
@@ -92,7 +92,7 @@ export default function PodcastsView(props: any) {
 <div className={e.cls}>
 <button className="r_play" onClick={e.play} aria-label={`Play ${e.title}`} style={{"background": `${e.bg}`, "color": `${e.fg}`} as React.CSSProperties}>{e.art ? (<><img className="ph_img" src={e.art} alt="" loading="lazy" /></>) : null}<span className="r_art">{e.artText}</span><i className="r_pi" aria-hidden="true">{e.icon}</i></button>
 <a className="r_main" href={e.href}><b>{e.title}</b><span className="mono">{e.meta}</span></a>
-<span className="r_spk">{(e.spk || []).map((p: any, p_i: number) => (<React.Fragment key={p_i}><button className="face" onClick={p.go} title={p.name}>{p.init}</button></React.Fragment>))}</span>
+<span className="r_spk">{(e.spk || []).map((p: any, p_i: number) => (<React.Fragment key={p_i}><button className="face" onClick={p.go} title={p.name}>{p.img ? (<><img src={p.img} alt="" loading="lazy" /></>) : null}{p.init}</button></React.Fragment>))}</span>
 <span className="r_tags">{(e.tags || []).map((t: any, t_i: number) => (<React.Fragment key={t_i}><button className={t.cls} onClick={t.go}>{t.t}</button></React.Fragment>))}</span>
 <span className="mono r_len">{e.len}</span>
 </div>

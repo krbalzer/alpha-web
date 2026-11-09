@@ -34,6 +34,9 @@ b = b.replace('<span class="logo_slot">Brand mark</span>', '<sc-if value="{{ b.l
 b = b.replace('<span class="card_img ph" style="background: {{ c.tone }}">{{ c.city }}<br>photo</span>',
               '<span class="card_img ph" style="background: {{ c.tone }}"><sc-if value="{{ c.img }}"><img src="{{ c.img }}" alt="" loading="lazy"></sc-if><sc-if value="{{ c.noImg }}">{{ c.city }}</sc-if></span>')
 b = sub(r'<span class="map_note ph">.*?</span>\s*', '', b)
+# location cards are links: the card in focus opens its location page, a card off to the side brings it into focus first
+b = sub(r'<button class="\{\{ c\.cls \}\}" onClick="\{\{ c\.go \}\}" aria-label="\{\{ c\.aria \}\}" aria-current="\{\{ c\.cur \}\}">(.*?)</button>',
+        r'<a class="{{ c.cls }}" href="{{ c.href }}" onClick="{{ c.go }}" aria-label="{{ c.aria }}" aria-current="{{ c.cur }}">\1</a>', b)
 # practice
 b = b.replace('<p class="eyebrow">The practice she built</p>', '<p class="eyebrow">{{ b.practiceEyebrow }}</p>')
 b = sub(r'<h2 class="h3" style="width: 508px; height: 258px">.*?</h2>\s*<div class="body">.*?</div>',
@@ -45,8 +48,8 @@ b = sub(r'<span class="ph">Brand film / Vimeo, loads on play</span>',
         '<sc-if value="{{ b.filmPoster }}"><img class="fill" src="{{ b.filmPoster }}" alt="" loading="lazy"></sc-if>', b)
 # film: a cinema moment, not a second hero. Centered credit title, the whole frame plays, the page dims around it (FILM_CSS, brand_film.js)
 b = sub(r'<button class="play" aria-label="Play the \{\{ b.short \}\} story">(<svg.*?</svg>)</button>',
-        r'<div class="film_card" aria-hidden="true"><span class="film_mark"><span class="amark"></span></span><i class="film_rule"></i><span class="film_name">The {{ b.short }} Story</span></div>'
-        r'<button class="play" onClick="{{ playFilm }}" onMouseMove="{{ filmMove }}" aria-label="Play the {{ b.short }} story"><span class="film_cur">\1<span>Play</span></span></button>', b)
+        r'<div class="film_card" aria-hidden="true"><span class="film_mark"><span class="amark"></span></span><i class="film_rule"></i><span class="film_name">The {{ b.story }} Story</span></div>'
+        r'<button class="play" onClick="{{ playFilm }}" onMouseMove="{{ filmMove }}" aria-label="Play the {{ b.story }} story"><span class="film_cur">\1<span>Play</span></span></button>', b)
 b = sub(r'<hr class="rule">\s*<div class="bar"><span>\{\{ b.ptr \}\}</span><span>\{\{ b.short \}\} story</span></div>\s*', '', b)
 b = rep_once(b, '<!-- ============ STORY FILM ============ -->\n<section style="padding-bottom: clamp(80px, 9vw, 140px)">', '<!-- ============ STORY FILM ============ -->\n<section class="film_sec" ref="{{ filmSec }}" style="padding-bottom: clamp(80px, 9vw, 140px)">')
 b = sub(r'<div class="body" style="margin-top: clamp\(28px, 3vw, 44px\)"><p>\[Film caption.*?</div>',
@@ -113,6 +116,18 @@ FILM_CSS = '''
 @media (prefers-reduced-motion:reduce){.film .fill{transition:none;transform:none}}
 '''
 
+CARD_CSS = '''
+a.card{color:inherit;text-decoration:none;transition:opacity .6s var(--ease),border-color .3s ease,transform .45s var(--ease)}
+.card.is-on{cursor:pointer}
+.card .card_img{overflow:hidden}
+.card .card_img img{transition:transform .9s var(--ease)}
+.card.is-on:hover{border-color:rgba(232,228,218,.5);transform:translateY(-3px)}
+.card.is-on:hover .card_img img{transform:scale(1.06)}
+.card:not(.is-on):hover{opacity:.6}
+.card.is-on .card_txt b::after{content:"\\2192";display:inline-block;margin-left:10px;opacity:0;transform:translateX(-6px);transition:opacity .3s ease,transform .45s var(--ease)}
+.card.is-on:hover .card_txt b::after{opacity:1;transform:none}
+'''
+
 DOCK_CSS = '''
 .dock_btn{display:inline-flex;align-items:center;gap:8px;border:0;background:none;padding:0;margin:0;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;cursor:pointer;min-height:34px}
 .dock_btn:hover,.dock_btn.is-open{color:var(--ink,#151513)}
@@ -141,7 +156,7 @@ if '/* site menu (shared' in c:  # drop only the injected menu block; keep page 
     j = c.index('\n', c.index('@media (prefers-reduced-motion:reduce){.mn,', i))
     c = c[:i] + c[j + 1:]
 c = re.sub(r'/\* CTA background.*?(?=\.closer_media>h2)', '', c, flags=re.S)
-c += '\n.map_gl{position:absolute;inset:0}\n.map_gl .maplibregl-ctrl-attrib{background:rgba(14,14,13,.5);color:rgba(232,228,218,.5)}\n.map_gl .maplibregl-ctrl-attrib a{color:rgba(232,228,218,.6)}\n.map_gl .maplibregl-ctrl-attrib-button{filter:invert(1);opacity:.5}\n.hero_vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}\n.logo_img{height:26px;width:auto;display:block}\n.card_img img,.fill{width:100%;height:100%;object-fit:cover;display:block}\n.img{position:relative;overflow:hidden}\n.film{overflow:hidden}\n.film .fill{position:absolute;inset:0}\n.film.is-playing{aspect-ratio:16/9;background:#000}\n.film.is-playing .play,.film.is-playing .fill{display:none}\n.film_vid{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000}\n' + DOCK_CSS + FILM_CSS
+c += '\n.map_gl{position:absolute;inset:0}\n.map_gl .maplibregl-ctrl-attrib{background:rgba(14,14,13,.5);color:rgba(232,228,218,.5)}\n.map_gl .maplibregl-ctrl-attrib a{color:rgba(232,228,218,.6)}\n.map_gl .maplibregl-ctrl-attrib-button{filter:invert(1);opacity:.5}\n.hero_vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}\n.logo_img{height:26px;width:auto;display:block}\n.card_img img,.fill{width:100%;height:100%;object-fit:cover;display:block}\n.img{position:relative;overflow:hidden}\n.film{overflow:hidden}\n.film .fill{position:absolute;inset:0}\n.film.is-playing{aspect-ratio:16/9;background:#000}\n.film.is-playing .play,.film.is-playing .fill{display:none}\n.film_vid{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000}\n' + DOCK_CSS + FILM_CSS + CARD_CSS
 import json
 ASSETS = json.load(open(os.path.join(os.path.dirname(__file__), 'assets.json')))
 c = re.sub(r'/_blob/([0-9a-f]{32})', lambda m: ASSETS.get(m.group(1), m.group(0)), c)
@@ -154,6 +169,8 @@ e = sub(r'  brand\(\) \{.*?\n  \}\n', '  brand() { return this.props.brand; }\n'
 e = sub(r"      stats: this\.counted\(\[.*?\n      \]\),\n", '      stats: this.counted(B.stats), hasStats: B.stats.length > 0,\n', e)
 e = e.replace("      b: B,\n", "      b: { ...B, sinceLine: B.since ? 'Partner since ' + B.since : '' },\n      metaLine: [[B.founder, B.cred].filter(Boolean).join(', '), B.services.join(' ')].filter(Boolean).join(' / '),\n      hasVideo: !!B.heroVideo, posterOnly: !B.heroVideo && !!B.heroPoster, noMedia: !B.heroVideo && !B.heroPoster,\n      founderHref: B.founderSlug ? '/founders/' + B.founderSlug : '/founders',\n      playFilm: () => { if (B.filmUrl) window.open(B.filmUrl, '_blank', 'noopener'); },\n", 1)
 e = e.replace("cards: L.map((l, i) => ({ cls:", "cards: L.map((l, i) => ({ img: l.img, noImg: !l.img, cls:", 1)
+assert e.count("go: () => this.go(i), aria: B.name + ', ' + l.city,") == 1
+e = e.replace("go: () => this.go(i), aria: B.name + ', ' + l.city,", "href: l.slug ? '/locations/' + l.slug : '#', go: (ev) => { if (i !== idx || !l.slug) { ev.preventDefault(); this.go(i); } }, aria: (i === idx ? 'Open ' : '') + B.name + ', ' + l.city,", 1)
 assert "metaLine: [[L[0].a1" in e
 assert e.count('this.tick(now, dt); this.draw(now);') == 1
 e = e.replace('this.tick(now, dt); this.draw(now);', 'this.tick(now, dt); if (!this.props.mapbox) this.draw(now);')

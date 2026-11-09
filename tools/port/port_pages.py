@@ -421,16 +421,21 @@ def main_markup(b):
             '<a class="{{ p.cls }}" href="{{ p.href }}" onMouseEnter="{{ p.hover }}" onFocus="{{ p.focus }}" role="listitem" style="text-decoration: none"><span>{{ p.n }}</span><span class="nm">{{ p.name }}</span><span class="ct">{{ p.city }}</span><span class="yr">{{ p.yr }}</span></a>')
     b = rep(b, '<button class="{{ frameCls }}" onClick="{{ openCur }}" aria-label="Play {{ cur.name }} film">', '<button class="{{ frameCls }}" onClick="{{ openCur }}" aria-label="{{ cur.frameLabel }}">')
     b = sub(r'<span class="p_dur">1:30</span>\s*</button>', '</button>', b)
-    b = sub(r'<span class="p_pv"><i></i>Preview</span>\s*(<span class="p_play" aria-hidden="true">.*?</span>)\s*', r'<sc-if value="{{ cur.film }}">\1</sc-if>\n', b)
+    # the cover is the brand page's film moment: its poster frame, the A mark, a rule, "The [Brand] Story", a Play label on the cursor
+    b = sub(r'<span class="p_pv"><i></i>Preview</span>\s*<span class="p_play" aria-hidden="true">.*?</span>\s*',
+            '<sc-if value="{{ cur.film }}"><div class="film_card" aria-hidden="true"><span class="film_mark"><span class="amark"></span></span><i class="film_rule"></i><span class="film_name">The {{ cur.story }} Story</span></div>'
+            '<span class="film_cur" aria-hidden="true"><svg width="12" height="14" viewBox="0 0 12 14"><path d="M1 1l10 6-10 6z" fill="#0E0E0D"></path></svg><span>Play</span></span></sc-if>\n', b)
+    b = rep(b, '<button class="{{ frameCls }}" onClick="{{ openCur }}" aria-label="{{ cur.frameLabel }}">', '<button class="{{ frameCls }}" onClick="{{ openCur }}" onMouseMove="{{ frameMove }}" aria-label="{{ cur.frameLabel }}">')
     b = rep(b, '<span>Partnered [Mo YYYY]</span>', '<span>{{ cur.since }}</span>')
     b = rep(b, '<a class="p_who" href="/locations#founders">', '<a class="p_who" href="{{ cur.founderHref }}">')
     b = rep(b, '<div class="p_pile" aria-label="Team"><i></i><i></i><i></i><i></i></div>', '')
     b = rep(b, '<a class="btn" href="#partner">Open partner page</a>', '<a class="btn" href="{{ cur.href }}">Open partner page</a>')
     # people: CMS departments with real faces
-    b = rep(b, '<a class="btn" href="/team" style="align-self: flex-start; height: 28px; padding: 0 12px; font-size: 10px">Meet department</a>', '<a class="btn" href="{{ d.href }}" style="align-self: flex-start; height: 28px; padding: 0 12px; font-size: 10px">Meet department</a>')
+    # the whole card opens the department (stretched link on the button); every face opens that person's profile
+    b = rep(b, '<a class="btn" href="/team" style="align-self: flex-start; height: 28px; padding: 0 12px; font-size: 10px">Meet department</a>', '<a class="btn dept_go" href="{{ d.href }}" style="align-self: flex-start; height: 28px; padding: 0 12px; font-size: 10px">Meet department</a>')
     b = rep(b, '<div class="dept_avs"><span class="av">··</span><span class="av">··</span><span class="av">··</span><span class="av">··</span></div> <span class="dept_count">[N] people</span>'.replace(' <', '\n<') if False else '<div class="dept_avs"><span class="av">··</span><span class="av">··</span><span class="av">··</span><span class="av">··</span></div>',
-            '<div class="dept_avs"><sc-for list="{{ d.avs }}" as="a"><span class="av" style="overflow: hidden; position: relative">' + ph_img('a.img', '{{ a.iOnly }}') + '</span></sc-for></div>')
-    b = rep(b, '<span class="dept_count">[N] people</span>', '<span class="dept_count">{{ d.count }}</span>')
+            '<div class="dept_avs"><sc-for list="{{ d.avs }}" as="a"><a class="av" href="{{ a.href }}" title="{{ a.name }}" aria-label="{{ a.name }}" style="overflow: hidden; position: relative">' + ph_img('a.img', '{{ a.iOnly }}') + '</a></sc-for></div>')
+    b = rep(b, '<span class="dept_count">[N] people</span>', '')
     b = rep(b, '<a class="btn" href="#team-all">Meet the whole team</a>', '<a class="btn" href="/team">Meet the whole team</a>')
     # stories
     b = sub(r'<span class="story_ph ph">.*?</span>\s*', '', b)
@@ -479,6 +484,11 @@ def main_engine(e):
     e = rep(e, "const eps = EP.map((e, i) => ({ ...e, btnCls: i === playing ? 'ep_play is-on' : 'ep_play', play: () => set({ playing: i }) }));",
             "const eps = EP.map((e, i) => ({ ...e, btnCls: i === playing ? 'ep_play is-on' : 'ep_play', play: () => { set({ playing: i }); if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('alpha:play', { detail: e.ep })); } }));")
     e = rep(e, "return {\n      openMenu:", "return {\n      net: X.net || { brands: '15', locations: '36', states: '12' }, shows: X.shows || [], nShows: String((X.shows || []).length), hasEps: EP.length > 0,\n      reel: P.map((p, i) => ({ src: p.poster || p.img, cls: 'reel_img' + (i === cut ? ' is-on' : '') })).filter((r) => r.src),\n      openMenu:")
+    e = rep(e, "const posters = P.map((p, i) => ({ cls: 'p_poster' + (i === pi ? ' is-on' : ''), tone: p.tone, hasImg: !!p.img, noImg: !p.img, img: p.img || '',",
+            "const posters = P.map((p, i) => { const im = (p.film && p.film.src && p.cover) || p.img || ''; return { cls: 'p_poster' + (i === pi ? ' is-on' : '') + (p.film && p.film.src ? ' is-film' : ''), tone: p.tone, hasImg: !!im, noImg: !im, img: im,")
+    e = rep(e, "cityLong: p.city }));", "cityLong: p.city }; });")
+    e = rep(e, "const cur = { film: !!(c.film && c.film.src),", "const cur = { story: c.story || c.name, film: !!(c.film && c.film.src),")
+    e = rep(e, "partners, posters, cur, frameCls:", "frameMove: (ev) => { const r = ev.currentTarget.getBoundingClientRect(); ev.currentTarget.style.setProperty('--cx', (ev.clientX - r.left) + 'px'); ev.currentTarget.style.setProperty('--cy', (ev.clientY - r.top) + 'px'); },\n      partners, posters, cur, frameCls:")
     return e
 
 
@@ -489,6 +499,33 @@ MAIN_CSS = IMG_CSS + """
 .reel_hud{z-index:2}
 a.p_row{display:grid;color:inherit}
 .th_vid{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;z-index:2}
+.p_poster.is-film img{transform:scale(1.04);filter:brightness(.62);transition:transform 2.6s cubic-bezier(.2,.7,.2,1),filter .8s ease}
+.p_frame:hover .p_poster.is-film img{transform:scale(1.01);filter:brightness(.72)}
+.p_frame:has(.film_card)::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,rgba(14,14,13,.1) 0%,rgba(14,14,13,.5) 100%)}
+.p_frame .film_card{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#EDEAE2;pointer-events:none;text-align:center}
+.p_frame .film_mark{display:flex;align-items:center;height:28px}
+.p_frame .film_mark .amark{height:24px}
+.p_frame .film_rule{display:block;width:40px;height:1px;background:currentColor;opacity:.6}
+.p_frame .film_name{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.p_frame:has(.film_card){cursor:none}
+.p_frame .film_cur{position:absolute;z-index:3;left:var(--cx,50%);top:var(--cy,72%);transform:translate(-50%,-50%);display:inline-flex;align-items:center;gap:9px;height:36px;padding:0 15px 0 12px;border-radius:999px;background:rgba(237,234,226,.94);color:#0E0E0D;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:0;transition:opacity .25s ease;pointer-events:none}
+.p_frame:hover .film_cur,.p_frame:focus-visible .film_cur{opacity:1}
+.p_frame .film_cur svg{width:9px;height:11px}
+@media (hover:none){.p_frame .film_cur{opacity:1;left:50%;top:auto;bottom:18px;transform:translateX(-50%)}.p_frame:has(.film_card){cursor:pointer}}
+@media (prefers-reduced-motion:reduce){.p_poster.is-film img{transition:none;transform:none}}
+/* department cards: whole card is the link, faces sit on top and link to people; all faces, centered, four to a row */
+/* carousels bleed to both viewport edges: cards that advance off the left stay visible instead of clipping at the column */
+.rail{margin-left:calc(50% - 50vw);padding-left:calc(50vw - 50%)}
+.rail:has(.dept){padding-top:10px;padding-bottom:34px;margin-top:30px!important}
+.dept{padding:22px 16px 22px;margin-bottom:0;transition:transform .45s var(--ease),border-color .3s,background-color .3s,box-shadow .45s var(--ease)}
+.dept_go::after{content:"";position:absolute;inset:0;z-index:1}
+.dept:hover{transform:translateY(-6px);border-color:var(--ink);background-color:rgba(255,255,255,.28);box-shadow:0 22px 40px -26px rgba(14,14,13,.4)}
+.dept .dept_go{transition:background-color .3s,color .3s,border-color .3s}
+.dept:hover .dept_go{background:var(--ink);color:var(--bone);border-color:var(--ink)}
+.dept_avs{position:relative;left:auto;bottom:auto;z-index:2;margin:auto auto 0;padding-top:22px;display:flex;flex-wrap:wrap;justify-content:center;gap:6px;max-width:226px}
+.dept_avs .av{width:52px;height:52px;color:inherit;text-decoration:none;transition:transform .35s var(--ease),border-color .25s}
+.dept_avs .av:hover{transform:translateY(-3px) scale(1.08);border-color:var(--ink);z-index:1}
+@media (prefers-reduced-motion:reduce){.dept,.dept_avs .av{transition:none}.dept:hover{transform:none}}
 """
 
 
@@ -509,7 +546,9 @@ def podcasts_markup(b):
     b = rep(b, '<span class="r_art">{{ e.short }}</span>', '<sc-if value="{{ e.art }}"><img class="ph_img" src="{{ e.art }}" alt="" loading="lazy"></sc-if><span class="r_art">{{ e.artText }}</span>')
     b = sub(r'<p class="ph" style="color: #9B978E; margin-top: 18px">Sample data\..*?</p>', '', b)
     b = sub(r'<!-- mini player.*?-->\s*<sc-if value="\{\{ hasNow \}\}".*?</sc-if>', '', b)
-    b = rep(b, 'Every episode is tagged by topic, by who it&#39;s for and by who&#39;s talking. Stack filters to find the conversation you need, then share the exact list.', 'Every episode from every show, newest first. Filter by show, search by title, then share the exact list.')
+    # speaker faces: real headshots in the rows and the Speakers filter, initials when there is no photo
+    b = rep(b, '<button class="face" onClick="{{ p.go }}" title="{{ p.name }}">{{ p.init }}</button>', '<button class="face" onClick="{{ p.go }}" title="{{ p.name }}"><sc-if value="{{ p.img }}"><img src="{{ p.img }}" alt="" loading="lazy"></sc-if>{{ p.init }}</button>')
+    b = rep(b, '<span class="{{ o.faceCls }}">{{ o.init }}</span>', '<span class="{{ o.faceCls }}"><sc-if value="{{ o.img }}"><img src="{{ o.img }}" alt="" loading="lazy"></sc-if>{{ o.init }}</span>')
     return b
 
 
@@ -529,6 +568,10 @@ def podcasts_engine(e):
     e = rep(e, "if (s.playing && s.now != null) { const e = this.data().E[s.now]; o.t = Math.min(e.sec, (s.t || 0) + .1); dirty = true; }", "")
     e = rep(e, "slides: D.feat.map((k, i) => ({ art: D.S[k].art, noArt: !D.S[k].art, cls: 'tv_slide' + (i === hi ? ' is-on' : ''),", "slides: D.feat.map((k, i) => ({ hero: D.S[k].hero || '', art: D.S[k].art, noArt: !D.S[k].art, cls: 'tv_slide' + (D.S[k].hero ? ' has-hero' : '') + (i === hi ? ' is-on' : ''),")
     e = rep(e, "return { short: D.S[k].short, sched: D.S[k].sched,", "return { logo: D.S[k].logo || '', noLogo: !D.S[k].logo, ar: D.S[k].ar, short: D.S[k].short, sched: D.S[k].sched,")
+    e = rep(e, "spk: e.spk.map((p) => ({ name: D.P[p], init: this.init(D.P[p]), go: () => setF('spk', p) })),",
+            "spk: e.spk.slice(0, 3).map((p) => { const img = (D.PI || {})[p] || ''; return { name: D.P[p], img, init: img ? '' : this.init(D.P[p]), go: () => setF('spk', p) }; }),")
+    e = rep(e, "faceCls: g.face ? 'of' : 'nf', init: g.face ? this.init(o.t) : '' };",
+            "faceCls: g.face ? 'of' : 'nf', img: g.face ? (D.PI || {})[o.v] || '' : '', init: g.face && !(D.PI || {})[o.v] ? this.init(o.t) : '' };")
     return e
 
 
@@ -543,6 +586,8 @@ PODCAST_CSS = IMG_CSS + """
 .tv_logo{display:block;height:clamp(110px,11vw,190px);max-width:100%;aspect-ratio:var(--ar,2.2);background:currentColor;-webkit-mask:var(--logo) left bottom/contain no-repeat;mask:var(--logo) left bottom/contain no-repeat}
 .sh_logo{display:block;width:78%;height:56%;background:currentColor;-webkit-mask:var(--logo) left top/contain no-repeat;mask:var(--logo) left top/contain no-repeat}
 @media (max-width:820px){.tv_slide.has-hero .tv_img{display:none}}
+.of{position:relative;overflow:hidden;flex:0 0 auto}
+.face img,.of img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
 """
 
 
@@ -620,7 +665,7 @@ EPISODE_BODY = """
 <div class="plats" style="margin-top: 18px"><button class="tv_play" onClick="{{ play }}"><svg width="11" height="13" viewBox="0 0 11 13" aria-hidden="true"><path d="M0 0l11 6.5L0 13z" fill="currentColor"></path></svg>Play episode</button><sc-for list="{{ plats }}" as="p"><a class="plat" href="{{ p.href }}" target="_blank" rel="noopener">{{ p.t }}<span aria-hidden="true">↗</span></a></sc-for></div>
 </div>
 </div></section>
-<sc-if value="{{ ep.video }}"><section class="vid" aria-label="Episode video"><a class="vid_btn" href="{{ ep.video }}" target="_blank" rel="noopener"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1l10 6-10 6z" fill="#0E0E0D"></path></svg><span>Watch the episode</span></a></section></sc-if>
+<sc-if value="{{ ep.video }}"><section class="{{ vidCls }}" aria-label="Episode video"><sc-if value="{{ vidOn }}"><iframe class="vid_ifr" src="{{ vidSrc }}" title="{{ ep.title }}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></sc-if><sc-if value="{{ vidOff }}"><sc-if value="{{ ep.poster }}"><img class="vid_poster" src="{{ ep.poster }}" alt="" loading="lazy"></sc-if><button class="vid_btn" onClick="{{ watch }}"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1l10 6-10 6z" fill="#0E0E0D"></path></svg><span>Watch the episode</span></button></sc-if></section></sc-if>
 <section class="sec"><div class="wrap about">
 <div class="about_l">
 <p class="eyebrow">About this episode</p>
@@ -682,7 +727,10 @@ def episode_engine(e):
       copy: () => { try { navigator.clipboard.writeText(location.href); } catch (err) {} this.setState({ copied: true }); setTimeout(() => this.setState({ copied: false }), 1600); },
       copyLabel: s.copied ? 'Copied' : 'Copy link',
       hasMore: D.more.length > 0, more: D.more.map((m) => Object.assign({}, m, { play: () => { if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('alpha:play', { detail: m.ep })); } })),
-      shows: D.shows
+      shows: D.shows,
+      vidOn: !!s.vid, vidOff: !s.vid, vidCls: 'vid' + (s.vid ? ' is-on' : ''),
+      vidSrc: D.ep.yt ? 'https://www.youtube-nocookie.com/embed/' + D.ep.yt + '?autoplay=1&rel=0&modestbranding=1&playsinline=1' : '',
+      watch: () => { if (typeof window === 'undefined') return; if (D.ep.yt) { window.dispatchEvent(new CustomEvent('alpha:pause')); this.setState({ vid: true }); } else window.open(D.ep.video, '_blank', 'noopener'); }
     };
   }
 """ + e[j:]
@@ -708,7 +756,7 @@ PAGES = {
     'Location': dict(dir='locations/[slug]', board='Location', markup=location_markup, engine=location_engine, jsx=location_jsx, imports=MAP_IMPORT, css=IMG_CSS + MAP_CSS),
     'Podcasts': dict(dir='podcasts', board='Podcasts', data=True, markup=podcasts_markup, engine=podcasts_engine, css=PODCAST_CSS),
     'Show': dict(dir='podcasts/[show]', board='Show', markup=show_markup, engine=show_engine, css=IMG_CSS + '.spk,.person_av{position:relative;overflow:hidden}\n.spk img,.person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}\n'),
-    'Episode': dict(dir='podcasts/[show]/[episode]', board='Episode', markup=episode_markup, engine=episode_engine, css=IMG_CSS + '.tv_play{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 22px 0 18px;border-radius:999px;border:0;background:var(--ink);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:transform .3s var(--ease)}\n.tv_play:hover{transform:scale(1.04)}\n' + '.spk,.person_av{position:relative;overflow:hidden}\n.spk img,.person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}\n'),
+    'Episode': dict(dir='podcasts/[show]/[episode]', board='Episode', markup=episode_markup, engine=episode_engine, css=IMG_CSS + '.vid_poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.82)}\n.vid .vid_btn{position:relative;z-index:1;border:0;cursor:pointer}\n.vid.is-on{aspect-ratio:16/9;background:#000}\n.vid_ifr{position:absolute;inset:0;width:100%;height:100%;border:0}\n' + '.tv_play{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 22px 0 18px;border-radius:999px;border:0;background:var(--ink);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:transform .3s var(--ease)}\n.tv_play:hover{transform:scale(1.04)}\n' + '.spk,.person_av{position:relative;overflow:hidden}\n.spk img,.person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}\n'),
     # 'Speaker': ported when the Speakers collection has people in it
     'Main': dict(dir='_home', board='Main', markup=main_markup, engine=main_engine, css=MAIN_CSS),
 }

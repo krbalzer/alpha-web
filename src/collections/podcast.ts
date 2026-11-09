@@ -54,7 +54,11 @@ export const Episodes: CollectionConfig = {
     ] },
     { name: 'summary', type: 'textarea' },
     { name: 'speakers', type: 'relationship', relationTo: 'speakers', hasMany: true },
-    { name: 'tags', type: 'relationship', relationTo: 'tags', hasMany: true },
+    { name: 'tags', label: 'Topics', type: 'relationship', relationTo: 'tags', hasMany: true },
+    { name: 'audience', label: 'Who it’s for', type: 'select', hasMany: true, options: [
+      { label: 'Practice owners', value: 'owners' }, { label: 'Directors', value: 'directors' }, { label: 'Providers', value: 'providers' },
+      { label: 'Front desk', value: 'front-desk' }, { label: 'Marketers', value: 'marketers' }, { label: 'Patients', value: 'patients' },
+    ] },
     { name: 'brands', label: 'Brands mentioned', type: 'relationship', relationTo: 'brands', hasMany: true },
     { name: 'chapters', type: 'array', fields: [{ name: 'at', type: 'text', admin: { description: 'mm:ss' } }, { name: 'title', type: 'text' }] },
     { name: 'pullQuotes', type: 'array', admin: { description: 'Verbatim from the transcript, with timestamp.' }, fields: [
@@ -87,6 +91,6 @@ export const Speakers: CollectionConfig = {
 export const Tags: CollectionConfig = {
   slug: 'tags',
   access: publicRead,
-  admin: { useAsTitle: 'name' },
+  admin: { useAsTitle: 'name', description: 'Episode topics. Each one is a filter on /podcasts.' },
   fields: [{ name: 'name', type: 'text', required: true }, slug()],
 }

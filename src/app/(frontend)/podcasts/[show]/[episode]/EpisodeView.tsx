@@ -23,7 +23,7 @@ export default function EpisodeView(props: any) {
 <div className="plats" style={{"marginTop": "18px"} as React.CSSProperties}><button className="tv_play" onClick={v.play}><svg width="11" height="13" viewBox="0 0 11 13" aria-hidden="true"><path d="M0 0l11 6.5L0 13z" fill="currentColor"></path></svg>Play episode</button>{(v.plats || []).map((p: any, p_i: number) => (<React.Fragment key={p_i}><a className="plat" href={p.href} target="_blank" rel="noopener">{p.t}<span aria-hidden="true">↗</span></a></React.Fragment>))}</div>
 </div>
 </div></section>
-{v.ep.video ? (<><section className="vid" aria-label="Episode video"><a className="vid_btn" href={v.ep.video} target="_blank" rel="noopener"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1l10 6-10 6z" fill="#0E0E0D"></path></svg><span>Watch the episode</span></a></section></>) : null}
+{v.ep.video ? (<><section className={v.vidCls} aria-label="Episode video">{v.vidOn ? (<><iframe className="vid_ifr" src={v.vidSrc} title={v.ep.title} allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen></iframe></>) : null}{v.vidOff ? (<>{v.ep.poster ? (<><img className="vid_poster" src={v.ep.poster} alt="" loading="lazy" /></>) : null}<button className="vid_btn" onClick={v.watch}><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1l10 6-10 6z" fill="#0E0E0D"></path></svg><span>Watch the episode</span></button></>) : null}</section></>) : null}
 <section className="sec"><div className="wrap about">
 <div className="about_l">
 <p className="eyebrow">About this episode</p>

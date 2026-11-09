@@ -96,6 +96,8 @@ button{font:inherit;color:inherit}
 .pp_faces{display:flex}
 .pp_faces span{width:40px;height:40px;border-radius:50%;border:2px solid #D8D3C4;background:#B9B1A3;display:grid;place-items:center;font-family:var(--disp);font-weight:900;font-size:10px;color:rgba(14,14,13,.5)}
 .pp_faces span+span{margin-left:-8px}
+.pp_faces span{position:relative;overflow:hidden}
+.pp_faces img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .pp_right{display:flex;gap:8px;align-items:center;padding-left:18px;border-left:1px solid var(--line);height:36px}
 .pp_pill{height:26px;padding:0 9px;border-radius:999px;border:1px solid rgba(14,14,13,.3);background:transparent;font-family:var(--mono);font-size:9.5px;cursor:pointer}
 .pp_x{width:26px;height:26px;border-radius:50%;border:1px solid rgba(14,14,13,.3);background:transparent;cursor:pointer;font-size:13px;line-height:1}
