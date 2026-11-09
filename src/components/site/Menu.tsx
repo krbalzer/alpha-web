@@ -67,7 +67,7 @@ export function Menu() {
               <>
                 <p className="mn_k"><span>{isCurrent ? (s.playing ? 'Now playing' : 'Paused') : 'Latest episode'}</span>{s.playing && <i>Live</i>}</p>
                 <div className="mn_ep">
-                  <span className="mn_art" style={{ background: live.bg, color: live.fg, border: '1px solid rgba(232,228,218,.14)' }}>{live.showShort || live.show}</span>
+                  <span className="mn_art" style={{ background: live.bg, color: live.fg, border: '1px solid rgba(232,228,218,.14)', position: 'relative', overflow: 'hidden' }}>{live.art ? <img src={live.art} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} /> : live.showShort || live.show}</span>
                   <div><b>{live.title}</b><span>{live.show}{live.n ? ` // EP ${live.n}` : ''}</span></div>
                 </div>
                 <div className="mn_pl">
