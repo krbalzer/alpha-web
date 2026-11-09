@@ -1,5 +1,5 @@
 'use client'
-import { useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { fmt, useSite, type Ep } from './SiteProvider'
 
 const sec = (a: string) => a.split(':').reduce((v, n) => v * 60 + +n, 0)
@@ -15,6 +15,8 @@ const Fwd = () => <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="t
  */
 export function EpisodeBar({ ep }: { ep?: Ep | null }) {
   const s = useSite()
+  const [menu, setMenu] = useState(false)
+  const box = useRef<HTMLSpanElement | null>(null)
   const mine = !!ep && s.ep?.id === ep.id
   const dur = ep?.dur || 0
   const t = mine ? s.t : 0
@@ -26,6 +28,13 @@ export function EpisodeBar({ ep }: { ep?: Ep | null }) {
   useEffect(() => {
     document.querySelectorAll('.chap button').forEach((b, k) => b.classList.toggle('is-on', k === act))
   }, [act])
+  useEffect(() => {
+    if (!menu) return
+    const off = (ev: MouseEvent) => { if (box.current && !box.current.contains(ev.target as Node)) setMenu(false) }
+    const esc = (ev: KeyboardEvent) => { if (ev.key === 'Escape') setMenu(false) }
+    document.addEventListener('mousedown', off); document.addEventListener('keydown', esc)
+    return () => { document.removeEventListener('mousedown', off); document.removeEventListener('keydown', esc) }
+  }, [menu])
 
   if (!ep || !ep.audio) return null
   const go = (at: number) => (mine ? s.seek(at) : s.play(ep, at))
@@ -50,6 +59,20 @@ export function EpisodeBar({ ep }: { ep?: Ep | null }) {
           <i className="pl_knob" style={{ left: pct + '%' }} />
         </div>
         <span className="pl_time mono">{fmt(dur)}</span>
+        {chs.length > 0 ? (
+          <span className="pl_ch" ref={box}>
+            <button className="pl_chb mono" onClick={() => setMenu(!menu)} aria-expanded={menu} aria-haspopup="true" aria-label="Chapters">
+              <svg width="12" height="10" viewBox="0 0 12 10" aria-hidden="true"><path d="M0 1h12M0 5h12M0 9h8" stroke="currentColor" strokeWidth="1.3" /></svg><span className="lbl">Chapters</span>
+            </button>
+            {menu && (
+              <span className="pl_menu" role="menu">
+                {ep.chapters.map((c, k) => (
+                  <button key={k} role="menuitem" className={k === act ? 'is-on' : ''} onClick={() => { go(chs[k]); setMenu(false) }}><span className="mono">{c.at}</span><span>{c.title}</span></button>
+                ))}
+              </span>
+            )}
+          </span>
+        ) : <span />}
         <button className="pl_rate mono" onClick={s.cycleRate} aria-label="Playback speed">{s.rate}x</button>
       </div>
     </div>

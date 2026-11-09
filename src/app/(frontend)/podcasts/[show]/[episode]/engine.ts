@@ -9,7 +9,7 @@ export class EpisodeEngine extends DCLogic {
     const D = this.props.data, s = this.st(), ep = D.ep.player;
     const playAt = (at) => { if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('alpha:play', { detail: Object.assign({}, ep, at ? { at } : {}) })); };
     return {
-      show: D.show, ep: D.ep, plats: D.plats, pq: D.pq, share: D.share, people: D.people || [], hasPeople: (D.people || []).length > 0,
+      show: D.show, ep: D.ep, plats: D.plats, pq: D.pq, noPq: !D.pq.text, share: D.share, people: D.people || [], hasPeople: (D.people || []).length > 0,
       play: () => playAt(0), playQuote: () => playAt(this.sec(D.pq.at)),
       hasChapters: D.chapters.length > 0, chapters: D.chapters.map((c) => ({ at: c.at, t: c.t, go: () => playAt(this.sec(c.at)) })),
       trHtml: D.trHtml, trOpen: !!s.tr, trOpenS: s.tr ? 'true' : 'false', trLabel: s.tr ? 'Hide transcript' : 'Read the full transcript', toggleTr: () => this.setState({ tr: !s.tr }),

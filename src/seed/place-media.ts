@@ -18,7 +18,31 @@ const PLACEMENTS: { file: string; alt: string; apply: (p: Payload, id: number) =
     const f = (await p.find({ collection: 'founders', where: { slug: { equals: 'michelle-paty' } }, limit: 1, depth: 0 })).docs[0]
     if (f) await p.update({ collection: 'founders', id: f.id, data: { headshot: id } })
   } },
+  // Privé (014), Lexington shoot, Nov 2026
+  { file: 'prive/practice-hallway.jpg', alt: 'The treatment hallway at Privé', apply: (p, id) => brand(p, 'prive', (b) => ({ practice: { ...(b.practice as object), image: id } })) },
+  { file: 'prive/why-brandice.jpg', alt: 'Brandice Harrison with a patient at Privé', apply: (p, id) => brand(p, 'prive', (b) => ({ why: { ...(b.why as object), image: id } })) },
+  { file: 'prive/film-poster-keeneland.jpg', alt: 'Keeneland barn in the snow, Lexington', apply: (p, id) => brand(p, 'prive', (b) => ({ film: { ...(b.film as object), poster: id } })) },
+  { file: 'prive/location-lexington.jpg', alt: 'The Privé mark on marble, Lexington', apply: (p, id) => location(p, 'prive-lexington-ky', { photo: id }) },
+  { file: 'prive/founder-brandice-harrison.jpg', alt: 'Brandice Harrison', apply: (p, id) => founder(p, 'brandice-harrison', { headshot: id }) },
+  { file: 'prive/portrait-brandice-harrison.jpg', alt: 'Brandice Harrison at Privé', apply: (p, id) => founder(p, 'brandice-harrison', { portrait: id }) },
+  { file: 'prive/founder-becky-mcdonald.jpg', alt: 'Becky McDonald', apply: (p, id) => founder(p, 'becky-mcdonald', { headshot: id }) },
+  // LexRx (015), Boston shoot, Nov 2026
+  { file: 'lexrx/practice-team.jpg', alt: 'The LexRx team at the front bar', apply: (p, id) => brand(p, 'lexrx', (b) => ({ practice: { ...(b.practice as object), image: id } })) },
+  { file: 'lexrx/why-mirror.jpg', alt: 'Alexa Nicholls Costa handing a patient the mirror', apply: (p, id) => brand(p, 'lexrx', (b) => ({ why: { ...(b.why as object), image: id } })) },
+  { file: 'lexrx/film-poster-studio.jpg', alt: 'LexRx', apply: (p, id) => brand(p, 'lexrx', (b) => ({ film: { ...(b.film as object), poster: id } })) },
+  { file: 'lexrx/founder-alexa-nicholls-costa.jpg', alt: 'Alexa Nicholls Costa', apply: (p, id) => founder(p, 'alexa-nicholls-costa', { headshot: id }) },
+  { file: 'lexrx/portrait-alexa-nicholls-costa.jpg', alt: 'Alexa Nicholls Costa at LexRx', apply: (p, id) => founder(p, 'alexa-nicholls-costa', { portrait: id }) },
 ]
+
+async function founder(p: Payload, slug: string, data: Record<string, unknown>) {
+  const f = (await p.find({ collection: 'founders', where: { slug: { equals: slug } }, limit: 1, depth: 0 })).docs[0]
+  if (f) await p.update({ collection: 'founders', id: f.id, data: data as never })
+}
+
+async function location(p: Payload, slug: string, data: Record<string, unknown>) {
+  const l = (await p.find({ collection: 'locations', where: { slug: { equals: slug } }, limit: 1, depth: 0 })).docs[0]
+  if (l) await p.update({ collection: 'locations', id: l.id, data: data as never })
+}
 
 async function brand(p: Payload, slug: string, patch: (b: Doc) => Record<string, unknown>) {
   const b = (await p.find({ collection: 'brands', where: { slug: { equals: slug } }, limit: 1, depth: 0 })).docs[0] as unknown as Doc | undefined

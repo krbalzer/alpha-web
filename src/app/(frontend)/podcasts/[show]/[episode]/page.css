@@ -303,6 +303,7 @@
 .pg-episode .eh .plats{align-items:center;gap:8px}
 .pg-episode .eh .plat{height:44px;padding:0 18px}
 .pg-episode .eh .qb.is-now{display:none}
+.pg-episode .about .pq{max-width:24ch;text-wrap:balance}
 .pg-episode .about_h{font-family:var(--h3);font-weight:700;font-size:clamp(22px,1.9vw,28px);line-height:1.1;letter-spacing:-.012em;margin:0 0 clamp(18px,1.8vw,26px)}
 .pg-episode .player .pl_grid{grid-template-columns:auto minmax(0,220px) auto minmax(0,1fr) auto auto}
 .pg-episode .pl_ctl{display:flex;align-items:center;gap:6px}
@@ -310,9 +311,22 @@
 .pg-episode .pl_sk:hover{background:rgba(14,14,13,.08)}
 .pg-episode .pl_now b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pg-episode .pl_tick{cursor:pointer}
-@media (max-width: 760px){.pg-episode .player .pl_grid{grid-template-columns:auto auto minmax(0,1fr) auto}}
-.pg-episode .qb_lg{height:44px;padding:0 18px;font-size:11px}
-.pg-episode .ep_links .qb{height:36px}
+.pg-episode .player{z-index:30}
+.pg-episode .pl_ch{position:relative}
+.pg-episode .pl_chb{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border:1px solid rgba(14,14,13,.4);border-radius:999px;background:transparent;font-size:10px;cursor:pointer;white-space:nowrap}
+.pg-episode .pl_chb[aria-expanded="true"],.pg-episode .pl_chb:hover{background:var(--ink);border-color:var(--ink);color:var(--bone)}
+.pg-episode .pl_menu{position:absolute;right:0;top:calc(100% + 12px);width:min(420px,calc(100vw - 32px));max-height:min(60vh,520px);overflow:auto;background:var(--bone);border:1px solid var(--line);box-shadow:0 18px 50px rgba(14,14,13,.18);padding:6px 0;z-index:40}
+.pg-episode .pl_menu button{width:100%;display:grid;grid-template-columns:62px minmax(0,1fr);gap:12px;align-items:baseline;padding:11px 16px;border:0;background:transparent;text-align:left;font-size:14px;cursor:pointer}
+.pg-episode .pl_menu button .mono{font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.pg-episode .pl_menu button:hover{background:rgba(14,14,13,.05)}
+.pg-episode .pl_menu button.is-on{font-weight:600}
+.pg-episode .pl_menu button.is-on .mono{color:var(--ink)}
+.pg-episode .player .pl_grid{grid-template-columns:auto minmax(0,220px) auto minmax(0,1fr) auto auto auto}
+@media (max-width: 760px){.pg-episode .player .pl_grid{grid-template-columns:auto auto minmax(0,1fr) auto auto}
+.pg-episode .pl_ch .lbl{display:none}}
+.pg-episode .qb_lg{height:44px;padding:0 18px}
+.pg-episode .btn.qb.is-q{background:var(--ink);border-color:var(--ink);color:var(--bone)}
+.pg-episode .btn.qb.is-now{opacity:.55;cursor:default}
 .pg-episode .ph_img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .pg-episode .tp_i,.pg-episode .tm_img,.pg-episode .o2_img,.pg-episode .face,.pg-episode .ph_cut{position:relative;overflow:hidden}
 .pg-episode .vid_poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.82)}

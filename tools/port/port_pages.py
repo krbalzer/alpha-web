@@ -698,8 +698,8 @@ EPISODE_BODY = """
 <sc-if value="{{ ep.video }}"><section class="{{ vidCls }}" aria-label="Episode video"><sc-if value="{{ vidOn }}"><iframe class="vid_ifr" src="{{ vidSrc }}" title="{{ ep.title }}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></sc-if><sc-if value="{{ vidOff }}"><sc-if value="{{ ep.poster }}"><img class="vid_poster" src="{{ ep.poster }}" alt="" loading="lazy"></sc-if><button class="vid_btn" onClick="{{ watch }}"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1l10 6-10 6z" fill="#0E0E0D"></path></svg><span>Watch the episode</span></button></sc-if></section></sc-if>
 <section class="sec"><div class="wrap about">
 <div class="about_l">
-<h2 class="about_h">About this episode</h2>
-<sc-if value="{{ pq.text }}"><blockquote class="pq">“{{ pq.text }}”</blockquote><sc-if value="{{ pq.at }}"><button class="pq_play mono" onClick="{{ playQuote }}"><span aria-hidden="true">▶</span> Hear it at {{ pq.at }}</button></sc-if></sc-if>
+<sc-if value="{{ noPq }}"><h2 class="about_h">About this episode</h2></sc-if>
+<sc-if value="{{ pq.text }}"><p class="eyebrow">About this episode</p><h2 class="pq">“{{ pq.text }}”</h2><sc-if value="{{ pq.at }}"><button class="pq_play mono" onClick="{{ playQuote }}"><span aria-hidden="true">▶</span> Hear it at {{ pq.at }}</button></sc-if></sc-if>
 <div class="share mono"><span>Share</span><a href="{{ share.x }}" target="_blank" rel="noopener">X</a><a href="{{ share.li }}" target="_blank" rel="noopener">LinkedIn</a><a href="{{ share.fb }}" target="_blank" rel="noopener">Facebook</a><button onClick="{{ copy }}">{{ copyLabel }}</button></div>
 </div>
 <div class="about_r">
@@ -742,6 +742,7 @@ EPBAR_CSS = """
 .eh .plats{align-items:center;gap:8px}
 .eh .plat{height:44px;padding:0 18px}
 .eh .qb.is-now{display:none}
+.about .pq{max-width:24ch;text-wrap:balance}
 .about_h{font-family:var(--h3);font-weight:700;font-size:clamp(22px,1.9vw,28px);line-height:1.1;letter-spacing:-.012em;margin:0 0 clamp(18px,1.8vw,26px)}
 .player .pl_grid{grid-template-columns:auto minmax(0,220px) auto minmax(0,1fr) auto auto}
 .pl_ctl{display:flex;align-items:center;gap:6px}
@@ -749,7 +750,18 @@ EPBAR_CSS = """
 .pl_sk:hover{background:rgba(14,14,13,.08)}
 .pl_now b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pl_tick{cursor:pointer}
-@media (max-width: 760px){.player .pl_grid{grid-template-columns:auto auto minmax(0,1fr) auto}}
+.player{z-index:30}
+.pl_ch{position:relative}
+.pl_chb{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border:1px solid rgba(14,14,13,.4);border-radius:999px;background:transparent;font-size:10px;cursor:pointer;white-space:nowrap}
+.pl_chb[aria-expanded="true"],.pl_chb:hover{background:var(--ink);border-color:var(--ink);color:var(--bone)}
+.pl_menu{position:absolute;right:0;top:calc(100% + 12px);width:min(420px,calc(100vw - 32px));max-height:min(60vh,520px);overflow:auto;background:var(--bone);border:1px solid var(--line);box-shadow:0 18px 50px rgba(14,14,13,.18);padding:6px 0;z-index:40}
+.pl_menu button{width:100%;display:grid;grid-template-columns:62px minmax(0,1fr);gap:12px;align-items:baseline;padding:11px 16px;border:0;background:transparent;text-align:left;font-size:14px;cursor:pointer}
+.pl_menu button .mono{font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.pl_menu button:hover{background:rgba(14,14,13,.05)}
+.pl_menu button.is-on{font-weight:600}
+.pl_menu button.is-on .mono{color:var(--ink)}
+.player .pl_grid{grid-template-columns:auto minmax(0,220px) auto minmax(0,1fr) auto auto auto}
+@media (max-width: 760px){.player .pl_grid{grid-template-columns:auto auto minmax(0,1fr) auto auto}.pl_ch .lbl{display:none}}
 """
 
 
@@ -765,7 +777,7 @@ def episode_engine(e):
     const D = this.props.data, s = this.st(), ep = D.ep.player;
     const playAt = (at) => { if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('alpha:play', { detail: Object.assign({}, ep, at ? { at } : {}) })); };
     return {
-      show: D.show, ep: D.ep, plats: D.plats, pq: D.pq, share: D.share, people: D.people || [], hasPeople: (D.people || []).length > 0,
+      show: D.show, ep: D.ep, plats: D.plats, pq: D.pq, noPq: !D.pq.text, share: D.share, people: D.people || [], hasPeople: (D.people || []).length > 0,
       play: () => playAt(0), playQuote: () => playAt(this.sec(D.pq.at)),
       hasChapters: D.chapters.length > 0, chapters: D.chapters.map((c) => ({ at: c.at, t: c.t, go: () => playAt(this.sec(c.at)) })),
       trHtml: D.trHtml, trOpen: !!s.tr, trOpenS: s.tr ? 'true' : 'false', trLabel: s.tr ? 'Hide transcript' : 'Read the full transcript', toggleTr: () => this.setState({ tr: !s.tr }),

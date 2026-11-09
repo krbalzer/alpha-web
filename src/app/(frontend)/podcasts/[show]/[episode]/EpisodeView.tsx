@@ -22,15 +22,15 @@ export default function EpisodeView(props: any) {
 <h1 className="eh_t">{v.ep.title}</h1>
 <p className="eh_m mono"><a href={v.show.href} style={{"color": "inherit"} as React.CSSProperties}>{v.show.name}</a>{v.ep.n ? (<> // EP {v.ep.n}</>) : null} <span>{v.ep.date}{v.ep.len ? (<> · {v.ep.len}</>) : null}</span></p>
 {v.hasPeople ? (<><div className="eh_spk" style={{"marginTop": "18px"} as React.CSSProperties}>{(v.people || []).map((p: any, p_i: number) => (<React.Fragment key={p_i}><span className="spk" title={p.name}>{p.img ? (<><img src={p.img} alt="" loading="lazy" /></>) : null}{p.iOnly ? (<>{p.init}</>) : null}</span></React.Fragment>))}</div></>) : null}
-<div className="plats" style={{"marginTop": "18px"} as React.CSSProperties}><button className="tv_play" onClick={v.play}><svg width="11" height="13" viewBox="0 0 11 13" aria-hidden="true"><path d="M0 0l11 6.5L0 13z" fill="currentColor"></path></svg>Play episode</button><QueueBtn ep={v.ep.player} className="qb_lg"></QueueBtn>{(v.plats || []).map((p: any, p_i: number) => (<React.Fragment key={p_i}><a className="plat" href={p.href} target="_blank" rel="noopener">{p.t}<span aria-hidden="true">↗</span></a></React.Fragment>))}</div>
+<div className="plats" style={{"marginTop": "18px"} as React.CSSProperties}><button className="tv_play" onClick={v.play}><svg width="11" height="13" viewBox="0 0 11 13" aria-hidden="true"><path d="M0 0l11 6.5L0 13z" fill="currentColor"></path></svg>Play episode</button><QueueBtn ep={v.ep.player} className="btn qb_lg"></QueueBtn>{(v.plats || []).map((p: any, p_i: number) => (<React.Fragment key={p_i}><a className="plat" href={p.href} target="_blank" rel="noopener">{p.t}<span aria-hidden="true">↗</span></a></React.Fragment>))}</div>
 </div>
 </div></section>
 <EpisodeBar ep={v.ep.player}></EpisodeBar>
 {v.ep.video ? (<><section className={v.vidCls} aria-label="Episode video">{v.vidOn ? (<><iframe className="vid_ifr" src={v.vidSrc} title={v.ep.title} allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen></iframe></>) : null}{v.vidOff ? (<>{v.ep.poster ? (<><img className="vid_poster" src={v.ep.poster} alt="" loading="lazy" /></>) : null}<button className="vid_btn" onClick={v.watch}><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1l10 6-10 6z" fill="#0E0E0D"></path></svg><span>Watch the episode</span></button></>) : null}</section></>) : null}
 <section className="sec"><div className="wrap about">
 <div className="about_l">
-<h2 className="about_h">About this episode</h2>
-{v.pq.text ? (<><blockquote className="pq">“{v.pq.text}”</blockquote>{v.pq.at ? (<><button className="pq_play mono" onClick={v.playQuote}><span aria-hidden="true">▶</span> Hear it at {v.pq.at}</button></>) : null}</>) : null}
+{v.noPq ? (<><h2 className="about_h">About this episode</h2></>) : null}
+{v.pq.text ? (<><p className="eyebrow">About this episode</p><h2 className="pq">“{v.pq.text}”</h2>{v.pq.at ? (<><button className="pq_play mono" onClick={v.playQuote}><span aria-hidden="true">▶</span> Hear it at {v.pq.at}</button></>) : null}</>) : null}
 <div className="share mono"><span>Share</span><a href={v.share.x} target="_blank" rel="noopener">X</a><a href={v.share.li} target="_blank" rel="noopener">LinkedIn</a><a href={v.share.fb} target="_blank" rel="noopener">Facebook</a><button onClick={v.copy}>{v.copyLabel}</button></div>
 </div>
 <div className="about_r">
@@ -58,7 +58,7 @@ export default function EpisodeView(props: any) {
 <div className="art art_sm" style={{"background": `${v.show.bg}`, "position": "relative", "overflow": "hidden"} as React.CSSProperties}>{v.show.art ? (<><img className="ph_img" src={v.show.art} alt="" loading="lazy" /></>) : null}</div>
 <div className="ep_d"><b className="mono">{e.title}</b><span className="mono">{v.show.name}</span><span className="mono ep_date">{e.date}{e.len ? (<> · {e.len}</>) : null}</span></div>
 <span className="mono ep_no">{e.n}</span><span></span><span></span>
-<span className="ep_links"><a className="btn" href={e.href}>View episode</a><button className="btn" onClick={e.play}>Play</button><QueueBtn ep={e.ep}></QueueBtn></span>
+<span className="ep_links"><a className="btn" href={e.href}>View episode</a><button className="btn" onClick={e.play}>Play</button><QueueBtn ep={e.ep} className="btn"></QueueBtn></span>
 </div></React.Fragment>))}</div>
 <div style={{"display": "flex", "justifyContent": "center", "marginTop": "clamp(28px, 3vw, 44px)"} as React.CSSProperties}><a className="btn" href={v.show.href}>See show</a></div>
 </div></section></>) : null}
