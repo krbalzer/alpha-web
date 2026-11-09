@@ -381,6 +381,7 @@
 .pg-main .reel_hud{z-index:2}
 .pg-main a.p_row{display:grid;color:inherit}
 .pg-main .th_vid{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;z-index:2}
+.pg-main .ep_end{display:flex;align-items:center;gap:14px}
 .pg-main .p_poster.is-film img{transform:scale(1.04);filter:brightness(.62);transition:transform 2.6s cubic-bezier(.2,.7,.2,1),filter .8s ease}
 .pg-main .p_frame:hover .p_poster.is-film img{transform:scale(1.01);filter:brightness(.72)}
 .pg-main .p_frame:has(.film_card)::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,rgba(14,14,13,.1) 0%,rgba(14,14,13,.5) 100%)}

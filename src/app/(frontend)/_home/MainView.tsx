@@ -4,6 +4,7 @@ import React from 'react'
 import { Nav } from '@/components/site/Nav'
 import { useDC } from '@/lib/dc'
 import { MainEngine } from './engine'
+import { QueueBtn } from '@/components/site/QueueBtn'
 import './page.css'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -246,7 +247,7 @@ export default function MainView(props: any) {
 <button className={e.btnCls} aria-label={`Play ${e.title}`} onClick={e.play}><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1.5 1v12L11 7z" fill="currentColor"></path></svg></button>
 <div className="ep_art" style={{"background": `${e.tone}`} as React.CSSProperties}></div>
 <div><p className="ep_title">{e.title}</p><div className="ep_show">{e.show}</div></div>
-<span className="ep_len">{e.len}</span>
+<span className="ep_end"><QueueBtn ep={e.ep}></QueueBtn><span className="ep_len">{e.len}</span></span>
 </div>
 </React.Fragment>))}
 <div style={{"display": "flex", "justifyContent": "flex-end", "marginTop": "28px"} as React.CSSProperties}><a className="btn" href="/podcasts">All shows and episodes</a></div>

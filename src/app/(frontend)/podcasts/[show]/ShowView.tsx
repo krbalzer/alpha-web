@@ -4,6 +4,7 @@ import React from 'react'
 import { Nav } from '@/components/site/Nav'
 import { useDC } from '@/lib/dc'
 import { ShowEngine } from './engine'
+import { QueueBtn } from '@/components/site/QueueBtn'
 import './page.css'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -37,7 +38,7 @@ export default function ShowView(props: any) {
 <div className="res_bar" style={{"paddingBottom": "10px"} as React.CSSProperties}><p className="res_n"><b>{v.nRes}</b> <span className="mono">episodes</span></p><a className="lnk k" href="/podcasts">Search the whole network →</a></div>
 <div className="rows">{(v.rows || []).map((e: any, e_i: number) => (<React.Fragment key={e_i}><div className={e.cls}>
 <button className="r_play" onClick={e.play} aria-label={`Play ${e.title}`} style={{"background": `${e.bg}`, "color": `${e.fg}`, "position": "relative", "overflow": "hidden"} as React.CSSProperties}>{e.art ? (<><img className="ph_img" src={e.art} alt="" loading="lazy" /></>) : null}<i className="r_pi" aria-hidden="true" style={{"position": "relative"} as React.CSSProperties}>▶</i></button>
-<a className="r_main" href={e.href}><b>{e.title}</b><span className="mono">{e.meta}</span></a><span></span><span></span><span className="mono r_len">{e.len}</span>
+<a className="r_main" href={e.href}><b>{e.title}</b><span className="mono">{e.meta}</span></a><span></span><span></span><span className="r_end"><QueueBtn ep={e.ep}></QueueBtn><span className="mono r_len">{e.len}</span></span>
 </div></React.Fragment>))}</div>
 {v.hasMore ? (<><div className="more" style={{"display": "flex", "justifyContent": "center", "marginTop": "28px"} as React.CSSProperties}><button className="btn" onClick={v.loadMore}>Load more</button></div></>) : null}
 </div></section>

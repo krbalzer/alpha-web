@@ -458,6 +458,7 @@ def main_markup(b):
     b = b[:m.end()] + '</sc-if>' + b[m.end():]
     # qualifier
     b = sub(r'<p class="ph" style="color: #9B978E; margin-top: 28px">Routes to GHL.*?</p>', '', b)
+    b = rep(b, '<span class="ep_len">{{ e.len }}</span>', '<span class="ep_end"><x-queue ep="{{ e.ep }}"></x-queue><span class="ep_len">{{ e.len }}</span></span>')
     return qualifier_markup(b)
 
 
@@ -499,6 +500,7 @@ MAIN_CSS = IMG_CSS + """
 .reel_hud{z-index:2}
 a.p_row{display:grid;color:inherit}
 .th_vid{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;z-index:2}
+.ep_end{display:flex;align-items:center;gap:14px}
 .p_poster.is-film img{transform:scale(1.04);filter:brightness(.62);transition:transform 2.6s cubic-bezier(.2,.7,.2,1),filter .8s ease}
 .p_frame:hover .p_poster.is-film img{transform:scale(1.01);filter:brightness(.72)}
 .p_frame:has(.film_card)::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,rgba(14,14,13,.1) 0%,rgba(14,14,13,.5) 100%)}
@@ -529,6 +531,15 @@ a.p_row{display:grid;color:inherit}
 """
 
 
+QUEUE_IMPORT = "import { QueueBtn } from '@/components/site/QueueBtn'\n"
+QUEUE_ROW_CSS = """
+.row{grid-template-columns:64px minmax(0,1fr) 84px minmax(0,190px) 132px}
+.r_end{display:flex;align-items:center;justify-content:flex-end;gap:12px;min-width:0}
+@media (max-width:1100px){.row{grid-template-columns:56px minmax(0,1fr) 70px 124px}}
+@media (max-width:620px){.row{grid-template-columns:56px minmax(0,1fr) auto}}
+"""
+
+
 PLAY_EVENT = "if (typeof window !== 'undefined' && ep) window.dispatchEvent(new CustomEvent('alpha:play', { detail: ep }))"
 
 
@@ -549,6 +560,8 @@ def podcasts_markup(b):
     # speaker faces: real headshots in the rows and the Speakers filter, initials when there is no photo
     b = rep(b, '<button class="face" onClick="{{ p.go }}" title="{{ p.name }}">{{ p.init }}</button>', '<button class="face" onClick="{{ p.go }}" title="{{ p.name }}"><sc-if value="{{ p.img }}"><img src="{{ p.img }}" alt="" loading="lazy"></sc-if>{{ p.init }}</button>')
     b = rep(b, '<span class="{{ o.faceCls }}">{{ o.init }}</span>', '<span class="{{ o.faceCls }}"><sc-if value="{{ o.img }}"><img src="{{ o.img }}" alt="" loading="lazy"></sc-if>{{ o.init }}</span>')
+    # + Queue on every row (Player board)
+    b = rep(b, '<span class="mono r_len">{{ e.len }}</span>', '<span class="r_end"><x-queue ep="{{ e.ep }}"></x-queue><span class="mono r_len">{{ e.len }}</span></span>')
     return b
 
 
@@ -572,6 +585,7 @@ def podcasts_engine(e):
             "spk: e.spk.slice(0, 3).map((p) => { const img = (D.PI || {})[p] || ''; return { name: D.P[p], img, init: img ? '' : this.init(D.P[p]), go: () => setF('spk', p) }; }),")
     e = rep(e, "faceCls: g.face ? 'of' : 'nf', init: g.face ? this.init(o.t) : '' };",
             "faceCls: g.face ? 'of' : 'nf', img: g.face ? (D.PI || {})[o.v] || '' : '', init: g.face && !(D.PI || {})[o.v] ? this.init(o.t) : '' };")
+    e = rep(e, "return { href: e.href, art: sh.art,", "return { ep: e.ep, href: e.href, art: sh.art,")
     return e
 
 
@@ -620,7 +634,7 @@ SHOW_BODY = """
 <div class="res_bar" style="padding-bottom: 10px"><p class="res_n"><b>{{ nRes }}</b> <span class="mono">episodes</span></p><a class="lnk k" href="/podcasts">Search the whole network →</a></div>
 <div class="rows"><sc-for list="{{ rows }}" as="e"><div class="{{ e.cls }}">
 <button class="r_play" onClick="{{ e.play }}" aria-label="Play {{ e.title }}" style="background: {{ e.bg }}; color: {{ e.fg }}; position: relative; overflow: hidden"><sc-if value="{{ e.art }}"><img class="ph_img" src="{{ e.art }}" alt="" loading="lazy"></sc-if><i class="r_pi" aria-hidden="true" style="position: relative">▶</i></button>
-<a class="r_main" href="{{ e.href }}"><b>{{ e.title }}</b><span class="mono">{{ e.meta }}</span></a><span></span><span></span><span class="mono r_len">{{ e.len }}</span>
+<a class="r_main" href="{{ e.href }}"><b>{{ e.title }}</b><span class="mono">{{ e.meta }}</span></a><span></span><span></span><span class="r_end"><x-queue ep="{{ e.ep }}"></x-queue><span class="mono r_len">{{ e.len }}</span></span>
 </div></sc-for></div>
 <sc-if value="{{ hasMore }}"><div class="more" style="display: flex; justify-content: center; margin-top: 28px"><button class="btn" onClick="{{ loadMore }}">Load more</button></div></sc-if>
 </div></section>
@@ -662,7 +676,7 @@ EPISODE_BODY = """
 <h1 class="eh_t">{{ ep.title }}</h1>
 <p class="eh_m mono"><a href="{{ show.href }}" style="color: inherit">{{ show.name }}</a><sc-if value="{{ ep.n }}"> // EP {{ ep.n }}</sc-if> <span>{{ ep.date }}<sc-if value="{{ ep.len }}"> · {{ ep.len }}</sc-if></span></p>
 <sc-if value="{{ hasPeople }}"><div class="eh_spk" style="margin-top: 18px"><sc-for list="{{ people }}" as="p"><span class="spk" title="{{ p.name }}"><sc-if value="{{ p.img }}"><img src="{{ p.img }}" alt="" loading="lazy"></sc-if><sc-if value="{{ p.iOnly }}">{{ p.init }}</sc-if></span></sc-for></div></sc-if>
-<div class="plats" style="margin-top: 18px"><button class="tv_play" onClick="{{ play }}"><svg width="11" height="13" viewBox="0 0 11 13" aria-hidden="true"><path d="M0 0l11 6.5L0 13z" fill="currentColor"></path></svg>Play episode</button><sc-for list="{{ plats }}" as="p"><a class="plat" href="{{ p.href }}" target="_blank" rel="noopener">{{ p.t }}<span aria-hidden="true">↗</span></a></sc-for></div>
+<div class="plats" style="margin-top: 18px"><button class="tv_play" onClick="{{ play }}"><svg width="11" height="13" viewBox="0 0 11 13" aria-hidden="true"><path d="M0 0l11 6.5L0 13z" fill="currentColor"></path></svg>Play episode</button><x-queue ep="{{ ep.player }}" class="qb_lg"></x-queue><sc-for list="{{ plats }}" as="p"><a class="plat" href="{{ p.href }}" target="_blank" rel="noopener">{{ p.t }}<span aria-hidden="true">↗</span></a></sc-for></div>
 </div>
 </div></section>
 <sc-if value="{{ ep.video }}"><section class="{{ vidCls }}" aria-label="Episode video"><sc-if value="{{ vidOn }}"><iframe class="vid_ifr" src="{{ vidSrc }}" title="{{ ep.title }}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></sc-if><sc-if value="{{ vidOff }}"><sc-if value="{{ ep.poster }}"><img class="vid_poster" src="{{ ep.poster }}" alt="" loading="lazy"></sc-if><button class="vid_btn" onClick="{{ watch }}"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1l10 6-10 6z" fill="#0E0E0D"></path></svg><span>Watch the episode</span></button></sc-if></section></sc-if>
@@ -697,7 +711,7 @@ EPISODE_BODY = """
 <div class="art art_sm" style="background: {{ show.bg }}; position: relative; overflow: hidden"><sc-if value="{{ show.art }}"><img class="ph_img" src="{{ show.art }}" alt="" loading="lazy"></sc-if></div>
 <div class="ep_d"><b class="mono">{{ e.title }}</b><span class="mono">{{ show.name }}</span><span class="mono ep_date">{{ e.date }}<sc-if value="{{ e.len }}"> · {{ e.len }}</sc-if></span></div>
 <span class="mono ep_no">{{ e.n }}</span><span></span><span></span>
-<span class="ep_links"><a class="btn" href="{{ e.href }}">View episode</a><button class="btn" onClick="{{ e.play }}">Play</button></span>
+<span class="ep_links"><a class="btn" href="{{ e.href }}">View episode</a><button class="btn" onClick="{{ e.play }}">Play</button><x-queue ep="{{ e.ep }}"></x-queue></span>
 </div></sc-for></div>
 <div style="display: flex; justify-content: center; margin-top: clamp(28px, 3vw, 44px)"><a class="btn" href="{{ show.href }}">See show</a></div>
 </div></section></sc-if>
@@ -754,11 +768,11 @@ PAGES = {
     'Locations': dict(dir='locations', board='Locations', data=True, markup=locations_markup, engine=locations_engine, jsx=locations_jsx, imports="import { FocusMap } from '@/components/site/MapStage'\n",
                       css=IMG_CSS + MAP_CSS + '.map_focus{opacity:0;pointer-events:none}\n.map_focus .maplibregl-canvas-container{transition:opacity .7s}\n.map_focus:not([data-ready="1"]) .maplibregl-canvas-container{opacity:0;transition:opacity .2s}\n'),
     'Location': dict(dir='locations/[slug]', board='Location', markup=location_markup, engine=location_engine, jsx=location_jsx, imports=MAP_IMPORT, css=IMG_CSS + MAP_CSS),
-    'Podcasts': dict(dir='podcasts', board='Podcasts', data=True, markup=podcasts_markup, engine=podcasts_engine, css=PODCAST_CSS),
-    'Show': dict(dir='podcasts/[show]', board='Show', markup=show_markup, engine=show_engine, css=IMG_CSS + '.spk,.person_av{position:relative;overflow:hidden}\n.spk img,.person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}\n'),
-    'Episode': dict(dir='podcasts/[show]/[episode]', board='Episode', markup=episode_markup, engine=episode_engine, css=IMG_CSS + '.vid_poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.82)}\n.vid .vid_btn{position:relative;z-index:1;border:0;cursor:pointer}\n.vid.is-on{aspect-ratio:16/9;background:#000}\n.vid_ifr{position:absolute;inset:0;width:100%;height:100%;border:0}\n' + '.tv_play{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 22px 0 18px;border-radius:999px;border:0;background:var(--ink);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:transform .3s var(--ease)}\n.tv_play:hover{transform:scale(1.04)}\n' + '.spk,.person_av{position:relative;overflow:hidden}\n.spk img,.person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}\n'),
+    'Podcasts': dict(dir='podcasts', board='Podcasts', data=True, markup=podcasts_markup, engine=podcasts_engine, css=PODCAST_CSS + QUEUE_ROW_CSS, imports=QUEUE_IMPORT),
+    'Show': dict(dir='podcasts/[show]', board='Show', markup=show_markup, engine=show_engine, imports=QUEUE_IMPORT, css=QUEUE_ROW_CSS + IMG_CSS + '.spk,.person_av{position:relative;overflow:hidden}\n.spk img,.person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}\n'),
+    'Episode': dict(dir='podcasts/[show]/[episode]', board='Episode', markup=episode_markup, engine=episode_engine, imports=QUEUE_IMPORT, css='.qb_lg{height:44px;padding:0 18px;font-size:11px}\n.ep_links .qb{height:36px}\n' + IMG_CSS + '.vid_poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.82)}\n.vid .vid_btn{position:relative;z-index:1;border:0;cursor:pointer}\n.vid.is-on{aspect-ratio:16/9;background:#000}\n.vid_ifr{position:absolute;inset:0;width:100%;height:100%;border:0}\n' + '.tv_play{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 22px 0 18px;border-radius:999px;border:0;background:var(--ink);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:transform .3s var(--ease)}\n.tv_play:hover{transform:scale(1.04)}\n' + '.spk,.person_av{position:relative;overflow:hidden}\n.spk img,.person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}\n'),
     # 'Speaker': ported when the Speakers collection has people in it
-    'Main': dict(dir='_home', board='Main', markup=main_markup, engine=main_engine, css=MAIN_CSS),
+    'Main': dict(dir='_home', board='Main', markup=main_markup, engine=main_engine, css=MAIN_CSS, imports=QUEUE_IMPORT),
 }
 
 

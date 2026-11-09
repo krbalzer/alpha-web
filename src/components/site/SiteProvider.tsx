@@ -5,6 +5,8 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 export type Ep = {
   id: string
   slug: string
+  /** episode page, /podcasts/[show]/[episode] */
+  href?: string
   title: string
   show: string
   showShort?: string
@@ -37,6 +39,7 @@ type Site = {
   cycleRate: () => void
   close: () => void
   enqueue: (e: Ep) => void
+  dequeue: (id: string) => void
 }
 
 const Ctx = createContext<Site | null>(null)
@@ -77,13 +80,14 @@ export function SiteProvider({ children, net, latest }: { children: React.ReactN
         setEp(s.ep)
         setT(s.t || 0)
       }
+      if (Array.isArray(s?.queue)) setQueue(s.queue)
     } catch {}
   }, [])
   // save position every 2s and on tab close, not on every timeupdate
-  const live = useRef({ ep, t })
-  live.current = { ep, t }
+  const live = useRef({ ep, t, queue })
+  live.current = { ep, t, queue }
   useEffect(() => {
-    const save = () => { const s = live.current; if (s.ep) try { localStorage.setItem(KEY, JSON.stringify(s)) } catch {} }
+    const save = () => { const s = live.current; if (s.ep || s.queue.length) try { localStorage.setItem(KEY, JSON.stringify(s)) } catch {} }
     const id = setInterval(save, 2000)
     window.addEventListener('pagehide', save)
     return () => { clearInterval(id); window.removeEventListener('pagehide', save) }
@@ -133,9 +137,10 @@ export function SiteProvider({ children, net, latest }: { children: React.ReactN
   const close = () => {
     const a = el(); a.pause(); a.removeAttribute('src'); a.load()
     setEp(null); setPlaying(false); setT(0)
-    try { localStorage.removeItem(KEY) } catch {}
+    try { if (queue.length) localStorage.setItem(KEY, JSON.stringify({ ep: null, t: 0, queue })); else localStorage.removeItem(KEY) } catch {}
   }
   const enqueue = (e: Ep) => setQueue((q) => (q.some((x) => x.id === e.id) || ep?.id === e.id ? q : [...q, e]))
+  const dequeue = (id: string) => setQueue((q) => q.filter((x) => x.id !== id))
   const play = (e: Ep, at?: number) => {
     if (ep?.id === e.id && audio.current?.src) return toggle()
     setQueue((q) => q.filter((x) => x.id !== e.id))
@@ -159,7 +164,7 @@ export function SiteProvider({ children, net, latest }: { children: React.ReactN
 
   const value = useMemo<Site>(() => ({
     menuOpen, setMenu: setMenuOpen, net, latest,
-    ep, playing, t, rate, queue, play, toggle, seek, skip, cycleRate, close, enqueue,
+    ep, playing, t, rate, queue, play, toggle, seek, skip, cycleRate, close, enqueue, dequeue,
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }), [menuOpen, net, latest, ep, playing, t, rate, queue, toggle])
 

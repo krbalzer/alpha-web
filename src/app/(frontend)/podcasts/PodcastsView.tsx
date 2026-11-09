@@ -4,6 +4,7 @@ import React from 'react'
 import { Nav } from '@/components/site/Nav'
 import { useDC } from '@/lib/dc'
 import { PodcastsEngine } from './engine'
+import { QueueBtn } from '@/components/site/QueueBtn'
 import './page.css'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -94,7 +95,7 @@ export default function PodcastsView(props: any) {
 <a className="r_main" href={e.href}><b>{e.title}</b><span className="mono">{e.meta}</span></a>
 <span className="r_spk">{(e.spk || []).map((p: any, p_i: number) => (<React.Fragment key={p_i}><button className="face" onClick={p.go} title={p.name}>{p.img ? (<><img src={p.img} alt="" loading="lazy" /></>) : null}{p.init}</button></React.Fragment>))}</span>
 <span className="r_tags">{(e.tags || []).map((t: any, t_i: number) => (<React.Fragment key={t_i}><button className={t.cls} onClick={t.go}>{t.t}</button></React.Fragment>))}</span>
-<span className="mono r_len">{e.len}</span>
+<span className="r_end"><QueueBtn ep={e.ep}></QueueBtn><span className="mono r_len">{e.len}</span></span>
 </div>
 </React.Fragment>))}
 {v.empty ? (<>

@@ -66,7 +66,7 @@ export class PodcastsEngine extends DCLogic {
       hasActive: nAct > 0, active, clearAll: () => set({ f: {}, q: '', shown: 10 }),
       share: () => { const qs = []; ['show','topics','aud','spk'].forEach((k) => { if ((f[k] || []).length) qs.push(k + '=' + encodeURIComponent(f[k].join(','))); }); if (q) qs.push('q=' + encodeURIComponent(s.q)); try { navigator.clipboard.writeText(location.origin + '/podcasts?' + qs.join('&')); } catch (err) {} set({ shared: true }); },
       shareLabel: s.shared ? 'Link copied' : 'Share this list',
-      rows: res.slice(0, shown).map((e) => { const sh = D.S[e.show]; return { href: e.href, art: sh.art, artText: sh.art ? '' : sh.short, meta: sh.name + (e.n ? ' · EP ' + e.n : '') + ' · ' + this.dfmt(e.date), title: e.title, n: e.n, show: sh.name, short: sh.short, bg: sh.bg, fg: sh.fg, date: this.dfmt(e.date), len: e.len,
+      rows: res.slice(0, shown).map((e) => { const sh = D.S[e.show]; return { ep: e.ep, href: e.href, art: sh.art, artText: sh.art ? '' : sh.short, meta: sh.name + (e.n ? ' · EP ' + e.n : '') + ' · ' + this.dfmt(e.date), title: e.title, n: e.n, show: sh.name, short: sh.short, bg: sh.bg, fg: sh.fg, date: this.dfmt(e.date), len: e.len,
         cls: 'row' + (s.now === e.id ? ' is-now' : ''), icon: s.now === e.id && s.playing ? '❚❚' : '▶', play: () => play(e.id),
         spk: e.spk.slice(0, 3).map((p) => { const img = (D.PI || {})[p] || ''; return { name: D.P[p], img, init: img ? '' : this.init(D.P[p]), go: () => setF('spk', p) }; }),
         tags: e.topics.slice(0, 2).map((t) => ({ t, cls: 'tg' + ((f.topics || []).indexOf(t) >= 0 ? ' is-on' : ''), go: () => setF('topics', t) })) }; }),

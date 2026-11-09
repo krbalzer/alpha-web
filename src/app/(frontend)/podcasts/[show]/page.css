@@ -531,6 +531,10 @@
 .pg-show .mn{opacity:0}
 .pg-show .mn.is-on{opacity:1}
 .pg-show .mn_w span{transform:none!important}}
+.pg-show .row{grid-template-columns:64px minmax(0,1fr) 84px minmax(0,190px) 132px}
+.pg-show .r_end{display:flex;align-items:center;justify-content:flex-end;gap:12px;min-width:0}
+@media (max-width:1100px){.pg-show .row{grid-template-columns:56px minmax(0,1fr) 70px 124px}}
+@media (max-width:620px){.pg-show .row{grid-template-columns:56px minmax(0,1fr) auto}}
 .pg-show .ph_img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .pg-show .tp_i,.pg-show .tm_img,.pg-show .o2_img,.pg-show .face,.pg-show .ph_cut{position:relative;overflow:hidden}
 .pg-show .spk,.pg-show .person_av{position:relative;overflow:hidden}

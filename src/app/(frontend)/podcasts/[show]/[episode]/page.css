@@ -300,6 +300,8 @@
 .pg-episode .mn{opacity:0}
 .pg-episode .mn.is-on{opacity:1}
 .pg-episode .mn_w span{transform:none!important}}
+.pg-episode .qb_lg{height:44px;padding:0 18px;font-size:11px}
+.pg-episode .ep_links .qb{height:36px}
 .pg-episode .ph_img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .pg-episode .tp_i,.pg-episode .tm_img,.pg-episode .o2_img,.pg-episode .face,.pg-episode .ph_cut{position:relative;overflow:hidden}
 .pg-episode .vid_poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.82)}

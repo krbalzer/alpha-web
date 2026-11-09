@@ -61,7 +61,7 @@ export const toEp = (e: Episode, faces?: Map<number, { name: string; img?: strin
     ? raw.map((s) => faces.get(typeof s === 'object' ? s.id : s)).filter((x): x is { name: string; img?: string } => !!x).map((x) => ({ name: x.name, initials: initials(x.name), img: x.img || '' }))
     : raw.filter((s): s is Speaker => typeof s === 'object').map((s) => ({ name: s.name, initials: initials(s.name), img: url(s.headshot, 'card') || '' }))
   return {
-    id: String(e.id), slug: e.slug, title: e.title,
+    id: String(e.id), slug: e.slug, href: show?.slug ? `/podcasts/${show.slug}/${e.slug}` : undefined, title: e.title,
     show: show?.name || '', showShort: show?.short || show?.name || '',
     n: e.number ? String(e.number).padStart(3, '0') : undefined,
     audio: e.audioUrl, dur: e.duration || 0, bg: show?.bg || '#1D1B1A', fg: show?.fg || '#FFFFFF',
