@@ -12,6 +12,8 @@ import { getPayload } from 'payload'
 import { seedStandIn } from './standin'
 
 const mode = process.env.SEED_ON_EMPTY
+const { checkBlob } = await import('./blob-check')
+const blobOk = await checkBlob((m) => console.log(m))
 {
   // always: pull new podcast episodes from each show's feed (never fails the build)
   if (process.env.IMPORT_EPISODES !== '0') {
@@ -21,7 +23,8 @@ const mode = process.env.SEED_ON_EMPTY
       await importEpisodes(p)
       // podcast people from the old Webflow site; a no-op once they are in
       const { importSpeakers } = await import('./speakers')
-      await importSpeakers(p)
+      if (blobOk) await importSpeakers(p)
+      else console.warn('speakers: skipped, Blob token cannot write (see blob: lines above)')
     } catch (e) { console.warn('episodes: import skipped', e) }
   }
 }
@@ -32,7 +35,8 @@ const mode = process.env.SEED_ON_EMPTY
   await scrubRemoved(p)
   // hand-placed photography shipped with the repo (applied once; CMS edits win after that)
   const { placeMedia } = await import('./place-media')
-  await placeMedia(p)
+  if (blobOk) await placeMedia(p)
+  else console.warn('media: placements skipped, Blob token cannot write')
 }
 if (mode === 'webflow') {
   const p = await getPayload({ config: await config })
