@@ -19,6 +19,9 @@ const mode = process.env.SEED_ON_EMPTY
       const p = await getPayload({ config: await config })
       const { importEpisodes } = await import('./episodes')
       await importEpisodes(p)
+      // podcast people from the old Webflow site; a no-op once they are in
+      const { importSpeakers } = await import('./speakers')
+      await importSpeakers(p)
     } catch (e) { console.warn('episodes: import skipped', e) }
   }
 }
@@ -27,6 +30,9 @@ const mode = process.env.SEED_ON_EMPTY
   const p = await getPayload({ config: await config })
   const { scrubRemoved } = await import('./removed')
   await scrubRemoved(p)
+  // hand-placed photography shipped with the repo (applied once; CMS edits win after that)
+  const { placeMedia } = await import('./place-media')
+  await placeMedia(p)
 }
 if (mode === 'webflow') {
   const p = await getPayload({ config: await config })

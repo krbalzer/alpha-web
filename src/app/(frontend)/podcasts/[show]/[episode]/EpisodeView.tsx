@@ -19,6 +19,7 @@ export default function EpisodeView(props: any) {
 <div className="eh_info">
 <h1 className="eh_t">{v.ep.title}</h1>
 <p className="eh_m mono"><a href={v.show.href} style={{"color": "inherit"} as React.CSSProperties}>{v.show.name}</a>{v.ep.n ? (<> // EP {v.ep.n}</>) : null} <span>{v.ep.date}{v.ep.len ? (<> · {v.ep.len}</>) : null}</span></p>
+{v.hasPeople ? (<><div className="eh_spk" style={{"marginTop": "18px"} as React.CSSProperties}>{(v.people || []).map((p: any, p_i: number) => (<React.Fragment key={p_i}><span className="spk" title={p.name}>{p.img ? (<><img src={p.img} alt="" loading="lazy" /></>) : null}{p.iOnly ? (<>{p.init}</>) : null}</span></React.Fragment>))}</div></>) : null}
 <div className="plats" style={{"marginTop": "18px"} as React.CSSProperties}><button className="tv_play" onClick={v.play}><svg width="11" height="13" viewBox="0 0 11 13" aria-hidden="true"><path d="M0 0l11 6.5L0 13z" fill="currentColor"></path></svg>Play episode</button>{(v.plats || []).map((p: any, p_i: number) => (<React.Fragment key={p_i}><a className="plat" href={p.href} target="_blank" rel="noopener">{p.t}<span aria-hidden="true">↗</span></a></React.Fragment>))}</div>
 </div>
 </div></section>
@@ -35,6 +36,14 @@ export default function EpisodeView(props: any) {
 {v.trHtml ? (<><button className="tr_btn mono" onClick={v.toggleTr} aria-expanded={v.trOpenS}>{v.trLabel}</button>{v.trOpen ? (<><div className="tr" dangerouslySetInnerHTML={{ __html: v.trHtml }} /></>) : null}</>) : null}
 </div>
 </div></section>
+{v.hasPeople ? (<><section style={{"paddingBottom": "clamp(70px, 8vw, 120px)"} as React.CSSProperties}><div className="wrap">
+<hr className="rule" style={{"marginBottom": "clamp(36px, 4vw, 60px)"} as React.CSSProperties} />
+<p className="eyebrow">In the room</p>
+<div className="room2">{(v.people || []).map((p: any, p_i: number) => (<React.Fragment key={p_i}><div className="person">
+<span className="person_av">{p.img ? (<><img src={p.img} alt="" loading="lazy" /></>) : null}{p.iOnly ? (<>{p.init}</>) : null}</span>
+<div><span className="person_k mono">{p.label}</span><h3 className="person_n">{p.name}</h3>{p.role ? (<><p className="person_t mono">{p.role}</p></>) : null}{p.bio ? (<><p className="person_b">{p.bio}</p></>) : null}{p.hasHref ? (<><a className="btn" href={p.href}>Profile</a></>) : null}</div>
+</div></React.Fragment>))}</div>
+</div></section></>) : null}
 <section className="show"><div className="wrap show_grid">
 <div className="art" style={{"background": `${v.show.bg}`, "position": "relative", "overflow": "hidden"} as React.CSSProperties} aria-label={`${v.show.name} cover`}>{v.show.art ? (<><img className="ph_img" src={v.show.art} alt="" loading="lazy" /></>) : null}</div>
 <div><p className="eyebrow">About the show</p><h2 className="show_n">{v.show.name}</h2></div>

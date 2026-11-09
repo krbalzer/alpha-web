@@ -45,12 +45,12 @@ export class PodcastsEngine extends DCLogic {
     const now = s.now != null ? D.E[s.now] : null;
     const eq = (a, b) => ['show','topics','aud','spk'].every((k) => JSON.stringify((a[k] || []).slice().sort()) === JSON.stringify((b[k] || []).slice().sort()));
     return {
-      slides: D.feat.map((k, i) => ({ art: D.S[k].art, noArt: !D.S[k].art, cls: 'tv_slide' + (i === hi ? ' is-on' : ''), bg: D.S[k].bg, fg: D.S[k].fg, short: D.S[k].short, hidden: i === hi ? 'false' : 'true' })),
+      slides: D.feat.map((k, i) => ({ hero: D.S[k].hero || '', art: D.S[k].art, noArt: !D.S[k].art, cls: 'tv_slide' + (D.S[k].hero ? ' has-hero' : '') + (i === hi ? ' is-on' : ''), bg: D.S[k].bg, fg: D.S[k].fg, short: D.S[k].short, hidden: i === hi ? 'false' : 'true' })),
       heroTxtCls: 'tv_txt' + (s.hg ? ((s.hg % 2) ? ' gA' : ' gB') : ''),
       hs: Object.assign({}, hs, { ep: lat, play: () => play(lat.id) }), hasPaths: D.paths.length > 0,
       pause: () => set({ paused: true }), resume: () => set({ paused: false }),
       showCount: Object.keys(D.S).length, epCount: String(D.E.length),
-      shelf: Object.keys(D.S).map((k) => { const fi = D.feat.indexOf(k); return { short: D.S[k].short, sched: D.S[k].sched, bg: D.S[k].bg, fg: D.S[k].fg,
+      shelf: Object.keys(D.S).map((k) => { const fi = D.feat.indexOf(k); return { logo: D.S[k].logo || '', noLogo: !D.S[k].logo, ar: D.S[k].ar, short: D.S[k].short, sched: D.S[k].sched, bg: D.S[k].bg, fg: D.S[k].fg,
         cls: 'sh' + (fi === hi ? ' is-on' : ''), prog: fi === hi ? Math.min(100, (s.he || 0) / 70) : 0,
         go: () => { if (fi >= 0) set({ hi: fi, he: 0, hg: (s.hg || 0) + 1 }); else set({ f: { show: [k] }, shown: 10, path: null }); } }; }),
       paths: D.paths.map((p) => ({ t: p.t, cls: 'path' + (eq(f, p.f) ? ' is-on' : ''), go: () => set({ f: eq(f, p.f) ? {} : JSON.parse(JSON.stringify(p.f)), shown: 10, q: '' }) })),

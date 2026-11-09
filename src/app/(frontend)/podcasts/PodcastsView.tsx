@@ -18,14 +18,14 @@ export default function PodcastsView(props: any) {
 <section className="tv dark" onMouseEnter={v.pause} onMouseLeave={v.resume} aria-roledescription="carousel" aria-label="Featured shows">
 {(v.slides || []).map((s: any, s_i: number) => (<React.Fragment key={s_i}>
 <div className={s.cls} style={{"background": `${s.bg}`} as React.CSSProperties} aria-hidden={s.hidden}>
-{s.art ? (<><img className="tv_img" src={s.art} alt="" /></>) : null}{s.noArt ? (<><span className="tv_art" style={{"color": `${s.fg}`} as React.CSSProperties}>{s.short}</span></>) : null}
+{s.hero ? (<><img className="tv_bg" src={s.hero} alt="" /></>) : null}{s.art ? (<><img className="tv_img" src={s.art} alt="" /></>) : null}{s.noArt ? (<><span className="tv_art" style={{"color": `${s.fg}`} as React.CSSProperties}>{s.short}</span></>) : null}
 </div>
 </React.Fragment>))}
 <div className="tv_scrim" aria-hidden="true"></div>
 <div className="wrap tv_in">
 <div className={v.heroTxtCls}>
 <p className="mono tv_k">{v.hs.sched}</p>
-<h1 className="tv_t">{v.hs.name}</h1>
+<h1 className="tv_t">{v.hs.logo ? (<><span className="tv_logo" role="img" aria-label={v.hs.name} style={{"--logo": `url(${v.hs.logo})`, "--ar": `${v.hs.ar}`} as React.CSSProperties}></span></>) : null}{v.hs.noLogo ? (<>{v.hs.name}</>) : null}</h1>
 <p className="tv_d">{v.hs.tag}</p>
 {v.hs.ep.title ? (<><p className="mono tv_latest"><span>Latest</span>{v.hs.ep.label}</p></>) : null}
 <div className="tv_ctas"><button className="tv_play" onClick={v.hs.play}><svg width="11" height="13" viewBox="0 0 11 13" aria-hidden="true"><path d="M0 0l11 6.5L0 13z" fill="currentColor"></path></svg>Play latest</button><a className="btn" href={v.hs.href}>All episodes</a><span className="mono tv_hosts">{v.hs.hosts}</span></div>
@@ -40,7 +40,7 @@ export default function PodcastsView(props: any) {
 <div className="shelf">
 {(v.shelf || []).map((s: any, s_i: number) => (<React.Fragment key={s_i}>
 <button className={s.cls} onClick={s.go} style={{"background": `${s.bg}`, "color": `${s.fg}`} as React.CSSProperties}>
-<span className="sh_t">{s.short}</span>
+{s.logo ? (<><span className="sh_logo" role="img" aria-label={s.short} style={{"--logo": `url(${s.logo})`, "--ar": `${s.ar}`} as React.CSSProperties}></span></>) : null}{s.noLogo ? (<><span className="sh_t">{s.short}</span></>) : null}
 <span className="sh_s mono">{s.sched}</span>
 <i className="sh_bar"><i style={{"width": `${s.prog}%`} as React.CSSProperties}></i></i>
 </button>

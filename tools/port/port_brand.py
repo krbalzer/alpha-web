@@ -8,6 +8,11 @@ APP = ROOT + '/src/app/(frontend)/brands/[slug]/'
 css, body, js = parse(ROOT + '/design/boards/Brand.dc.html')
 
 
+def rep_once(s, old, new):
+    assert s.count(old) == 1, old[:60]
+    return s.replace(old, new)
+
+
 def sub(pat, rep, s, n=1, flags=re.S):
     r, k = re.subn(pat, rep, s, count=0 if n == 0 else n, flags=flags)
     assert k >= 1, pat
@@ -38,7 +43,12 @@ b = sub(r'<div class="img ph" style="aspect-ratio: 1.1 / 1">.*?</div>',
 # film
 b = sub(r'<span class="ph">Brand film / Vimeo, loads on play</span>',
         '<sc-if value="{{ b.filmPoster }}"><img class="fill" src="{{ b.filmPoster }}" alt="" loading="lazy"></sc-if>', b)
-b = b.replace('<button class="play" aria-label="Play the {{ b.short }} story">', '<button class="play" onClick="{{ playFilm }}" aria-label="Play the {{ b.short }} story">')
+# film: a cinema moment, not a second hero. Centered credit title, the whole frame plays, the page dims around it (FILM_CSS, brand_film.js)
+b = sub(r'<button class="play" aria-label="Play the \{\{ b.short \}\} story">(<svg.*?</svg>)</button>',
+        r'<div class="film_card" aria-hidden="true"><span class="film_mark"><span class="amark"></span></span><i class="film_rule"></i><span class="film_name">The {{ b.short }} Story</span></div>'
+        r'<button class="play" onClick="{{ playFilm }}" onMouseMove="{{ filmMove }}" aria-label="Play the {{ b.short }} story"><span class="film_cur">\1<span>Play</span></span></button>', b)
+b = sub(r'<hr class="rule">\s*<div class="bar"><span>\{\{ b.ptr \}\}</span><span>\{\{ b.short \}\} story</span></div>\s*', '', b)
+b = rep_once(b, '<!-- ============ STORY FILM ============ -->\n<section style="padding-bottom: clamp(80px, 9vw, 140px)">', '<!-- ============ STORY FILM ============ -->\n<section class="film_sec" ref="{{ filmSec }}" style="padding-bottom: clamp(80px, 9vw, 140px)">')
 b = sub(r'<div class="body" style="margin-top: clamp\(28px, 3vw, 44px\)"><p>\[Film caption.*?</div>',
         '<sc-if value="{{ b.filmCaption }}"><div class="body" style="margin-top: clamp(28px, 3vw, 44px)"><p>{{ b.filmCaption }}</p></div></sc-if>', b)
 b = b.replace('<sc-if value="{{ c.noImg }}" hint-placeholder-val="{{ true }}">{{ c.city }}<br>photo</sc-if>', '<sc-if value="{{ c.noImg }}">{{ c.city }}</sc-if>')
@@ -74,11 +84,55 @@ assert '#talk' not in b and '/_blob/' not in b, re.findall(r'href="#\w+"|/_blob/
 
 b = b.replace('{{ founderLine }} / {{ servicesLine }}', '{{ metaLine }}')
 jsx = convert(b)
+CR = '<div className="crumb"><div className="wrap"><span>{v.b.ptr}</span><span>{v.b.name}</span>'
+assert CR in jsx
+jsx = jsx.replace(CR, '<div className="crumb"><div className="wrap"><span>{v.b.ptr}</span><BrandDock name={v.b.name} current={brand.slug} brands={brands} />')
 CV = '<canvas className="map_cv" ref={v.setCanvas} aria-hidden="true"></canvas>'
 assert CV in jsx
 jsx = jsx.replace(CV, '{hasRealMap ? <MapStage locs={brand.locations} idx={v.idx} /> : null}' + CV)
 
 # ---------- css ----------
+FILM_CSS = '''
+.film{width:100vw;margin-left:calc(50% - 50vw);aspect-ratio:2.39/1;max-height:88vh;background:#0E0E0D;display:block}
+.film .fill{transform:scale(1.05);transition:transform 2.6s cubic-bezier(.2,.7,.2,1),filter .8s ease;filter:brightness(.72)}
+.film:hover .fill{transform:scale(1.01);filter:brightness(.8)}
+.film::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,rgba(14,14,13,.12) 0%,rgba(14,14,13,.55) 100%)}
+.film_card{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;color:#EDEAE2;pointer-events:none;text-align:center}
+.film_name{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}\n.film_mark{display:flex;align-items:center;height:34px;color:#EDEAE2}\n.film_mark .amark{height:30px}
+.film_rule{display:block;width:44px;height:1px;background:currentColor;opacity:.6}
+.film_k{font-family:var(--mono);font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;opacity:.72;padding-left:.24em}
+.film .play{position:absolute;inset:0;z-index:3;width:auto;height:auto;border-radius:0;background:none;cursor:none;transform:none!important}
+.film_cur{position:absolute;left:var(--cx,50%);top:var(--cy,72%);transform:translate(-50%,-50%);display:inline-flex;align-items:center;gap:9px;height:38px;padding:0 16px 0 13px;border-radius:999px;background:rgba(237,234,226,.94);color:#0E0E0D;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;opacity:0;transition:opacity .25s ease;pointer-events:none}
+.film .play:hover .film_cur,.film .play:focus-visible .film_cur{opacity:1}
+.film_cur svg{width:9px;height:11px}
+@media (hover:none){.film_cur{opacity:1;left:50%;top:auto;bottom:22px;transform:translateX(-50%)}.film .play{cursor:pointer}}
+.film.is-playing{aspect-ratio:16/9;max-height:none}
+.film.is-playing .film_card,.film.is-playing::after{display:none}
+.film_sec .bar{transition:color .9s ease}
+@media (max-width:820px){.film{aspect-ratio:16/10}}
+@media (prefers-reduced-motion:reduce){.film .fill{transition:none;transform:none}}
+'''
+
+DOCK_CSS = '''
+.dock_btn{display:inline-flex;align-items:center;gap:8px;border:0;background:none;padding:0;margin:0;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;cursor:pointer;min-height:34px}
+.dock_btn:hover,.dock_btn.is-open{color:var(--ink,#151513)}
+.dock_btn svg{transition:transform .2s ease}
+.dock_btn.is-open svg{transform:rotate(180deg)}
+.dock{position:absolute;left:0;right:0;top:100%;z-index:20;background:#ECEAE3;border-bottom:1px solid var(--line);box-shadow:0 24px 48px -32px rgba(21,21,19,.35);animation:dockIn .22s cubic-bezier(.2,.7,.2,1) both}
+.dock[hidden]{display:none}
+@keyframes dockIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.dock_grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1px;max-width:var(--max,1280px);margin:0 auto;padding:20px var(--gut,clamp(16px,4.5vw,64px)) 24px;height:auto;box-sizing:border-box}
+.dock_i{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:16px 14px 14px;text-decoration:none;color:var(--ink,#151513);text-transform:none;letter-spacing:0;transition:background .15s ease}
+.dock_i:hover{background:#E3E0D8}
+.dock_i.is-on{background:#E3E0D8}
+.dock_mark{height:30px;display:flex;align-items:center;margin-bottom:8px;--m:linear-gradient(#0000,#0000)}
+.pair{--m:linear-gradient(#0000,#0000)}
+.dock_mark .bmark{height:26px;max-width:120px}
+.dock_n{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.dock_name{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;line-height:1.35}
+@media (prefers-reduced-motion:reduce){.dock{animation:none}}
+'''
+
 c = css
 c = re.sub(r'@font-face\{[^}]*\}', '', c)
 c = re.sub(r'/\* motion \(shared.*?/\* /motion \*/\n', '', c, flags=re.S)  # lives in global.css
@@ -87,7 +141,7 @@ if '/* site menu (shared' in c:  # drop only the injected menu block; keep page 
     j = c.index('\n', c.index('@media (prefers-reduced-motion:reduce){.mn,', i))
     c = c[:i] + c[j + 1:]
 c = re.sub(r'/\* CTA background.*?(?=\.closer_media>h2)', '', c, flags=re.S)
-c += '\n.map_gl{position:absolute;inset:0}\n.map_gl .maplibregl-ctrl-attrib{background:rgba(14,14,13,.5);color:rgba(232,228,218,.5)}\n.map_gl .maplibregl-ctrl-attrib a{color:rgba(232,228,218,.6)}\n.map_gl .maplibregl-ctrl-attrib-button{filter:invert(1);opacity:.5}\n.hero_vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}\n.logo_img{height:26px;width:auto;display:block}\n.card_img img,.fill{width:100%;height:100%;object-fit:cover;display:block}\n.img{position:relative;overflow:hidden}\n.film{overflow:hidden}\n.film .fill{position:absolute;inset:0}\n.film.is-playing{aspect-ratio:16/9;background:#000}\n.film.is-playing .play,.film.is-playing .fill{display:none}\n.film_vid{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000}\n'
+c += '\n.map_gl{position:absolute;inset:0}\n.map_gl .maplibregl-ctrl-attrib{background:rgba(14,14,13,.5);color:rgba(232,228,218,.5)}\n.map_gl .maplibregl-ctrl-attrib a{color:rgba(232,228,218,.6)}\n.map_gl .maplibregl-ctrl-attrib-button{filter:invert(1);opacity:.5}\n.hero_vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}\n.logo_img{height:26px;width:auto;display:block}\n.card_img img,.fill{width:100%;height:100%;object-fit:cover;display:block}\n.img{position:relative;overflow:hidden}\n.film{overflow:hidden}\n.film .fill{position:absolute;inset:0}\n.film.is-playing{aspect-ratio:16/9;background:#000}\n.film.is-playing .play,.film.is-playing .fill{display:none}\n.film_vid{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000}\n' + DOCK_CSS + FILM_CSS
 import json
 ASSETS = json.load(open(os.path.join(os.path.dirname(__file__), 'assets.json')))
 c = re.sub(r'/_blob/([0-9a-f]{32})', lambda m: ASSETS.get(m.group(1), m.group(0)), c)
@@ -121,12 +175,13 @@ import Link from 'next/link'
 import React from 'react'
 import { Nav } from '@/components/site/Nav'
 import { useDC } from '@/lib/dc'
-import type { BrandData } from '@/lib/data'
+import type { BrandData, BrandIndex } from '@/lib/data'
+import { BrandDock } from './BrandDock'
 import { BrandEngine } from './engine'
 import { MapStage, hasRealMap } from '@/components/site/MapStage'
 import './brand.css'
 
-export default function BrandView({ brand }: { brand: BrandData }) {
+export default function BrandView({ brand, brands }: { brand: BrandData; brands: BrandIndex }) {
   const v = useDC(BrandEngine, { brand, singleLocation: false, mapbox: hasRealMap })
   return (
     <div className="pg-brand">

@@ -348,23 +348,62 @@ const firstSentence = (t?: string | null) => {
 const cleanSched = (x?: string | null) => (x ? x.replace(/^new every/i, 'New every').replace(/\b(monday|tuesday|wednesday|thursday|friday|week)\b/gi, (w) => w[0].toUpperCase() + w.slice(1).toLowerCase()) : '')
 const lenOf = (d?: number | null) => (d ? `${Math.round(d / 60)} min` : '')
 
+/* ---------------- Podcast people ---------------- */
+import type { Speaker } from '@/payload-types'
+type PersonCard = { id: number; name: string; init: string; role: string; bio: string; img: string; href: string }
+const bioShort = (t?: string | null) => { // first sentence or two, never cut mid-thought without an ellipsis
+  const x = (t || '').replace(/\s+/g, ' ').trim(); if (x.length <= 260) return x
+  const y = x.replace(/\b(Mrs|Mr|Ms|Dr|St|Jr|Sr|Inc|Co|U\.S)\./g, '$1\u2024') // keep titles like Mrs. from ending a sentence
+  let out = ''; for (const sen of y.match(/[^.!?]+[.!?]+(\s|$)/g) || []) { if (out && (out + sen).length > 260) break; out += sen }
+  out = out.replace(/\u2024/g, '.').trim(); if (out && out.length <= 320) return out
+  return x.slice(0, 240).replace(/\s+\S*$/, '') + '…' }
+export const getSpeakers = cache(async () => {
+  const p = await db()
+  const r = await p.find({ collection: 'speakers', limit: 5000, depth: 2, pagination: false })
+  const m = new Map<number, PersonCard>()
+  for (const sp of r.docs as Speaker[]) {
+    const t = sp.teamMember && typeof sp.teamMember === 'object' ? sp.teamMember : null
+    const dept = t && typeof t.department === 'object' ? t.department : null
+    m.set(sp.id, { id: sp.id, name: sp.name, init: initialsOf(sp.name), role: sp.role || t?.title || '', bio: bioShort(sp.bio),
+      img: url(sp.headshot as Media, 'card') || url(t?.headshot as Media, 'card') || '', href: t && dept ? `/team/${dept.slug}/${t.slug}` : '' })
+  }
+  return m
+})
+const ids = (xs?: unknown[] | null) => (xs || []).map((x) => (x && typeof x === 'object' ? (x as { id: number }).id : (x as number)))
+const peopleOf = (S: Map<number, PersonCard>, xs?: unknown[] | null) => ids(xs).map((i) => S.get(i)).filter((x): x is PersonCard => !!x)
+const withLabel = (list: PersonCard[], hostIds: number[]) => list.map((x) => ({ ...x, label: hostIds.includes(x.id) ? 'Host' : 'Guest', iOnly: x.img ? '' : x.init, hasHref: !!x.href }))
+  .sort((a, b) => Number(b.label === 'Host') - Number(a.label === 'Host'))
+const hostLine = (S: Map<number, PersonCard>, sh: Show) => { const h = peopleOf(S, sh.hosts).map((x) => x.name.replace(/,.*$/, '')); return h.length ? 'With ' + (h.length > 2 ? h.slice(0, -1).join(', ') + ' + ' + h[h.length - 1] : h.join(' + ')) : '' }
+
 export const getEpisodes = cache(async () => {
   const p = await db()
   const r = await p.find({ collection: 'episodes', where: { and: [LIVE, { number: { not_equals: 0 } }] }, sort: '-published', limit: 5000, depth: 1 })
   return (r.docs as Episode[]).filter((e) => typeof e.show === 'object' && e.show)
 })
 
+/** Show logos (white SVG, used as a mask so they take each surface's color) and hero photography.
+ *  Files live in /public/podcasts. Static until Shows gets logo + hero upload fields in the CMS. */
+const SHOW_MEDIA: Record<string, { logo?: string; ar?: number; hero?: string }> = {
+  'dear-tiffany': { logo: '/podcasts/dear-tiffany-logo.svg', ar: 252.38 / 196.71, hero: '/podcasts/dear-tiffany-hero.jpg' },
+  'holding-time-back': { logo: '/podcasts/holding-time-back-logo.svg', ar: 728.02 / 211.03 },
+}
+
 export const getPodcasts = cache(async () => {
-  const [shows, eps] = await Promise.all([getShows(), getEpisodes()])
-  const S: Record<string, { name: string; short: string; sched: string; hosts: string; bg: string; fg: string; tag: string; art: string; href: string }> = {}
-  for (const s of shows) S[s.slug] = { name: s.name, short: s.name.replace(/^The /, ''), sched: cleanSched(s.raw.schedule), hosts: '', bg: s.bg, fg: s.fg, tag: firstSentence(s.raw.tagline), art: url(s.raw.artwork as Media, 'wide') || s.art, href: s.href }
+  const [shows, eps, SP] = await Promise.all([getShows(), getEpisodes(), getSpeakers()])
+  const S: Record<string, { name: string; short: string; sched: string; hosts: string; bg: string; fg: string; tag: string; art: string; href: string; logo: string; noLogo: boolean; ar: string; hero: string }> = {}
+  for (const s of shows) {
+    const m = SHOW_MEDIA[s.slug] || {}
+    S[s.slug] = { name: s.name, short: s.name.replace(/^The /, ''), sched: cleanSched(s.raw.schedule), hosts: hostLine(SP, s.raw), bg: s.bg, fg: s.fg, tag: firstSentence(s.raw.tagline), art: url(s.raw.artwork as Media, 'wide') || s.art, href: s.href,
+      logo: m.logo || '', noLogo: !m.logo, ar: String(m.ar || 2.2), hero: m.hero || '' }
+  }
   const E = eps.map((e, i) => {
     const sh = e.show as Show
     return { id: i, show: sh.slug, n: e.number ? String(e.number).padStart(3, '0') : '', title: e.title, topics: [] as string[], aud: [] as string[], spk: [] as string[],
       date: iso(e.published), len: lenOf(e.duration), sec: e.duration || 0, href: `/podcasts/${sh.slug}/${e.slug}`, ep: toEp(e) }
   }).map((x) => Object.assign(x, { label: (x.n ? `EP ${x.n} / ` : '') + x.title }))
   const withEps = shows.filter((s) => E.some((e) => e.show === s.slug))
-  const feat = (withEps.filter((s) => s.raw.featured).length ? withEps.filter((s) => s.raw.featured) : withEps).slice(0, 4).map((s) => s.slug)
+  // every show with episodes is a hero slide, featured first, so each shelf card drives the hero
+  const feat = [...withEps.filter((s) => s.raw.featured), ...withEps.filter((s) => !s.raw.featured)].map((s) => s.slug)
   const G = [{ key: 'show', t: 'Show', opts: shows.map((s) => ({ v: s.slug, t: s.name })) }]
   return { S, P: {}, E, G, paths: [], feat }
 })
@@ -378,7 +417,7 @@ const epRow = (e: Episode, sh: Show) => ({
 })
 
 export const getShow = cache(async (slug: string) => {
-  const [shows, eps] = await Promise.all([getShows(), getEpisodes()])
+  const [shows, eps, SP] = await Promise.all([getShows(), getEpisodes(), getSpeakers()])
   const s = shows.find((x) => x.slug === slug)
   if (!s) return null
   const mine = eps.filter((e) => (e.show as Show).slug === slug)
@@ -387,13 +426,15 @@ export const getShow = cache(async (slug: string) => {
   return {
     show: { name: s.name, bg: s.bg, fg: s.fg, art: url(s.raw.artwork as Media, 'wide') || s.art, noArt: !s.art, sched: cleanSched(s.raw.schedule), tag: firstSentence(s.raw.tagline) },
     plats: platsOf(s.raw), since: first?.published ? String(new Date(first.published).getUTCFullYear()) : '',
+    hosts: withLabel(peopleOf(SP, s.raw.hosts), ids(s.raw.hosts)),
+    guests: String(new Set(mine.flatMap((e) => ids(e.speakers)).filter((i) => !ids(s.raw.hosts).includes(i))).size),
     eps: mine.map((e) => epRow(e, s.raw)),
     shows: shows.filter((x) => x.slug !== slug).slice(0, 4).map((x) => showCard(x, count(x.slug))),
   }
 })
 
 export const getEpisodePage = cache(async (showSlug: string, slug: string) => {
-  const [shows, eps] = await Promise.all([getShows(), getEpisodes()])
+  const [shows, eps, SP] = await Promise.all([getShows(), getEpisodes(), getSpeakers()])
   const s = shows.find((x) => x.slug === showSlug)
   const e = eps.find((x) => x.slug === slug && (x.show as Show).slug === showSlug)
   if (!s || !e) return null
@@ -405,6 +446,7 @@ export const getEpisodePage = cache(async (showSlug: string, slug: string) => {
     show: { name: s.name, href: s.href, bg: s.bg, art: url(s.raw.artwork as Media, 'wide') || s.art, sched: cleanSched(s.raw.schedule), tag: firstSentence(s.raw.tagline), count: `${mine.length} episodes` },
     ep: { title: e.title, n: row.n, date: row.date, len: row.len, sum: e.summary || '', video: e.video || '', player: row.ep },
     plats: platsOf(s.raw),
+    people: withLabel(peopleOf(SP, e.speakers), ids(s.raw.hosts)),
     pq: e.pullQuotes?.[0] ? { text: e.pullQuotes[0].text || '', at: e.pullQuotes[0].at || '' } : { text: '', at: '' },
     chapters: (e.chapters || []).map((c) => ({ at: c.at || '0:00', t: c.title || '' })),
     trHtml: html(e.transcript),

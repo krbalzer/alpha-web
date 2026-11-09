@@ -4,16 +4,17 @@ import Link from 'next/link'
 import React from 'react'
 import { Nav } from '@/components/site/Nav'
 import { useDC } from '@/lib/dc'
-import type { BrandData } from '@/lib/data'
+import type { BrandData, BrandIndex } from '@/lib/data'
+import { BrandDock } from './BrandDock'
 import { BrandEngine } from './engine'
 import { MapStage, hasRealMap } from '@/components/site/MapStage'
 import './brand.css'
 
-export default function BrandView({ brand }: { brand: BrandData }) {
+export default function BrandView({ brand, brands }: { brand: BrandData; brands: BrandIndex }) {
   const v = useDC(BrandEngine, { brand, singleLocation: false, mapbox: hasRealMap })
   return (
     <div className="pg-brand">
-<Nav><div className="crumb"><div className="wrap"><span>{v.b.ptr}</span><span>{v.b.name}</span><span>{v.b.sinceLine}</span></div></div></Nav>
+<Nav><div className="crumb"><div className="wrap"><span>{v.b.ptr}</span><BrandDock name={v.b.name} current={brand.slug} brands={brands} /><span>{v.b.sinceLine}</span></div></div></Nav>
 
 {/* ============ HERO: silent loop, everything pinned to the bottom of the fold ============ */}
 <section className="hero dark" style={{"height": `${v.heroH}`} as React.CSSProperties} aria-label={v.b.name}>
@@ -76,13 +77,11 @@ export default function BrandView({ brand }: { brand: BrandData }) {
 </section>
 
 {/* ============ STORY FILM ============ */}
-<section style={{"paddingBottom": "clamp(80px, 9vw, 140px)"} as React.CSSProperties}>
+<section className="film_sec" ref={v.filmSec} style={{"paddingBottom": "clamp(80px, 9vw, 140px)"} as React.CSSProperties}>
 <div className="wrap">
-<hr className="rule" />
-<div className="bar"><span>{v.b.ptr}</span><span>{v.b.short} story</span></div>
 <div className="film">
 {v.b.filmPoster ? (<><img className="fill" src={v.b.filmPoster} alt="" loading="lazy" decoding="async" /></>) : null}
-<button className="play" onClick={v.playFilm} aria-label={`Play the ${v.b.short} story`}><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1l10 6-10 6z" fill="#0E0E0D"></path></svg></button>
+<div className="film_card" aria-hidden="true"><span className="film_mark"><span className="amark"></span></span><i className="film_rule"></i><span className="film_name">The {v.b.short} Story</span></div><button className="play" onClick={v.playFilm} onMouseMove={v.filmMove} aria-label={`Play the ${v.b.short} story`}><span className="film_cur"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1 1l10 6-10 6z" fill="#0E0E0D"></path></svg><span>Play</span></span></button>
 </div>
 {v.b.filmCaption ? (<><div className="body" style={{"marginTop": "clamp(28px, 3vw, 44px)"} as React.CSSProperties}><p>{v.b.filmCaption}</p></div></>) : null}
 </div>

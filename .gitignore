@@ -60,3 +60,6 @@ __pycache__/
 
 # copied from node_modules on install
 /public/vendor
+
+# files the Claude app drops into the folder
+/Claude outputs/

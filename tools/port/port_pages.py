@@ -496,7 +496,10 @@ PLAY_EVENT = "if (typeof window !== 'undefined' && ep) window.dispatchEvent(new 
 
 
 def podcasts_markup(b):
-    b = rep(b, '<span class="tv_art" style="color: {{ s.fg }}">{{ s.short }}</span>', '<sc-if value="{{ s.art }}"><img class="tv_img" src="{{ s.art }}" alt=""></sc-if><sc-if value="{{ s.noArt }}"><span class="tv_art" style="color: {{ s.fg }}">{{ s.short }}</span></sc-if>')
+    # hero photography behind the slide; title and shelf cards become show logos when a show has one
+    b = rep(b, '<p class="mono tv_k">{{ hs.sched }}</p>\n<h1 class="tv_t">{{ hs.name }}</h1>', '<p class="mono tv_k">{{ hs.sched }}</p>\n<h1 class="tv_t"><sc-if value="{{ hs.logo }}"><span class="tv_logo" role="img" aria-label="{{ hs.name }}" style="--logo: url({{ hs.logo }}); --ar: {{ hs.ar }}"></span></sc-if><sc-if value="{{ hs.noLogo }}">{{ hs.name }}</sc-if></h1>')
+    b = rep(b, '<span class="sh_t">{{ s.short }}</span>', '<sc-if value="{{ s.logo }}"><span class="sh_logo" role="img" aria-label="{{ s.short }}" style="--logo: url({{ s.logo }}); --ar: {{ s.ar }}"></span></sc-if><sc-if value="{{ s.noLogo }}"><span class="sh_t">{{ s.short }}</span></sc-if>')
+    b = rep(b, '<span class="tv_art" style="color: {{ s.fg }}">{{ s.short }}</span>', '<sc-if value="{{ s.hero }}"><img class="tv_bg" src="{{ s.hero }}" alt=""></sc-if><sc-if value="{{ s.art }}"><img class="tv_img" src="{{ s.art }}" alt=""></sc-if><sc-if value="{{ s.noArt }}"><span class="tv_art" style="color: {{ s.fg }}">{{ s.short }}</span></sc-if>')
     b = sub(r'<span class="ph tv_ph">.*?</span>\s*', '', b)
     b = rep(b, '<p class="mono tv_latest"><span>Latest</span>EP {{ hs.ep.n }} / {{ hs.ep.title }}</p>', '<sc-if value="{{ hs.ep.title }}"><p class="mono tv_latest"><span>Latest</span>{{ hs.ep.label }}</p></sc-if>')
     b = rep(b, '<a class="btn" href="/podcasts">All episodes</a>', '<a class="btn" href="{{ hs.href }}">All episodes</a>')
@@ -524,6 +527,8 @@ def podcasts_engine(e):
     e = rep(e, "if (this.props.autoplay !== false && !s.paused && !this.rm) { const he = (s.he || 0) + 100; if (he >= 7000) { o.hi = ((s.hi || 0) + 1) % 4;",
             "if (this.props.autoplay !== false && !s.paused && !this.rm) { const he = (s.he || 0) + 100; if (he >= 7000) { o.hi = ((s.hi || 0) + 1) % this.data().feat.length;")
     e = rep(e, "if (s.playing && s.now != null) { const e = this.data().E[s.now]; o.t = Math.min(e.sec, (s.t || 0) + .1); dirty = true; }", "")
+    e = rep(e, "slides: D.feat.map((k, i) => ({ art: D.S[k].art, noArt: !D.S[k].art, cls: 'tv_slide' + (i === hi ? ' is-on' : ''),", "slides: D.feat.map((k, i) => ({ hero: D.S[k].hero || '', art: D.S[k].art, noArt: !D.S[k].art, cls: 'tv_slide' + (D.S[k].hero ? ' has-hero' : '') + (i === hi ? ' is-on' : ''),")
+    e = rep(e, "return { short: D.S[k].short, sched: D.S[k].sched,", "return { logo: D.S[k].logo || '', noLogo: !D.S[k].logo, ar: D.S[k].ar, short: D.S[k].short, sched: D.S[k].sched,")
     return e
 
 
@@ -532,6 +537,12 @@ PODCAST_CSS = IMG_CSS + """
 .r_play{position:relative;overflow:hidden}
 .r_play .r_pi{position:relative;z-index:1}
 @media (max-width:820px){.tv_img{opacity:.25;height:60%}}
+.tv_bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% 30%}
+.tv_slide.has-hero{background:#0E0E0D!important}
+.tv_slide.has-hero .tv_img{top:auto;right:calc((100vw - min(100vw, var(--max, 1280px))) / 2 + var(--gut, 64px));bottom:clamp(150px,13vw,200px);transform:none;height:clamp(120px,11vw,176px);box-shadow:0 18px 40px rgba(0,0,0,.45);opacity:1}
+.tv_logo{display:block;height:clamp(110px,11vw,190px);max-width:100%;aspect-ratio:var(--ar,2.2);background:currentColor;-webkit-mask:var(--logo) left bottom/contain no-repeat;mask:var(--logo) left bottom/contain no-repeat}
+.sh_logo{display:block;width:78%;height:56%;background:currentColor;-webkit-mask:var(--logo) left top/contain no-repeat;mask:var(--logo) left top/contain no-repeat}
+@media (max-width:820px){.tv_slide.has-hero .tv_img{display:none}}
 """
 
 
@@ -548,12 +559,17 @@ SHOW_BODY = """
 <h1 class="sh_t">{{ show.name }}</h1>
 <sc-if value="{{ show.tag }}"><p class="sh_d">{{ show.tag }}</p></sc-if>
 <div class="sh_row"><sc-if value="{{ hasEps }}"><button class="tv_play" onClick="{{ playLatest }}"><svg width="11" height="13" viewBox="0 0 11 13" aria-hidden="true"><path d="M0 0l11 6.5L0 13z" fill="currentColor"></path></svg>Play latest</button></sc-if><sc-for list="{{ plats }}" as="p"><a class="plat light" href="{{ p.href }}" target="_blank" rel="noopener">{{ p.t }} ↗</a></sc-for></div>
-<div class="sh_stats"><div><b>{{ count }}</b><span>Episodes</span></div><sc-if value="{{ since }}"><div><b>{{ since }}</b><span>Since</span></div></sc-if></div>
+<div class="sh_stats"><div><b>{{ count }}</b><span>Episodes</span></div><sc-if value="{{ since }}"><div><b>{{ since }}</b><span>Since</span></div></sc-if><sc-if value="{{ hasGuests }}"><div><b>{{ guests }}</b><span>Guests</span></div></sc-if></div>
 </div></div></section>
 <sc-if value="{{ hasEps }}">
 <section class="sec"><div class="wrap"><div class="latest" style="grid-template-columns: 1fr">
 <div><span class="k">Latest · {{ lat.label }} · {{ lat.date }}</span><h3>{{ lat.title }}</h3><sc-if value="{{ lat.sum }}"><p>{{ lat.sum }}</p></sc-if><div style="display: flex; gap: 8px"><button class="btn" onClick="{{ playLatest }}">Play</button><a class="btn" href="{{ lat.href }}">Episode page</a></div></div>
 </div></div></section>
+<sc-if value="{{ hasHosts }}"><section style="padding-bottom: clamp(70px, 8vw, 120px)"><div class="wrap">
+<hr class="rule" style="margin-bottom: clamp(30px, 3vw, 44px)">
+<p class="eyebrow">{{ hostsLabel }}</p>
+<div class="hosts"><sc-for list="{{ hosts }}" as="p"><div class="hostc"><span class="person_av"><sc-if value="{{ p.img }}"><img src="{{ p.img }}" alt="" loading="lazy"></sc-if><sc-if value="{{ p.iOnly }}">{{ p.init }}</sc-if></span><div><h3 class="person_n" style="margin-top: 0">{{ p.name }}</h3><sc-if value="{{ p.role }}"><p class="person_t mono">{{ p.role }}</p></sc-if><sc-if value="{{ p.bio }}"><p class="person_b">{{ p.bio }}</p></sc-if><sc-if value="{{ p.hasHref }}"><a class="btn" href="{{ p.href }}">Profile</a></sc-if></div></div></sc-for></div>
+</div></section></sc-if>
 <section style="padding-bottom: clamp(90px, 10vw, 150px)"><div class="wrap">
 <div class="split_head"><h2 class="display h2">Every episode</h2></div>
 <div class="res_bar" style="padding-bottom: 10px"><p class="res_n"><b>{{ nRes }}</b> <span class="mono">episodes</span></p><a class="lnk k" href="/podcasts">Search the whole network →</a></div>
@@ -584,6 +600,7 @@ def show_engine(e):
     const play = (ep) => { """ + PLAY_EVENT + """; };
     return {
       show: D.show, plats: D.plats, count: String(E.length), since: D.since, hasEps: E.length > 0,
+      hosts: D.hosts || [], hasHosts: (D.hosts || []).length > 0, hostsLabel: (D.hosts || []).length > 1 ? 'Your hosts' : 'Your host', guests: D.guests, hasGuests: Number(D.guests) > 0,
       lat: E[0] || {}, playLatest: () => E[0] && play(E[0].ep),
       nRes: E.length, rows: E.slice(0, shown).map((x) => Object.assign({}, x, { cls: 'row', play: () => play(x.ep), bg: D.show.bg, fg: D.show.fg, art: D.show.art })),
       hasMore: E.length > shown, loadMore: () => this.setState({ shown: shown + 20 }),
@@ -599,6 +616,7 @@ EPISODE_BODY = """
 <div class="eh_info">
 <h1 class="eh_t">{{ ep.title }}</h1>
 <p class="eh_m mono"><a href="{{ show.href }}" style="color: inherit">{{ show.name }}</a><sc-if value="{{ ep.n }}"> // EP {{ ep.n }}</sc-if> <span>{{ ep.date }}<sc-if value="{{ ep.len }}"> · {{ ep.len }}</sc-if></span></p>
+<sc-if value="{{ hasPeople }}"><div class="eh_spk" style="margin-top: 18px"><sc-for list="{{ people }}" as="p"><span class="spk" title="{{ p.name }}"><sc-if value="{{ p.img }}"><img src="{{ p.img }}" alt="" loading="lazy"></sc-if><sc-if value="{{ p.iOnly }}">{{ p.init }}</sc-if></span></sc-for></div></sc-if>
 <div class="plats" style="margin-top: 18px"><button class="tv_play" onClick="{{ play }}"><svg width="11" height="13" viewBox="0 0 11 13" aria-hidden="true"><path d="M0 0l11 6.5L0 13z" fill="currentColor"></path></svg>Play episode</button><sc-for list="{{ plats }}" as="p"><a class="plat" href="{{ p.href }}" target="_blank" rel="noopener">{{ p.t }}<span aria-hidden="true">↗</span></a></sc-for></div>
 </div>
 </div></section>
@@ -615,6 +633,14 @@ EPISODE_BODY = """
 <sc-if value="{{ trHtml }}"><button class="tr_btn mono" onClick="{{ toggleTr }}" aria-expanded="{{ trOpenS }}">{{ trLabel }}</button><sc-if value="{{ trOpen }}"><x-rich class="tr" html="{{ trHtml }}"></x-rich></sc-if></sc-if>
 </div>
 </div></section>
+<sc-if value="{{ hasPeople }}"><section style="padding-bottom: clamp(70px, 8vw, 120px)"><div class="wrap">
+<hr class="rule" style="margin-bottom: clamp(36px, 4vw, 60px)">
+<p class="eyebrow">In the room</p>
+<div class="room2"><sc-for list="{{ people }}" as="p"><div class="person">
+<span class="person_av"><sc-if value="{{ p.img }}"><img src="{{ p.img }}" alt="" loading="lazy"></sc-if><sc-if value="{{ p.iOnly }}">{{ p.init }}</sc-if></span>
+<div><span class="person_k mono">{{ p.label }}</span><h3 class="person_n">{{ p.name }}</h3><sc-if value="{{ p.role }}"><p class="person_t mono">{{ p.role }}</p></sc-if><sc-if value="{{ p.bio }}"><p class="person_b">{{ p.bio }}</p></sc-if><sc-if value="{{ p.hasHref }}"><a class="btn" href="{{ p.href }}">Profile</a></sc-if></div>
+</div></sc-for></div>
+</div></section></sc-if>
 <section class="show"><div class="wrap show_grid">
 <div class="art" style="background: {{ show.bg }}; position: relative; overflow: hidden" aria-label="{{ show.name }} cover"><sc-if value="{{ show.art }}"><img class="ph_img" src="{{ show.art }}" alt="" loading="lazy"></sc-if></div>
 <div><p class="eyebrow">About the show</p><h2 class="show_n">{{ show.name }}</h2></div>
@@ -649,7 +675,7 @@ def episode_engine(e):
     const D = this.props.data, s = this.st(), ep = D.ep.player;
     const playAt = (at) => { const x = Object.assign({}, ep); if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('alpha:play', { detail: x })); if (at && typeof window !== 'undefined') setTimeout(() => { const a = document.querySelector('audio'); if (a) a.currentTime = at; }, 400); };
     return {
-      show: D.show, ep: D.ep, plats: D.plats, pq: D.pq, share: D.share,
+      show: D.show, ep: D.ep, plats: D.plats, pq: D.pq, share: D.share, people: D.people || [], hasPeople: (D.people || []).length > 0,
       play: () => playAt(0), playQuote: () => playAt(this.sec(D.pq.at)),
       hasChapters: D.chapters.length > 0, chapters: D.chapters.map((c) => ({ at: c.at, t: c.t, go: () => playAt(this.sec(c.at)) })),
       trHtml: D.trHtml, trOpen: !!s.tr, trOpenS: s.tr ? 'true' : 'false', trLabel: s.tr ? 'Hide transcript' : 'Read the full transcript', toggleTr: () => this.setState({ tr: !s.tr }),
@@ -681,8 +707,8 @@ PAGES = {
                       css=IMG_CSS + MAP_CSS + '.map_focus{opacity:0;pointer-events:none}\n.map_focus .maplibregl-canvas-container{transition:opacity .7s}\n.map_focus:not([data-ready="1"]) .maplibregl-canvas-container{opacity:0;transition:opacity .2s}\n'),
     'Location': dict(dir='locations/[slug]', board='Location', markup=location_markup, engine=location_engine, jsx=location_jsx, imports=MAP_IMPORT, css=IMG_CSS + MAP_CSS),
     'Podcasts': dict(dir='podcasts', board='Podcasts', data=True, markup=podcasts_markup, engine=podcasts_engine, css=PODCAST_CSS),
-    'Show': dict(dir='podcasts/[show]', board='Show', markup=show_markup, engine=show_engine, css=IMG_CSS),
-    'Episode': dict(dir='podcasts/[show]/[episode]', board='Episode', markup=episode_markup, engine=episode_engine, css=IMG_CSS),
+    'Show': dict(dir='podcasts/[show]', board='Show', markup=show_markup, engine=show_engine, css=IMG_CSS + '.spk,.person_av{position:relative;overflow:hidden}\n.spk img,.person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}\n'),
+    'Episode': dict(dir='podcasts/[show]/[episode]', board='Episode', markup=episode_markup, engine=episode_engine, css=IMG_CSS + '.tv_play{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 22px 0 18px;border-radius:999px;border:0;background:var(--ink);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:transform .3s var(--ease)}\n.tv_play:hover{transform:scale(1.04)}\n' + '.spk,.person_av{position:relative;overflow:hidden}\n.spk img,.person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}\n'),
     # 'Speaker': ported when the Speakers collection has people in it
     'Main': dict(dir='_home', board='Main', markup=main_markup, engine=main_engine, css=MAIN_CSS),
 }

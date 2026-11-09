@@ -21,6 +21,9 @@ const REMOVED: Record<'articles' | 'founders' | 'brands', string[]> = {
 
 const hash = (s: string) => createHash('sha256').update(s).digest('hex')
 
+/** True for a slug that was removed from the network (checked by importers so it never comes back). */
+export const isRemoved = (collection: keyof typeof REMOVED, slug: string) => REMOVED[collection].includes(hash(slug))
+
 export async function scrubRemoved(p: Payload) {
   for (const collection of ['articles', 'founders', 'brands'] as const) {
     const all = await p.find({ collection, limit: 2000, depth: 0, pagination: false, select: { slug: true } as never, overrideAccess: true })

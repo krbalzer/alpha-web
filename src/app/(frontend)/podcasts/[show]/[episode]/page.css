@@ -302,4 +302,8 @@
 .pg-episode .mn_w span{transform:none!important}}
 .pg-episode .ph_img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .pg-episode .tp_i,.pg-episode .tm_img,.pg-episode .o2_img,.pg-episode .face,.pg-episode .ph_cut{position:relative;overflow:hidden}
+.pg-episode .tv_play{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 22px 0 18px;border-radius:999px;border:0;background:var(--ink);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:transform .3s var(--ease)}
+.pg-episode .tv_play:hover{transform:scale(1.04)}
+.pg-episode .spk,.pg-episode .person_av{position:relative;overflow:hidden}
+.pg-episode .spk img,.pg-episode .person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 

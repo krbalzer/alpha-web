@@ -100,7 +100,7 @@ export const getBrand = cache(async (slug: string) => {
     book: b.website || locs.docs.find((l) => l.bookingUrl)?.bookingUrl || '',
     since: fmtSince(b.since), est,
     founder: f?.name || '', cred: f?.credentials || '', founderSlug: f?.slug || '',
-    founderImg: url(f?.headshot, 'card') || url(f?.portrait, 'card') || '',
+    founderImg: url(f?.headshot, 'wide') || url(f?.portrait, 'wide') || '',
     founderHtml: html(f?.bio),
     services: (b.services || []) as string[],
     states: [...new Set(locs.docs.map((l) => l.state))],
@@ -139,3 +139,11 @@ export const getBrandSlugs = async () => {
   const r = await p.find({ collection: 'brands', where: LIVE, limit: 500, depth: 0, select: { slug: true } })
   return r.docs.map((d) => d.slug)
 }
+
+/** Every live brand in join order, for the brand switcher in the crumb. */
+export const getBrandIndex = cache(async () => {
+  const p = await db()
+  const r = await p.find({ collection: 'brands', where: LIVE, limit: 500, depth: 0, sort: 'ptr', select: { slug: true, name: true, ptr: true } })
+  return r.docs.map((d) => ({ slug: d.slug, name: d.name, n: String(d.ptr).padStart(3, '0') }))
+})
+export type BrandIndex = Awaited<ReturnType<typeof getBrandIndex>>

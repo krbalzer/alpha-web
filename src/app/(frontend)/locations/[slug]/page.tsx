@@ -24,7 +24,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     <>
       {poster ? <link rel="preload" as="image" href={poster} fetchPriority="high" /> : null}
       <LocationView key={data.b.locations[0].href} data={data} />
-      <Closer skipBrand={data.b.href.split('/').pop()} />
+      <Closer brand={data.b.href.split('/').pop()} />
     </>
   )
 }

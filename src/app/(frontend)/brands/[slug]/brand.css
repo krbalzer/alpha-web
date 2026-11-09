@@ -270,4 +270,42 @@
 .pg-brand .film.is-playing{aspect-ratio:16/9;background:#000}
 .pg-brand .film.is-playing .play,.pg-brand .film.is-playing .fill{display:none}
 .pg-brand .film_vid{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000}
+.pg-brand .dock_btn{display:inline-flex;align-items:center;gap:8px;border:0;background:none;padding:0;margin:0;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;cursor:pointer;min-height:34px}
+.pg-brand .dock_btn:hover,.pg-brand .dock_btn.is-open{color:var(--ink,#151513)}
+.pg-brand .dock_btn svg{transition:transform .2s ease}
+.pg-brand .dock_btn.is-open svg{transform:rotate(180deg)}
+.pg-brand .dock{position:absolute;left:0;right:0;top:100%;z-index:20;background:#ECEAE3;border-bottom:1px solid var(--line);box-shadow:0 24px 48px -32px rgba(21,21,19,.35);animation:dockIn .22s cubic-bezier(.2,.7,.2,1) both}
+.pg-brand .dock[hidden]{display:none}
+@keyframes dockIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.pg-brand .dock_grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1px;max-width:var(--max,1280px);margin:0 auto;padding:20px var(--gut,clamp(16px,4.5vw,64px)) 24px;height:auto;box-sizing:border-box}
+.pg-brand .dock_i{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:16px 14px 14px;text-decoration:none;color:var(--ink,#151513);text-transform:none;letter-spacing:0;transition:background .15s ease}
+.pg-brand .dock_i:hover{background:#E3E0D8}
+.pg-brand .dock_i.is-on{background:#E3E0D8}
+.pg-brand .dock_mark{height:30px;display:flex;align-items:center;margin-bottom:8px;--m:linear-gradient(#0000,#0000)}
+.pg-brand .pair{--m:linear-gradient(#0000,#0000)}
+.pg-brand .dock_mark .bmark{height:26px;max-width:120px}
+.pg-brand .dock_n{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.pg-brand .dock_name{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;line-height:1.35}
+@media (prefers-reduced-motion:reduce){.pg-brand .dock{animation:none}}
+.pg-brand .film{width:100vw;margin-left:calc(50% - 50vw);aspect-ratio:2.39/1;max-height:88vh;background:#0E0E0D;display:block}
+.pg-brand .film .fill{transform:scale(1.05);transition:transform 2.6s cubic-bezier(.2,.7,.2,1),filter .8s ease;filter:brightness(.72)}
+.pg-brand .film:hover .fill{transform:scale(1.01);filter:brightness(.8)}
+.pg-brand .film::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,rgba(14,14,13,.12) 0%,rgba(14,14,13,.55) 100%)}
+.pg-brand .film_card{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;color:#EDEAE2;pointer-events:none;text-align:center}
+.pg-brand .film_name{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.pg-brand .film_mark{display:flex;align-items:center;height:34px;color:#EDEAE2}
+.pg-brand .film_mark .amark{height:30px}
+.pg-brand .film_rule{display:block;width:44px;height:1px;background:currentColor;opacity:.6}
+.pg-brand .film_k{font-family:var(--mono);font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;opacity:.72;padding-left:.24em}
+.pg-brand .film .play{position:absolute;inset:0;z-index:3;width:auto;height:auto;border-radius:0;background:none;cursor:none;transform:none!important}
+.pg-brand .film_cur{position:absolute;left:var(--cx,50%);top:var(--cy,72%);transform:translate(-50%,-50%);display:inline-flex;align-items:center;gap:9px;height:38px;padding:0 16px 0 13px;border-radius:999px;background:rgba(237,234,226,.94);color:#0E0E0D;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;opacity:0;transition:opacity .25s ease;pointer-events:none}
+.pg-brand .film .play:hover .film_cur,.pg-brand .film .play:focus-visible .film_cur{opacity:1}
+.pg-brand .film_cur svg{width:9px;height:11px}
+@media (hover:none){.pg-brand .film_cur{opacity:1;left:50%;top:auto;bottom:22px;transform:translateX(-50%)}
+.pg-brand .film .play{cursor:pointer}}
+.pg-brand .film.is-playing{aspect-ratio:16/9;max-height:none}
+.pg-brand .film.is-playing .film_card,.pg-brand .film.is-playing::after{display:none}
+.pg-brand .film_sec .bar{transition:color .9s ease}
+@media (max-width:820px){.pg-brand .film{aspect-ratio:16/10}}
+@media (prefers-reduced-motion:reduce){.pg-brand .film .fill{transition:none;transform:none}}
 

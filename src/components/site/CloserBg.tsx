@@ -3,14 +3,12 @@ import { useEffect, useState } from 'react'
 
 export type CtaPick = { src: string; soft?: boolean; srcSet?: string; brand?: string; ptr?: string; name?: string; city?: string }
 
-/** Picks one CTA image per page load, skipping the current brand. Only the chosen image is ever requested. */
-export function CloserBg({ items, skipBrand }: { items: CtaPick[]; skipBrand?: string }) {
+/** Picks one CTA image per page load from the pool the Closer hands it. Only the chosen image is ever requested. */
+export function CloserBg({ items }: { items: CtaPick[] }) {
   const [p, setP] = useState<CtaPick | null>(null)
   useEffect(() => {
-    const pool = items.filter((i) => !skipBrand || i.brand !== skipBrand)
-    const list = pool.length ? pool : items
-    if (list.length) setP(list[Math.floor(Math.random() * list.length)])
-  }, [items, skipBrand])
+    if (items.length) setP(items[Math.floor(Math.random() * items.length)])
+  }, [items])
   if (!p) return null
   return (
     <>

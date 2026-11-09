@@ -256,6 +256,15 @@ export class BrandEngine extends DCLogic {
         box.appendChild(v); box.classList.add('is-playing');
         const p = v.play(); if (p && p.catch) p.catch(() => {});
       },
+      // cursor label follows the pointer inside the frame
+      filmMove: (e) => { const r = e.currentTarget.getBoundingClientRect(); e.currentTarget.style.setProperty('--cx', (e.clientX - r.left) + 'px'); e.currentTarget.style.setProperty('--cy', (e.clientY - r.top) + 'px'); },
+      // lights down while the film holds the middle of the screen
+      filmSec: (el) => {
+        if (!el || el === this._fs || typeof IntersectionObserver === 'undefined') return;
+        this._fs = el; const root = el.closest('.pg-brand');
+        const io = new IntersectionObserver(([en]) => { if (root) root.classList.toggle('lights-down', en.isIntersecting); }, { rootMargin: '-30% 0px -30% 0px' });
+        io.observe(el);
+      },
       heroH: this.tall ? '820px' : 'calc(100svh - 126px)',
       vidRef: (el) => {
         if (!el || el === this._vid) return;

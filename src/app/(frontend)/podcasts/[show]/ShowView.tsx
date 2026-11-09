@@ -21,12 +21,17 @@ export default function ShowView(props: any) {
 <h1 className="sh_t">{v.show.name}</h1>
 {v.show.tag ? (<><p className="sh_d">{v.show.tag}</p></>) : null}
 <div className="sh_row">{v.hasEps ? (<><button className="tv_play" onClick={v.playLatest}><svg width="11" height="13" viewBox="0 0 11 13" aria-hidden="true"><path d="M0 0l11 6.5L0 13z" fill="currentColor"></path></svg>Play latest</button></>) : null}{(v.plats || []).map((p: any, p_i: number) => (<React.Fragment key={p_i}><a className="plat light" href={p.href} target="_blank" rel="noopener">{p.t} ↗</a></React.Fragment>))}</div>
-<div className="sh_stats"><div><b>{v.count}</b><span>Episodes</span></div>{v.since ? (<><div><b>{v.since}</b><span>Since</span></div></>) : null}</div>
+<div className="sh_stats"><div><b>{v.count}</b><span>Episodes</span></div>{v.since ? (<><div><b>{v.since}</b><span>Since</span></div></>) : null}{v.hasGuests ? (<><div><b>{v.guests}</b><span>Guests</span></div></>) : null}</div>
 </div></div></section>
 {v.hasEps ? (<>
 <section className="sec"><div className="wrap"><div className="latest" style={{"gridTemplateColumns": "1fr"} as React.CSSProperties}>
 <div><span className="k">Latest · {v.lat.label} · {v.lat.date}</span><h3>{v.lat.title}</h3>{v.lat.sum ? (<><p>{v.lat.sum}</p></>) : null}<div style={{"display": "flex", "gap": "8px"} as React.CSSProperties}><button className="btn" onClick={v.playLatest}>Play</button><a className="btn" href={v.lat.href}>Episode page</a></div></div>
 </div></div></section>
+{v.hasHosts ? (<><section style={{"paddingBottom": "clamp(70px, 8vw, 120px)"} as React.CSSProperties}><div className="wrap">
+<hr className="rule" style={{"marginBottom": "clamp(30px, 3vw, 44px)"} as React.CSSProperties} />
+<p className="eyebrow">{v.hostsLabel}</p>
+<div className="hosts">{(v.hosts || []).map((p: any, p_i: number) => (<React.Fragment key={p_i}><div className="hostc"><span className="person_av">{p.img ? (<><img src={p.img} alt="" loading="lazy" /></>) : null}{p.iOnly ? (<>{p.init}</>) : null}</span><div><h3 className="person_n" style={{"marginTop": "0"} as React.CSSProperties}>{p.name}</h3>{p.role ? (<><p className="person_t mono">{p.role}</p></>) : null}{p.bio ? (<><p className="person_b">{p.bio}</p></>) : null}{p.hasHref ? (<><a className="btn" href={p.href}>Profile</a></>) : null}</div></div></React.Fragment>))}</div>
+</div></section></>) : null}
 <section style={{"paddingBottom": "clamp(90px, 10vw, 150px)"} as React.CSSProperties}><div className="wrap">
 <div className="split_head"><h2 className="display h2">Every episode</h2></div>
 <div className="res_bar" style={{"paddingBottom": "10px"} as React.CSSProperties}><p className="res_n"><b>{v.nRes}</b> <span className="mono">episodes</span></p><a className="lnk k" href="/podcasts">Search the whole network →</a></div>
