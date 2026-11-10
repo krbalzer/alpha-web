@@ -44,7 +44,7 @@
 .sa_arr:hover{background:var(--paper);color:var(--ink)}
 .sa_btn{height:44px;padding:0 20px;background:var(--paper);color:var(--ink);border-color:var(--paper)}
 .sa_btn:hover{background:transparent;color:var(--paper)}
-.sa_rail{--h:clamp(320px,38vw,480px);--g:max(clamp(16px,4.5vw,64px),calc((100vw - 1280px)/2 + clamp(16px,4.5vw,64px)));display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;cursor:grab;padding:0 var(--g);scroll-padding-inline:var(--g)}
+.sa_rail{--h:clamp(320px,38vw,480px);--g:max(var(--gut,clamp(16px,4.5vw,64px)),calc((100% - var(--max,1280px))/2 + var(--gut,clamp(16px,4.5vw,64px))));display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;cursor:grab;padding:0 var(--g);scroll-padding-inline:var(--g)}
 .sa_rail::-webkit-scrollbar{display:none}
 .sa_rail.is-drag{cursor:grabbing;scroll-snap-type:none}
 .sa_s{flex:0 0 auto;margin:0;scroll-snap-align:start;height:var(--h);position:relative;overflow:hidden;background:#1a1917}

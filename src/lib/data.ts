@@ -170,8 +170,10 @@ export const getSinceAlpha = cache(async (slug: string, since?: string) => {
   let msm: { href: string; label: string } | null = null
   if (e.rebrand?.msm) {
     const p = await db()
-    const r = await p.find({ collection: 'episodes', where: { and: [{ number: { equals: e.rebrand.msm.n } }, { 'show.slug': { equals: 'med-spa-marketing-group-chat' } }, LIVE] }, limit: 1, depth: 1 })
-    const ep = r.docs[0]
+    // MSM episodes carry their number in the slug prefix ("079-..."); `number` is empty in prod
+    const pre = String(e.rebrand.msm.n).padStart(3, '0') + '-'
+    const r = await p.find({ collection: 'episodes', where: { and: [{ slug: { like: pre } }, { 'show.slug': { equals: 'med-spa-marketing-group-chat' } }, LIVE] }, limit: 10, depth: 1 })
+    const ep = r.docs.find((d) => d.slug?.startsWith(pre))
     const show = ep && typeof ep.show === 'object' ? (ep.show as Show) : null
     if (ep && show) msm = { href: `/podcasts/${show.slug}/${ep.slug}`, label: `MSM ${String(e.rebrand.msm.n).padStart(3, '0')} / ${Math.round((ep.duration || 0) / 60)} min` }
   }
