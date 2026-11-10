@@ -7,6 +7,7 @@ import type { Brand, Episode, Location, Media, Show, Speaker, Founder } from '@/
 import type { Ep, NetworkNums } from '@/components/site/SiteProvider'
 import type { CtaPick } from '@/components/site/CloserBg'
 import sinceAlpha from '@/seed/content/since-alpha.json'
+import workContent from '@/seed/content/work.json'
 
 export const db = cache(async () => getPayload({ config: await config }))
 
@@ -180,6 +181,8 @@ export const getSinceAlpha = cache(async (slug: string, since?: string) => {
   const abs = (f?: string) => (f ? (/^https?:/.test(f) ? f : SA_BLOB + f) : '')
   return {
     since: since || '',
+    work: WORK[slug] ? `/work/${slug}` : null,
+    date: WORK[slug]?.date || '',
     quote: e.quote || null,
     gap: e.gap || null,
     milestones: e.milestones,
@@ -190,3 +193,49 @@ export const getSinceAlpha = cache(async (slug: string, since?: string) => {
   }
 })
 export type SinceAlphaData = NonNullable<Awaited<ReturnType<typeof getSinceAlpha>>>
+
+/* ---------- Work: rebrand case studies at /work/[slug] (src/seed/content/work.json) ---------- */
+const BLOB = 'https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/'
+const blob = (f?: string) => (f ? (/^https?:/.test(f) ? f : BLOB + f) : '')
+type WorkTile = { kind: 'image' | 'video' | 'palette' | 'quote'; label: string; src?: string; poster?: string; fit?: 'cover' | 'contain'; bg?: string; fg?: string; colors?: [string, string, boolean?][]; text?: string; source?: string }
+type WorkEntry = {
+  date: string; headline: string; intro: string; kept: string[]; changed: string[]
+  board: { layout: 'square' | 'wide'; line: string; tiles: WorkTile[] }
+  shoot: { where: string; headline: string; items: SAItem[] }
+  site: { url: string; desktop: string; mobile: string; ledger: [string, string][] }
+  msm?: { n: number; body: string }
+}
+const WORK = Object.fromEntries(Object.entries(workContent).filter(([k]) => !k.startsWith('_'))) as unknown as Record<string, WorkEntry>
+export const getWorkSlugs = async () => Object.keys(WORK)
+
+/** MSM episodes carry their number in the slug prefix ("079-..."). */
+const msmEpisode = async (n: number) => {
+  const p = await db()
+  const pre = String(n).padStart(3, '0') + '-'
+  const r = await p.find({ collection: 'episodes', where: { and: [{ slug: { like: pre } }, { 'show.slug': { equals: 'med-spa-marketing-group-chat' } }, LIVE] }, limit: 10, depth: 2 })
+  return r.docs.find((d) => d.slug?.startsWith(pre)) || null
+}
+
+export const getWork = cache(async (slug: string) => {
+  const w = WORK[slug]
+  if (!w) return null
+  const p = await db()
+  const b = (await p.find({ collection: 'brands', where: { and: [{ slug: { equals: slug } }, LIVE] }, limit: 1, depth: 0, select: { name: true, slug: true, ptr: true } })).docs[0]
+  if (!b) return null
+  const e = w.msm ? await msmEpisode(w.msm.n) : null
+  const q = e?.pullQuotes?.[0]
+  const keys = Object.keys(WORK), nx = keys[(keys.indexOf(slug) + 1) % keys.length]
+  const nb = nx !== slug ? (await p.find({ collection: 'brands', where: { slug: { equals: nx } }, limit: 1, depth: 0, select: { name: true } })).docs[0] : null
+  return {
+    ...w,
+    brand: { name: WORK_NAMES[slug] || b.name, slug: b.slug, ptr: String(b.ptr ?? 0).padStart(3, '0') },
+    board: { ...w.board, tiles: w.board.tiles.map((t) => ({ ...t, src: blob(t.src), poster: blob(t.poster) })) },
+    shoot: { ...w.shoot, items: w.shoot.items.map((i) => ({ ...i, src: blob(i.src), poster: blob(i.poster) })) },
+    site: { ...w.site, desktop: blob(w.site.desktop), mobile: blob(w.site.mobile) },
+    msm: e && w.msm ? { n: String(w.msm.n).padStart(3, '0'), body: w.msm.body, ep: toEp(e), quote: q?.text ? { text: q.text, at: q.at || '' } : null } : null,
+    next: nb ? { slug: nx, name: WORK_NAMES[nx] || nb.name, date: WORK[nx].date } : null,
+  }
+})
+/** Display names where the brand record lags the rebrand. */
+const WORK_NAMES: Record<string, string> = { 'holden-timeless-beauty': 'HTB Aesthetics', 'the-laser-center-of-marin': 'The Laser Center of Marin' }
+export type WorkData = NonNullable<Awaited<ReturnType<typeof getWork>>>

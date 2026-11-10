@@ -1,0 +1,159 @@
+{
+  "_note": "Rebrand case studies at /work/[slug], keyed by brand slug. Alpha styling; the brand only shows up inside the board tiles and the media. Media paths are relative to the Blob root (since-alpha/ and work/). Board layout is a preset (square | wide) with six tiles in order. Quote tiles are verbatim site copy. Ledger counts come from each live sitemap (Nov 2026) unless noted. Headlines and paragraphs are drafted. The MSM pull quote and chapters come from the episode record.",
+  "refined-aesthetics": {
+    "date": "Jul 2026",
+    "headline": "Same practice.\nQuieter voice.",
+    "intro": "Refined Aesthetics kept its name, its founder and its Leesburg address, then grew into Winchester. Everything a patient sees was rebuilt in-house: the mark, the palette, the type, the photography and the botanical drawings.",
+    "kept": ["Name", "Team", "Locations"],
+    "changed": ["Mark", "Palette", "Type", "Photography", "Illustration", "Website"],
+    "board": {
+      "layout": "square",
+      "line": "led by the drawings",
+      "tiles": [
+        { "kind": "image", "label": "Illustration / botanicals", "src": "work/ra-botanicals.jpg", "fit": "contain", "bg": "#F5F1E6" },
+        { "kind": "palette", "label": "Palette", "colors": [["Inkwell", "#1A2640"], ["Parchment", "#EDE5D1", true], ["Dogwood", "#D4B8AA", true], ["Patina", "#A8927A"]] },
+        { "kind": "image", "label": "Type / Suffix Serif + Dallas", "src": "work/ra-type.jpg", "fit": "cover", "bg": "#EDE5D1" },
+        { "kind": "image", "label": "Mark / lockups", "src": "since-alpha/ra-board-left.jpg", "fit": "cover", "bg": "#1A2640" },
+        { "kind": "video", "label": "Motion / hero loop", "src": "003-ra_brand_hero-loop.1794003727760.h264-720.mp4", "poster": "003-ra_brand_hero-loop.1794003727760.poster-0.avif", "fit": "cover", "bg": "#1A2640" },
+        { "kind": "quote", "label": "Voice", "text": "We restore what time has softened. We never reinvent what was always yours.", "source": "Site copy / Refinement over transformation", "bg": "#D4B8AA", "fg": "#1A2640" }
+      ]
+    },
+    "shoot": {
+      "where": "Leesburg + Winchester, Virginia",
+      "headline": "Shot by us,\nin Virginia.",
+      "items": [
+        { "kind": "ann", "src": "since-alpha/ra-announcement.mp4", "poster": "since-alpha/ra-announcement.jpg", "caption": "Launch announcement" },
+        { "kind": "image", "src": "since-alpha/ra-dsc02158.jpg", "w": 1400, "h": 933, "caption": "On the steps" },
+        { "kind": "image", "src": "since-alpha/ra-dsc03083.jpg", "w": 666, "h": 1000, "caption": "The ivy door" },
+        { "kind": "image", "src": "since-alpha/ra-dsc09121.jpg", "w": 1400, "h": 933, "caption": "In the field" },
+        { "kind": "video", "src": "since-alpha/ra-juvederm.mp4", "w": 1100, "h": 464, "caption": "Treatment loop" },
+        { "kind": "image", "src": "since-alpha/ra-dsc08863.jpg", "w": 666, "h": 1000, "caption": "Backlit" },
+        { "kind": "image", "src": "since-alpha/ra-collateral.jpg", "w": 638, "h": 358, "caption": "Print" }
+      ]
+    },
+    "site": {
+      "url": "https://www.refinedaestheticsmedspa.com/",
+      "desktop": "work/ra-site-d.jpg",
+      "mobile": "work/ra-site-m.jpg",
+      "ledger": [["37", "Treatment pages"], ["45", "Treatment pages by location"], ["16", "Areas we treat"], ["7", "Provider profiles"], ["2", "Locations"], ["240", "FAQ variants, from the build"]]
+    },
+    "msm": { "n": 79, "body": "Every launch is recorded for the Group Chat. This one is about restraint: a palette with room to breathe, photography that leaves space, and a site that reads like a book." }
+  },
+  "holden-timeless-beauty": {
+    "date": "Feb 2026",
+    "headline": "Holden Timeless Beauty,\nnow HTB Aesthetics.",
+    "intro": "The providers and the four San Diego County addresses stayed. Everything a patient sees was rebuilt in-house: the name, the mark, the palette, the type, the photography and a library of hand-drawn concern illustrations.",
+    "kept": ["Team", "Locations"],
+    "changed": ["Name", "Mark", "Palette", "Type", "Photography", "Illustration", "Website"],
+    "board": {
+      "layout": "wide",
+      "line": "led by the words",
+      "tiles": [
+        { "kind": "image", "label": "Voice / be timeless", "src": "since-alpha/htb-be-timeless.jpg", "fit": "cover", "bg": "#F1F2EB" },
+        { "kind": "image", "label": "Mark", "src": "since-alpha/htb-lockup.jpg", "fit": "contain", "bg": "#F1F2EB" },
+        { "kind": "palette", "label": "Palette", "colors": [["Blue", "#558FAA"], ["Mist", "#F1F2EB", true], ["Fog", "#E5E5DC", true], ["Dark", "#333333"]] },
+        { "kind": "image", "label": "Illustration / concern library", "src": "since-alpha/htb-faces.jpg", "fit": "contain", "bg": "#F1F2EB" },
+        { "kind": "image", "label": "Type", "src": "since-alpha/htb-type.jpg", "fit": "contain", "bg": "#F1F2EB" },
+        { "kind": "video", "label": "Motion / homepage hero", "src": "since-alpha/htb-hero.mp4", "poster": "since-alpha/htb-hero.jpg", "fit": "cover", "bg": "#232224" }
+      ]
+    },
+    "shoot": {
+      "where": "Carlsbad + the San Diego coast",
+      "headline": "Shot by us,\non the coast.",
+      "items": [
+        { "kind": "ann", "src": "since-alpha/htb-announcement.mp4", "poster": "since-alpha/htb-announcement.jpg", "caption": "Launch announcement" },
+        { "kind": "image", "src": "since-alpha/htb-dsc03321.jpg", "w": 666, "h": 1000, "caption": "The hat" },
+        { "kind": "image", "src": "since-alpha/htb-bodies.jpg", "w": 674, "h": 962, "caption": "Body concerns", "bg": "#F1F2EB" },
+        { "kind": "image", "src": "since-alpha/htb-dsc04206.jpg", "w": 666, "h": 1000, "caption": "Close" },
+        { "kind": "image", "src": "since-alpha/htb-site.jpg", "w": 1250, "h": 962, "caption": "Portfolios, results, map", "bg": "#F1F2EB" },
+        { "kind": "image", "src": "since-alpha/htb-dsc09655.jpg", "w": 666, "h": 1000, "caption": "Hoops" }
+      ]
+    },
+    "site": {
+      "url": "https://www.holdentimelessbeauty.com/",
+      "desktop": "work/htb-site-d.jpg",
+      "mobile": "work/htb-site-m.jpg",
+      "ledger": [["25", "Treatment pages"], ["41", "Concern pages"], ["29", "Areas we treat"], ["11", "Provider profiles"], ["4", "Locations"], ["30", "Concern illustrations"]]
+    }
+  },
+  "the-laser-center-of-marin": {
+    "date": "Jun 2025",
+    "headline": "Medical first.\nMarin natural.",
+    "intro": "In Corte Madera since 2003, rebuilt to lead with medicine. A new wordmark, palette, condensed type, skin diagrams and two shoots, one on the water and one in the treatment room, all made in-house. The team and the building stayed.",
+    "kept": ["Name", "Team", "Building"],
+    "changed": ["Wordmark", "Palette", "Type", "Photography", "Diagrams", "Website"],
+    "board": {
+      "layout": "wide",
+      "line": "led by the water",
+      "tiles": [
+        { "kind": "image", "label": "Photography / the boat shoot", "src": "since-alpha/lcm-boat013.jpg", "fit": "cover", "bg": "#4266A3" },
+        { "kind": "video", "label": "Motion / Scarlet RF", "src": "since-alpha/lcm-scarlet.mp4", "fit": "cover", "bg": "#000000" },
+        { "kind": "palette", "label": "Palette", "colors": [["Blue", "#4266A3"], ["Cream", "#FAFAF2", true], ["Blush", "#FFE3DB", true]] },
+        { "kind": "image", "label": "Illustration / skin diagrams", "src": "since-alpha/lcm-skin-diagram.jpg", "fit": "contain", "bg": "#F1F0E9" },
+        { "kind": "image", "label": "Mark / wordmark", "src": "since-alpha/lcm-wordmark.jpg", "fit": "contain", "bg": "#FAFAF2" },
+        { "kind": "image", "label": "Type / in use", "src": "since-alpha/lcm-type.jpg", "fit": "contain", "bg": "#F1F0E9" }
+      ]
+    },
+    "shoot": {
+      "where": "On the water + in the clinic, Marin",
+      "headline": "Two shoots,\none practice.",
+      "items": [
+        { "kind": "ann", "src": "since-alpha/lcm-announcement.mp4", "poster": "since-alpha/lcm-announcement.jpg", "caption": "Launch announcement" },
+        { "kind": "image", "src": "since-alpha/lcm-boat018.jpg", "w": 666, "h": 1000, "caption": "The boat shoot" },
+        { "kind": "image", "src": "since-alpha/lcm-boat023.jpg", "w": 1400, "h": 933 },
+        { "kind": "ann", "src": "since-alpha/lcm-hero.mp4", "poster": "since-alpha/lcm-hero.jpg", "caption": "Mobile hero", "silent": true },
+        { "kind": "image", "src": "since-alpha/lcm-boat069.jpg", "w": 666, "h": 1000 },
+        { "kind": "image", "src": "since-alpha/lcm-tx22.jpg", "w": 1400, "h": 933, "caption": "The treatment shoot" },
+        { "kind": "image", "src": "since-alpha/lcm-boat081.jpg", "w": 1400, "h": 933 },
+        { "kind": "image", "src": "since-alpha/lcm-tx32.jpg", "w": 666, "h": 1000 }
+      ]
+    },
+    "site": {
+      "url": "https://marinlaser.com/",
+      "desktop": "work/lcm-site-d.jpg",
+      "mobile": "work/lcm-site-m.jpg",
+      "ledger": [["26", "Treatment pages"], ["53", "Concern pages"], ["7", "Concern categories"], ["5", "Team profiles"], ["114", "Blog posts"], ["5", "Skin diagrams"]]
+    },
+    "msm": { "n": 66, "body": "Every launch is recorded for the Group Chat. This one is about anchoring a long-standing Marin practice in medicine without losing the water and the light." }
+  },
+  "cami": {
+    "date": "Apr 2026",
+    "headline": "From an institute\nto a feeling.",
+    "intro": "Carolina Age Management Institute became Cami. A new wordmark, an espresso palette, real patients shot on Lake Norman, a hallway campaign and a new site, all made in-house. The team and the two locations stayed.",
+    "kept": ["Team", "Locations"],
+    "changed": ["Wordmark", "Palette", "Photography", "Hallway campaign", "Website"],
+    "board": {
+      "layout": "square",
+      "line": "led by the hallway",
+      "tiles": [
+        { "kind": "image", "label": "Campaign / 24 hallway posters", "src": "since-alpha/cami-wallart.jpg", "fit": "cover", "bg": "#302720" },
+        { "kind": "palette", "label": "Palette", "colors": [["Espresso", "#302720"], ["Stone", "#BFBCB5", true], ["Honey", "#F1C073", true]] },
+        { "kind": "video", "label": "Motion / old camera", "src": "since-alpha/cami-oldcam-0709.mp4", "poster": "since-alpha/cami-oldcam-0709.jpg", "fit": "cover", "bg": "#302720" },
+        { "kind": "image", "label": "Mark / old to new", "src": "since-alpha/cami-old-new.jpg", "fit": "contain", "bg": "#BFBCB5" },
+        { "kind": "image", "label": "Photography / real patients", "src": "since-alpha/cami-dsc00704.jpg", "fit": "cover", "bg": "#302720" },
+        { "kind": "quote", "label": "Voice", "text": "Aging isn’t something to fight. It’s something to guide.", "source": "Site copy / A more thoughtful approach", "bg": "#302720", "fg": "#F1C073" }
+      ]
+    },
+    "shoot": {
+      "where": "Lake Norman, North Carolina",
+      "headline": "Real patients,\non the lake.",
+      "items": [
+        { "kind": "ann", "src": "since-alpha/cami-announcement.mp4", "poster": "since-alpha/cami-announcement.jpg", "caption": "Launch announcement" },
+        { "kind": "image", "src": "since-alpha/cami-dsc09570.jpg", "w": 667, "h": 1000, "caption": "Real patients / Lake Norman" },
+        { "kind": "video", "src": "since-alpha/cami-oldcam-0727.mp4", "poster": "since-alpha/cami-oldcam-0727.jpg", "w": 720, "h": 480, "caption": "Old camera / loop" },
+        { "kind": "image", "src": "since-alpha/cami-dsc09521.jpg", "w": 667, "h": 1000 },
+        { "kind": "image", "src": "since-alpha/cami-dsc09774.jpg", "w": 667, "h": 1000 },
+        { "kind": "video", "src": "since-alpha/cami-oldcam-0718.mp4", "poster": "since-alpha/cami-oldcam-0718.jpg", "w": 720, "h": 480 },
+        { "kind": "image", "src": "since-alpha/cami-dsc09266.jpg", "w": 667, "h": 1000 },
+        { "kind": "image", "src": "since-alpha/cami-dsc00717.jpg", "w": 667, "h": 1000 }
+      ]
+    },
+    "site": {
+      "url": "https://camiaesthetics.com/",
+      "desktop": "work/cami-site-d.jpg",
+      "mobile": "work/cami-site-m.jpg",
+      "ledger": [["23", "Treatment pages"], ["58", "Concern pages"], ["23", "Areas we treat"], ["7", "Provider profiles"], ["2", "Locations"], ["24", "Hallway posters"]]
+    },
+    "msm": { "n": 73, "body": "Every launch is recorded for the Group Chat. This one walks through Partner 010's rebrand, from the name on the door to the posters in the hallway." }
+  }
+}

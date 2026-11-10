@@ -91,49 +91,89 @@ export function SinceAlpha({ d }: { d: SinceAlphaData }) {
         </div>
       </section>
 
-      {d.rebrand ? <Rebrand r={d.rebrand} innerRef={rebrand} /> : null}
+      {d.rebrand ? <Rebrand r={d.rebrand} work={d.work} date={d.date} innerRef={rebrand} /> : null}
     </div>
   )
 }
 
-function Rebrand({ r, innerRef }: { r: NonNullable<SinceAlphaData['rebrand']>; innerRef: React.RefObject<HTMLElement | null> }) {
+export type RailItem = NonNullable<SinceAlphaData['rebrand']>['items'][number]
+
+/** Side-scrolling media rail: drag (mouse), arrows, progress, loops play only while on screen. Shared with /work. */
+export function useRail() {
   const rail = useRef<HTMLDivElement>(null)
   const [prog, setProg] = useState(0)
-  const cta = r.msm ? { href: r.msm.href, label: 'Hear how it was made', sub: 'The full story / ' + r.msm.label, ext: false } : r.site ? { href: r.site, label: 'Visit the site', sub: 'The new site / live', ext: true } : null
-
+  const items = () => [...(rail.current?.children || [])] as HTMLElement[]
+  const pad = () => parseFloat(getComputedStyle(rail.current!).paddingLeft)
+  const idx = () => { const el = rail.current!; let k = 0; items().forEach((c, j) => { if (c.offsetLeft - el.offsetLeft - pad() <= el.scrollLeft + 5) k = j }); return k }
+  const snap = (k: number) => { const it = items(); if (!it.length) return; k = Math.max(0, Math.min(it.length - 1, k)); rail.current!.scrollTo({ left: it[k].offsetLeft - rail.current!.offsetLeft - pad(), behavior: 'smooth' }) }
+  const snapRef = useRef(snap)
+  snapRef.current = snap
   useEffect(() => {
     const el = rail.current
     if (!el) return
-    // play loops only while they are on screen
     const vids = [...el.querySelectorAll('video')]
     const io = new IntersectionObserver((es) => es.forEach((e) => {
       const v = e.target as HTMLVideoElement
       if (e.isIntersecting && !matchMedia('(prefers-reduced-motion: reduce)').matches) v.play().catch(() => {}); else v.pause()
     }), { root: null, threshold: 0.35 })
     vids.forEach((v) => io.observe(v))
-    // drag to scroll (mouse only; touch scrolls natively)
     let down = false, sx = 0, sl = 0, moved = false
     const pd = (e: PointerEvent) => { if (e.pointerType !== 'mouse') return; down = true; moved = false; sx = e.clientX; sl = el.scrollLeft; el.classList.add('is-drag') }
     const pm = (e: PointerEvent) => { if (!down) return; if (Math.abs(e.clientX - sx) > 4) moved = true; el.scrollLeft = sl - (e.clientX - sx) }
-    const pu = () => { if (!down) return; down = false; el.classList.remove('is-drag'); snap(idx()) }
+    const pu = () => { if (!down) return; down = false; el.classList.remove('is-drag'); snapRef.current(idx()) }
     const ck = (e: MouseEvent) => { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false } }
     const sc = () => setProg(el.scrollLeft / Math.max(1, el.scrollWidth - el.clientWidth))
     el.addEventListener('pointerdown', pd); addEventListener('pointermove', pm); addEventListener('pointerup', pu)
     el.addEventListener('click', ck, true); el.addEventListener('scroll', sc, { passive: true })
     return () => { io.disconnect(); el.removeEventListener('pointerdown', pd); removeEventListener('pointermove', pm); removeEventListener('pointerup', pu); el.removeEventListener('click', ck, true); el.removeEventListener('scroll', sc) }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+  return { rail, prog, prev: () => snap(idx() - 1), next: () => snap(idx() + 1) }
+}
 
-  const items = () => [...(rail.current?.children || [])] as HTMLElement[]
-  const pad = () => parseFloat(getComputedStyle(rail.current!).paddingLeft)
-  const idx = () => { const el = rail.current!; let k = 0; items().forEach((c, j) => { if (c.offsetLeft - el.offsetLeft - pad() <= el.scrollLeft + 5) k = j }); return k }
-  const snap = (k: number) => { const it = items(); k = Math.max(0, Math.min(it.length - 1, k)); rail.current!.scrollTo({ left: it[k].offsetLeft - rail.current!.offsetLeft - pad(), behavior: 'smooth' }) }
-  const sound = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const v = e.currentTarget.parentElement?.querySelector('video')
-    if (!v) return
-    v.muted = !v.muted
-    e.currentTarget.textContent = v.muted ? 'Sound on' : 'Sound off'
-    if (!v.muted) { window.dispatchEvent(new CustomEvent('alpha:pause')); v.play().catch(() => {}) }
-  }
+const sound = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const v = e.currentTarget.parentElement?.querySelector('video')
+  if (!v) return
+  v.muted = !v.muted
+  e.currentTarget.textContent = v.muted ? 'Sound on' : 'Sound off'
+  if (!v.muted) { window.dispatchEvent(new CustomEvent('alpha:pause')); v.play().catch(() => {}) }
+}
+
+/** Every item at its own ratio, nothing cropped. */
+export function RailItems({ items }: { items: RailItem[] }) {
+  return (
+    <>
+      {items.map((it, i) => {
+        if (it.kind === 'palette') return (
+          <figure key={i} className="sa_s sa_pal">{(it.colors || []).map(([n, hex, lt]) => <i key={n} className={lt ? 'lt' : ''} style={{ background: hex }}><span className="mono">{n}</span></i>)}</figure>
+        )
+        if (it.kind === 'ann') return (
+          <figure key={i} className="sa_s sa_ann">
+            <video src={it.src} poster={it.poster || undefined} muted loop playsInline preload="none" aria-label={it.caption} />
+            {!it.silent ? <button className="mono sa_snd" onClick={sound}>Sound on</button> : null}
+            {it.caption ? <figcaption className="mono">{it.caption}</figcaption> : null}
+          </figure>
+        )
+        const ar = it.w && it.h ? `${it.w} / ${it.h}` : undefined
+        return (
+          <figure key={i} className="sa_s" style={{ aspectRatio: ar, background: it.bg }}>
+            {it.kind === 'video'
+              ? <video src={it.src} poster={it.poster || undefined} muted loop playsInline preload="metadata" aria-hidden="true" />
+              : <img src={it.src} alt="" loading="lazy" decoding="async" width={it.w} height={it.h} />}
+            {it.caption ? <figcaption className="mono">{it.caption}</figcaption> : null}
+          </figure>
+        )
+      })}
+    </>
+  )
+}
+
+function Rebrand({ r, work, date, innerRef }: { r: NonNullable<SinceAlphaData['rebrand']>; work: string | null; date: string; innerRef: React.RefObject<HTMLElement | null> }) {
+  const { rail, prog, prev, next } = useRail()
+  const cta = work
+    ? { href: work, label: 'See the rebrand', sub: 'The full story' + (date ? ' / ' + date : ''), ext: false }
+    : r.msm ? { href: r.msm.href, label: 'Hear how it was made', sub: 'The full story / ' + r.msm.label, ext: false }
+    : r.site ? { href: r.site, label: 'Visit the site', sub: 'The new site / live', ext: true } : null
 
   return (
     <section className="sa_rb" ref={innerRef}>
@@ -145,33 +185,13 @@ function Rebrand({ r, innerRef }: { r: NonNullable<SinceAlphaData['rebrand']>; i
           <p className="sa_body">{r.body}</p>
         </div>
         <div className="sa_cta">
-          <button className="sa_arr" aria-label="Previous" onClick={() => snap(idx() - 1)}>←</button>
-          <button className="sa_arr" aria-label="Next" onClick={() => snap(idx() + 1)}>→</button>
+          <button className="sa_arr" aria-label="Previous" onClick={prev}>←</button>
+          <button className="sa_arr" aria-label="Next" onClick={next}>→</button>
           {cta ? (cta.ext ? <a className="btn sa_btn" href={cta.href} target="_blank" rel="noopener">{cta.label} ↗</a> : <Link className="btn sa_btn" href={cta.href}>{cta.label} →</Link>) : null}
         </div>
       </div>
       <div className="sa_rail" ref={rail}>
-        {r.items.map((it, i) => {
-          if (it.kind === 'palette') return (
-            <figure key={i} className="sa_s sa_pal">{(it.colors || []).map(([n, hex, lt]) => <i key={n} className={lt ? 'lt' : ''} style={{ background: hex }}><span className="mono">{n}</span></i>)}</figure>
-          )
-          if (it.kind === 'ann') return (
-            <figure key={i} className="sa_s sa_ann">
-              <video src={it.src} poster={it.poster || undefined} muted loop playsInline preload="none" aria-label={it.caption} />
-              {!it.silent ? <button className="mono sa_snd" onClick={sound}>Sound on</button> : null}
-              {it.caption ? <figcaption className="mono">{it.caption}</figcaption> : null}
-            </figure>
-          )
-          const ar = it.w && it.h ? `${it.w} / ${it.h}` : undefined
-          return (
-            <figure key={i} className="sa_s" style={{ aspectRatio: ar, background: it.bg }}>
-              {it.kind === 'video'
-                ? <video src={it.src} poster={it.poster || undefined} muted loop playsInline preload="metadata" aria-hidden="true" />
-                : <img src={it.src} alt="" loading="lazy" decoding="async" width={it.w} height={it.h} />}
-              {it.caption ? <figcaption className="mono">{it.caption}</figcaption> : null}
-            </figure>
-          )
-        })}
+        <RailItems items={r.items} />
         {cta ? (
           cta.ext
             ? <a className="sa_s sa_end" href={cta.href} target="_blank" rel="noopener"><span className="mono">{cta.sub}</span><b>{cta.label} ↗</b></a>
