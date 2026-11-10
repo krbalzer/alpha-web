@@ -30,6 +30,9 @@ const blobOk = await checkBlob((m) => console.log(m))
       // Google place IDs for live ratings and reviews; fills empty IDs only
       const { importPlaces } = await import('./places')
       await importPlaces(p)
+      // founder page copy the Webflow import never had (Michelle Paty from the Founder board); once per founder
+      const { applyFounderExtras } = await import('./founder-extras')
+      await applyFounderExtras(p)
       // podcast people from the old Webflow site; a no-op once they are in
       const { importSpeakers } = await import('./speakers')
       if (blobOk) await importSpeakers(p)

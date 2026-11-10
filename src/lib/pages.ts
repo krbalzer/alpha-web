@@ -219,6 +219,13 @@ export const getLocationsDir = cache(async () => {
 
 const firstLoc = (b: Brand, locations: Location[]) => locations.filter((l) => (typeof l.brand === 'object' ? l.brand?.id : l.brand) === b.id)
 
+/** Founder hero: the portrait, unless it's a small Webflow-era crop and the headshot is the real photo (larger wins). */
+const heroOf = (fd: Founder) => {
+  const ws = [fd.portrait, fd.headshot].filter((m): m is Media => !!m && typeof m === 'object')
+  const best = ws.find((m) => (m.width || 0) >= 1000) || ws.sort((a, z) => (z.width || 0) - (a.width || 0))[0]
+  return best ? posterUrl(best) || url(best, 'full') || '' : ''
+}
+
 export const getFounder = cache(async (slug: string) => {
   const { brands, locations, founders } = await getNetworkAll()
   const fd = founders.find((f) => f.slug === slug)
@@ -243,7 +250,7 @@ export const getFounder = cache(async (slug: string) => {
       locations: locs.map((l) => { const img = NO_MEDIA.has(`${b.ptr}|${l.city}`) ? '' : url(l.photo as Media, 'card') || ''; return { city: l.city, st: l.state, img, noImg: !img, a1: l.address1 || '', tone: 'linear-gradient(160deg,#8C7F6B,#4D463C)', href: `/locations/${l.slug}` } }) },
     f: { name: fd.name, first: first.replace(/^Dr\.$/, rest[0] || first), last: first === 'Dr.' ? rest.slice(1).join(' ') : rest.join(' '), cred: fd.credentials || '',
       role: fd.kind === 'business' && brandFounders(b).length > 1 ? 'Co-founder' : 'Founder',
-      portrait: url(fd.portrait as Media, 'full') || url(fd.headshot as Media, 'full') || '', markets: cities.length > 2 ? `${cities.length} locations` : cities.join(' & '),
+      portrait: heroOf(fd), markets: cities.length > 2 ? `${cities.length} locations` : cities.join(' & '),
       headline: fd.headline || '', bioHtml: html(fd.bio) },
     path, rules: (fd.traits || []).filter((t) => t.label).map((t) => ({ t: t.label || '', d: t.line || '' })),
     quotes: (fd.quotes || []).map((q) => ({ text: q.text, source: q.source })), peers: others,
