@@ -1,0 +1,71 @@
+/*
+ * Phone fixes, layered over the board CSS (the porters regenerate page.css; this file is never generated).
+ * `html body` raises specificity above the page-scoped board rules without !important.
+ * Audit: Nov 2026, iPhone 14 width (390px).
+ */
+
+/* persistent player: titles were 9-10.5px mono; all widths */
+html body .pp_ti b { font-family: var(--h3, inherit); font-weight: 700; font-size: 14px; letter-spacing: -.005em; text-transform: none; line-height: 1.2 }
+html body .pp_ti span { font-size: 10.5px; margin-top: 4px }
+html body .pp_time { font-size: 10.5px }
+html body .mpp b { font-family: var(--h3, inherit); font-weight: 700; font-size: 13px; letter-spacing: -.005em; text-transform: none; line-height: 1.2 }
+html body .mpp span { font-size: 10px; margin-top: 2px; display: block }
+
+@media (max-width: 720px) {
+  /* header: logo and Let's talk were touching */
+  html body .nav .nav_logo img, html body .mn_top .nav_logo img { height: 16px; width: auto }
+  html body .nav .nav_cta, html body .mn_top .btn { height: 30px; padding: 0 10px; font-size: 9.5px }
+
+  /* brand + location heroes: CTAs and address ran off the right edge */
+  html body .pg-brand .hero_meta, html body .pg-location .hero_meta { grid-template-columns: minmax(0, 1fr) }
+  html body .pg-brand .hero_ctas, html body .pg-location .hero_ctas { justify-self: start }
+  html body .pg-brand .addr, html body .pg-location .addr { white-space: normal; overflow-wrap: anywhere; font-size: 10.5px }
+
+  /* team timeline (profile + department): the Gantt becomes a tappable list */
+  html body .pg-profile .tl_rows, html body .pg-dept .tl_rows { height: auto !important; display: grid; gap: 6px }
+  html body .pg-profile .tl_guide, html body .pg-dept .tl_guide,
+  html body .pg-profile .tl_axis, html body .pg-dept .tl_axis { display: none }
+  html body .pg-profile .tlb, html body .pg-dept .tlb { position: relative; left: auto !important; top: auto !important; width: 100% !important; transform: none; mask: none; -webkit-mask: none; border-right: 1px solid rgba(232, 228, 218, .42) }
+  html body .pg-profile .tlb.ongoing, html body .pg-dept .tlb.ongoing { mask: none; -webkit-mask: none; border-right: 1px solid rgba(232, 228, 218, .42) }
+  html body .pg-profile .tl_name, html body .pg-dept .tl_name { display: block; font-size: 10.5px }
+
+  /* Meet the others: one giant photo per row -> 3 across */
+  html body .pg-profile .others2 { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px 10px }
+  html body .pg-profile .o2_img { margin-bottom: 6px }
+  html body .pg-profile .o2 b { font-size: 13px; line-height: 1.15 }
+  html body .pg-profile .o2 .mono { font-size: 10px }
+  html body .pg-profile .o2_d { display: none }
+
+  /* founder page: peers 2 across, breadcrumb on one line, quote block tighter */
+  html body .pg-founder .room { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px }
+  html body .pg-founder .peer { padding: 14px 12px 16px; font-size: 10px }
+  html body .pg-founder .peer_av { width: 52px; height: 52px; margin-bottom: 16px }
+  html body .pg-founder .crumb .wrap, html body .pg-founder .crumb.loc .wrap { display: flex; gap: 14px; height: auto; min-height: 34px; white-space: nowrap; overflow: hidden }
+  html body .pg-founder .crumb.loc .wrap span:nth-child(4) { display: none }
+  html body .pg-founder .why { padding: 64px 0 }
+  html body .pg-founder .why_grid { gap: 28px }
+
+  /* episode page: art above the title, even button row, 2-across shows */
+  html body .pg-episode .eh_grid { grid-template-columns: 96px minmax(0, 1fr); gap: 14px }
+  html body .pg-episode .eh_t { font-size: 22px; max-width: none }
+  html body .pg-episode .plats { gap: 6px }
+  html body .pg-episode .tv_play, html body .pg-episode .eh .plat, html body .pg-episode .qb_lg { height: 40px; padding: 0 14px; font-size: 10px }
+  html body .pg-episode .shows { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+  html body .pg-episode .ep_links { flex-wrap: wrap }
+  html body .pg-episode .player .pl_grid { gap: 8px }
+
+  /* podcasts: results column was wider than the screen (grid 1fr min-content), sort wraps, text over the host's face */
+  html body .pg-podcasts .db_grid { grid-template-columns: minmax(0, 1fr) }
+  html body .pg-podcasts .res, html body .pg-podcasts .res_bar { min-width: 0 }
+  html body .pg-podcasts .res_bar { flex-wrap: wrap; row-gap: 8px }
+  html body .pg-podcasts .tv_slide.has-hero .tv_bg { filter: brightness(.55) }
+  html body .pg-podcasts .tv_d { text-shadow: 0 1px 14px rgba(0, 0, 0, .5) }
+
+  /* home: department cards had a tall empty middle */
+  html body .pg-main .dept { min-height: 0 }
+  html body .pg-main .dept_avs { padding-top: 16px }
+
+  /* labels under 10px */
+  html body .pg-locations .lc_go, html body .pg-locations .lc_or, html body .pg-locations .sh_s { font-size: 10px }
+  html body .pg-location .addr { font-size: 10.5px }
+}

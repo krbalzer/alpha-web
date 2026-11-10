@@ -8,6 +8,7 @@ import { SiteProvider } from '@/components/site/SiteProvider'
 import { getLatestEpisode, getNetwork } from '@/lib/data'
 import './global.css'
 import './tune.css'
+import './mobile.css'
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),

@@ -259,6 +259,9 @@ def locations_markup(b):
 
 
 def locations_engine(e):
+    # the US view is sized to the canvas: tick() can run before the first draw (canvas width unknown -> desktop zoom),
+    # so whenever the canvas width changes and nothing is selected, re-fit the whole map (phones were stuck zoomed in)
+    e = rep(e, "    this.cw = Wc; this.ch = Hc;\n", "    this.cw = Wc; this.ch = Hc;\n    if (this._fitW !== Wc) { this._fitW = Wc; if (this.cam && !this.selLoc && !this.F) { this.cam.x = 600; this.cam.y = 340; this.cam.z = this.zu(); } }\n")
     # real streets fade in under the canvas as it zooms to a location (FocusMap); the canvas keeps the US dot field and pins
     e = rep(e, "ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.fillStyle = '#151513'; ctx.fillRect(0, 0, Wc, Hc);", "ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, Wc, Hc);")
     e = rep(e, "    this._k = k;\n", "    this._k = k;\n    const real = !!this.rmap && this.rmap.dataset.ready === '1';\n    if (this.rmap) this.rmap.style.opacity = String(cityA);\n    ctx.fillStyle = 'rgba(21,21,19,' + (real ? 1 - cityA : 1).toFixed(3) + ')'; ctx.fillRect(0, 0, Wc, Hc);\n")

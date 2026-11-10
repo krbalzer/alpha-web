@@ -105,6 +105,7 @@ export class LocationsEngine extends DCLogic {
     const dpr = Math.min(2, window.devicePixelRatio || 1), Wc = cv.clientWidth, Hc = cv.clientHeight; if (!Wc || !Hc) return;
     if (cv.width !== Math.round(Wc * dpr) || cv.height !== Math.round(Hc * dpr)) { cv.width = Math.round(Wc * dpr); cv.height = Math.round(Hc * dpr); }
     this.cw = Wc; this.ch = Hc;
+    if (this._fitW !== Wc) { this._fitW = Wc; if (this.cam && !this.selLoc && !this.F) { this.cam.x = 600; this.cam.y = 340; this.cam.z = this.zu(); } }
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, Wc, Hc);
     const cam = this.cam0(), z = cam.z, zc = this.zc(), zu = this.zu();
     const k = Math.max(0, Math.min(1, (Math.log(z) - Math.log(zu)) / (Math.log(zc) - Math.log(zu))));
