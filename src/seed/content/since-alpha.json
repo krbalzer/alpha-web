@@ -1,0 +1,103 @@
+{
+  "_note": "Brand page 'Since Alpha' chapter: the partnership timeline, then the rebrand carousel. Keyed by brand slug. Media lives in Blob under since-alpha/. Quotes are verbatim; marker and headline copy is drafted. A brand without an entry renders nothing.",
+  "refined-aesthetics": {
+    "quote": { "text": "It's all a big ecosystem. Everybody leveling up together, and that's what we hope this brand ultimately represents.", "source": "Med Spa Marketing Group Chat / MSM 081 / 23:58" },
+    "gap": { "after": 1, "label": "18 months, building" },
+    "milestones": [
+      { "date": "Jul 2023", "title": "Joins Alpha as PTR 003", "detail": "Refined keeps its name, its founder and its Leesburg address. Alpha takes the back office so Sarah can stay in the chair." },
+      { "date": "Apr 2024", "title": "Two more treatment rooms", "detail": "Leesburg grows from the inside: two new treatment rooms on Church Street to keep up with demand." },
+      { "date": "Oct 2025", "title": "The brand shoot", "detail": "Model photography and video shot in-house across Virginia, for the new system." },
+      { "date": "Jul 2026", "title": "The rebrand launches", "detail": "New mark, palette, type, photography and a new site across four domains. Behind the scenes on MSM 079.", "rebrand": true },
+      { "date": "Jul 28, 2026", "title": "Blossom joins", "detail": "Blossom Medical in Winchester becomes Refined at Blossom, announced in a five-video rollout." },
+      { "date": "Sep 23, 2026", "title": "Refined at Blossom opens its doors", "detail": "The launch event in Winchester." },
+      { "date": "Now", "title": "7 providers, 2 locations", "detail": "Leesburg and Winchester, one standard of care." }
+    ],
+    "thenNow": { "note": "Then = at partnership, Jul 2023.", "rows": [
+      { "label": "Locations", "then": "1", "now": "2" },
+      { "label": "Providers", "then": "3", "now": "7" },
+      { "label": "Treatments offered", "then": "20", "now": "37" }
+    ] },
+    "rebrand": {
+      "eyebrow": "Rebrand + website / Alpha Marketing / Jul 2026",
+      "headline": "Same practice.\nQuieter voice.",
+      "body": "New mark, palette, type and photography, all made in-house. The name, the team and the addresses stayed.",
+      "msm": { "show": "msm", "n": 79 },
+      "items": [
+        { "kind": "ann", "src": "ra-announcement.mp4", "poster": "ra-announcement.jpg", "caption": "Launch announcement" },
+        { "kind": "image", "src": "ra-board-left.jpg", "w": 1185, "h": 1000, "caption": "Mark + Winchester lockup" },
+        { "kind": "palette", "colors": [ ["Inkwell", "#1A2640"], ["Parchment", "#EDE5D1", true], ["Dogwood", "#D4B8AA", true], ["Patina", "#A8927A"] ] },
+        { "kind": "image", "src": "ra-dsc03083.jpg", "w": 666, "h": 1000, "caption": "The shoot" },
+        { "kind": "image", "src": "ra-dsc02158.jpg", "w": 1400, "h": 933 },
+        { "kind": "image", "src": "ra-dsc08863.jpg", "w": 666, "h": 1000 },
+        { "kind": "video", "src": "ra-juvederm.mp4", "w": 1100, "h": 464, "caption": "Treatment loop" },
+        { "kind": "image", "src": "ra-collateral.jpg", "w": 638, "h": 358, "caption": "Print" },
+        { "kind": "image", "src": "ra-dsc09121.jpg", "w": 1400, "h": 933 }
+      ],
+      "ledger": [ ["9", "selects"], ["3", "loops"], ["2", "locations, 4 domains"], ["240", "FAQ variants"] ]
+    }
+  },
+  "holden-timeless-beauty": {
+    "quote": { "text": "At Holden Timeless Beauty, our commitment has always been to provide the highest standard of care and to teach people how to age agelessly.", "source": "Dr. Amanda Holden / Newswire / Jun 6, 2023" },
+    "gap": { "after": 1, "label": "15 months, building" },
+    "milestones": [
+      { "date": "Jun 6, 2023", "title": "Joins Alpha as PTR 002", "detail": "Dr. Amanda Holden keeps her team and her clinics. Alpha takes on the back office, training and marketing." },
+      { "date": "Jul 1, 2024", "title": "HTB San Diego opens", "detail": "The fifth Southern California location, in Mission Valley, with four treatment rooms. “It’s always been my dream to serve this area that I grew up in.” Dr. Amanda Holden, Newswire." },
+      { "date": "Oct 2025", "title": "The brand shoot", "detail": "Model photography and video shot in-house on the San Diego coast, for the new system." },
+      { "date": "Feb 2026", "title": "HTB Aesthetics launches", "detail": "Holden Timeless Beauty becomes HTB Aesthetics: new name, mark, palette, type and illustrations, and a new site with provider portfolios, a filtered results collection and a branded location map.", "rebrand": true },
+      { "date": "Now", "title": "4 locations", "detail": "Carlsbad, Fallbrook, San Diego and San Marcos." }
+    ],
+    "rebrand": {
+      "eyebrow": "Rebrand + website / Alpha Marketing / Feb 2026",
+      "headline": "Holden Timeless Beauty,\nnow HTB Aesthetics.",
+      "body": "A new name, mark, palette, type, photography and a library of illustrations, all made in-house. The providers and the four addresses stayed.",
+      "site": "https://www.holdentimelessbeauty.com/",
+      "items": [
+        { "kind": "ann", "src": "htb-announcement.mp4", "poster": "htb-announcement.jpg", "caption": "Launch announcement" },
+        { "kind": "image", "src": "htb-lockup.jpg", "w": 960, "h": 962, "caption": "Mark" },
+        { "kind": "palette", "colors": [ ["Blue", "#558FAA"], ["Mist", "#F1F2EB", true], ["Fog", "#E5E5DC", true], ["Dark", "#333333"] ] },
+        { "kind": "image", "src": "htb-type.jpg", "w": 1094, "h": 962, "caption": "Type" },
+        { "kind": "image", "src": "htb-dsc03321.jpg", "w": 666, "h": 1000, "caption": "The shoot" },
+        { "kind": "image", "src": "htb-faces.jpg", "w": 1010, "h": 962, "caption": "Concern illustrations / 30 in the library" },
+        { "kind": "image", "src": "htb-be-timeless.jpg", "w": 1442, "h": 962 },
+        { "kind": "video", "src": "htb-hero.mp4", "poster": "htb-hero.jpg", "w": 960, "h": 540, "caption": "Homepage hero" },
+        { "kind": "image", "src": "htb-bodies.jpg", "w": 674, "h": 962, "caption": "Body concerns" },
+        { "kind": "image", "src": "htb-dsc04206.jpg", "w": 666, "h": 1000 },
+        { "kind": "image", "src": "htb-site.jpg", "w": 1250, "h": 962, "caption": "The site / portfolios, results, map" },
+        { "kind": "image", "src": "htb-dsc09655.jpg", "w": 666, "h": 1000 }
+      ],
+      "ledger": [ ["20", "selects"], ["30", "concern illustrations"], ["8", "provider portfolios"], ["200+", "real patient hero images"], ["4", "locations on one map"] ]
+    }
+  },
+  "the-laser-center-of-marin": {
+    "quote": { "text": "We really want to make sure that we're anchoring our practices in the medical side of things.", "source": "Med Spa Marketing Group Chat / MSM 066 / 17:42" },
+    "gap": { "after": 0, "label": "19 months, building" },
+    "milestones": [
+      { "date": "Nov 2023", "title": "Joins Alpha as PTR 005", "detail": "Twenty years in Corte Madera. The team and the building stay; Alpha takes on the back office, training and marketing." },
+      { "date": "Jun 24, 2025", "title": "The rebrand launches", "detail": "New wordmark, palette, condensed type, engraved device illustrations and skin diagrams, a boat shoot and a treatment shoot, and a new site. Behind the scenes on MSM 066.", "rebrand": true },
+      { "date": "Now", "title": "6 providers, 1 location", "detail": "Corte Madera, Marin County." }
+    ],
+    "rebrand": {
+      "eyebrow": "Rebrand + website / Alpha Marketing / Jun 2025",
+      "headline": "Medical first.\nMarin natural.",
+      "body": "A new wordmark, palette, condensed type, skin diagrams and two shoots, all made in-house. The team and the building stayed.",
+      "msm": { "show": "msm", "n": 66 },
+      "items": [
+        { "kind": "ann", "src": "lcm-announcement.mp4", "poster": "lcm-announcement.jpg", "caption": "Launch announcement" },
+        { "kind": "image", "src": "lcm-wordmark.jpg", "w": 960, "h": 962, "caption": "Wordmark" },
+        { "kind": "palette", "colors": [ ["Blue", "#4266A3"], ["Cream", "#FAFAF2", true], ["Blush", "#FFE3DB", true] ] },
+        { "kind": "image", "src": "lcm-boat018.jpg", "w": 666, "h": 1000, "caption": "The boat shoot" },
+        { "kind": "video", "src": "lcm-scarlet.mp4", "w": 600, "h": 600, "caption": "Scarlet RF / loop" },
+        { "kind": "image", "src": "lcm-boat023.jpg", "w": 1400, "h": 933 },
+        { "kind": "ann", "src": "lcm-hero.mp4", "poster": "lcm-hero.jpg", "caption": "Mobile hero", "silent": true },
+        { "kind": "image", "src": "lcm-boat069.jpg", "w": 666, "h": 1000 },
+        { "kind": "image", "src": "lcm-skin-diagram.jpg", "w": 900, "h": 441, "caption": "Skin diagrams", "bg": "#F1F0E9" },
+        { "kind": "image", "src": "lcm-tx22.jpg", "w": 1400, "h": 933, "caption": "The treatment shoot" },
+        { "kind": "image", "src": "lcm-boat081.jpg", "w": 1400, "h": 933 },
+        { "kind": "image", "src": "lcm-type.jpg", "w": 900, "h": 506, "caption": "Type in use", "bg": "#F1F0E9" },
+        { "kind": "image", "src": "lcm-tx32.jpg", "w": 666, "h": 1000 },
+        { "kind": "image", "src": "lcm-boat013.jpg", "w": 1400, "h": 933 }
+      ],
+      "ledger": [ ["126", "boat shoot frames"], ["53", "treatment frames"], ["5", "skin diagrams"] ]
+    }
+  }
+}

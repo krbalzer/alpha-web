@@ -6,6 +6,7 @@ import { cache } from 'react'
 import type { Brand, Episode, Location, Media, Show, Speaker, Founder } from '@/payload-types'
 import type { Ep, NetworkNums } from '@/components/site/SiteProvider'
 import type { CtaPick } from '@/components/site/CloserBg'
+import sinceAlpha from '@/seed/content/since-alpha.json'
 
 export const db = cache(async () => getPayload({ config: await config }))
 
@@ -152,3 +153,38 @@ export const getBrandIndex = cache(async () => {
   return r.docs.map((d) => ({ slug: d.slug, name: d.name, n: String(d.ptr).padStart(3, '0') }))
 })
 export type BrandIndex = Awaited<ReturnType<typeof getBrandIndex>>
+
+/* ---------- Since Alpha: partnership timeline + rebrand carousel (src/seed/content/since-alpha.json) ---------- */
+const SA_BLOB = 'https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/since-alpha/'
+type SAItem = { kind: 'ann' | 'video' | 'image' | 'palette'; src?: string; poster?: string; w?: number; h?: number; caption?: string; bg?: string; silent?: boolean; colors?: [string, string, boolean?][] }
+type SAEntry = {
+  quote?: { text: string; source: string }
+  gap?: { after: number; label: string }
+  milestones: { date: string; title: string; detail: string; rebrand?: boolean }[]
+  thenNow?: { note: string; rows: { label: string; then: string; now: string }[] }
+  rebrand?: { eyebrow: string; headline: string; body: string; msm?: { show: string; n: number }; site?: string; items: SAItem[]; ledger: [string, string][] }
+}
+export const getSinceAlpha = cache(async (slug: string, since?: string) => {
+  const e = (sinceAlpha as unknown as Record<string, SAEntry>)[slug]
+  if (!e || !e.milestones?.length) return null
+  let msm: { href: string; label: string } | null = null
+  if (e.rebrand?.msm) {
+    const p = await db()
+    const r = await p.find({ collection: 'episodes', where: { and: [{ number: { equals: e.rebrand.msm.n } }, { 'show.slug': { equals: 'med-spa-marketing-group-chat' } }, LIVE] }, limit: 1, depth: 1 })
+    const ep = r.docs[0]
+    const show = ep && typeof ep.show === 'object' ? (ep.show as Show) : null
+    if (ep && show) msm = { href: `/podcasts/${show.slug}/${ep.slug}`, label: `MSM ${String(e.rebrand.msm.n).padStart(3, '0')} / ${Math.round((ep.duration || 0) / 60)} min` }
+  }
+  const abs = (f?: string) => (f ? (/^https?:/.test(f) ? f : SA_BLOB + f) : '')
+  return {
+    since: since || '',
+    quote: e.quote || null,
+    gap: e.gap || null,
+    milestones: e.milestones,
+    thenNow: e.thenNow || null,
+    rebrand: e.rebrand
+      ? { ...e.rebrand, msm, items: e.rebrand.items.map((i) => ({ ...i, src: abs(i.src), poster: abs(i.poster) })) }
+      : null,
+  }
+})
+export type SinceAlphaData = NonNullable<Awaited<ReturnType<typeof getSinceAlpha>>>
