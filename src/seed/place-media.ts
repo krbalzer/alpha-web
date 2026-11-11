@@ -32,11 +32,26 @@ const PLACEMENTS: { file: string; alt: string; apply: (p: Payload, id: number) =
   { file: 'lexrx/film-poster-studio.jpg', alt: 'LexRx', apply: (p, id) => brand(p, 'lexrx', (b) => ({ film: { ...(b.film as object), poster: id } })) },
   { file: 'lexrx/founder-alexa-nicholls-costa.jpg', alt: 'Alexa Nicholls Costa', apply: (p, id) => founder(p, 'alexa-nicholls-costa', { headshot: id }) },
   { file: 'lexrx/portrait-alexa-nicholls-costa.jpg', alt: 'Alexa Nicholls Costa at LexRx', apply: (p, id) => founder(p, 'alexa-nicholls-costa', { portrait: id }) },
+  // Anne Therese (007), Ohio + Cape Coral shoot, Nov 2026
+  { file: 'atam/practice-front-desk.jpg', alt: 'The front desk at Anne Therese, Lewis Center', apply: (p, id) => brand(p, 'anne-therese-aesthetic-medicine', (b) => ({ practice: { ...(b.practice as object), image: id } })) },
+  { file: 'atam/why-anne.jpg', alt: 'Dr. Anne Therese Stubbs with a patient', apply: (p, id) => brand(p, 'anne-therese-aesthetic-medicine', (b) => ({ why: { ...(b.why as object), image: id } })) },
+  { file: 'atam/film-poster-canal.jpg', alt: 'A Cape Coral canal at dawn', apply: (p, id) => brand(p, 'anne-therese-aesthetic-medicine', (b) => ({ film: { ...(b.film as object), poster: id } })) },
+  { file: 'atam/portrait-anne-therese-stubbs.jpg', alt: 'Dr. Anne Therese Stubbs at Anne Therese', apply: (p, id) => founder(p, 'anne-therese-stubbs', { portrait: id }) },
+  { file: 'atam/location-lewis-center.jpg', alt: 'The lobby at Anne Therese, Lewis Center', apply: (p, id) => location(p, 'anne-therese-aesthetic-medicine-columbus-ohio', { photo: id }) },
+  { file: 'atam/location-gahanna.jpg', alt: 'Anne Therese, Gahanna', apply: (p, id) => location(p, 'anne-therese-aesthetic-medicine-gahanna-oh', { photo: id }) },
+  { file: 'atam/location-cape-coral.jpg', alt: 'Anne Therese on Cape Coral Parkway', apply: (p, id) => location(p, 'anne-therese-aesthetic-medicine-cape-coral-fl', { photo: id }) },
+  { file: 'atam/cta-cape-coral.jpg', alt: 'Sunrise on the water, Cape Coral', apply: (p, id) => cta(p, 'Anne Therese / Cape Coral', 'anne-therese-aesthetic-medicine-cape-coral-fl', id) },
+  { file: 'atam/cta-gahanna.jpg', alt: 'A crystal sconce at Anne Therese, Gahanna', apply: (p, id) => cta(p, 'Anne Therese / Gahanna', 'anne-therese-aesthetic-medicine-gahanna-oh', id) },
 ]
 
 async function founder(p: Payload, slug: string, data: Record<string, unknown>) {
   const f = (await p.find({ collection: 'founders', where: { slug: { equals: slug } }, limit: 1, depth: 0 })).docs[0]
   if (f) await p.update({ collection: 'founders', id: f.id, data: data as never })
+}
+
+async function cta(p: Payload, label: string, slug: string, id: number) {
+  const l = (await p.find({ collection: 'locations', where: { slug: { equals: slug } }, limit: 1, depth: 0 })).docs[0]
+  if (l) await p.create({ collection: 'cta-images', data: { label, image: id, location: l.id, active: true } as never })
 }
 
 async function location(p: Payload, slug: string, data: Record<string, unknown>) {
