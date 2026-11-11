@@ -653,5 +653,186 @@
         ]
       ]
     }
+  },
+  "anne-therese-aesthetic-medicine": {
+    "quote": {
+      "text": "Branding is all about consistency and it's all about the rules that get followed.",
+      "source": "Med Spa Marketing Group Chat / MSM 057 / 25:56"
+    },
+    "gap": {
+      "after": 1,
+      "label": "14 months, building"
+    },
+    "milestones": [
+      {
+        "date": "Jan 2024",
+        "title": "Joins Alpha as PTR 007",
+        "detail": "Anne Therese Aesthetic Medicine joins the network. Alpha takes on the back office, training and marketing."
+      },
+      {
+        "date": "Feb 2024",
+        "title": "The first shoot",
+        "detail": "Alpha's crew films across the Ohio locations and down to Cape Coral, boat ride included. Behind the scenes on MSM 013."
+      },
+      {
+        "date": "Apr 2025",
+        "title": "The rebrand launches",
+        "detail": "A circle-A mark, a palette taken from the Florida coast, studio portraits, a brand film, treatment films and a new site. Behind the scenes on MSM 057.",
+        "rebrand": true
+      },
+      {
+        "date": "Now",
+        "title": "4 locations",
+        "detail": "Lewis Center and Gahanna, Ohio. Cape Coral and Bonita Springs, Florida."
+      }
+    ],
+    "rebrand": {
+      "eyebrow": "Rebrand + website / Alpha Marketing / Apr 2025",
+      "headline": "Four doors,\none brand.",
+      "body": "A circle mark, a palette taken from the Florida coast, studio portraits, a brand film and a site built to carry them, all made in-house, with a brand book to keep it consistent. The name, the founder and the team stayed.",
+      "msm": {
+        "show": "msm",
+        "n": 57
+      },
+      "items": [
+        {
+          "kind": "ann",
+          "src": "atam-announcement.mp4",
+          "poster": "atam-announcement.jpg",
+          "caption": "Launch announcement",
+          "silent": true
+        },
+        {
+          "kind": "image",
+          "src": "atam-lock.jpg",
+          "w": 1200,
+          "h": 900,
+          "caption": "Mark + wordmark"
+        },
+        {
+          "kind": "palette",
+          "colors": [
+            [
+              "Cream",
+              "#F7F8F0",
+              true
+            ],
+            [
+              "Sand",
+              "#EFF0E9",
+              true
+            ],
+            [
+              "Mist",
+              "#EBF1E8",
+              true
+            ],
+            [
+              "Teal",
+              "#337571"
+            ],
+            [
+              "Dark teal",
+              "#356461"
+            ]
+          ]
+        },
+        {
+          "kind": "image",
+          "src": "atam-hero6.jpg",
+          "w": 960,
+          "h": 968,
+          "caption": "Studio portraits"
+        },
+        {
+          "kind": "video",
+          "src": "atam-film.mp4",
+          "poster": "atam-film.jpg",
+          "w": 1280,
+          "h": 720,
+          "caption": "The brand film"
+        },
+        {
+          "kind": "image",
+          "src": "atam-type.jpg",
+          "w": 1200,
+          "h": 949,
+          "caption": "Type / Editor's Note + Poppins"
+        },
+        {
+          "kind": "image",
+          "src": "atam-edit2.jpg",
+          "w": 1000,
+          "h": 1500
+        },
+        {
+          "kind": "video",
+          "src": "atam-frax.mp4",
+          "poster": "atam-frax.jpg",
+          "w": 540,
+          "h": 960,
+          "caption": "Treatment films / Fraxel"
+        },
+        {
+          "kind": "image",
+          "src": "atam-hero23.jpg",
+          "w": 960,
+          "h": 968
+        },
+        {
+          "kind": "image",
+          "src": "atam-thumbnail26.jpg",
+          "w": 800,
+          "h": 1000
+        },
+        {
+          "kind": "video",
+          "src": "atam-hero.mp4",
+          "poster": "atam-hero.jpg",
+          "w": 1280,
+          "h": 720,
+          "caption": "Site hero / loop"
+        },
+        {
+          "kind": "image",
+          "src": "atam-edit3.jpg",
+          "w": 1500,
+          "h": 1000
+        },
+        {
+          "kind": "image",
+          "src": "atam-hero25.jpg",
+          "w": 960,
+          "h": 968
+        },
+        {
+          "kind": "image",
+          "src": "atam-edit4.jpg",
+          "w": 1000,
+          "h": 1500
+        },
+        {
+          "kind": "image",
+          "src": "atam-mark.jpg",
+          "w": 1000,
+          "h": 1000,
+          "caption": "The circle A"
+        }
+      ],
+      "ledger": [
+        [
+          "25",
+          "treatment pages"
+        ],
+        [
+          "5",
+          "brand colors"
+        ],
+        [
+          "4",
+          "locations"
+        ]
+      ]
+    }
   }
 }
