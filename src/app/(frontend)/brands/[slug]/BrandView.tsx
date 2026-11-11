@@ -8,6 +8,7 @@ import type { BrandData, BrandIndex } from '@/lib/data'
 import { BrandDock } from './BrandDock'
 import { BrandEngine } from './engine'
 import { MapStage, hasRealMap } from '@/components/site/MapStage'
+import { Inside } from '@/components/site/Inside'
 import './brand.css'
 
 export default function BrandView({ brand, brands }: { brand: BrandData; brands: BrandIndex }) {
@@ -75,6 +76,8 @@ export default function BrandView({ brand, brands }: { brand: BrandData; brands:
 <div className="img ph" style={{"aspectRatio": "1.1 / 1"} as React.CSSProperties}>{v.b.practiceImg ? (<><img className="fill" src={v.b.practiceImg} alt="" loading="lazy" /></>) : null}</div>
 </div>
 </section>
+
+<Inside items={brand.inside} name={brand.short} />
 
 {/* ============ STORY FILM ============ */}
 <section className="film_sec" ref={v.filmSec} style={{"paddingBottom": "clamp(80px, 9vw, 140px)"} as React.CSSProperties}>

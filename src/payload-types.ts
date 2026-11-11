@@ -227,6 +227,19 @@ export interface Brand {
     } | null;
     image?: (number | null) | Media;
   };
+  /**
+   * Photo rail under The practice, in order. Real rooms and real people, each at its own ratio.
+   */
+  inside?:
+    | {
+        image: number | Media;
+        /**
+         * Short, e.g. "Front desk / Lewis Center".
+         */
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   film?: {
     /**
      * Brand film, played on the page. Set by pnpm ingest:video with 720p / 1080p / 2160p renditions.
@@ -580,6 +593,17 @@ export interface Location {
       }[]
     | null;
   photo?: (number | null) | Media;
+  /**
+   * Inside this location, in order: the first two run large (arrival, front desk), the next three in a row (treatment rooms, consult, retail).
+   */
+  gallery?:
+    | {
+        image: number | Media;
+        kind: 'arrival' | 'front-desk' | 'treatment-room' | 'consult' | 'retail' | 'detail';
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Silent loop, 100vh hero. Leave empty and the map becomes the hero.
    */
@@ -1312,6 +1336,13 @@ export interface BrandsSelect<T extends boolean = true> {
         body?: T;
         image?: T;
       };
+  inside?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
   film?:
     | T
     | {
@@ -1426,6 +1457,14 @@ export interface LocationsSelect<T extends boolean = true> {
         id?: T;
       };
   photo?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        kind?: T;
+        caption?: T;
+        id?: T;
+      };
   heroVideo?: T;
   heroPoster?: T;
   live?: T;

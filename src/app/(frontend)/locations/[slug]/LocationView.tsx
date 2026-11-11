@@ -84,17 +84,17 @@ export default function LocationView(props: any) {
 </div>
 </section>
 
-{/* ============ INSIDE ============ */}{v.hasStory ? (<>
+{/* ============ INSIDE ============ */}{v.hasInside ? (<>
 <section className="sec">
 <div className="wrap">
 <hr className="rule" style={{"marginBottom": "clamp(36px, 4vw, 60px)"} as React.CSSProperties} />
-<div className="inside_head"><div><h2 className="h3">Inside {v.b.name} {v.loc.city}</h2>{v.loc.facts ? (<><p className="sub">{v.loc.facts}</p></>) : null}</div><div className="body inside_story" dangerouslySetInnerHTML={{ __html: v.storyHtml }} /></div>
+<div className="inside_head"><div><h2 className="h3">Inside {v.b.name} {v.loc.city}</h2>{v.loc.facts ? (<><p className="sub">{v.loc.facts}</p></>) : null}</div>{v.hasStory ? (<><div className="body inside_story" dangerouslySetInnerHTML={{ __html: v.storyHtml }} /></>) : null}</div>
 {v.galOn ? (<>
 <div className="gal two">
-{(v.gal2 || []).map((g: any, g_i: number) => (<React.Fragment key={g_i}><figure><div className="img ph">{g.ph}</div><figcaption className="cap"><b>{g.k}</b>{g.t}</figcaption></figure></React.Fragment>))}
+{(v.gal2 || []).map((g: any, g_i: number) => (<React.Fragment key={g_i}><figure><div className="img"><img className="ph_img" src={g.src} alt={g.alt} loading="lazy" decoding="async" /></div><figcaption className="cap"><b>{g.k}</b>{g.t}</figcaption></figure></React.Fragment>))}
 </div>
 <div className="gal three">
-{(v.gal3 || []).map((g: any, g_i: number) => (<React.Fragment key={g_i}><figure><div className="img ph">{g.ph}</div><figcaption className="cap"><b>{g.k}</b>{g.t}</figcaption></figure></React.Fragment>))}
+{(v.gal3 || []).map((g: any, g_i: number) => (<React.Fragment key={g_i}><figure><div className="img"><img className="ph_img" src={g.src} alt={g.alt} loading="lazy" decoding="async" /></div><figcaption className="cap"><b>{g.k}</b>{g.t}</figcaption></figure></React.Fragment>))}
 </div>
 </>) : null}
 </div>

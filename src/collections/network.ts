@@ -35,6 +35,10 @@ export const Brands: CollectionConfig = {
       { name: 'body', type: 'richText' },
       img('image'),
     ] },
+    { name: 'inside', label: 'Inside the practice', type: 'array', admin: { description: 'Photo rail under The practice, in order. Real rooms and real people, each at its own ratio.' }, fields: [
+      img('image', undefined, true),
+      { name: 'caption', type: 'text', admin: { description: 'Short, e.g. "Front desk / Lewis Center".' } },
+    ] },
     { name: 'film', type: 'group', fields: [
       { name: 'video', type: 'upload', relationTo: 'media', admin: { description: 'Brand film, played on the page. Set by pnpm ingest:video with 720p / 1080p / 2160p renditions.' } },
       { name: 'url', label: 'External URL (fallback)', type: 'text', admin: { description: 'Only used when no video is uploaded.' } },
@@ -126,6 +130,16 @@ export const Locations: CollectionConfig = {
       { type: 'row', fields: [{ name: 'role', type: 'text', required: true, admin: { description: 'Plural, e.g. NPs' } }, { name: 'count', type: 'number', required: true, min: 1 }] },
     ] },
     img('photo', 'Location photo'),
+    { name: 'gallery', type: 'array', admin: { description: 'Inside this location, in order: the first two run large (arrival, front desk), the next three in a row (treatment rooms, consult, retail).' }, fields: [
+      img('image', undefined, true),
+      { type: 'row', fields: [
+        { name: 'kind', type: 'select', required: true, defaultValue: 'treatment-room', options: [
+          { label: 'Arrival', value: 'arrival' }, { label: 'Front desk', value: 'front-desk' }, { label: 'Treatment room', value: 'treatment-room' },
+          { label: 'Consult', value: 'consult' }, { label: 'Retail', value: 'retail' }, { label: 'Detail', value: 'detail' },
+        ] },
+        { name: 'caption', type: 'text' },
+      ] },
+    ] },
     { name: 'heroVideo', type: 'upload', relationTo: 'media', admin: { description: 'Silent loop, 100vh hero. Leave empty and the map becomes the hero.' } },
     img('heroPoster', 'Hero poster'),
     live,

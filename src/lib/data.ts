@@ -116,6 +116,7 @@ export const getBrand = cache(async (slug: string) => {
     practiceHeadline: b.practice?.headline || '',
     practiceHtml: html(b.practice?.body),
     practiceImg: url(b.practice?.image, 'wide') || '',
+    inside: (b.inside || []).map((x) => { const me = m(x.image); return { src: url(me, 'wide') || '', w: Number(me?.width) || 4, h: Number(me?.height) || 3, caption: x.caption || '' } }).filter((x) => x.src),
     filmPoster: posterUrl(b.film?.poster),
     filmUrl: b.film?.url || '',
     film: video(b.film?.video),

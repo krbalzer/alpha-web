@@ -355,7 +355,12 @@ def location_markup(b):
     b = rep(b, '<div class="v_col"><p class="eyebrow">Arriving</p><p class="v_t">{{ visit.arrive }}</p></div>', '<sc-if value="{{ visit.arrive }}"><div class="v_col"><p class="eyebrow">Arriving</p><p class="v_t">{{ visit.arrive }}</p></div></sc-if>')
     b = rep(b, '<p class="sub">{{ loc.facts }}</p>', '<sc-if value="{{ loc.facts }}"><p class="sub">{{ loc.facts }}</p></sc-if>')
     b = rep(b, '<div class="body inside_story"><span class="draft">Draft copy</span><sc-for list="{{ story }}" as="p" hint-placeholder-count="2"><p>{{ p.t }}</p></sc-for></div>', '<x-rich class="body inside_story" html="{{ storyHtml }}"></x-rich>')
-    b = gate(b, 'INSIDE', 'hasStory')
+    b = rep(b, '<x-rich class="body inside_story" html="{{ storyHtml }}"></x-rich>', '<sc-if value="{{ hasStory }}"><x-rich class="body inside_story" html="{{ storyHtml }}"></x-rich></sc-if>')
+    # gallery (locations.gallery): real photos, first two large, the rest in threes
+    for k in ('gal2', 'gal3'):
+        b = rep(b, '<sc-for list="{{ ' + k + ' }}" as="g" hint-placeholder-count="' + ('2' if k == 'gal2' else '3') + '"><figure><div class="img ph">{{ g.ph }}</div><figcaption class="cap"><b>{{ g.k }}</b>{{ g.t }}</figcaption></figure></sc-for>',
+                '<sc-for list="{{ ' + k + ' }}" as="g"><figure><div class="img"><img class="ph_img" src="{{ g.src }}" alt="{{ g.alt }}" loading="lazy" decoding="async"></div><figcaption class="cap"><b>{{ g.k }}</b>{{ g.t }}</figcaption></figure></sc-for>')
+    b = gate(b, 'INSIDE', 'hasInside')
     b = rep(b, '<p class="sub">{{ provLine }}</p>', '<sc-if value="{{ provLine }}"><p class="sub">{{ provLine }}</p></sc-if>')
     b = gate(b, 'IN THEIR WORDS', 'hasReviews')
     # live Google reviews (src/lib/reviews.ts): aggregate, up to 6 cards, author linked to their Google profile
@@ -378,7 +383,7 @@ def location_engine(e):
     e = sub(r'\n  brand\(\) \{.*?\n  \}\n', '\n  brand() { return this.props.data.b; }\n', e)
     e = rep(e, '  li() { return this.props.denver ? 1 : 0; }', '  li() { return this.props.data.li; }')
     e = rep(e, "sb = B.locations[1 - li];", "sb = B.locations[(li + 1) % B.locations.length];")
-    e = rep(e, "galOn: !loc.noGallery,", "galOn: false, hasStory: !!loc.storyHtml, storyHtml: loc.storyHtml, hasReviews: !!(loc.rv && loc.rv.items.length >= 3), rv: loc.rv || { items: [] }, hasStats: false, hasRoles: false, hasSince: (loc.ms || []).length > 0 || !!(loc.quote && loc.quote.t),")
+    e = rep(e, "galOn: !loc.noGallery,", "galOn: (loc.gal || []).length > 0, hasInside: !!loc.storyHtml || (loc.gal || []).length > 0, hasStory: !!loc.storyHtml, storyHtml: loc.storyHtml, hasReviews: !!(loc.rv && loc.rv.items.length >= 3), rv: loc.rv || { items: [] }, hasStats: false, hasRoles: false, hasSince: (loc.ms || []).length > 0 || !!(loc.quote && loc.quote.t),")
     e = rep(e, "sib: Object.assign({}, sb, { place: sb.city + ', ' + sb.st }),", "sib: Object.assign({}, sb, { place: sb.city + ', ' + sb.st }),")
     e = sub(r"visit: \{ hours: .*?arrive: loc\.arrive \|\| '\[Parking and entrance note\.\]' \},",
             "visit: { hours: (loc.hours || []).map((h) => ({ d: h[0], t: h[1] })), hasHours: (loc.hours || []).length > 0, phone: loc.phone || '', tel: 'tel:' + String(loc.phone || '').replace(/[^0-9+]/g, ''), arrive: loc.arrive || '' },", e)
@@ -387,6 +392,10 @@ def location_engine(e):
     e = sub(r"leads: \[.*?\]\.map\(\(p\) => \(\{ \.\.\.p,", "leads: B.leads(loc).map((p) => ({ ...p,", e) if False else e
     e = sub(r"leads: \[\s*\{ name: B\.founder.*?\n      \]\.map",
             "leads: [B.founder ? { name: B.founder, role: 'Founder', cred: B.cred, img: B.founderImg || '', href: B.founderHref } : null, loc.lead && loc.lead.name ? Object.assign({ role: 'Lead provider, ' + loc.city }, loc.lead) : null].filter(Boolean).map", e)
+    GK = "{ arrival: 'Arrival', 'front-desk': 'Front desk', 'treatment-room': 'Treatment room', consult: 'Consult', retail: 'Retail', detail: 'Detail' }"
+    gal = "(loc.gal || []).map((g) => ({ src: g.src, alt: g.alt || '', k: " + GK + "[g.kind] || '', t: g.caption || '' }))"
+    e = rep(e, "gal2: [{ k: 'Arrival', t: '[Caption about the arrival]', ph: 'Place image / exterior or entry' }, { k: 'Front desk', t: '[Caption]', ph: 'Place image / reception' }],", "gal2: " + gal + ".slice(0, 2),")
+    e = rep(e, "gal3: [{ k: 'Treatment room', t: '[Caption]', ph: 'Place image' }, { k: 'Consult', t: '[Caption]', ph: 'Place image' }, { k: 'Retail', t: '[Caption]', ph: 'Place image' }],", "gal3: " + gal + ".slice(2),")
     e = rep(e, 'this.tick(now, dt); this.draw(now);', 'this.tick(now, dt); // the real map (MapStage) renders the scene; draw() stays as the fallback reference')
     return e
 
@@ -830,7 +839,7 @@ PAGES = {
     'Founder': dict(dir='founders/[slug]', board='Founder', data=True, markup=founder_markup, engine=founder_engine),
     'Locations': dict(dir='locations', board='Locations', data=True, markup=locations_markup, engine=locations_engine, jsx=locations_jsx, imports="import { FocusMap } from '@/components/site/MapStage'\n",
                       css=IMG_CSS + MAP_CSS + '.map_focus{opacity:0;pointer-events:none}\n.map_focus .maplibregl-canvas-container{transition:opacity .7s}\n.map_focus:not([data-ready="1"]) .maplibregl-canvas-container{opacity:0;transition:opacity .2s}\n'),
-    'Location': dict(dir='locations/[slug]', board='Location', markup=location_markup, engine=location_engine, jsx=location_jsx, imports=MAP_IMPORT, css=IMG_CSS + MAP_CSS + '.rv_who{color:inherit;text-decoration:none}\n.rv_who:hover b{text-decoration:underline}\n'),
+    'Location': dict(dir='locations/[slug]', board='Location', markup=location_markup, engine=location_engine, jsx=location_jsx, imports=MAP_IMPORT, css=IMG_CSS + MAP_CSS + '.rv_who{color:inherit;text-decoration:none}\n.rv_who:hover b{text-decoration:underline}\n.gal .img{position:relative;overflow:hidden;background:#D3CFC5}\n'),
     'Podcasts': dict(dir='podcasts', board='Podcasts', data=True, markup=podcasts_markup, engine=podcasts_engine, css=PODCAST_CSS + QUEUE_ROW_CSS, imports=QUEUE_IMPORT),
     'Show': dict(dir='podcasts/[show]', board='Show', markup=show_markup, engine=show_engine, imports=QUEUE_IMPORT, css=SHOW_CSS + QUEUE_ROW_CSS + IMG_CSS + '.spk,.person_av{position:relative;overflow:hidden}\n.spk img,.person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}\n'),
     'Episode': dict(dir='podcasts/[show]/[episode]', board='Episode', markup=episode_markup, engine=episode_engine, imports=QUEUE_IMPORT + "import { EpisodeBar } from '@/components/site/EpisodeBar'\n", css=EPBAR_CSS + '.qb_lg{height:44px;padding:0 18px}\n.btn.qb.is-q{background:var(--ink);border-color:var(--ink);color:var(--bone)}\n.btn.qb.is-now{opacity:.55;cursor:default}\n' + IMG_CSS + '.vid_poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.82)}\n.vid .vid_btn{position:relative;z-index:1;border:0;cursor:pointer}\n.vid.is-on{aspect-ratio:16/9;background:#000}\n.vid_ifr{position:absolute;inset:0;width:100%;height:100%;border:0}\n' + '.tv_play{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 22px 0 18px;border-radius:999px;border:0;background:var(--ink);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:transform .3s var(--ease)}\n.tv_play:hover{transform:scale(1.04)}\n' + '.spk,.person_av{position:relative;overflow:hidden}\n.spk img,.person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}\n'),

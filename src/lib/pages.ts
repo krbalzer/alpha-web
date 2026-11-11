@@ -289,6 +289,7 @@ export const getLocation = cache(async (slug: string) => {
           img: noMedia ? '' : url(l.photo as Media, 'wide') || '', heroVideo: v.src, heroAv1: v.av1, heroSmall: v.small, heroPoster: v.src ? posterUrl(l.heroPoster) : '',
           est, facts: '', providers: 0, mix: (l.roleMix || []).map((r) => [r.role, r.count]), lead, storyHtml: html(l.story),
           hours: (l.hours || []).map((h) => [h.days, h.time]), phone: l.phone || '', arrive: l.arrivalNote || '',
+          gal: noMedia ? [] : (l.gallery || []).map((g) => ({ src: url(g.image as Media, 'wide') || '', kind: g.kind, caption: g.caption || '', alt: (g.image as Media | null)?.alt || '' })).filter((g) => g.src),
           rv: l.id === cur.id ? rv : null,
           ms: (l.milestones || []).map((m) => [m.when, m.line]), quote: l.quote?.text ? { t: l.quote.text, s: l.quote.source || '' } : { t: '', s: '' },
           a1, a2, lng: l.lng, lat: l.lat, ang: ((l.mapBearing || 0) * Math.PI) / 180, hmax: 16 + ((i * 7) % 20), seed: 11 + i * 18, tone: tones[i % 3],

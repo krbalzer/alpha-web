@@ -196,6 +196,7 @@ import type { BrandData, BrandIndex } from '@/lib/data'
 import { BrandDock } from './BrandDock'
 import { BrandEngine } from './engine'
 import { MapStage, hasRealMap } from '@/components/site/MapStage'
+import { Inside } from '@/components/site/Inside'
 import './brand.css'
 
 export default function BrandView({ brand, brands }: { brand: BrandData; brands: BrandIndex }) {
@@ -216,6 +217,9 @@ assert 'v.b.hero.av1' in view
 engine = engine.replace("      playFilm: () => { if (B.filmUrl) window.open(B.filmUrl, '_blank', 'noopener'); },\n", open(os.path.join(os.path.dirname(__file__), 'brand_film.js')).read())
 assert 'film_vid' in engine
 os.makedirs(APP, exist_ok=True)
+FILM = '{/* ============ STORY FILM ============ */}'
+assert view.count(FILM) == 1
+view = view.replace(FILM, '<Inside items={brand.inside} name={brand.short} />\n\n' + FILM)
 open(APP + 'BrandView.tsx', 'w').write(view)
 open(APP + 'brand.css', 'w').write(scss)
 open(APP + 'engine.ts', 'w').write(engine)

@@ -357,4 +357,5 @@
 .pg-location .map_gl .maplibregl-ctrl-attrib-button{filter:invert(1);opacity:.5}
 .pg-location .rv_who{color:inherit;text-decoration:none}
 .pg-location .rv_who:hover b{text-decoration:underline}
+.pg-location .gal .img{position:relative;overflow:hidden;background:#D3CFC5}
 

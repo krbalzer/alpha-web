@@ -42,6 +42,33 @@ const PLACEMENTS: { file: string; alt: string; apply: (p: Payload, id: number) =
   { file: 'atam/location-cape-coral.jpg', alt: 'Anne Therese on Cape Coral Parkway', apply: (p, id) => location(p, 'anne-therese-aesthetic-medicine-cape-coral-fl', { photo: id }) },
   { file: 'atam/cta-cape-coral.jpg', alt: 'Sunrise on the water, Cape Coral', apply: (p, id) => cta(p, 'Anne Therese / Cape Coral', 'anne-therese-aesthetic-medicine-cape-coral-fl', id) },
   { file: 'atam/cta-gahanna.jpg', alt: 'A crystal sconce at Anne Therese, Gahanna', apply: (p, id) => cta(p, 'Anne Therese / Gahanna', 'anne-therese-aesthetic-medicine-gahanna-oh', id) },
+  // Inside the practice rail (brand page) and location galleries
+  { file: 'atam/inside-lobby-chandeliers.jpg', alt: 'Chandeliers in the Lewis Center lobby', apply: (p, id) => inside(p, 'anne-therese-aesthetic-medicine', id, 'Lobby / Lewis Center') },
+  { file: 'atam/inside-lewis-center-desk.jpg', alt: 'The front desk at Lewis Center', apply: (p, id) => inside(p, 'anne-therese-aesthetic-medicine', id, 'Front desk / Lewis Center') },
+  { file: 'atam/inside-anne-treatment.jpg', alt: 'Dr. Anne Therese Stubbs treating a patient', apply: (p, id) => inside(p, 'anne-therese-aesthetic-medicine', id, 'Dr. Anne Therese Stubbs / Lewis Center') },
+  { file: 'atam/inside-lewis-center-room.jpg', alt: 'A treatment at Lewis Center', apply: (p, id) => inside(p, 'anne-therese-aesthetic-medicine', id, 'Treatment room / Lewis Center') },
+  { file: 'atam/inside-gahanna-desk.jpg', alt: 'The front desk at Gahanna', apply: (p, id) => inside(p, 'anne-therese-aesthetic-medicine', id, 'Front desk / Gahanna') },
+  { file: 'atam/inside-gahanna-laser.jpg', alt: 'A laser treatment at Gahanna', apply: (p, id) => inside(p, 'anne-therese-aesthetic-medicine', id, 'Laser / Gahanna') },
+  { file: 'atam/inside-gahanna-skincare.jpg', alt: 'The skincare wall at Gahanna', apply: (p, id) => inside(p, 'anne-therese-aesthetic-medicine', id, 'Skincare / Gahanna') },
+  { file: 'atam/inside-gahanna-facial.jpg', alt: 'A facial at Gahanna', apply: (p, id) => inside(p, 'anne-therese-aesthetic-medicine', id, 'Facial / Gahanna') },
+  { file: 'atam/inside-cape-coral-desk.jpg', alt: 'The front desk at Cape Coral', apply: (p, id) => inside(p, 'anne-therese-aesthetic-medicine', id, 'Front desk / Cape Coral') },
+  { file: 'atam/inside-cape-coral-room.jpg', alt: 'A treatment at Cape Coral', apply: (p, id) => inside(p, 'anne-therese-aesthetic-medicine', id, 'Treatment room / Cape Coral') },
+  { file: 'atam/inside-cape-coral-palm.jpg', alt: 'A palm on Cape Coral Parkway', apply: (p, id) => inside(p, 'anne-therese-aesthetic-medicine', id, 'Cape Coral') },
+  { file: 'atam/gal-lewis-center-1.jpg', alt: 'The lobby at Lewis Center', apply: (p, id) => gallery(p, 'anne-therese-aesthetic-medicine-columbus-ohio', id, 'arrival') },
+  { file: 'atam/gal-lewis-center-2.jpg', alt: 'The front desk at Lewis Center', apply: (p, id) => gallery(p, 'anne-therese-aesthetic-medicine-columbus-ohio', id, 'front-desk') },
+  { file: 'atam/gal-lewis-center-3.jpg', alt: 'A treatment room at Lewis Center', apply: (p, id) => gallery(p, 'anne-therese-aesthetic-medicine-columbus-ohio', id, 'treatment-room') },
+  { file: 'atam/gal-lewis-center-4.jpg', alt: 'A treatment room at Lewis Center', apply: (p, id) => gallery(p, 'anne-therese-aesthetic-medicine-columbus-ohio', id, 'treatment-room') },
+  { file: 'atam/gal-lewis-center-5.jpg', alt: 'Syringes on a crystal tray at Lewis Center', apply: (p, id) => gallery(p, 'anne-therese-aesthetic-medicine-columbus-ohio', id, 'detail') },
+  { file: 'atam/gal-gahanna-1.jpg', alt: 'Anne Therese, Gahanna, from the walk', apply: (p, id) => gallery(p, 'anne-therese-aesthetic-medicine-gahanna-oh', id, 'arrival') },
+  { file: 'atam/gal-gahanna-2.jpg', alt: 'The front desk at Gahanna', apply: (p, id) => gallery(p, 'anne-therese-aesthetic-medicine-gahanna-oh', id, 'front-desk') },
+  { file: 'atam/gal-gahanna-3.jpg', alt: 'A laser treatment at Gahanna', apply: (p, id) => gallery(p, 'anne-therese-aesthetic-medicine-gahanna-oh', id, 'treatment-room') },
+  { file: 'atam/gal-gahanna-4.jpg', alt: 'A consult at Gahanna', apply: (p, id) => gallery(p, 'anne-therese-aesthetic-medicine-gahanna-oh', id, 'consult') },
+  { file: 'atam/gal-gahanna-5.jpg', alt: 'The skincare wall at Gahanna', apply: (p, id) => gallery(p, 'anne-therese-aesthetic-medicine-gahanna-oh', id, 'retail') },
+  { file: 'atam/gal-cape-coral-1.jpg', alt: 'Anne Therese on Cape Coral Parkway', apply: (p, id) => gallery(p, 'anne-therese-aesthetic-medicine-cape-coral-fl', id, 'arrival') },
+  { file: 'atam/gal-cape-coral-2.jpg', alt: 'The front desk at Cape Coral', apply: (p, id) => gallery(p, 'anne-therese-aesthetic-medicine-cape-coral-fl', id, 'front-desk') },
+  { file: 'atam/gal-cape-coral-3.jpg', alt: 'A treatment at Cape Coral', apply: (p, id) => gallery(p, 'anne-therese-aesthetic-medicine-cape-coral-fl', id, 'treatment-room') },
+  { file: 'atam/gal-cape-coral-4.jpg', alt: 'A consult at Cape Coral', apply: (p, id) => gallery(p, 'anne-therese-aesthetic-medicine-cape-coral-fl', id, 'consult') },
+  { file: 'atam/gal-cape-coral-5.jpg', alt: 'The treatment room hallway at Cape Coral', apply: (p, id) => gallery(p, 'anne-therese-aesthetic-medicine-cape-coral-fl', id, 'treatment-room') },
 ]
 
 async function founder(p: Payload, slug: string, data: Record<string, unknown>) {
@@ -52,6 +79,16 @@ async function founder(p: Payload, slug: string, data: Record<string, unknown>) 
 async function cta(p: Payload, label: string, slug: string, id: number) {
   const l = (await p.find({ collection: 'locations', where: { slug: { equals: slug } }, limit: 1, depth: 0 })).docs[0]
   if (l) await p.create({ collection: 'cta-images', data: { label, image: id, location: l.id, active: true } as never })
+}
+
+async function inside(p: Payload, slug: string, id: number, caption: string) {
+  const b = (await p.find({ collection: 'brands', where: { slug: { equals: slug } }, limit: 1, depth: 0 })).docs[0] as unknown as Doc | undefined
+  if (b) await p.update({ collection: 'brands', id: b.id, data: { inside: [...((b.inside as object[]) || []), { image: id, caption }] } as never })
+}
+
+async function gallery(p: Payload, slug: string, id: number, kind: string, caption = '') {
+  const l = (await p.find({ collection: 'locations', where: { slug: { equals: slug } }, limit: 1, depth: 0 })).docs[0] as unknown as Doc | undefined
+  if (l) await p.update({ collection: 'locations', id: l.id, data: { gallery: [...((l.gallery as object[]) || []), { image: id, kind, caption }] } as never })
 }
 
 async function location(p: Payload, slug: string, data: Record<string, unknown>) {

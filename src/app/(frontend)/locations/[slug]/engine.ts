@@ -206,7 +206,7 @@ export class LocationEngine extends DCLogic {
     const heroH = this.tall ? '820px' : 'calc(100svh - 126px)', mapHero = !loc.heroVideo;
     return {
       hasVid: !mapHero, mapHero, mapCls: 'map dark' + (mapHero ? ' is-hero' : ''), mapH: mapHero ? heroH : 'clamp(560px, 54vw, 820px)', mapAria: mapHero ? B.short + ' / ' + loc.place : 'Location',
-      galOn: false, hasStory: !!loc.storyHtml, storyHtml: loc.storyHtml, hasReviews: !!(loc.rv && loc.rv.items.length >= 3), rv: loc.rv || { items: [] }, hasStats: false, hasRoles: false, hasSince: (loc.ms || []).length > 0 || !!(loc.quote && loc.quote.t),
+      galOn: (loc.gal || []).length > 0, hasInside: !!loc.storyHtml || (loc.gal || []).length > 0, hasStory: !!loc.storyHtml, storyHtml: loc.storyHtml, hasReviews: !!(loc.rv && loc.rv.items.length >= 3), rv: loc.rv || { items: [] }, hasStats: false, hasRoles: false, hasSince: (loc.ms || []).length > 0 || !!(loc.quote && loc.quote.t),
       b: B, loc, title: B.short + ' / ' + loc.place, hasSib: B.locations.length > 1,
       sib: Object.assign({}, sb, { place: sb.city + ', ' + sb.st }),
       story: (loc.story || ['[Place story. Why this address, when it opened, the neighborhood, what the space is built for. 80 to 120 words, true of this location only.]']).map((t) => ({ t })),
@@ -215,8 +215,8 @@ export class LocationEngine extends DCLogic {
       q: loc.quote || { t: '', s: '' },
       provLine: (() => { const m = loc.mix || []; const n = m.reduce((a, x) => a + x[1], 0) || loc.providers; if (!n) return ''; return n + ' providers' + (m.length ? ' / ' + m.map((x) => x[1] + ' ' + x[0]).join(', ') : ''); })(),
       leads: [B.founder ? { name: B.founder, role: 'Founder', cred: B.cred, img: B.founderImg || '', href: B.founderHref } : null, loc.lead && loc.lead.name ? Object.assign({ role: 'Lead provider, ' + loc.city }, loc.lead) : null].filter(Boolean).map((p) => ({ ...p, hasImg: !!p.img, noImg: !p.img, init: p.name[0] === '[' ? '' : p.name.split(' ').map((w) => w[0]).join('').slice(0, 2) })),
-      gal2: [{ k: 'Arrival', t: '[Caption about the arrival]', ph: 'Place image / exterior or entry' }, { k: 'Front desk', t: '[Caption]', ph: 'Place image / reception' }],
-      gal3: [{ k: 'Treatment room', t: '[Caption]', ph: 'Place image' }, { k: 'Consult', t: '[Caption]', ph: 'Place image' }, { k: 'Retail', t: '[Caption]', ph: 'Place image' }],
+      gal2: (loc.gal || []).map((g) => ({ src: g.src, alt: g.alt || '', k: { arrival: 'Arrival', 'front-desk': 'Front desk', 'treatment-room': 'Treatment room', consult: 'Consult', retail: 'Retail', detail: 'Detail' }[g.kind] || '', t: g.caption || '' })).slice(0, 2),
+      gal3: (loc.gal || []).map((g) => ({ src: g.src, alt: g.alt || '', k: { arrival: 'Arrival', 'front-desk': 'Front desk', 'treatment-room': 'Treatment room', consult: 'Consult', retail: 'Retail', detail: 'Detail' }[g.kind] || '', t: g.caption || '' })).slice(2),
       roles: [{ t: 'Injector · Full time', where: loc.place }, { t: '[Role] · [Type]', where: loc.place }],
       heroH,
       vidRef: (el) => { if (el && el !== this._vid) { this._vid = el; el.muted = true; const p = el.play && el.play(); if (p && p.catch) p.catch(() => {}); } },
