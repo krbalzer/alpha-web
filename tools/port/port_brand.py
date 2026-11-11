@@ -217,9 +217,9 @@ assert 'v.b.hero.av1' in view
 engine = engine.replace("      playFilm: () => { if (B.filmUrl) window.open(B.filmUrl, '_blank', 'noopener'); },\n", open(os.path.join(os.path.dirname(__file__), 'brand_film.js')).read())
 assert 'film_vid' in engine
 os.makedirs(APP, exist_ok=True)
-FILM = '{/* ============ STORY FILM ============ */}'
+FILM = '{/* ============ LOCATIONS INDEX: only for multi-location brands ============ */}'  # Inside sits right after the stats
 assert view.count(FILM) == 1
-view = view.replace(FILM, '<Inside items={brand.inside} name={brand.short} />\n\n' + FILM)
+view = view.replace(FILM, '<Inside items={brand.inside} title={brand.insideTitle} where={brand.insideWhere} />\n\n' + FILM)
 open(APP + 'BrandView.tsx', 'w').write(view)
 open(APP + 'brand.css', 'w').write(scss)
 open(APP + 'engine.ts', 'w').write(engine)

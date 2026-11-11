@@ -228,7 +228,11 @@ export interface Brand {
     image?: (number | null) | Media;
   };
   /**
-   * Photo rail under The practice, in order. Real rooms and real people, each at its own ratio.
+   * Over the Inside filmstrip, e.g. "A Tuesday at Privé". Empty: "A day at" + short name.
+   */
+  insideTitle?: string | null;
+  /**
+   * Filmstrip under The practice, in order: a day inside the practice. Caption each one, e.g. "Tox / Room 2". Tall, wide and square photos all work.
    */
   inside?:
     | {
@@ -1336,6 +1340,7 @@ export interface BrandsSelect<T extends boolean = true> {
         body?: T;
         image?: T;
       };
+  insideTitle?: T;
   inside?:
     | T
     | {

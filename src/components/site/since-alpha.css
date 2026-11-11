@@ -83,14 +83,3 @@
   .sa_rail{--h:min(62vh,420px)}
 }
 @media (prefers-reduced-motion:reduce){.sa_fill{transition:none}}
-
-/* light variant: brand page "Inside the practice" rail */
-.sa.sa-lt{background:none;color:var(--ink);padding:0 0 clamp(80px,9vw,140px)}
-.sa-lt .eyebrow{color:var(--muted)}
-.sa-lt .sa_arr{border-color:var(--line);color:var(--ink)}
-.sa-lt .sa_arr:hover{background:var(--ink);color:var(--bone)}
-.sa-lt .sa_s{background:#D3CFC5}
-.sa-lt .sa_s img{object-fit:cover}
-.sa-lt .sa_led{color:var(--muted)}
-.sa-lt .sa_prog{background:var(--line)}
-.sa-lt .sa_prog i{background:var(--ink)}

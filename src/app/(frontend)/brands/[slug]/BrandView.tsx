@@ -77,8 +77,6 @@ export default function BrandView({ brand, brands }: { brand: BrandData; brands:
 </div>
 </section>
 
-<Inside items={brand.inside} name={brand.short} />
-
 {/* ============ STORY FILM ============ */}
 <section className="film_sec" ref={v.filmSec} style={{"paddingBottom": "clamp(80px, 9vw, 140px)"} as React.CSSProperties}>
 <div className="wrap">
@@ -105,6 +103,8 @@ export default function BrandView({ brand, brands }: { brand: BrandData; brands:
 </div>
 </div>
 </section></>) : null}
+
+<Inside items={brand.inside} title={brand.insideTitle} where={brand.insideWhere} />
 
 {/* ============ LOCATIONS INDEX: only for multi-location brands ============ */}
 {v.multi ? (<>

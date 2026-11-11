@@ -35,7 +35,8 @@ export const Brands: CollectionConfig = {
       { name: 'body', type: 'richText' },
       img('image'),
     ] },
-    { name: 'inside', label: 'Inside the practice', type: 'array', admin: { description: 'Photo rail under The practice, in order. Real rooms and real people, each at its own ratio.' }, fields: [
+    { name: 'insideTitle', label: 'Inside / headline', type: 'textarea', admin: { description: 'Over the Inside filmstrip, e.g. "A Tuesday at Privé". Empty: "A day at" + short name.' } },
+    { name: 'inside', label: 'Inside the practice', type: 'array', admin: { description: 'Filmstrip under The practice, in order: a day inside the practice. Caption each one, e.g. "Tox / Room 2". Tall, wide and square photos all work.' }, fields: [
       img('image', undefined, true),
       { name: 'caption', type: 'text', admin: { description: 'Short, e.g. "Front desk / Lewis Center".' } },
     ] },
