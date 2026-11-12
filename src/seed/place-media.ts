@@ -86,6 +86,12 @@ const PLACEMENTS: { file: string; alt: string; apply: (p: Payload, id: number) =
   { file: 'atam/gal-bonita-springs-3.jpg', alt: 'A treatment at Bonita Springs', apply: (p, id) => gallery(p, 'anne-therese-aesthetic-medicine-bonita-springs-fl', id, 'treatment-room') },
   { file: 'atam/gal-bonita-springs-4.jpg', alt: 'A facial at Bonita Springs', apply: (p, id) => gallery(p, 'anne-therese-aesthetic-medicine-bonita-springs-fl', id, 'treatment-room') },
   { file: 'atam/gal-bonita-springs-5.jpg', alt: 'The skincare wall at Bonita Springs', apply: (p, id) => gallery(p, 'anne-therese-aesthetic-medicine-bonita-springs-fl', id, 'retail') },
+  // story film posters (the brand page film card), one place frame per brand
+  { file: 'rne/film-poster-rocks.jpg', alt: 'Surf on the rocks, North Shore', apply: (p, id) => brand(p, 'rn-esthetics', (b) => ({ film: { ...(b.film as object), poster: id } })) },
+  { file: 'lcm/film-poster-marina.jpg', alt: 'The Marin waterfront', apply: (p, id) => brand(p, 'the-laser-center-of-marin', (b) => ({ film: { ...(b.film as object), poster: id } })) },
+  { file: 'twc/film-poster-saratoga.jpg', alt: 'Welcome to Saratoga Springs', apply: (p, id) => brand(p, 'williams-center', (b) => ({ film: { ...(b.film as object), poster: id } })) },
+  { file: 'mn/film-poster-breakwater.jpg', alt: 'The breakwater lighthouse off Lewes', apply: (p, id) => brand(p, 'mint-needle', (b) => ({ film: { ...(b.film as object), poster: id } })) },
+  { file: 'flawless/film-poster-old-town.jpg', alt: 'Adobe in Old Town Albuquerque', apply: (p, id) => brand(p, 'flawless-medspa-wellness', (b) => ({ film: { ...(b.film as object), poster: id } })) },
   // RN Esthetics, location shoot May 2026 (Kevin's red-tagged picks + North Shore details)
   { file: 'rne/practice-front-desk.jpg', alt: 'The front desk at RN Esthetics, Salem', apply: (p, id) => brand(p, 'rn-esthetics', (b) => ({ practice: { ...(b.practice as object), image: id } })) },
   { file: 'rne/why-provider.jpg', alt: 'A treatment at RN Esthetics, Salem', apply: (p, id) => brand(p, 'rn-esthetics', (b) => ({ why: { ...(b.why as object), image: id } })) },
@@ -207,7 +213,6 @@ const PLACEMENTS: { file: string; alt: string; apply: (p: Payload, id: number) =
   // Flawless, Taylor Ranch + Menaul Blvd shoot Jan 2025 (finalflawl)
   { file: 'flawless/practice-lobby.jpg', alt: 'The lobby and skincare wall at Flawless, Menaul Blvd', apply: (p, id) => brand(p, 'flawless-medspa-wellness', (b) => ({ practice: { ...(b.practice as object), image: id } })) },
   { file: 'flawless/why-provider.jpg', alt: 'A provider at Flawless', apply: (p, id) => brand(p, 'flawless-medspa-wellness', (b) => ({ why: { ...(b.why as object), image: id } })) },
-  { file: 'flawless/inside-old-town.jpg', alt: 'Adobe in Old Town Albuquerque', apply: (p, id) => inside(p, 'flawless-medspa-wellness', id, 'Old Town / Albuquerque') },
   { file: 'flawless/inside-taylor-sign.jpg', alt: 'The Flawless sign at Taylor Ranch', apply: (p, id) => inside(p, 'flawless-medspa-wellness', id, 'Taylor Ranch') },
   { file: 'flawless/inside-disco.jpg', alt: 'Mirror balls at Flawless', apply: (p, id) => inside(p, 'flawless-medspa-wellness', id, 'Detail / Menaul Blvd') },
   { file: 'flawless/inside-consult.jpg', alt: 'A consult at Taylor Ranch', apply: (p, id) => inside(p, 'flawless-medspa-wellness', id, 'Consult / Taylor Ranch') },
