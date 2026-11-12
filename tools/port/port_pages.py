@@ -401,14 +401,14 @@ JOINED_CSS = """.formerly{display:inline-flex;align-items:center;height:28px;pad
 .tk_films{margin-top:clamp(48px,5vw,80px);border-top:1px solid var(--line);padding-top:clamp(28px,3vw,40px)}
 .tk_films_h{display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;margin-bottom:22px}
 .tk_films_h .eyebrow{margin:0}
-.tk_fr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.4vw,20px)}
+.tk_fr{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:clamp(12px,1.4vw,20px)}
 .tk_v{margin:0}
 .tk_vf{position:relative;aspect-ratio:9/16;border-radius:16px;overflow:hidden;background:linear-gradient(170deg,#3A342C,#1B1916 70%)}
 .tk_vf video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .tk_v figcaption{margin-top:12px;font-size:13.5px;line-height:1.45;color:var(--muted)}
 .tk_v figcaption b{display:block;font-family:var(--h3);font-size:16px;color:var(--ink);margin-bottom:2px}
 .tk_v figcaption q{display:block;quotes:none;font-family:var(--h3);font-weight:700;color:var(--ink);margin-top:8px}
-@media (max-width:820px){.tk_pair{grid-template-columns:1fr}.tk_join{flex-direction:row;padding:22px 0}.tk_join::before{top:50%;bottom:auto;left:0;right:0;width:auto;height:1px}.tk_kept{grid-template-columns:1fr}.tk_fr{grid-template-columns:repeat(3,72vw);overflow-x:auto;scroll-snap-type:x mandatory}.tk_v{scroll-snap-align:start}}
+@media (max-width:820px){.tk_pair{grid-template-columns:1fr}.tk_join{flex-direction:row;padding:22px 0}.tk_join::before{top:50%;bottom:auto;left:0;right:0;width:auto;height:1px}.tk_kept{grid-template-columns:1fr}.tk_fr{grid-auto-columns:72vw;overflow-x:auto;scroll-snap-type:x mandatory}.tk_v{scroll-snap-align:start}}
 """
 
 
@@ -486,7 +486,7 @@ def location_engine(e):
     if (!J) return { pair: [], kept: [], films: [], a: {}, b: {} };
     const who = (p) => Object.assign({}, p || {}, { noImg: !(p && p.img) });
     return Object.assign({}, J, { hasPair: J.pair.length === 2, a: who(J.pair[0]), b: who(J.pair[1]), hasKept: J.kept.length > 0, hasFilms: J.films.length > 0,
-      filmsH: J.films.length === 1 ? 'The story on film' : 'The story in ' + ['', 'one', 'two', 'three'][J.films.length] + ' films' });
+      filmsH: J.films.length === 1 ? 'The story on film' : 'The story in ' + ['', 'one', 'two', 'three', 'four'][J.films.length] + ' films' });
   }
   renderVals() {''')
     e = rep(e, 'this.tick(now, dt); this.draw(now);', 'this.tick(now, dt); // the real map (MapStage) renders the scene; draw() stays as the fallback reference')

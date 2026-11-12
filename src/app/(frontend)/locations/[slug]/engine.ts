@@ -196,7 +196,7 @@ export class LocationEngine extends DCLogic {
     if (!J) return { pair: [], kept: [], films: [], a: {}, b: {} };
     const who = (p) => Object.assign({}, p || {}, { noImg: !(p && p.img) });
     return Object.assign({}, J, { hasPair: J.pair.length === 2, a: who(J.pair[0]), b: who(J.pair[1]), hasKept: J.kept.length > 0, hasFilms: J.films.length > 0,
-      filmsH: J.films.length === 1 ? 'The story on film' : 'The story in ' + ['', 'one', 'two', 'three'][J.films.length] + ' films' });
+      filmsH: J.films.length === 1 ? 'The story on film' : 'The story in ' + ['', 'one', 'two', 'three', 'four'][J.films.length] + ' films' });
   }
   renderVals() {
     const B = this.brand(), L = this.locs(), idx = Math.min(this.idx || 0, L.length - 1), F = this.F;

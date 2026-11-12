@@ -241,7 +241,7 @@ export const TuckIns: CollectionConfig = {
         { name: 'line', type: 'textarea' },
         { type: 'row', fields: [{ name: 'quote', type: 'text', admin: { description: 'Optional, verbatim.' } }, { name: 'source', type: 'text' }] },
       ] },
-      { name: 'films', type: 'array', maxRows: 3, admin: { description: 'Vertical (9:16) story films, click to play.' }, fields: [
+      { name: 'films', type: 'array', maxRows: 4, admin: { description: 'Vertical (9:16) story films, click to play.' }, fields: [
         { type: 'row', fields: [{ name: 'title', type: 'text', required: true }, { name: 'line', type: 'text' }] },
         { name: 'quote', type: 'text', admin: { description: 'A verbatim line from the film, shown on the poster.' } },
         { type: 'row', fields: [img('video', undefined, true), img('poster')] },
