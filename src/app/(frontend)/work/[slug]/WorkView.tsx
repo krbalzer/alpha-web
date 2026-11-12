@@ -71,7 +71,7 @@ export default function WorkView({ d }: { d: WorkData }) {
       <Nav>
         <div className="crumb"><div className="wrap">
           <Link href={`/brands/${d.brand.slug}`}>← {d.brand.name}</Link>
-          <span>Work / Rebrand / {d.date}</span>
+          <span>Work / {d.noun ? d.noun[0].toUpperCase() + d.noun.slice(1) : 'Rebrand'} / {d.date}</span>
           <span>PTR {d.brand.ptr}</span>
         </div></div>
       </Nav>
@@ -79,7 +79,7 @@ export default function WorkView({ d }: { d: WorkData }) {
       {/* 01 intro */}
       <section className="wrap wk_intro">
         <div>
-          <p className="eyebrow">Rebrand + website / Alpha Marketing / {d.date}</p>
+          <p className="eyebrow">{d.kind || 'Rebrand + website'} / Alpha Marketing / {d.date}</p>
           <h1 className="display wk_h1">{lines(d.headline)}</h1>
         </div>
         <div>
@@ -186,9 +186,9 @@ export default function WorkView({ d }: { d: WorkData }) {
       ) : null}
 
       {/* next */}
-      <nav className="wrap wk_next" aria-label="More rebrands">
+      <nav className="wrap wk_next" aria-label="More work">
         <Link href={`/brands/${d.brand.slug}`} className="wk_nx"><span className="mono">The partner</span><b>{d.brand.name} →</b></Link>
-        {d.next ? <Link href={`/work/${d.next.slug}`} className="wk_nx"><span className="mono">Next rebrand / {d.next.date}</span><b>{d.next.name} →</b></Link> : null}
+        {d.next ? <Link href={`/work/${d.next.slug}`} className="wk_nx"><span className="mono">Next / {d.next.date}</span><b>{d.next.name} →</b></Link> : null}
       </nav>
     </div>
   )

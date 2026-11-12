@@ -75,7 +75,7 @@ export function SinceAlpha({ d }: { d: SinceAlphaData }) {
           <div className="sa_det" role="tabpanel">
             <span className="mono sa_dd">{m.date}</span>
             <div><b>{m.title}</b><p>{m.detail}</p></div>
-            {m.rebrand && d.rebrand ? <button className="btn sa_go" onClick={() => rebrand.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>See the rebrand ↓</button> : m.link ? <a className="btn sa_go" href={m.link.href}>{m.link.label}</a> : <span />}
+            {m.rebrand && d.rebrand ? <button className="btn sa_go" onClick={() => rebrand.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>See the {d.rebrand.noun || 'rebrand'} ↓</button> : m.link ? <a className="btn sa_go" href={m.link.href}>{m.link.label}</a> : <span />}
           </div>
 
           {tn?.rows?.length ? (
@@ -171,13 +171,13 @@ export function RailItems({ items }: { items: RailItem[] }) {
 function Rebrand({ r, work, date, innerRef }: { r: NonNullable<SinceAlphaData['rebrand']>; work: string | null; date: string; innerRef: React.RefObject<HTMLElement | null> }) {
   const { rail, prog, prev, next } = useRail()
   const cta = work
-    ? { href: work, label: 'See the rebrand', sub: 'The full story' + (date ? ' / ' + date : ''), ext: false }
+    ? { href: work, label: 'See the ' + (r.noun || 'rebrand'), sub: 'The full story' + (date ? ' / ' + date : ''), ext: false }
     : r.msm ? { href: r.msm.href, label: 'Hear how it was made', sub: 'The full story / ' + r.msm.label, ext: false }
     : r.site ? { href: r.site, label: 'Visit the site', sub: 'The new site / live', ext: true } : null
 
   return (
     <section className="sa_rb" ref={innerRef}>
-      <div className="wrap"><div className="sa_seam mono">02 / The rebrand</div></div>
+      <div className="wrap"><div className="sa_seam mono">02 / The {r.noun || 'rebrand'}</div></div>
       <div className="wrap sa_rbh">
         <div>
           <p className="eyebrow">{r.eyebrow}</p>

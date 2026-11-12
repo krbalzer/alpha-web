@@ -843,5 +843,187 @@
         ]
       ]
     }
+  },
+  "rn-esthetics": {
+    "quote": {
+      "text": "The best med spas in the country have the best people. Period.",
+      "source": "Med Spa Marketing Group Chat / MSM 026 / 8:49"
+    },
+    "gap": {
+      "after": 1,
+      "label": "Two years in"
+    },
+    "milestones": [
+      {
+        "date": "May 2024",
+        "title": "Joins Alpha as PTR 008",
+        "detail": "RN Esthetics joins the network. Alpha takes on the back office, training and marketing."
+      },
+      {
+        "date": "May 2024",
+        "title": "The first shoot",
+        "detail": "Alpha's crew films across Salem, Newburyport and Lynnfield. Behind the scenes on MSM 026."
+      },
+      {
+        "date": "May 2026",
+        "title": "Thirty interviews in two days",
+        "detail": "23 providers and seven longtime clients on camera, in one studio. What they said became the site."
+      },
+      {
+        "date": "Jun 2026",
+        "title": "The new site launches",
+        "detail": "Built around the people: provider profiles, client stories, a concern map and the locations, illustrated. Behind the scenes on MSM 077.",
+        "rebrand": true
+      },
+      {
+        "date": "Now",
+        "title": "4 locations",
+        "detail": "Salem, Newburyport and Lynnfield on the North Shore, and Boston."
+      }
+    ],
+    "rebrand": {
+      "noun": "rebuild",
+      "eyebrow": "Shoot + website / Alpha Marketing / Jun 2026",
+      "headline": "Thirty interviews,\none website.",
+      "body": "No new logo. A two-day studio shoot with 23 providers and seven longtime clients, then a site built from what they said: provider profiles, client stories, a concern map and the four locations, illustrated. The name, the mark and the coastal palette stayed.",
+      "msm": {
+        "show": "msm",
+        "n": 77
+      },
+      "items": [
+        {
+          "kind": "video",
+          "src": "rne-hero.mp4",
+          "poster": "rne-hero.jpg",
+          "w": 540,
+          "h": 960,
+          "caption": "Site hero"
+        },
+        {
+          "kind": "image",
+          "src": "rne-before-after.jpg",
+          "w": 1080,
+          "h": 1350,
+          "caption": "Before / after"
+        },
+        {
+          "kind": "image",
+          "src": "rne-dsc01777.jpg",
+          "w": 1000,
+          "h": 1500,
+          "caption": "Studio portraits"
+        },
+        {
+          "kind": "video",
+          "src": "rne-michelle.mp4",
+          "poster": "rne-michelle.jpg",
+          "w": 720,
+          "h": 720,
+          "caption": "Michelle's story"
+        },
+        {
+          "kind": "image",
+          "src": "rne-dsc02472.jpg",
+          "w": 1000,
+          "h": 1500
+        },
+        {
+          "kind": "image",
+          "src": "rne-client-stories.jpg",
+          "w": 1080,
+          "h": 1350,
+          "caption": "Client stories"
+        },
+        {
+          "kind": "video",
+          "src": "rne-kathleen.mp4",
+          "poster": "rne-kathleen.jpg",
+          "w": 720,
+          "h": 720,
+          "caption": "Client story / Kathleen"
+        },
+        {
+          "kind": "image",
+          "src": "rne-dsc06426.jpg",
+          "w": 1000,
+          "h": 1500
+        },
+        {
+          "kind": "image",
+          "src": "rne-dsc05990.jpg",
+          "w": 1000,
+          "h": 1500
+        },
+        {
+          "kind": "image",
+          "src": "rne-provider-profiles.jpg",
+          "w": 1080,
+          "h": 1350,
+          "caption": "Provider profiles"
+        },
+        {
+          "kind": "image",
+          "src": "rne-facemap.jpg",
+          "w": 1200,
+          "h": 1080,
+          "caption": "The concern map"
+        },
+        {
+          "kind": "image",
+          "src": "rne-sketch-salem.jpg",
+          "w": 1080,
+          "h": 1080,
+          "caption": "Locations, illustrated / Salem"
+        },
+        {
+          "kind": "image",
+          "src": "rne-sketch-lynnfield.jpg",
+          "w": 1080,
+          "h": 1080,
+          "caption": "Lynnfield"
+        },
+        {
+          "kind": "image",
+          "src": "rne-sketch-newburyport.jpg",
+          "w": 1080,
+          "h": 1080,
+          "caption": "Newburyport"
+        },
+        {
+          "kind": "video",
+          "src": "rne-blake.mp4",
+          "poster": "rne-blake.jpg",
+          "w": 720,
+          "h": 720,
+          "caption": "Client story / Blake"
+        },
+        {
+          "kind": "image",
+          "src": "rne-dsc06805.jpg",
+          "w": 1000,
+          "h": 1500
+        },
+        {
+          "kind": "image",
+          "src": "rne-end.jpg",
+          "w": 1080,
+          "h": 1350
+        }
+      ],
+      "ledger": [
+        [
+          "28",
+          "treatment pages"
+        ],
+        [
+          "25",
+          "provider profiles"
+        ],
+        [
+          "8",
+          "client stories"
+        ]
+      ]
+    }
   }
 }

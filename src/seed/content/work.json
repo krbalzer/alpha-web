@@ -196,5 +196,60 @@
       "ledger": [["25", "Treatment pages"], ["47", "Concern pages"], ["22", "Provider profiles"], ["107", "Blog articles"], ["4", "Locations"], ["5", "Brand colors"]]
     },
     "msm": { "n": 57, "body": "Every launch is recorded for the Group Chat. This one walks through Partner 007's rebrand, from the logo and palette to the brand book that keeps four locations saying the same thing." }
+  },
+  "rn-esthetics": {
+    "date": "Jun 2026",
+    "kind": "Shoot + website",
+    "noun": "rebuild",
+    "headline": "Thirty interviews,\none website.",
+    "intro": "RN Esthetics kept its name, its mark and its palette, and got a site built around its people. Two days in a studio with 23 providers and seven longtime clients, then provider profiles, client stories, a concern map and illustrated locations, all made in-house.",
+    "kept": ["Name", "Mark", "Palette", "Founder", "Team", "Locations"],
+    "changed": ["Photography", "Film", "Client stories", "Illustration", "Website"],
+    "board": {
+      "layout": "wide",
+      "line": "led by the people",
+      "tiles": [
+        { "kind": "video", "label": "Motion / site hero", "src": "since-alpha/rne-hero.mp4", "poster": "since-alpha/rne-hero.jpg", "fit": "cover", "bg": "#1C2C43" },
+        { "kind": "image", "label": "Illustration / the concern map", "src": "since-alpha/rne-facemap.jpg", "fit": "contain", "bg": "#E6E4DF" },
+        { "kind": "image", "label": "Photography / studio", "src": "since-alpha/rne-dsc01777.jpg", "fit": "cover", "bg": "#E6E4DF" },
+        { "kind": "palette", "label": "Palette", "colors": [["Navy", "#1C2C43"], ["Denim", "#426088"], ["Teal", "#AADBD9", true], ["Linen", "#E6E4DF", true], ["Milk", "#F5F4F0", true]] },
+        { "kind": "image", "label": "Illustration / Salem", "src": "since-alpha/rne-sketch-salem.jpg", "fit": "contain", "bg": "#E6E4DF" },
+        { "kind": "quote", "label": "Voice", "text": "Aging Confidently is a Power Move", "source": "rnesthetics.com / home", "bg": "#1C2C43", "fg": "#F5F4F0" }
+      ]
+    },
+    "shoot": {
+      "where": "the studio and three clinics",
+      "headline": "One studio,\nthirty stories.",
+      "items": [
+        { "kind": "image", "src": "since-alpha/rne-dsc01777.jpg", "w": 1000, "h": 1500, "caption": "Studio portraits" },
+        { "kind": "image", "src": "since-alpha/rne-dsc01839.jpg", "w": 1000, "h": 1500 },
+        { "kind": "video", "src": "since-alpha/rne-kathleen.mp4", "poster": "since-alpha/rne-kathleen.jpg", "w": 720, "h": 720, "caption": "Client story / Kathleen" },
+        { "kind": "image", "src": "since-alpha/rne-dsc02472.jpg", "w": 1000, "h": 1500 },
+        { "kind": "image", "src": "since-alpha/rne-dsc01511.jpg", "w": 1000, "h": 1500 },
+        { "kind": "image", "src": "since-alpha/rne-dsc02550.jpg", "w": 1000, "h": 1500 },
+        { "kind": "video", "src": "since-alpha/rne-michelle.mp4", "poster": "since-alpha/rne-michelle.jpg", "w": 720, "h": 720, "caption": "Michelle's story" },
+        { "kind": "image", "src": "since-alpha/rne-dsc06426.jpg", "w": 1000, "h": 1500 },
+        { "kind": "image", "src": "since-alpha/rne-dsc06448.jpg", "w": 1000, "h": 1500 },
+        { "kind": "image", "src": "since-alpha/rne-dsc02104.jpg", "w": 1000, "h": 1500 },
+        { "kind": "image", "src": "since-alpha/rne-dsc05990.jpg", "w": 1000, "h": 1500 },
+        { "kind": "video", "src": "since-alpha/rne-blake.mp4", "poster": "since-alpha/rne-blake.jpg", "w": 720, "h": 720, "caption": "Client story / Blake" },
+        { "kind": "image", "src": "since-alpha/rne-dsc06033.jpg", "w": 1000, "h": 1500 },
+        { "kind": "image", "src": "since-alpha/rne-dsc01674.jpg", "w": 1000, "h": 1500 },
+        { "kind": "image", "src": "since-alpha/rne-dsc02361.jpg", "w": 1000, "h": 1500 },
+        { "kind": "image", "src": "since-alpha/rne-dsc06805.jpg", "w": 1000, "h": 1500 },
+        { "kind": "image", "src": "since-alpha/rne-dsc02178.jpg", "w": 1000, "h": 1500 },
+        { "kind": "image", "src": "since-alpha/rne-dsc06354.jpg", "w": 1000, "h": 1500 },
+        { "kind": "image", "src": "since-alpha/rne-dsc06525.jpg", "w": 1000, "h": 1500 },
+        { "kind": "image", "src": "since-alpha/rne-dsc06723.jpg", "w": 1000, "h": 1500 },
+        { "kind": "image", "src": "since-alpha/rne-dsc06035.jpg", "w": 1000, "h": 1500 }
+      ]
+    },
+    "site": {
+      "url": "https://www.rnesthetics.com/",
+      "desktop": "work/rne-site-d.jpg",
+      "mobile": "work/rne-site-m.jpg",
+      "ledger": [["28", "Treatment pages"], ["76", "Concern pages"], ["25", "Provider profiles"], ["8", "Client stories"], ["20", "Anatomy areas"], ["4", "Locations"]]
+    },
+    "msm": { "n": 77, "body": "Every launch is recorded for the Group Chat. This one walks through thirty interviews in two days, and a site built around the people who make RN Esthetics." }
   }
 }

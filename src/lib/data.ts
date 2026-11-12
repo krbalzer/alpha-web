@@ -186,7 +186,7 @@ type SAEntry = {
   gap?: { after: number; label: string }
   milestones: { date: string; title: string; detail: string; rebrand?: boolean; link?: { href: string; label: string } }[]
   thenNow?: { note: string; rows: { label: string; then: string; now: string }[] }
-  rebrand?: { eyebrow: string; headline: string; body: string; msm?: { show: string; n: number }; site?: string; items: SAItem[]; ledger: [string, string][] }
+  rebrand?: { noun?: string; eyebrow: string; headline: string; body: string; msm?: { show: string; n: number }; site?: string; items: SAItem[]; ledger: [string, string][] }
 }
 export const getSinceAlpha = cache(async (slug: string, since?: string) => {
   const e = (sinceAlpha as unknown as Record<string, SAEntry>)[slug]
@@ -223,6 +223,8 @@ const blob = (f?: string) => (f ? (/^https?:/.test(f) ? f : BLOB + f) : '')
 type WorkTile = { kind: 'image' | 'video' | 'palette' | 'quote'; label: string; src?: string; poster?: string; fit?: 'cover' | 'contain'; bg?: string; fg?: string; colors?: [string, string, boolean?][]; text?: string; source?: string }
 type WorkEntry = {
   date: string; headline: string; intro: string; kept: string[]; changed: string[]
+  /** What the work was, when it wasn't a rebrand: kind for the eyebrow ('Shoot + website'), noun for labels ('rebuild'). */
+  kind?: string; noun?: string
   board: { layout: 'square' | 'wide'; line: string; tiles: WorkTile[] }
   shoot: { where: string; headline: string; items: SAItem[] }
   site: { url: string; desktop: string; mobile: string; ledger: [string, string][] }

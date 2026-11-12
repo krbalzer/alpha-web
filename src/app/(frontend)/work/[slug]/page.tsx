@@ -12,7 +12,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const w = await getWork((await params).slug)
-  return w ? { title: `${w.brand.name} rebrand`, description: w.intro.slice(0, 160) } : {}
+  return w ? { title: `${w.brand.name} ${w.noun || 'rebrand'}`, description: w.intro.slice(0, 160) } : {}
 }
 
 export default async function WorkPage({ params }: { params: Promise<{ slug: string }> }) {
