@@ -1,0 +1,442 @@
+[
+  {
+    "name": "Wrinkle relaxers",
+    "category": "Injectables",
+    "order": 1,
+    "products": "Botox, Dysport, Xeomin, Daxxify, Jeuveau, Lip flip",
+    "brands": [
+      "anne-therese-aesthetic-medicine",
+      "cami",
+      "dontage",
+      "esthetics-center",
+      "flawless-medspa-wellness",
+      "holden-timeless-beauty",
+      "inbloom",
+      "the-laser-center-of-marin",
+      "lexrx",
+      "mint-needle",
+      "preva",
+      "prive",
+      "rn-esthetics",
+      "refined-aesthetics",
+      "williams-center"
+    ]
+  },
+  {
+    "name": "Dermal fillers",
+    "category": "Injectables",
+    "order": 2,
+    "products": "Juvéderm, Restylane, RHA, Skinvive, Lip filler, Facial balancing",
+    "brands": [
+      "anne-therese-aesthetic-medicine",
+      "cami",
+      "dontage",
+      "esthetics-center",
+      "flawless-medspa-wellness",
+      "holden-timeless-beauty",
+      "inbloom",
+      "the-laser-center-of-marin",
+      "lexrx",
+      "mint-needle",
+      "preva",
+      "prive",
+      "rn-esthetics",
+      "refined-aesthetics",
+      "williams-center"
+    ]
+  },
+  {
+    "name": "Biostimulators",
+    "category": "Injectables",
+    "order": 3,
+    "products": "Sculptra, Radiesse, Renuva",
+    "brands": [
+      "anne-therese-aesthetic-medicine",
+      "cami",
+      "dontage",
+      "esthetics-center",
+      "flawless-medspa-wellness",
+      "holden-timeless-beauty",
+      "inbloom",
+      "the-laser-center-of-marin",
+      "mint-needle",
+      "preva",
+      "prive",
+      "rn-esthetics",
+      "refined-aesthetics",
+      "williams-center"
+    ]
+  },
+  {
+    "name": "Fat-dissolving injections",
+    "category": "Injectables",
+    "order": 4,
+    "products": "Kybella, Lipo-Dissolve",
+    "brands": [
+      "anne-therese-aesthetic-medicine",
+      "dontage",
+      "esthetics-center",
+      "flawless-medspa-wellness",
+      "holden-timeless-beauty",
+      "mint-needle",
+      "prive",
+      "refined-aesthetics",
+      "williams-center"
+    ]
+  },
+  {
+    "name": "PRP + growth factors",
+    "category": "Injectables",
+    "order": 5,
+    "products": "PRP, PRF, EZ Gel, Ariessence PDGF+",
+    "brands": [
+      "dontage",
+      "flawless-medspa-wellness",
+      "inbloom",
+      "mint-needle",
+      "preva",
+      "rn-esthetics",
+      "refined-aesthetics",
+      "williams-center"
+    ]
+  },
+  {
+    "name": "Laser resurfacing",
+    "category": "Laser + light",
+    "order": 1,
+    "products": "Halo, Moxi, Fraxel, Clear + Brilliant, Pico, CO2, Erbium, DEKA DOT, Laser Genesis, ClearSilk",
+    "brands": [
+      "anne-therese-aesthetic-medicine",
+      "cami",
+      "dontage",
+      "esthetics-center",
+      "flawless-medspa-wellness",
+      "holden-timeless-beauty",
+      "inbloom",
+      "the-laser-center-of-marin",
+      "mint-needle",
+      "preva",
+      "prive",
+      "rn-esthetics",
+      "refined-aesthetics",
+      "williams-center"
+    ]
+  },
+  {
+    "name": "Photofacial (BBL / IPL)",
+    "category": "Laser + light",
+    "order": 2,
+    "products": "BBL HEROic, IPL",
+    "brands": [
+      "anne-therese-aesthetic-medicine",
+      "cami",
+      "dontage",
+      "esthetics-center",
+      "holden-timeless-beauty",
+      "inbloom",
+      "the-laser-center-of-marin",
+      "mint-needle",
+      "rn-esthetics",
+      "refined-aesthetics",
+      "williams-center"
+    ]
+  },
+  {
+    "name": "Laser hair removal",
+    "category": "Laser + light",
+    "order": 3,
+    "products": "GentleMax Pro Plus",
+    "brands": [
+      "anne-therese-aesthetic-medicine",
+      "cami",
+      "dontage",
+      "esthetics-center",
+      "flawless-medspa-wellness",
+      "holden-timeless-beauty",
+      "inbloom",
+      "the-laser-center-of-marin",
+      "mint-needle",
+      "rn-esthetics",
+      "refined-aesthetics"
+    ]
+  },
+  {
+    "name": "Vein + vascular treatment",
+    "category": "Laser + light",
+    "order": 4,
+    "products": "Laser, Sclerotherapy",
+    "brands": [
+      "esthetics-center",
+      "rn-esthetics",
+      "refined-aesthetics",
+      "williams-center"
+    ]
+  },
+  {
+    "name": "Tattoo removal",
+    "category": "Laser + light",
+    "order": 5,
+    "products": "",
+    "brands": [
+      "esthetics-center",
+      "flawless-medspa-wellness"
+    ]
+  },
+  {
+    "name": "Skin tightening",
+    "category": "Skin tightening",
+    "order": 1,
+    "products": "Ultherapy, Sofwave, EmFace, Subnovii, PDO threads",
+    "brands": [
+      "anne-therese-aesthetic-medicine",
+      "cami",
+      "dontage",
+      "holden-timeless-beauty",
+      "inbloom",
+      "the-laser-center-of-marin",
+      "mint-needle",
+      "refined-aesthetics"
+    ]
+  },
+  {
+    "name": "Microneedling",
+    "category": "Microneedling",
+    "order": 1,
+    "products": "SkinPen",
+    "brands": [
+      "anne-therese-aesthetic-medicine",
+      "cami",
+      "dontage",
+      "esthetics-center",
+      "holden-timeless-beauty",
+      "inbloom",
+      "the-laser-center-of-marin",
+      "lexrx",
+      "mint-needle",
+      "preva",
+      "prive",
+      "rn-esthetics",
+      "refined-aesthetics",
+      "williams-center"
+    ]
+  },
+  {
+    "name": "RF microneedling",
+    "category": "Microneedling",
+    "order": 2,
+    "products": "Morpheus8, Scarlet RF, Virtue, Sylfirm X, Profound",
+    "brands": [
+      "cami",
+      "dontage",
+      "esthetics-center",
+      "flawless-medspa-wellness",
+      "holden-timeless-beauty",
+      "inbloom",
+      "the-laser-center-of-marin",
+      "mint-needle",
+      "preva",
+      "prive",
+      "refined-aesthetics",
+      "williams-center"
+    ]
+  },
+  {
+    "name": "Facials",
+    "category": "Facials + peels",
+    "order": 1,
+    "products": "HydraFacial, DiamondGlow, Dermaplaning, LED, Microdermabrasion, AquaGold, signature facials",
+    "brands": [
+      "anne-therese-aesthetic-medicine",
+      "cami",
+      "dontage",
+      "esthetics-center",
+      "flawless-medspa-wellness",
+      "holden-timeless-beauty",
+      "inbloom",
+      "the-laser-center-of-marin",
+      "lexrx",
+      "mint-needle",
+      "preva",
+      "prive",
+      "rn-esthetics",
+      "refined-aesthetics",
+      "williams-center"
+    ]
+  },
+  {
+    "name": "Chemical peels",
+    "category": "Facials + peels",
+    "order": 2,
+    "products": "VI Peel, PRX, TCA",
+    "brands": [
+      "anne-therese-aesthetic-medicine",
+      "cami",
+      "dontage",
+      "esthetics-center",
+      "flawless-medspa-wellness",
+      "holden-timeless-beauty",
+      "inbloom",
+      "the-laser-center-of-marin",
+      "mint-needle",
+      "prive",
+      "rn-esthetics",
+      "refined-aesthetics",
+      "williams-center"
+    ]
+  },
+  {
+    "name": "Fat reduction",
+    "category": "Body contouring",
+    "order": 1,
+    "products": "CoolSculpting, truSculpt",
+    "brands": [
+      "anne-therese-aesthetic-medicine",
+      "esthetics-center",
+      "flawless-medspa-wellness",
+      "inbloom",
+      "the-laser-center-of-marin",
+      "prive",
+      "williams-center"
+    ]
+  },
+  {
+    "name": "Muscle toning",
+    "category": "Body contouring",
+    "order": 2,
+    "products": "Emsculpt, PHYSIQ",
+    "brands": [
+      "anne-therese-aesthetic-medicine",
+      "esthetics-center",
+      "flawless-medspa-wellness",
+      "holden-timeless-beauty",
+      "inbloom",
+      "the-laser-center-of-marin",
+      "prive"
+    ]
+  },
+  {
+    "name": "Cellulite",
+    "category": "Body contouring",
+    "order": 3,
+    "products": "Aveli, Z-Wave",
+    "brands": [
+      "inbloom",
+      "williams-center"
+    ]
+  },
+  {
+    "name": "Medical weight loss",
+    "category": "Wellness",
+    "order": 1,
+    "products": "Semaglutide, Tirzepatide",
+    "brands": [
+      "cami",
+      "dontage",
+      "flawless-medspa-wellness",
+      "inbloom",
+      "mint-needle",
+      "prive",
+      "rn-esthetics"
+    ]
+  },
+  {
+    "name": "IV + wellness injections",
+    "category": "Wellness",
+    "order": 2,
+    "products": "IV therapy, Vitamin shots, NAD+, Peptides",
+    "brands": [
+      "cami",
+      "esthetics-center",
+      "flawless-medspa-wellness",
+      "mint-needle",
+      "prive",
+      "rn-esthetics"
+    ]
+  },
+  {
+    "name": "Hormone therapy",
+    "category": "Wellness",
+    "order": 3,
+    "products": "BHRT, Pellets",
+    "brands": [
+      "cami",
+      "flawless-medspa-wellness",
+      "inbloom",
+      "mint-needle",
+      "rn-esthetics"
+    ]
+  },
+  {
+    "name": "Hair restoration",
+    "category": "Hair + scalp",
+    "order": 1,
+    "products": "PRP, Keralase, Sylfirm X, HydraScalp",
+    "brands": [
+      "cami",
+      "dontage",
+      "mint-needle",
+      "prive",
+      "rn-esthetics",
+      "refined-aesthetics",
+      "williams-center"
+    ]
+  },
+  {
+    "name": "Lashes + brows",
+    "category": "Eyes, brows + lashes",
+    "order": 1,
+    "products": "Latisse, Upneeq, Lash lift + tint, Brow lamination, Microblading",
+    "brands": [
+      "esthetics-center",
+      "flawless-medspa-wellness",
+      "holden-timeless-beauty",
+      "the-laser-center-of-marin",
+      "lexrx",
+      "prive"
+    ]
+  },
+  {
+    "name": "Intimate wellness",
+    "category": "Intimate wellness",
+    "order": 1,
+    "products": "EmFemme 360, ThermiVa, Emsella",
+    "brands": [
+      "holden-timeless-beauty",
+      "inbloom"
+    ]
+  },
+  {
+    "name": "Facial surgery",
+    "category": "Surgery",
+    "order": 1,
+    "products": "Facelift, Neck lift, Brow lift, Eyelid lift, Lip lift, Rhinoplasty, Otoplasty, Chin + cheek implants, Buccal fat removal, Facial fat transfer, Scar revision",
+    "brands": [
+      "esthetics-center",
+      "williams-center"
+    ]
+  },
+  {
+    "name": "Body surgery",
+    "category": "Surgery",
+    "order": 2,
+    "products": "Breast augmentation, lift, reduction + revision, Tummy tuck, Mommy makeover, Liposuction, Arm lift, Thigh lift, Body lift, Brazilian butt lift, Male chest reduction",
+    "brands": [
+      "esthetics-center",
+      "williams-center"
+    ]
+  },
+  {
+    "name": "Hair transplant",
+    "category": "Surgery",
+    "order": 3,
+    "products": "FUE, FUT, Eyebrow, Facial hair, Revision",
+    "brands": [
+      "esthetics-center",
+      "williams-center"
+    ],
+    "only": [
+      "esthetics-center|El Dorado Hills",
+      "williams-center|Latham"
+    ]
+  }
+]

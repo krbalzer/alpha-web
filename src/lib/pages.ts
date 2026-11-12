@@ -154,7 +154,7 @@ export const getArticle = cache(async (slug: string) => {
   const a = all[i]
   const p = await db()
   const brand = a.ptr ? (await p.find({ collection: 'brands', where: { and: [{ ptr: { equals: Number(a.ptr) } }, LIVE] }, limit: 1, depth: 1 })).docs[0] : null
-  const loc = brand ? (await p.find({ collection: 'locations', where: { and: [{ brand: { equals: brand.id } }, LIVE] }, sort: 'createdAt', limit: 1, depth: 0 })).docs[0] : null
+  const loc = brand ? (await p.find({ collection: 'locations', where: { and: [{ brand: { equals: brand.id } }, LIVE] }, sort: ['order', 'createdAt'], limit: 1, depth: 0 })).docs[0] : null
   const more = all.filter((x) => x.slug !== slug).slice(0, 3).map((x) => ({ d: fmtLong(x.date), t: x.t, href: x.href }))
   const u = encodeURIComponent(`${process.env.NEXT_PUBLIC_SITE_URL || 'https://partnerwithalpha.com'}${a.href}`)
   return {
@@ -194,7 +194,7 @@ export const getLocationsDir = cache(async () => {
   const rows = locations
     .map((l) => ({ l, b: typeof l.brand === 'object' ? (l.brand as Brand) : brands.find((x) => x.id === l.brand) }))
     .filter((x): x is { l: Location; b: Brand } => !!x.b && !!B[pad3(x.b.ptr)])
-    .sort((a, z) => (a.b.ptr ?? 0) - (z.b.ptr ?? 0) || a.l.city.localeCompare(z.l.city))
+    .sort((a, z) => (a.b.ptr ?? 0) - (z.b.ptr ?? 0) || byOrder(a.l, z.l))
   const live = await Promise.all(rows.map(({ l }) => getPlace(l.googlePlaceId)))
   const L = rows.map(({ l, b }, i) => {
     const n = pad3(b.ptr), key = `${b.ptr}|${l.city}`, g = live[i], [rating, reviews] = g && g.count ? [Math.round(g.rating * 10) / 10, g.count] : RATINGS[key] || [0, 0]
@@ -214,9 +214,21 @@ export const getLocationsDir = cache(async () => {
     })
     .filter((x): x is string[] => !!x && L.some((l) => l.n === x[2]))
     .sort((a, z) => z[2].localeCompare(a[2]))
-  return { B, L, F }
+  // treatment filter: each location's treatment slugs, and the options that match at least one location
+  const tx = await getTreatments(), bid = (l: Location) => (typeof l.brand === 'object' ? l.brand?.id : l.brand) as number
+  const T: { v: string; t: string }[] = []
+  const LT = L.map((x, i) => {
+    const l = rows[i].l, sibs = locations.filter((y) => bid(y) === bid(l))
+    const names = new Set(treatmentsFor(tx, bid(l), sibs, l.id).flatMap((g) => g.items.map((t) => t.name)))
+    return { ...x, tx: tx.filter((t) => names.has(t.name)).map((t) => t.slug) }
+  })
+  const ci = (c: string) => TREATMENT_CATEGORIES.indexOf(c)
+  for (const t of [...tx].sort((a, z) => ci(a.category) - ci(z.category) || (a.order ?? 0) - (z.order ?? 0))) if (LT.some((l) => l.tx.includes(t.slug))) T.push({ v: t.slug, t: t.name })
+  return { B, L: LT, F, T }
 })
 
+/** Locations within a brand: the CMS order (opening order), then city. */
+const byOrder = (a: Location, z: Location) => (a.order ?? 99) - (z.order ?? 99) || a.city.localeCompare(z.city)
 const firstLoc = (b: Brand, locations: Location[]) => locations.filter((l) => (typeof l.brand === 'object' ? l.brand?.id : l.brand) === b.id)
 
 /** Founder hero: the portrait, unless it's a small Webflow-era crop and the headshot is the real photo (larger wins). */
@@ -233,7 +245,7 @@ export const getFounder = cache(async (slug: string) => {
   const b = brands.find((x) => brandFounders(x).some((y) => y.id === fd.id))
   if (!b) return null
   const n = pad3(b.ptr)
-  const locs = firstLoc(b, locations).sort((a, z) => a.city.localeCompare(z.city))
+  const locs = firstLoc(b, locations).sort(byOrder)
   const [first, ...rest] = fd.name.split(' ')
   const cities = [...new Set(locs.map((l) => l.city))]
   const sinceYear = b.since ? new Date(b.since).getUTCFullYear() : null
@@ -258,7 +270,8 @@ export const getFounder = cache(async (slug: string) => {
 })
 export const getFounderSlugs = async () => (await getNetworkAll()).founders.map((f) => f.slug)
 
-import { posterUrl, video } from './data'
+import { posterUrl, video, getTreatments, treatmentsFor } from './data'
+import { TREATMENT_CATEGORIES } from '@/collections/treatments'
 
 export const getLocation = cache(async (slug: string) => {
   const { brands, locations, founders } = await getNetworkAll()
@@ -267,7 +280,7 @@ export const getLocation = cache(async (slug: string) => {
   const b = typeof cur.brand === 'object' ? (cur.brand as Brand) : brands.find((x) => x.id === cur.brand)
   if (!b || !brands.some((x) => x.id === b.id)) return null
   const full = brands.find((x) => x.id === b.id) as Brand
-  const locs = firstLoc(full, locations).sort((a, z) => (a.id === cur.id ? -1 : z.id === cur.id ? 1 : a.city.localeCompare(z.city)))
+  const locs = firstLoc(full, locations).sort((a, z) => (a.id === cur.id ? -1 : z.id === cur.id ? 1 : byOrder(a, z)))
   const f = brandFounders(full).filter((x) => x.status !== 'former').map((x) => founders.find((y) => y.id === x.id) || x)
   const tones = ['linear-gradient(160deg,#8C7F6B,#4D463C)', 'linear-gradient(160deg,#6F7276,#393B3E)', 'linear-gradient(160deg,#7A6E62,#3E3832)']
   const est = full.established ? String(full.established) : ''
@@ -283,7 +296,7 @@ export const getLocation = cache(async (slug: string) => {
     films: (ch.films || []).map((x) => ({ t: x.title, line: x.line || '', q: x.quote || '', src: video(x.video).src, small: video(x.video).small, poster: x.poster ? posterUrl(x.poster) : '' })).filter((x) => x.src),
   } : null
   return {
-    li: 0, joined, former: cur.origin === 'tuck-in' ? cur.formerName || '' : '',
+    li: 0, treatments: treatmentsFor(await getTreatments(), full.id, locs, cur.id), joined, former: cur.origin === 'tuck-in' ? cur.formerName || '' : '',
     b: {
       n: pad3(full.ptr), ptr: `PTR ${pad3(full.ptr)}`, book: full.website || cur.bookingUrl || '', name: full.name, short: full.short || full.name, since: monthYear(full.since), est,
       founder: f.map((x) => x.name).join(' and '), cred: f.length === 1 ? f[0].credentials || '' : '', founderImg: f[0] ? url(f[0].headshot as Media, 'card') || '' : '',

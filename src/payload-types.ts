@@ -72,6 +72,7 @@ export interface Config {
     'tuck-ins': TuckIn;
     founders: Founder;
     'cta-images': CtaImage;
+    treatments: Treatment;
     departments: Department;
     team: Team;
     shows: Show;
@@ -108,6 +109,7 @@ export interface Config {
     'tuck-ins': TuckInsSelect<false> | TuckInsSelect<true>;
     founders: FoundersSelect<false> | FoundersSelect<true>;
     'cta-images': CtaImagesSelect<false> | CtaImagesSelect<true>;
+    treatments: TreatmentsSelect<false> | TreatmentsSelect<true>;
     departments: DepartmentsSelect<false> | DepartmentsSelect<true>;
     team: TeamSelect<false> | TeamSelect<true>;
     shows: ShowsSelect<false> | ShowsSelect<true>;
@@ -569,6 +571,10 @@ export interface Location {
    */
   name?: string | null;
   brand: number | Brand;
+  /**
+   * Order within the brand, 1 first (usually the order they opened). Used on every page that lists the brand's locations.
+   */
+  order?: number | null;
   city: string;
   state: string;
   zip?: string | null;
@@ -1096,6 +1102,52 @@ export interface CtaImage {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "treatments".
+ */
+export interface Treatment {
+  id: number;
+  /**
+   * As shown on the site, e.g. Wrinkle relaxers
+   */
+  name: string;
+  category:
+    | 'Injectables'
+    | 'Laser + light'
+    | 'Skin tightening'
+    | 'Microneedling'
+    | 'Facials + peels'
+    | 'Body contouring'
+    | 'Wellness'
+    | 'Hair + scalp'
+    | 'Eyes, brows + lashes'
+    | 'Intimate wellness'
+    | 'Surgery';
+  /**
+   * Order within the category.
+   */
+  order?: number | null;
+  /**
+   * Across the network, for reference. Not shown per brand.
+   */
+  products?: string | null;
+  brands?: (number | Brand)[] | null;
+  /**
+   * Only when a brand offers it at some of its locations. List those locations; that brand's other locations leave it off. Brands with none listed here offer it everywhere.
+   */
+  locations?: (number | Location)[] | null;
+  /**
+   * Off hides it everywhere on the site.
+   */
+  live?: boolean | null;
+  /**
+   * URL segment. Lowercase, hyphens. Usually from name.
+   */
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "articles".
  */
 export interface Article {
@@ -1308,6 +1360,10 @@ export interface PayloadLockedDocument {
         value: number | CtaImage;
       } | null)
     | ({
+        relationTo: 'treatments';
+        value: number | Treatment;
+      } | null)
+    | ({
         relationTo: 'departments';
         value: number | Department;
       } | null)
@@ -1490,6 +1546,7 @@ export interface LocationsSelect<T extends boolean = true> {
   title?: T;
   name?: T;
   brand?: T;
+  order?: T;
   city?: T;
   state?: T;
   zip?: T;
@@ -1686,6 +1743,22 @@ export interface CtaImagesSelect<T extends boolean = true> {
   location?: T;
   active?: T;
   soften?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "treatments_select".
+ */
+export interface TreatmentsSelect<T extends boolean = true> {
+  name?: T;
+  category?: T;
+  order?: T;
+  products?: T;
+  brands?: T;
+  locations?: T;
+  live?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
 }

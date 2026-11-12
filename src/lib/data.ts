@@ -92,13 +92,32 @@ export const getCtaImages = cache(async (): Promise<CtaPick[]> => {
 
 const fmtSince = (d?: string | null) => (d ? new Date(d).toLocaleDateString('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' }) : '')
 
+/* ---------- Treatments (collection `treatments`, seeded from the Master Services List) ---------- */
+import { TREATMENT_CATEGORIES } from '@/collections/treatments'
+export type TxGroup = { cat: string; items: { name: string; where: string }[] }
+export const getTreatments = cache(async () => (await (await db()).find({ collection: 'treatments', where: LIVE, limit: 300, depth: 0, sort: 'order' })).docs)
+const idOf = (x: unknown) => (typeof x === 'object' && x ? (x as { id: number }).id : (x as number))
+/** What a brand (or one of its locations) offers. A treatment "only at" some of the brand's locations shows on those alone; on the brand page it names them. */
+export function treatmentsFor(all: Awaited<ReturnType<typeof getTreatments>>, brandId: number, brandLocs: { id: number; city: string; name?: string | null }[], locId?: number): TxGroup[] {
+  const ids = new Set(brandLocs.map((l) => l.id))
+  const out: Record<string, TxGroup['items']> = {}
+  for (const t of all) {
+    if (!(t.brands || []).map(idOf).includes(brandId)) continue
+    const only = (t.locations || []).map(idOf).filter((i) => ids.has(i))
+    if (locId != null && only.length && !only.includes(locId)) continue
+    const where = locId == null && only.length && only.length < ids.size ? brandLocs.filter((l) => only.includes(l.id)).map((l) => l.name || l.city).join(', ') : ''
+    ;(out[t.category] ||= []).push({ name: t.name, where })
+  }
+  return TREATMENT_CATEGORIES.filter((c) => out[c]).map((c) => ({ cat: c, items: out[c] }))
+}
+
 /** Shape the Brand template reads. Mirrors the design board's data object so the board logic ports unchanged. */
 export const getBrand = cache(async (slug: string) => {
   const p = await db()
   const r = await p.find({ collection: 'brands', where: { and: [{ slug: { equals: slug } }, LIVE] }, limit: 1, depth: 2 })
   const b = r.docs[0]
   if (!b) return null
-  const locs = await p.find({ collection: 'locations', where: { and: [{ brand: { equals: b.id } }, LIVE] }, limit: 50, depth: 1, sort: 'createdAt' })
+  const locs = await p.find({ collection: 'locations', where: { and: [{ brand: { equals: b.id } }, LIVE] }, limit: 50, depth: 1, sort: ['order', 'createdAt'] })
   const f = ((b.founders || []) as (Founder | string)[]).find((x): x is Founder => typeof x === 'object')
   const est = b.established ? String(b.established) : ''
   return {
@@ -110,6 +129,7 @@ export const getBrand = cache(async (slug: string) => {
     founderImg: url(f?.headshot, 'wide') || url(f?.portrait, 'wide') || '',
     founderHtml: html(f?.bio),
     services: (b.services || []) as string[],
+    treatments: treatmentsFor(await getTreatments(), b.id, locs.docs),
     states: [...new Set(locs.docs.map((l) => l.state))],
     intro: b.intro || '',
     practiceEyebrow: b.practice?.eyebrow || 'The practice',
@@ -164,7 +184,7 @@ type SAItem = { kind: 'ann' | 'video' | 'image' | 'palette'; src?: string; poste
 type SAEntry = {
   quote?: { text: string; source: string }
   gap?: { after: number; label: string }
-  milestones: { date: string; title: string; detail: string; rebrand?: boolean }[]
+  milestones: { date: string; title: string; detail: string; rebrand?: boolean; link?: { href: string; label: string } }[]
   thenNow?: { note: string; rows: { label: string; then: string; now: string }[] }
   rebrand?: { eyebrow: string; headline: string; body: string; msm?: { show: string; n: number }; site?: string; items: SAItem[]; ledger: [string, string][] }
 }

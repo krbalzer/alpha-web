@@ -670,6 +670,9 @@
 .pg-locations .map_gl .maplibregl-ctrl-attrib{background:rgba(14,14,13,.5);color:rgba(232,228,218,.5)}
 .pg-locations .map_gl .maplibregl-ctrl-attrib a{color:rgba(232,228,218,.6)}
 .pg-locations .map_gl .maplibregl-ctrl-attrib-button{filter:invert(1);opacity:.5}
+.pg-locations .dbar{grid-template-columns:minmax(0,1fr) auto auto auto}
+.pg-locations .sel select{max-width:220px}
+@media (max-width:820px){.pg-locations .dbar{grid-template-columns:1fr}}
 .pg-locations .map_focus{opacity:0;pointer-events:none}
 .pg-locations .map_focus .maplibregl-canvas-container{transition:opacity .7s}
 .pg-locations .map_focus:not([data-ready="1"]) .maplibregl-canvas-container{opacity:0;transition:opacity .2s}

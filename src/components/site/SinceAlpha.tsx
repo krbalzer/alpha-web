@@ -75,7 +75,7 @@ export function SinceAlpha({ d }: { d: SinceAlphaData }) {
           <div className="sa_det" role="tabpanel">
             <span className="mono sa_dd">{m.date}</span>
             <div><b>{m.title}</b><p>{m.detail}</p></div>
-            {m.rebrand && d.rebrand ? <button className="btn sa_go" onClick={() => rebrand.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>See the rebrand ↓</button> : <span />}
+            {m.rebrand && d.rebrand ? <button className="btn sa_go" onClick={() => rebrand.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>See the rebrand ↓</button> : m.link ? <a className="btn sa_go" href={m.link.href}>{m.link.label}</a> : <span />}
           </div>
 
           {tn?.rows?.length ? (

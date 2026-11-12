@@ -9,6 +9,7 @@ import { BrandDock } from './BrandDock'
 import { BrandEngine } from './engine'
 import { MapStage, hasRealMap } from '@/components/site/MapStage'
 import { Inside } from '@/components/site/Inside'
+import { Treatments } from '@/components/site/Treatments'
 import './brand.css'
 
 export default function BrandView({ brand, brands }: { brand: BrandData; brands: BrandIndex }) {
@@ -126,6 +127,8 @@ export default function BrandView({ brand, brands }: { brand: BrandData; brands:
 </div>
 </section>
 </>) : null}
+
+<Treatments groups={brand.treatments} where={brand.short} />
 
 {/* ============ FOUNDER ============ */}
 {v.b.founder ? (<><section style={{"paddingBottom": "clamp(90px, 10vw, 160px)"} as React.CSSProperties}>

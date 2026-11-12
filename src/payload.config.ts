@@ -13,6 +13,7 @@ import { Brands, CtaImages, Founders, Locations, TuckIns } from './collections/n
 import { Episodes, Shows, Speakers, Tags } from './collections/podcast'
 import { Departments, Team } from './collections/team'
 import { Users } from './collections/Users'
+import { Treatments } from './collections/treatments'
 import { migrations } from './migrations'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -32,7 +33,7 @@ export default buildConfig({
   },
   collections: [
     // network
-    Brands, Locations, TuckIns, Founders, CtaImages,
+    Brands, Locations, TuckIns, Founders, CtaImages, Treatments,
     // alpha team
     Departments, Team,
     // podcasts

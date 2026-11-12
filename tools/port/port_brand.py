@@ -197,6 +197,7 @@ import { BrandDock } from './BrandDock'
 import { BrandEngine } from './engine'
 import { MapStage, hasRealMap } from '@/components/site/MapStage'
 import { Inside } from '@/components/site/Inside'
+import { Treatments } from '@/components/site/Treatments'
 import './brand.css'
 
 export default function BrandView({ brand, brands }: { brand: BrandData; brands: BrandIndex }) {
@@ -224,6 +225,9 @@ os.makedirs(APP, exist_ok=True)
 FILM = '{/* ============ LOCATIONS INDEX: only for multi-location brands ============ */}'  # Inside sits right after the stats
 assert view.count(FILM) == 1
 view = view.replace(FILM, '<Inside items={brand.inside} title={brand.insideTitle} where={brand.insideWhere} />\n\n' + FILM)
+FOUNDER = '{/* ============ FOUNDER ============ */}'  # treatments index sits right before the founder
+assert view.count(FOUNDER) == 1
+view = view.replace(FOUNDER, '<Treatments groups={brand.treatments} where={brand.short} />\n\n' + FOUNDER)
 open(APP + 'BrandView.tsx', 'w').write(view)
 open(APP + 'brand.css', 'w').write(scss)
 open(APP + 'engine.ts', 'w').write(engine)

@@ -86,6 +86,7 @@ const PLACEMENTS: { file: string; alt: string; apply: (p: Payload, id: number) =
   { file: 'atam/gal-bonita-springs-3.jpg', alt: 'A treatment at Bonita Springs', apply: (p, id) => gallery(p, 'anne-therese-aesthetic-medicine-bonita-springs-fl', id, 'treatment-room') },
   { file: 'atam/gal-bonita-springs-4.jpg', alt: 'A facial at Bonita Springs', apply: (p, id) => gallery(p, 'anne-therese-aesthetic-medicine-bonita-springs-fl', id, 'treatment-room') },
   { file: 'atam/gal-bonita-springs-5.jpg', alt: 'The skincare wall at Bonita Springs', apply: (p, id) => gallery(p, 'anne-therese-aesthetic-medicine-bonita-springs-fl', id, 'retail') },
+  { file: 'atam/cta-lewis-center.jpg', alt: 'Dr. Anne Therese Stubbs with a patient, Lewis Center', apply: (p, id) => cta(p, 'Anne Therese / Lewis Center', 'anne-therese-aesthetic-medicine-columbus-ohio', id) },
   { file: 'atam/cta-bonita-springs.jpg', alt: 'The fountain courtyard, Bonita Springs', apply: (p, id) => cta(p, 'Anne Therese / Bonita Springs', 'anne-therese-aesthetic-medicine-bonita-springs-fl', id) },
   { file: 'atam/inside-bonita-exam-room.jpg', alt: 'An exam room at Bonita Springs', apply: (p, id) => inside(p, 'anne-therese-aesthetic-medicine', id, 'Exam room / Bonita Springs') },
   { file: 'atam/inside-bonita-retail.jpg', alt: 'The skincare wall at Bonita Springs', apply: (p, id) => inside(p, 'anne-therese-aesthetic-medicine', id, 'Skincare / Bonita Springs') },
@@ -173,6 +174,18 @@ async function blossom(p: Payload) {
   p.logger.info('locations: Refined at Blossom content set')
 }
 
+/** Location order within a brand (opening order). Only fills locations that have no order yet, so admin edits stand. */
+const ORDER: Record<string, number> = {
+  'anne-therese-aesthetic-medicine-columbus-ohio': 1, 'anne-therese-aesthetic-medicine-gahanna-oh': 2,
+  'anne-therese-aesthetic-medicine-cape-coral-fl': 3, 'anne-therese-aesthetic-medicine-bonita-springs-fl': 4,
+}
+async function orderLocations(p: Payload) {
+  for (const [slug, order] of Object.entries(ORDER)) {
+    const l = (await p.find({ collection: 'locations', where: { slug: { equals: slug } }, limit: 1, depth: 0 })).docs[0]
+    if (l && l.order == null) await p.update({ collection: 'locations', id: l.id, data: { order } as never })
+  }
+}
+
 export async function placeMedia(p: Payload) {
   await ensureLocations(p)
   for (const x of PLACEMENTS) {
@@ -187,4 +200,5 @@ export async function placeMedia(p: Payload) {
     } catch (e) { p.logger.warn(`media: ${x.file} skipped (${(e as Error).message})`) }
   }
   await blossom(p)
+  await orderLocations(p)
 }

@@ -76,7 +76,7 @@ export const Brands: CollectionConfig = {
 export const Locations: CollectionConfig = {
   slug: 'locations',
   access: publicRead,
-  admin: { useAsTitle: 'title', defaultColumns: ['title', 'brand', 'origin', 'state', 'live'] },
+  admin: { useAsTitle: 'title', defaultColumns: ['title', 'brand', 'order', 'origin', 'state', 'live'] },
   hooks: {
     beforeValidate: [guard],
     beforeChange: [({ data }) => ({ ...data, title: data.name || [data.city, data.state].filter(Boolean).join(', ') })],
@@ -85,6 +85,7 @@ export const Locations: CollectionConfig = {
     { name: 'title', type: 'text', admin: { hidden: true } },
     { name: 'name', label: 'Location name', type: 'text', admin: { description: 'Only when the location has its own name, e.g. Refined at Blossom. Otherwise the page reads "Refined / Winchester, VA".' } },
     { name: 'brand', type: 'relationship', relationTo: 'brands', required: true, index: true },
+    { name: 'order', type: 'number', admin: { position: 'sidebar', description: 'Order within the brand, 1 first (usually the order they opened). Used on every page that lists the brand\'s locations.' } },
     { type: 'row', fields: [
       { name: 'city', type: 'text', required: true },
       { name: 'state', type: 'text', required: true, maxLength: 2, hooks: { beforeValidate: [upperState] } },

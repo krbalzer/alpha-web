@@ -5,6 +5,7 @@ import { Nav } from '@/components/site/Nav'
 import { useDC } from '@/lib/dc'
 import { LocationEngine } from './engine'
 import { MapStage } from '@/components/site/MapStage'
+import { Treatments } from '@/components/site/Treatments'
 import './page.css'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -128,6 +129,7 @@ export default function LocationView(props: any) {
 </section>
 
 </>) : null}
+<Treatments groups={props.data.treatments} where={props.data.b.locations[props.data.li].label} />
 {/* ============ WHO LEADS HERE ============ */}
 <section style={{"paddingBottom": "clamp(90px, 10vw, 150px)"} as React.CSSProperties}>
 <div className="wrap">

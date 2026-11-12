@@ -255,6 +255,9 @@ def locations_markup(b):
     b = sub(r'<span class="map_note ph">.*?</span>\s*', '', b)
     b = rep(b, '<select onChange="{{ onBrand }}" aria-label="Brand">', '<select onChange="{{ onBrand }}" value="{{ brandVal }}" aria-label="Brand">')
     b = rep(b, '<option value="{{ o.v }}" selected="{{ o.sel }}">', '<option value="{{ o.v }}">')
+    # treatment filter (treatments collection), next to Brand
+    b = sub(r'(<label class="sel mono"><span>Brand</span>.*?</label>)', r'\1<label class="sel mono"><span>Treatment</span><select onChange="{{ onTx }}" value="{{ txVal }}" aria-label="Treatment"><sc-for list="{{ txOpts }}" as="o"><option value="{{ o.v }}">{{ o.t }}</option></sc-for></select></label>', b)
+    b = rep(b, 'Filter by state or brand. The map and the numbers above follow along.', 'Filter by state, brand or treatment. The map and the numbers above follow along.')
     return b
 
 
@@ -273,7 +276,12 @@ def locations_engine(e):
     e = rep(e, "{ k: 'Annual practice visits', v: '[n]' }, ", "")
     e = rep(e, "l: '[Label: per year?]',", "l: '[Label]',")
     e = rep(e, "founders: D.F.map((f) => ({ name: f[0],", "founders: D.F.map((f) => ({ href: f[4], name: f[0],")
-    e = rep(e, "onBrand: (e) => set({ brand: e.target.value }),", "onBrand: (e) => set({ brand: e.target.value }), brandVal: fb || '',")
+    e = rep(e, "onBrand: (e) => set({ brand: e.target.value }),", "onBrand: (e) => set({ brand: e.target.value }), brandVal: fb || '', onTx: (e) => set({ tx: e.target.value }), txVal: ft, txOpts: [{ v: '', t: 'All treatments' }].concat(D.T || []),")
+    e = rep(e, "fb = s.brand || '', fs = s.states || [],", "fb = s.brand || '', ft = s.tx || '', fs = s.states || [],")
+    e = rep(e, "const match = (l, skipState) => (!fb || l.n === fb) &&", "const match = (l, skipState) => (!fb || l.n === fb) && (!ft || (l.tx || []).indexOf(ft) >= 0) &&")
+    e = rep(e, "const hasF = !!(q || fb || fs.length);", "const hasF = !!(q || fb || ft || fs.length);")
+    e = rep(e, "clear: () => set({ q: '', brand: '', states: [] }),", "clear: () => set({ q: '', brand: '', tx: '', states: [] }),")
+    e = rep(e, "if (fb) p.push('brand=' + fb);", "if (fb) p.push('brand=' + fb); if (ft) p.push('treatment=' + ft);")
     e = rep(e, "return { n, name: D.B[n].name, tone: D.B[n].tone,", "return { n, href: D.B[n].href, name: D.B[n].name, tone: D.B[n].tone,")
     return e
 
@@ -498,7 +506,10 @@ def locations_jsx(j):
 def location_jsx(j):
     cv = '<canvas className="map_cv" ref={v.setCanvas} aria-hidden="true"></canvas>'
     assert j.count(cv) == 1
-    return j.replace(cv, '<MapStage locs={[props.data.b.locations[props.data.li]]} idx={0} />' + cv)
+    j = j.replace(cv, '<MapStage locs={[props.data.b.locations[props.data.li]]} idx={0} />' + cv)
+    lead = '{/* ============ WHO LEADS HERE ============ */}'
+    assert j.count(lead) == 1
+    return j.replace(lead, '<Treatments groups={props.data.treatments} where={props.data.b.locations[props.data.li].label} />\n' + lead)
 
 
 REEL_CSS = """
@@ -923,8 +934,8 @@ PAGES = {
     'Article': dict(dir='newswire/[slug]', board='Article', markup=article_markup, engine=article_engine, css=IMG_CSS + '.ar_body img{max-width:100%;height:auto}'),
     'Founder': dict(dir='founders/[slug]', board='Founder', data=True, markup=founder_markup, engine=founder_engine),
     'Locations': dict(dir='locations', board='Locations', data=True, markup=locations_markup, engine=locations_engine, jsx=locations_jsx, imports="import { FocusMap } from '@/components/site/MapStage'\n",
-                      css=IMG_CSS + MAP_CSS + '.map_focus{opacity:0;pointer-events:none}\n.map_focus .maplibregl-canvas-container{transition:opacity .7s}\n.map_focus:not([data-ready="1"]) .maplibregl-canvas-container{opacity:0;transition:opacity .2s}\n'),
-    'Location': dict(dir='locations/[slug]', board='Location', markup=location_markup, engine=location_engine, jsx=location_jsx, imports=MAP_IMPORT, css=IMG_CSS + MAP_CSS + JOINED_CSS + '.rv_who{color:inherit;text-decoration:none}\n.rv_who:hover b{text-decoration:underline}\n.gal .img{position:relative;overflow:hidden;background:#D3CFC5}\n'),
+                      css=IMG_CSS + MAP_CSS + '.dbar{grid-template-columns:minmax(0,1fr) auto auto auto}\n.sel select{max-width:220px}\n@media (max-width:820px){.dbar{grid-template-columns:1fr}}\n.map_focus{opacity:0;pointer-events:none}\n.map_focus .maplibregl-canvas-container{transition:opacity .7s}\n.map_focus:not([data-ready="1"]) .maplibregl-canvas-container{opacity:0;transition:opacity .2s}\n'),
+    'Location': dict(dir='locations/[slug]', board='Location', markup=location_markup, engine=location_engine, jsx=location_jsx, imports=MAP_IMPORT + "import { Treatments } from '@/components/site/Treatments'\n", css=IMG_CSS + MAP_CSS + JOINED_CSS + '.rv_who{color:inherit;text-decoration:none}\n.rv_who:hover b{text-decoration:underline}\n.gal .img{position:relative;overflow:hidden;background:#D3CFC5}\n'),
     'Podcasts': dict(dir='podcasts', board='Podcasts', data=True, markup=podcasts_markup, engine=podcasts_engine, css=PODCAST_CSS + QUEUE_ROW_CSS, imports=QUEUE_IMPORT),
     'Show': dict(dir='podcasts/[show]', board='Show', markup=show_markup, engine=show_engine, imports=QUEUE_IMPORT, css=SHOW_CSS + QUEUE_ROW_CSS + IMG_CSS + '.spk,.person_av{position:relative;overflow:hidden}\n.spk img,.person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}\n'),
     'Episode': dict(dir='podcasts/[show]/[episode]', board='Episode', markup=episode_markup, engine=episode_engine, imports=QUEUE_IMPORT + "import { EpisodeBar } from '@/components/site/EpisodeBar'\n", css=EPBAR_CSS + '.qb_lg{height:44px;padding:0 18px}\n.btn.qb.is-q{background:var(--ink);border-color:var(--ink);color:var(--bone)}\n.btn.qb.is-now{opacity:.55;cursor:default}\n' + IMG_CSS + '.vid_poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.82)}\n.vid .vid_btn{position:relative;z-index:1;border:0;cursor:pointer}\n.vid.is-on{aspect-ratio:16/9;background:#000}\n.vid_ifr{position:absolute;inset:0;width:100%;height:100%;border:0}\n' + '.tv_play{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 22px 0 18px;border-radius:999px;border:0;background:var(--ink);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:transform .3s var(--ease)}\n.tv_play:hover{transform:scale(1.04)}\n' + '.spk,.person_av{position:relative;overflow:hidden}\n.spk img,.person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}\n'),

@@ -216,10 +216,10 @@ export class LocationsEngine extends DCLogic {
   
   renderVals() {
     const D = this.data(), s = this.st(), set = (o) => this.setState(o), L = D.L;
-    const q = (s.q || '').trim().toLowerCase(), fb = s.brand || '', fs = s.states || [], sort = s.sort || 'state';
-    const match = (l, skipState) => (!fb || l.n === fb) && (skipState || !fs.length || fs.indexOf(l.st) >= 0) && (!q || (l.brand + ' ' + l.city + ' ' + l.st + ' ' + l.a2).toLowerCase().indexOf(q) >= 0);
+    const q = (s.q || '').trim().toLowerCase(), fb = s.brand || '', ft = s.tx || '', fs = s.states || [], sort = s.sort || 'state';
+    const match = (l, skipState) => (!fb || l.n === fb) && (!ft || (l.tx || []).indexOf(ft) >= 0) && (skipState || !fs.length || fs.indexOf(l.st) >= 0) && (!q || (l.brand + ' ' + l.city + ' ' + l.st + ' ' + l.a2).toLowerCase().indexOf(q) >= 0);
     const res = L.filter((l) => match(l));
-    const hasF = !!(q || fb || fs.length);
+    const hasF = !!(q || fb || ft || fs.length);
     this._match = hasF ? new Set(res.map((l) => l.i)) : null;
     const uniq = (a) => a.filter((v, i) => a.indexOf(v) === i);
     const states = uniq(L.map((l) => l.st)).sort();
@@ -267,13 +267,13 @@ export class LocationsEngine extends DCLogic {
       statsNote: hasF ? 'Reach reflects your filters' : 'Network totals. Filter the directory to narrow them.',
       q: s.q || '', onQ: (e) => set({ q: e.target.value }),
       brandOpts: [{ v: '', t: 'All brands', sel: !fb }].concat(Object.keys(D.B).map((n) => ({ v: n, t: 'PTR ' + n + ' · ' + D.B[n].name, sel: fb === n }))),
-      onBrand: (e) => set({ brand: e.target.value }), brandVal: fb || '',
+      onBrand: (e) => set({ brand: e.target.value }), brandVal: fb || '', onTx: (e) => set({ tx: e.target.value }), txVal: ft, txOpts: [{ v: '', t: 'All treatments' }].concat(D.T || []),
       sorts: [['state', 'State'], ['brand', 'Brand'], ['city', 'A–Z']].map((o) => ({ t: o[1], cls: 'sb' + (sort === o[0] ? ' is-on' : ''), go: () => set({ sort: o[0] }) })),
       stateChips: states.map((st) => { const on = fs.indexOf(st) >= 0, n = L.filter((l) => l.st === st && match(l, true)).length;
         return { t: st, n: String(n), cls: 'sc' + (on ? ' is-on' : '') + (!on && !n ? ' is-off' : ''), go: () => set({ states: on ? fs.filter((x) => x !== st) : fs.concat([st]) }) }; }),
       nRes: res.length, hasF, empty: res.length === 0, groups,
-      clear: () => set({ q: '', brand: '', states: [] }),
-      share: () => { const p = []; if (fs.length) p.push('state=' + fs.join(',')); if (fb) p.push('brand=' + fb); if (q) p.push('q=' + encodeURIComponent(s.q)); try { navigator.clipboard.writeText(location.origin + '/locations?' + p.join('&')); } catch (err) {} set({ shared: Date.now() }); },
+      clear: () => set({ q: '', brand: '', tx: '', states: [] }),
+      share: () => { const p = []; if (fs.length) p.push('state=' + fs.join(',')); if (fb) p.push('brand=' + fb); if (ft) p.push('treatment=' + ft); if (q) p.push('q=' + encodeURIComponent(s.q)); try { navigator.clipboard.writeText(location.origin + '/locations?' + p.join('&')); } catch (err) {} set({ shared: Date.now() }); },
       shareLabel: s.shared && Date.now() - s.shared < 2000 ? 'Link copied' : 'Share this view',
       founders: D.F.map((f) => ({ href: f[4], name: f[0], cred: f[1], brand: f[2] ? D.B[f[2]].name : '[Brand]', city: f[2] ? L.find((l) => l.n === f[2]).city.replace(/[\[\]]/g, '') : '[City]', img: f[3] || '', hasImg: !!f[3], noImg: !f[3],
         init: f[0].split(' ').map((w) => w[0]).join('').slice(0, 2), cls: 'fc' + (fb && f[2] !== fb ? ' dim' : '') })),

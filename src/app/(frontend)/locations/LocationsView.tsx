@@ -57,10 +57,10 @@ export default function LocationsView(props: any) {
 {/* ============ DIRECTORY ============ */}
 <section className="sec" id="directory">
 <div className="wrap">
-<div className="split_head"><h2 className="display h2">Location directory</h2><p className="body" style={{"margin": "0", "maxWidth": "24rem"} as React.CSSProperties}>Filter by state or brand. The map and the numbers above follow along.</p></div>
+<div className="split_head"><h2 className="display h2">Location directory</h2><p className="body" style={{"margin": "0", "maxWidth": "24rem"} as React.CSSProperties}>Filter by state, brand or treatment. The map and the numbers above follow along.</p></div>
 <div className="dbar">
 <label className="search"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="6" cy="6" r="4.6" stroke="currentColor" fill="none" strokeWidth="1.3"></circle><path d="M9.5 9.5L13 13" stroke="currentColor" strokeWidth="1.3"></path></svg><input type="search" placeholder="City, brand or zip" value={v.q} onInput={v.onQ} aria-label="Search locations" /></label>
-<label className="sel mono"><span>Brand</span><select onChange={v.onBrand} value={v.brandVal} aria-label="Brand">{(v.brandOpts || []).map((o: any, o_i: number) => (<React.Fragment key={o_i}><option value={o.v}>{o.t}</option></React.Fragment>))}</select></label>
+<label className="sel mono"><span>Brand</span><select onChange={v.onBrand} value={v.brandVal} aria-label="Brand">{(v.brandOpts || []).map((o: any, o_i: number) => (<React.Fragment key={o_i}><option value={o.v}>{o.t}</option></React.Fragment>))}</select></label><label className="sel mono"><span>Treatment</span><select onChange={v.onTx} value={v.txVal} aria-label="Treatment">{(v.txOpts || []).map((o: any, o_i: number) => (<React.Fragment key={o_i}><option value={o.v}>{o.t}</option></React.Fragment>))}</select></label>
 <div className="sort mono"><span>Sort</span>{(v.sorts || []).map((o: any, o_i: number) => (<React.Fragment key={o_i}><button className={o.cls} onClick={o.go}>{o.t}</button></React.Fragment>))}</div>
 </div>
 <div className="schips">{(v.stateChips || []).map((c: any, c_i: number) => (<React.Fragment key={c_i}><button className={c.cls} onClick={c.go}>{c.t}<span>{c.n}</span></button></React.Fragment>))}</div>
