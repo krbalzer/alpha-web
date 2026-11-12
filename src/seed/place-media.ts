@@ -165,6 +165,14 @@ const PLACEMENTS: { file: string; alt: string; apply: (p: Payload, id: number) =
   { file: 'twc/gal-latham-4.jpg', alt: 'A consult at Latham', apply: (p, id) => gallery(p, 'williams-center-latham-ny', id, 'consult') },
   { file: 'twc/gal-latham-5.jpg', alt: 'The skincare shelves at the Rejuva Center', apply: (p, id) => gallery(p, 'williams-center-latham-ny', id, 'retail') },
   { file: 'twc/cta-latham.jpg', alt: 'The lounge at Latham', apply: (p, id) => cta(p, 'Williams Center / Latham', 'williams-center-latham-ny', id) },
+  // Williams Center, Saratoga Springs shoot Sep 2025
+  { file: 'twc/location-saratoga-springs.jpg', alt: 'The Wise Building entrance, 60 Railroad Pl, Saratoga Springs', apply: (p, id) => location(p, 'williams-center-saratoga-springs', { photo: id }) },
+  { file: 'twc/gal-saratoga-springs-1.jpg', alt: 'The Rejuva Center door, Suite 102', apply: (p, id) => gallery(p, 'williams-center-saratoga-springs', id, 'arrival') },
+  { file: 'twc/gal-saratoga-springs-2.jpg', alt: 'The front desk at Saratoga Springs', apply: (p, id) => gallery(p, 'williams-center-saratoga-springs', id, 'front-desk') },
+  { file: 'twc/gal-saratoga-springs-3.jpg', alt: 'A treatment room at Saratoga Springs', apply: (p, id) => gallery(p, 'williams-center-saratoga-springs', id, 'treatment-room') },
+  { file: 'twc/gal-saratoga-springs-4.jpg', alt: 'A consult at Saratoga Springs', apply: (p, id) => gallery(p, 'williams-center-saratoga-springs', id, 'consult') },
+  { file: 'twc/gal-saratoga-springs-5.jpg', alt: 'A treatment tray', apply: (p, id) => gallery(p, 'williams-center-saratoga-springs', id, 'detail') },
+  { file: 'twc/cta-saratoga-springs.jpg', alt: 'The carousel in Congress Park, Saratoga Springs', apply: (p, id) => cta(p, 'Williams Center / Saratoga Springs', 'williams-center-saratoga-springs', id) },
   { file: 'atam/cta-lewis-center.jpg', alt: 'Dr. Anne Therese Stubbs with a patient, Lewis Center', apply: (p, id) => cta(p, 'Anne Therese / Lewis Center', 'anne-therese-aesthetic-medicine-columbus-ohio', id) },
   { file: 'atam/cta-bonita-springs.jpg', alt: 'The fountain courtyard, Bonita Springs', apply: (p, id) => cta(p, 'Anne Therese / Bonita Springs', 'anne-therese-aesthetic-medicine-bonita-springs-fl', id) },
   { file: 'atam/inside-bonita-exam-room.jpg', alt: 'An exam room at Bonita Springs', apply: (p, id) => inside(p, 'anne-therese-aesthetic-medicine', id, 'Exam room / Bonita Springs') },
@@ -254,14 +262,25 @@ async function blossom(p: Payload) {
 }
 
 /** Location order within a brand (opening order). Only fills locations that have no order yet, so admin edits stand. */
-const ORDER: Record<string, number> = {
-  'anne-therese-aesthetic-medicine-columbus-ohio': 1, 'anne-therese-aesthetic-medicine-gahanna-oh': 2,
-  'anne-therese-aesthetic-medicine-cape-coral-fl': 3, 'anne-therese-aesthetic-medicine-bonita-springs-fl': 4,
+const ORDER: Record<string, string[]> = {
+  'anne-therese-aesthetic-medicine': ['Lewis Center', 'Gahanna', 'Cape Coral', 'Bonita Springs'],
+  'esthetics-center': ['El Dorado Hills', 'Rocklin', 'Sacramento', 'Fair Oaks'],
+  'holden-timeless-beauty': ['San Marcos', 'San Diego', 'Carlsbad', 'Fallbrook'],
+  'williams-center': ['Latham', 'Saratoga Springs'],
+  'mint-needle': ['Middletown', 'Lewes', 'Greenville'],
+  'flawless-medspa-wellness': ['East Albuquerque', 'West Albuquerque', 'Flawless at Bair'], // Menaul Blvd, Taylor Ranch, then the Bair tuck-in (8810 Holly Ave NE, Ste F), matched by location name
+  'rn-esthetics': ['Salem', 'Lynnfield', 'Newburyport', 'Boston'],
+  'preva': ['Encinitas', 'Denver'],
 }
 async function orderLocations(p: Payload) {
-  for (const [slug, order] of Object.entries(ORDER)) {
-    const l = (await p.find({ collection: 'locations', where: { slug: { equals: slug } }, limit: 1, depth: 0 })).docs[0]
-    if (l && l.order == null) await p.update({ collection: 'locations', id: l.id, data: { order } as never })
+  for (const [slug, cities] of Object.entries(ORDER)) {
+    const b = (await p.find({ collection: 'brands', where: { slug: { equals: slug } }, limit: 1, depth: 0 })).docs[0]
+    if (!b) continue
+    const locs = (await p.find({ collection: 'locations', where: { brand: { equals: b.id } }, limit: 50, depth: 0 })).docs
+    for (const l of locs) {
+      const order = (cities.indexOf(l.city) + 1) || (cities.indexOf(l.name || '') + 1)
+      if (order && l.order == null) await p.update({ collection: 'locations', id: l.id, data: { order } as never })
+    }
   }
 }
 
