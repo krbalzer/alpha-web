@@ -39,4 +39,4 @@ export const RATINGS: Record<string, [number, number]> = {
 }
 
 /** Locations with no loop or photos yet: the map stands in (cards show a map still, the page hero is the map). */
-export const NO_MEDIA = new Set(['15|Nantucket', '7|Bonita Springs', '10|Greensboro', '8|Boston'])
+export const NO_MEDIA = new Set(['15|Nantucket', '10|Greensboro', '8|Boston'])
