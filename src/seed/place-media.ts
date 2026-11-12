@@ -70,6 +70,14 @@ const PLACEMENTS: { file: string; alt: string; apply: (p: Payload, id: number) =
   { file: 'atam/gal-cape-coral-3.jpg', alt: 'A treatment at Cape Coral', apply: (p, id) => gallery(p, 'anne-therese-aesthetic-medicine-cape-coral-fl', id, 'treatment-room') },
   { file: 'atam/gal-cape-coral-4.jpg', alt: 'A consult at Cape Coral', apply: (p, id) => gallery(p, 'anne-therese-aesthetic-medicine-cape-coral-fl', id, 'consult') },
   { file: 'atam/gal-cape-coral-5.jpg', alt: 'The treatment room hallway at Cape Coral', apply: (p, id) => gallery(p, 'anne-therese-aesthetic-medicine-cape-coral-fl', id, 'treatment-room') },
+  // Refined at Blossom (Winchester, tuck-in), Nov 2026 shoot
+  { file: 'ra/location-winchester.jpg', alt: 'The lobby at Refined at Blossom, Winchester', apply: (p, id) => location(p, 'refined-aesthetics-winchester', { photo: id }) },
+  { file: 'ra/gal-winchester-1.jpg', alt: 'The lobby and skincare wall at Refined at Blossom', apply: (p, id) => gallery(p, 'refined-aesthetics-winchester', id, 'arrival') },
+  { file: 'ra/gal-winchester-2.jpg', alt: 'A treatment room at Refined at Blossom', apply: (p, id) => gallery(p, 'refined-aesthetics-winchester', id, 'treatment-room') },
+  { file: 'ra/gal-winchester-3.jpg', alt: 'A Halo laser treatment at Refined at Blossom', apply: (p, id) => gallery(p, 'refined-aesthetics-winchester', id, 'treatment-room') },
+  { file: 'ra/gal-winchester-4.jpg', alt: 'A consult at Refined at Blossom', apply: (p, id) => gallery(p, 'refined-aesthetics-winchester', id, 'consult') },
+  { file: 'ra/gal-winchester-5.jpg', alt: 'A facial at Refined at Blossom', apply: (p, id) => gallery(p, 'refined-aesthetics-winchester', id, 'treatment-room') },
+  { file: 'ra/cta-winchester.jpg', alt: 'A treatment room at Refined at Blossom', apply: (p, id) => cta(p, 'Refined at Blossom / Winchester', 'refined-aesthetics-winchester', id) },
   // Bonita Springs (de novo), branding shoot, Nov 2025
   { file: 'atam/location-bonita-springs.jpg', alt: 'Anne Therese, Suite 154, Bonita Springs', apply: (p, id) => location(p, 'anne-therese-aesthetic-medicine-bonita-springs-fl', { photo: id }) },
   { file: 'atam/gal-bonita-springs-1.jpg', alt: 'The colonnade at Suite 154, Bonita Springs', apply: (p, id) => gallery(p, 'anne-therese-aesthetic-medicine-bonita-springs-fl', id, 'arrival') },
@@ -102,6 +110,19 @@ async function gallery(p: Payload, slug: string, id: number, kind: string, capti
   if (l) await p.update({ collection: 'locations', id: l.id, data: { gallery: [...((l.gallery as object[]) || []), { image: id, kind, caption }] } as never })
 }
 
+/** Locations that exist but were never in the Webflow import. Created once, then the CMS owns them. */
+async function ensureLocations(p: Payload) {
+  const ra = (await p.find({ collection: 'brands', where: { slug: { equals: 'refined-aesthetics' } }, limit: 1, depth: 0 })).docs[0]
+  const have = (await p.find({ collection: 'locations', where: { slug: { equals: 'refined-aesthetics-winchester' } }, limit: 1, depth: 0 })).docs[0]
+  if (!ra || have) return
+  const loc = await p.create({ collection: 'locations', data: {
+    brand: ra.id, city: 'Winchester', state: 'VA', zip: '22601', address1: '8 W Fairfax Ln', lat: 39.1872, lng: -78.1648, phone: '(540) 323-7254',
+    origin: 'tuck-in', formerName: 'Blossom Medical', slug: 'refined-aesthetics-winchester', live: true,
+  } as never })
+  await p.create({ collection: 'tuck-ins', data: { formerName: 'Blossom Medical', brand: ra.id, kind: 'location', location: loc.id, city: 'Winchester', state: 'VA', slug: 'blossom-medical', live: true } as never })
+  p.logger.info('locations: created Refined at Blossom, Winchester')
+}
+
 async function location(p: Payload, slug: string, data: Record<string, unknown>) {
   const l = (await p.find({ collection: 'locations', where: { slug: { equals: slug } }, limit: 1, depth: 0 })).docs[0]
   if (l) await p.update({ collection: 'locations', id: l.id, data: data as never })
@@ -113,6 +134,7 @@ async function brand(p: Payload, slug: string, patch: (b: Doc) => Record<string,
 }
 
 export async function placeMedia(p: Payload) {
+  await ensureLocations(p)
   for (const x of PLACEMENTS) {
     const name = 'placed-' + x.file.replace(/\//g, '-')
     const have = await p.find({ collection: 'media', where: { filename: { equals: name } }, limit: 1, depth: 0 })
