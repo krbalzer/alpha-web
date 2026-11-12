@@ -434,6 +434,7 @@ def location_markup(b):
     ins = re.search(r'<!-- =+ INSIDE =+ -->', b)
     b = b[:ins.start()] + JOINED + b[ins.start():]
     b = gate(b, 'JOINED', 'hasJoined')
+    b = rep(b, '<span class="card_txt"><b>{{ b.name }}</b>', '<span class="card_txt"><b>{{ loc.cardT }}</b>')
     b = rep(b, '<p class="sub">{{ provLine }}</p>', '<sc-if value="{{ provLine }}"><p class="sub">{{ provLine }}</p></sc-if>')
     b = gate(b, 'IN THEIR WORDS', 'hasReviews')
     # live Google reviews (src/lib/reviews.ts): aggregate, up to 6 cards, author linked to their Google profile
@@ -470,7 +471,7 @@ def location_engine(e):
     e = rep(e, "gal2: [{ k: 'Arrival', t: '[Caption about the arrival]', ph: 'Place image / exterior or entry' }, { k: 'Front desk', t: '[Caption]', ph: 'Place image / reception' }],", "gal2: " + gal + ".slice(0, 2),")
     e = rep(e, "gal3: [{ k: 'Treatment room', t: '[Caption]', ph: 'Place image' }, { k: 'Consult', t: '[Caption]', ph: 'Place image' }, { k: 'Retail', t: '[Caption]', ph: 'Place image' }],", "gal3: " + gal + ".slice(2),")
     e = rep(e, "mapAria: mapHero ? B.short + ' / ' + loc.place : 'Location',", "mapAria: mapHero ? (loc.name || B.short + ' / ' + loc.place) : 'Location',")
-    e = rep(e, "b: B, loc, title: B.short + ' / ' + loc.place,", "b: B, loc: Object.assign(loc, { insideT: loc.name || B.name + ' ' + loc.city }), title: loc.name || B.short + ' / ' + loc.place, former: this.props.data.former || '', hasJoined: !!this.props.data.joined, jn: this.joinedVals(),")
+    e = rep(e, "b: B, loc, title: B.short + ' / ' + loc.place,", "b: B, loc: Object.assign(loc, { insideT: loc.name || B.name + ' ' + loc.city, cardT: loc.name || B.name }), title: loc.name || B.short + ' / ' + loc.place, former: this.props.data.former || '', hasJoined: !!this.props.data.joined, jn: this.joinedVals(),")
     e = rep(e, '  renderVals() {', '''  joinedVals() {
     const J = this.props.data.joined;
     if (!J) return { pair: [], kept: [], films: [], a: {}, b: {} };

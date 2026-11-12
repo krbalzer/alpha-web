@@ -50,7 +50,7 @@ export default function LocationView(props: any) {
 <div className="track">
 <a className="card is-on" href={v.loc.dir} target="_blank" rel="noopener" style={{"textDecoration": "none"} as React.CSSProperties} aria-label={`Directions to ${v.title}`}>
 <span className="card_img ph" style={{"background": `${v.loc.tone}`} as React.CSSProperties}>{v.loc.img ? (<><img src={v.loc.img} alt="" loading="lazy" /></>) : null}{v.loc.noImg ? (<>{v.loc.city}</>) : null}</span>
-<span className="card_txt"><b>{v.b.name}</b><span className="card_addr">{v.loc.a1}<br />{v.loc.a2}</span><span className="card_marks"><i className={`state s-${v.loc.st}`} title={v.loc.st}>{v.loc.st}</i><span className="amark" aria-hidden="true"></span><span className="est"><small>EST</small>{v.loc.est}</span></span></span>
+<span className="card_txt"><b>{v.loc.cardT}</b><span className="card_addr">{v.loc.a1}<br />{v.loc.a2}</span><span className="card_marks"><i className={`state s-${v.loc.st}`} title={v.loc.st}>{v.loc.st}</i><span className="amark" aria-hidden="true"></span><span className="est"><small>EST</small>{v.loc.est}</span></span></span>
 </a>
 </div>
 </div>
