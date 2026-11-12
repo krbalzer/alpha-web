@@ -375,6 +375,8 @@
 .pg-main .closer>.btn{margin-top:clamp(22px,2.2vw,32px);position:relative;z-index:2}
 .pg-main .ph_img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .pg-main .tp_i,.pg-main .tm_img,.pg-main .o2_img,.pg-main .face,.pg-main .ph_cut{position:relative;overflow:hidden}
+.pg-main .b_top{background:var(--bone)}
+.pg-main .hero_grid{padding-bottom:clamp(56px,5.6vw,108px)}
 .pg-main .reel{position:relative;overflow:hidden}
 .pg-main .reel_img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.2s var(--ease)}
 .pg-main .reel_img.is-on{opacity:1}

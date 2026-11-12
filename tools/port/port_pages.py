@@ -619,6 +619,8 @@ def main_engine(e):
 
 
 MAIN_CSS = IMG_CSS + """
+.b_top{background:var(--bone)}
+.hero_grid{padding-bottom:clamp(56px,5.6vw,108px)}
 .reel{position:relative;overflow:hidden}
 .reel_img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.2s var(--ease)}
 .reel_img.is-on{opacity:1}
