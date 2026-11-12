@@ -161,7 +161,7 @@ import json
 ASSETS = json.load(open(os.path.join(os.path.dirname(__file__), 'assets.json')))
 c = re.sub(r'/_blob/([0-9a-f]{32})', lambda m: ASSETS.get(m.group(1), m.group(0)), c)
 missing = set(re.findall(r'/_blob/([0-9a-f]{32})', c))
-c += '.b_top{background:var(--bone)}\n'  # nav bar matches the page, as on the homepage
+c += '.b_top,.crumb{background:var(--bone)}\n'  # nav bar matches the page, as on the homepage
 scss = scope_css(c, 'pg-brand')
 
 # ---------- logic ----------
