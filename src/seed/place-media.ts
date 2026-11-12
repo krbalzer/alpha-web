@@ -77,6 +77,7 @@ const PLACEMENTS: { file: string; alt: string; apply: (p: Payload, id: number) =
   { file: 'ra/gal-winchester-3.jpg', alt: 'A Halo laser treatment at Refined at Blossom', apply: (p, id) => gallery(p, 'refined-aesthetics-winchester', id, 'treatment-room') },
   { file: 'ra/gal-winchester-4.jpg', alt: 'A consult at Refined at Blossom', apply: (p, id) => gallery(p, 'refined-aesthetics-winchester', id, 'consult') },
   { file: 'ra/gal-winchester-5.jpg', alt: 'A facial at Refined at Blossom', apply: (p, id) => gallery(p, 'refined-aesthetics-winchester', id, 'treatment-room') },
+  { file: 'ra/lead-lynn-nieman.jpg', alt: 'Dr. Lynn Nieman', apply: (p, id) => location(p, 'refined-aesthetics-winchester', { lead: { name: 'Dr. Lynn Nieman', credentials: 'MD', title: 'Medical Director', photo: id } }) },
   { file: 'ra/cta-winchester.jpg', alt: 'A treatment room at Refined at Blossom', apply: (p, id) => cta(p, 'Refined at Blossom / Winchester', 'refined-aesthetics-winchester', id) },
   // Bonita Springs (de novo), branding shoot, Nov 2025
   { file: 'atam/location-bonita-springs.jpg', alt: 'Anne Therese, Suite 154, Bonita Springs', apply: (p, id) => location(p, 'anne-therese-aesthetic-medicine-bonita-springs-fl', { photo: id }) },
@@ -133,6 +134,45 @@ async function brand(p: Payload, slug: string, patch: (b: Doc) => Record<string,
   if (b) await p.update({ collection: 'brands', id: b.id, data: patch(b) as never })
 }
 
+const rich = (ps: string[]) => ({ root: { type: 'root', direction: 'ltr', format: '', indent: 0, version: 1, children: ps.map((t) => ({ type: 'paragraph', direction: 'ltr', format: '', indent: 0, version: 1, textFormat: 0, children: [{ type: 'text', text: t, detail: 0, format: 0, mode: 'normal', style: '', version: 1 }] })) } })
+
+/** Refined at Blossom: name, visit details and the Joined chapter. Runs once (skips when the chapter has a headline), after the photo placements. */
+async function blossom(p: Payload) {
+  const slug = 'refined-aesthetics-winchester'
+  const l = (await p.find({ collection: 'locations', where: { slug: { equals: slug } }, limit: 1, depth: 0 })).docs[0]
+  const tk = (await p.find({ collection: 'tuck-ins', where: { slug: { equals: 'blossom-medical' } }, limit: 1, depth: 0 })).docs[0]
+  if (!l || !tk || tk.chapter?.headline) return
+  const sarah = (await p.find({ collection: 'founders', where: { slug: { equals: 'sarah-safa' } }, limit: 1, depth: 0 })).docs[0]
+  await p.update({ collection: 'locations', id: l.id, data: {
+    name: 'Refined at Blossom', googlePlaceId: 'ChIJt5r4LWjvtYkRSpe-zSufxk4',
+    hours: [{ days: 'Mon to Fri', time: '8am to 4:30pm' }, { days: 'Sat, Sun', time: 'Closed' }],
+    arrivalNote: 'Free parking near the entrance, just off West Fairfax Lane. Ground floor, just inside the main entrance.',
+    story: rich([
+      'Blossom began in a single treatment room, offered by two physician friends who had one to spare. Dr. Lynn Nieman, a board-certified anesthesiologist, had come to aesthetics while a riding fall kept her out of the operating room for twelve weeks.',
+      'She named the practice for the Apple Blossom Festival, the week each spring when Winchester closes its streets for parades and opens its yards to neighbors. Blossom still sponsors festival events, local teams and a local cancer charity. The practice sits in Old Town, a few steps off the walking mall, down the street from George Washington’s old office.',
+    ]),
+    milestones: [{ when: 'Jul 2026', line: 'Blossom Medical joins Refined Aesthetics as Refined at Blossom.' }, { when: 'Sep 2026', line: 'Launch celebration in Winchester.' }],
+    quote: { text: 'We are only getting better. We are not changing.', source: 'Dr. Lynn Nieman, interview 00:18:33' },
+  } as never })
+  await p.update({ collection: 'tuck-ins', id: tk.id, data: {
+    closed: '2026-07-01T00:00:00.000Z',
+    chapter: {
+      headline: 'First she trained here. Now it is one practice.',
+      intro: 'Dr. Lynn Nieman opened Blossom Medical in Old Town Winchester in a single borrowed treatment room. Some of her first hands-on injectables training was with Sarah Safa of Refined Aesthetics, an hour away in Leesburg. Years later Sarah called with an idea, and in 2026 the two practices became one: Refined at Blossom.',
+      pair: [
+        { name: 'Dr. Lynn Nieman, MD', line: 'Founder / Blossom Medical', photo: (l as unknown as { lead?: { photo?: number } }).lead?.photo ?? null, quote: 'She is one of the first people that I heard say community over competition.', source: 'Interview 00:13:07 / on Sarah' },
+        { name: 'Sarah Safa, MS, PA-C', line: 'Founder / Refined Aesthetics', photo: (sarah?.headshot as number | undefined) ?? null, quote: 'Our goal is to continue to inspire and motivate and elevate each other.', source: 'Interview 00:04:09 / on Blossom' },
+      ],
+      kept: [
+        { label: 'The name', title: 'Blossom stays in it', line: 'Lynn named Blossom for Winchester’s Apple Blossom Festival. It is still on the door.', quote: 'I wanted the namesake to be a nod to the people and the place which are at the heart of what we do.', source: 'Dr. Lynn Nieman, 00:07:13' },
+        { label: 'The physician', title: 'Dr. Nieman stays', line: 'Same physician, same team, now with Refined’s training and protocols behind them.', quote: 'I’m not leaving.', source: 'Dr. Lynn Nieman, 00:18:33' },
+        { label: 'The patients', title: 'Same building, same number', line: '8 W Fairfax Ln and (540) 323-7254. Appointments booked before the change still stand.' },
+      ],
+    },
+  } as never })
+  p.logger.info('locations: Refined at Blossom content set')
+}
+
 export async function placeMedia(p: Payload) {
   await ensureLocations(p)
   for (const x of PLACEMENTS) {
@@ -146,4 +186,5 @@ export async function placeMedia(p: Payload) {
       p.logger.info(`media: placed ${x.file}`)
     } catch (e) { p.logger.warn(`media: ${x.file} skipped (${(e as Error).message})`) }
   }
+  await blossom(p)
 }

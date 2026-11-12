@@ -471,6 +471,82 @@ export interface TuckIn {
     source?: string | null;
   };
   /**
+   * The "Joined" chapter on the location page. Shows once it has a headline.
+   */
+  chapter?: {
+    /**
+     * e.g. First she trained here. Now it is one practice.
+     */
+    headline?: string | null;
+    /**
+     * Two or three sentences: who, how they met, when it became one practice.
+     */
+    intro?: string | null;
+    /**
+     * Joining founder first, then the brand founder. One verbatim line each.
+     */
+    pair?:
+      | {
+          /**
+           * With credentials, e.g. Dr. Lynn Nieman, MD
+           */
+          name: string;
+          /**
+           * e.g. Founder / Blossom Medical
+           */
+          line?: string | null;
+          photo?: (number | null) | Media;
+          /**
+           * Verbatim only.
+           */
+          quote?: string | null;
+          /**
+           * e.g. Interview 00:13:07 / on Sarah
+           */
+          source?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * What patients keep, e.g. the name, the physician, the address.
+     */
+    kept?:
+      | {
+          /**
+           * e.g. The name
+           */
+          label: string;
+          /**
+           * e.g. Blossom stays in it
+           */
+          title: string;
+          line?: string | null;
+          /**
+           * Optional, verbatim.
+           */
+          quote?: string | null;
+          source?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Vertical (9:16) story films, click to play.
+     */
+    films?:
+      | {
+          title: string;
+          line?: string | null;
+          /**
+           * A verbatim line from the film, shown on the poster.
+           */
+          quote?: string | null;
+          video: number | Media;
+          poster?: (number | null) | Media;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
    * Off hides it everywhere on the site.
    */
   live?: boolean | null;
@@ -488,6 +564,10 @@ export interface TuckIn {
 export interface Location {
   id: number;
   title?: string | null;
+  /**
+   * Only when the location has its own name, e.g. Refined at Blossom. Otherwise the page reads "Refined / Winchester, VA".
+   */
+  name?: string | null;
   brand: number | Brand;
   city: string;
   state: string;
@@ -1408,6 +1488,7 @@ export interface BrandsSelect<T extends boolean = true> {
  */
 export interface LocationsSelect<T extends boolean = true> {
   title?: T;
+  name?: T;
   brand?: T;
   city?: T;
   state?: T;
@@ -1504,6 +1585,42 @@ export interface TuckInsSelect<T extends boolean = true> {
     | {
         text?: T;
         source?: T;
+      };
+  chapter?:
+    | T
+    | {
+        headline?: T;
+        intro?: T;
+        pair?:
+          | T
+          | {
+              name?: T;
+              line?: T;
+              photo?: T;
+              quote?: T;
+              source?: T;
+              id?: T;
+            };
+        kept?:
+          | T
+          | {
+              label?: T;
+              title?: T;
+              line?: T;
+              quote?: T;
+              source?: T;
+              id?: T;
+            };
+        films?:
+          | T
+          | {
+              title?: T;
+              line?: T;
+              quote?: T;
+              video?: T;
+              poster?: T;
+              id?: T;
+            };
       };
   live?: T;
   slug?: T;

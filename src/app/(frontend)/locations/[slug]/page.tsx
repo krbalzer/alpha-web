@@ -13,7 +13,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const d = await getLocation((await params).slug)
   const l = d?.b.locations[0]
-  return d && l ? { title: `${d.b.short} ${l.city}`, description: `${d.b.name}, ${l.a1}, ${l.a2}. An Alpha partner location.` } : {}
+  return d && l ? { title: l.name || `${d.b.short} ${l.city}`, description: `${d.b.name}, ${l.a1}, ${l.a2}. An Alpha partner location.` } : {}
 }
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {

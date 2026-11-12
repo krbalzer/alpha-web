@@ -21,7 +21,7 @@ export default function LocationView(props: any) {
 {v.loc.heroVideo ? (<><video className="hero_vid" ref={v.vidRef} poster={v.loc.heroPoster} autoPlay muted loop playsInline preload="auto" aria-hidden="true">{v.loc.heroAv1 ? (<><source src={v.loc.heroAv1} type="video/mp4; codecs=av01.0.08M.08" /></>) : null}{v.loc.heroSmall ? (<><source src={v.loc.heroSmall} type="video/mp4" media="(max-width: 820px)" /></>) : null}<source src={v.loc.heroVideo} type="video/mp4" /></video></>) : null}{v.loc.noVideo ? (<><div className="hero_media" aria-hidden="true"></div></>) : null}
 <div className="hero_shade" aria-hidden="true"></div>
 <div className="hero_in wrap">
-<span className="pill">{v.b.ptr} location</span>
+<span className="pill">{v.b.ptr} location</span>{v.former ? (<><span className="formerly">Formerly {v.former}</span></>) : null}
 <h1 className="h1">{v.title}</h1>
 <div className="hero_meta">
 <p className="addr">{v.loc.a1}, {v.loc.a2} /<br />{v.servicesLine}</p>
@@ -56,7 +56,7 @@ export default function LocationView(props: any) {
 </div>
 {v.mapHero ? (<>
 <div className="hero_in wrap map_hin">
-<span className="pill">{v.b.ptr} location</span>
+<span className="pill">{v.b.ptr} location</span>{v.former ? (<><span className="formerly">Formerly {v.former}</span></>) : null}
 <h1 className="h1">{v.title}</h1>
 <div className="hero_meta">
 <p className="addr">{v.loc.a1}, {v.loc.a2} /<br />{v.servicesLine}</p>
@@ -84,11 +84,38 @@ export default function LocationView(props: any) {
 </div>
 </section>
 
+{/* ============ JOINED: tuck-in chapter (tuck-ins.chapter). Shows once the tuck-in has a headline. ============ */}{v.hasJoined ? (<>
+<section className="sec" style={{"paddingBottom": "clamp(60px, 7vw, 110px)"} as React.CSSProperties}>
+<div className="wrap">
+<hr className="rule" style={{"marginBottom": "clamp(36px, 4vw, 60px)"} as React.CSSProperties} />
+<div className="split" style={{"alignItems": "end"} as React.CSSProperties}>
+<div><p className="eyebrow">{v.jn.eyebrow}</p><h2 className="h3" style={{"maxWidth": "16ch", "margin": "0"} as React.CSSProperties}>{v.jn.h}</h2></div>
+<div>{v.jn.intro ? (<><p className="body" style={{"margin": "0"} as React.CSSProperties}>{v.jn.intro}</p></>) : null}</div>
+</div>
+{v.jn.hasPair ? (<><div className="tk_pair">
+<figure className="tk_f">
+<div className="tk_who"><span className="tk_av">{v.jn.a.img ? (<><img src={v.jn.a.img} alt={v.jn.a.name} loading="lazy" /></>) : null}{v.jn.a.noImg ? (<>{v.jn.a.init}</>) : null}</span><div><span className="tk_n">{v.jn.a.name}</span><span className="tk_o">{v.jn.a.line}</span></div></div>
+{v.jn.a.q ? (<><blockquote>&ldquo;{v.jn.a.q}&rdquo;</blockquote><figcaption>{v.jn.a.s}</figcaption></>) : null}
+</figure>
+<div className="tk_join" aria-hidden="true"><b>+</b>{v.jn.yr ? (<><span>{v.jn.yr}</span></>) : null}</div>
+<figure className="tk_f">
+<div className="tk_who"><span className="tk_av">{v.jn.b.img ? (<><img src={v.jn.b.img} alt={v.jn.b.name} loading="lazy" /></>) : null}{v.jn.b.noImg ? (<>{v.jn.b.init}</>) : null}</span><div><span className="tk_n">{v.jn.b.name}</span><span className="tk_o">{v.jn.b.line}</span></div></div>
+{v.jn.b.q ? (<><blockquote>&ldquo;{v.jn.b.q}&rdquo;</blockquote><figcaption>{v.jn.b.s}</figcaption></>) : null}
+</figure>
+</div></>) : null}
+{v.jn.hasKept ? (<><dl className="tk_kept">{(v.jn.kept || []).map((k: any, k_i: number) => (<React.Fragment key={k_i}><div><dt>{k.k}</dt><dd><b>{k.t}</b>{k.line}{k.q ? (<><q>&ldquo;{k.q}&rdquo;</q><small>{k.s}</small></>) : null}</dd></div></React.Fragment>))}</dl></>) : null}
+{v.jn.hasFilms ? (<><div className="tk_films">
+<div className="tk_films_h"><p className="eyebrow">{v.jn.filmsH}</p></div>
+<div className="tk_fr">{(v.jn.films || []).map((f: any, f_i: number) => (<React.Fragment key={f_i}><figure className="tk_v"><div className="tk_vf"><video src={f.src} poster={f.poster} controls preload="none" playsInline></video></div><figcaption><b>{f.t}</b>{f.line}{f.q ? (<><q>&ldquo;{f.q}&rdquo;</q></>) : null}</figcaption></figure></React.Fragment>))}</div>
+</div></>) : null}
+</div>
+</section>
+</>) : null}
 {/* ============ INSIDE ============ */}{v.hasInside ? (<>
 <section className="sec">
 <div className="wrap">
 <hr className="rule" style={{"marginBottom": "clamp(36px, 4vw, 60px)"} as React.CSSProperties} />
-<div className="inside_head"><div><h2 className="h3">Inside {v.b.name} {v.loc.city}</h2>{v.loc.facts ? (<><p className="sub">{v.loc.facts}</p></>) : null}</div>{v.hasStory ? (<><div className="body inside_story" dangerouslySetInnerHTML={{ __html: v.storyHtml }} /></>) : null}</div>
+<div className="inside_head"><div><h2 className="h3">Inside {v.loc.insideT}</h2>{v.loc.facts ? (<><p className="sub">{v.loc.facts}</p></>) : null}</div>{v.hasStory ? (<><div className="body inside_story" dangerouslySetInnerHTML={{ __html: v.storyHtml }} /></>) : null}</div>
 {v.galOn ? (<>
 <div className="gal two">
 {(v.gal2 || []).map((g: any, g_i: number) => (<React.Fragment key={g_i}><figure><div className="img"><img className="ph_img" src={g.src} alt={g.alt} loading="lazy" decoding="async" /></div><figcaption className="cap"><b>{g.k}</b>{g.t}</figcaption></figure></React.Fragment>))}
@@ -123,7 +150,7 @@ export default function LocationView(props: any) {
 <div className="wrap">
 <hr className="rule" style={{"marginBottom": "clamp(36px, 4vw, 60px)"} as React.CSSProperties} />
 <div className="rv_head">
-<div><h2 className="h3">In their words</h2><p className="sub">From patients of {v.b.short} {v.loc.city}, on Google.</p></div>
+<div><h2 className="h3">In their words</h2><p className="sub">From patients of {v.loc.label}, on Google.</p></div>
 <div className="rv_agg"><span className="rv_n">{v.rv.rating}</span><span className="rv_st" role="img" aria-label={`${v.rv.rating} out of 5 stars`}><i style={{"width": `${v.rv.pct}%`} as React.CSSProperties}></i></span><span className="rv_c">{v.rv.count} Google reviews</span><a className="rv_all" href={v.rv.uri} target="_blank" rel="noopener">Read all on Google<span className="ext" aria-hidden="true">↗</span></a></div>
 </div>
 <div className="rv">{(v.rv.items || []).map((r: any, r_i: number) => (<React.Fragment key={r_i}><figure className={r.cls}>{r.tag ? (<><span className="rv_tag">{r.tag}</span></>) : null}<blockquote>{r.t}</blockquote>{r.long ? (<><label className="rv_more"><input type="checkbox" className="rv_x" /><span className="rv_m">Read more</span><span className="rv_l">Show less</span></label></>) : null}<figcaption className="rv_f"><span><a className="rv_who" href={r.whoUri} target="_blank" rel="noopener nofollow"><b>{r.who}</b></a> / {r.when}</span><span>via Google</span></figcaption></figure></React.Fragment>))}</div>
@@ -178,9 +205,9 @@ export default function LocationView(props: any) {
 {v.hasSib ? (<>
 <section className="also" style={{"paddingBottom": "clamp(90px, 10vw, 150px)"} as React.CSSProperties}>
 <div className="wrap">
-<h2 className="h3" style={{"marginBottom": "clamp(22px, 2.2vw, 34px)"} as React.CSSProperties}>Also {v.b.short} {v.sib.city}</h2>
+<h2 className="h3" style={{"marginBottom": "clamp(22px, 2.2vw, 34px)"} as React.CSSProperties}>Also {v.sib.label}</h2>
 <a href={v.sib.href} style={{"display": "block", "textDecoration": "none"} as React.CSSProperties}><div className="img ph" style={{"background": `${v.sib.tone}`, "color": "rgba(232,228,218,.6)", "position": "relative", "overflow": "hidden"} as React.CSSProperties}>{v.sib.img ? (<><img className="ph_img" src={v.sib.img} alt="" loading="lazy" /></>) : null}</div></a>
-<div className="also_row cap"><span><b>{v.sib.place}</b>{v.sib.a1}, {v.sib.a2}</span><a href={v.sib.href}>View {v.b.short} {v.sib.city} →</a></div>
+<div className="also_row cap"><span><b>{v.sib.place}</b>{v.sib.a1}, {v.sib.a2}</span><a href={v.sib.href}>View {v.sib.label} →</a></div>
 </div>
 </section>
 </>) : null}

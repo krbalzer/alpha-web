@@ -83,6 +83,7 @@ export const Locations: CollectionConfig = {
   },
   fields: [
     { name: 'title', type: 'text', admin: { hidden: true } },
+    { name: 'name', label: 'Location name', type: 'text', admin: { description: 'Only when the location has its own name, e.g. Refined at Blossom. Otherwise the page reads "Refined / Winchester, VA".' } },
     { name: 'brand', type: 'relationship', relationTo: 'brands', required: true, index: true },
     { type: 'row', fields: [
       { name: 'city', type: 'text', required: true },
@@ -224,6 +225,26 @@ export const TuckIns: CollectionConfig = {
     { name: 'quote', type: 'group', fields: [
       { name: 'text', type: 'textarea', admin: { description: 'Verbatim only.' } },
       { name: 'source', type: 'text' },
+    ] },
+    { name: 'chapter', label: 'Location page chapter', type: 'group', admin: { description: 'The "Joined" chapter on the location page. Shows once it has a headline.' }, fields: [
+      { name: 'headline', type: 'text', admin: { description: 'e.g. First she trained here. Now it is one practice.' } },
+      { name: 'intro', type: 'textarea', admin: { description: 'Two or three sentences: who, how they met, when it became one practice.' } },
+      { name: 'pair', label: 'The two founders', type: 'array', maxRows: 2, admin: { description: 'Joining founder first, then the brand founder. One verbatim line each.' }, fields: [
+        { type: 'row', fields: [{ name: 'name', type: 'text', required: true, admin: { description: 'With credentials, e.g. Dr. Lynn Nieman, MD' } }, { name: 'line', type: 'text', admin: { description: 'e.g. Founder / Blossom Medical' } }] },
+        img('photo'),
+        { name: 'quote', type: 'textarea', admin: { description: 'Verbatim only.' } },
+        { name: 'source', type: 'text', admin: { description: 'e.g. Interview 00:13:07 / on Sarah' } },
+      ] },
+      { name: 'kept', label: 'What stays', type: 'array', maxRows: 3, admin: { description: 'What patients keep, e.g. the name, the physician, the address.' }, fields: [
+        { type: 'row', fields: [{ name: 'label', type: 'text', required: true, admin: { description: 'e.g. The name' } }, { name: 'title', type: 'text', required: true, admin: { description: 'e.g. Blossom stays in it' } }] },
+        { name: 'line', type: 'textarea' },
+        { type: 'row', fields: [{ name: 'quote', type: 'text', admin: { description: 'Optional, verbatim.' } }, { name: 'source', type: 'text' }] },
+      ] },
+      { name: 'films', type: 'array', maxRows: 3, admin: { description: 'Vertical (9:16) story films, click to play.' }, fields: [
+        { type: 'row', fields: [{ name: 'title', type: 'text', required: true }, { name: 'line', type: 'text' }] },
+        { name: 'quote', type: 'text', admin: { description: 'A verbatim line from the film, shown on the poster.' } },
+        { type: 'row', fields: [img('video', undefined, true), img('poster')] },
+      ] },
     ] },
     live,
     slug('former name'),

@@ -191,6 +191,13 @@ export class LocationEngine extends DCLogic {
   }
 
   
+  joinedVals() {
+    const J = this.props.data.joined;
+    if (!J) return { pair: [], kept: [], films: [], a: {}, b: {} };
+    const who = (p) => Object.assign({}, p || {}, { noImg: !(p && p.img) });
+    return Object.assign({}, J, { hasPair: J.pair.length === 2, a: who(J.pair[0]), b: who(J.pair[1]), hasKept: J.kept.length > 0, hasFilms: J.films.length > 0,
+      filmsH: J.films.length === 1 ? 'The story on film' : 'The story in ' + ['', 'one', 'two', 'three'][J.films.length] + ' films' });
+  }
   renderVals() {
     const B = this.brand(), L = this.locs(), idx = Math.min(this.idx || 0, L.length - 1), F = this.F;
     const st = (this.state || {});
@@ -205,9 +212,9 @@ export class LocationEngine extends DCLogic {
     if (F && !F.intro) this._route = route;
     const heroH = this.tall ? '820px' : 'calc(100svh - 126px)', mapHero = !loc.heroVideo;
     return {
-      hasVid: !mapHero, mapHero, mapCls: 'map dark' + (mapHero ? ' is-hero' : ''), mapH: mapHero ? heroH : 'clamp(560px, 54vw, 820px)', mapAria: mapHero ? B.short + ' / ' + loc.place : 'Location',
+      hasVid: !mapHero, mapHero, mapCls: 'map dark' + (mapHero ? ' is-hero' : ''), mapH: mapHero ? heroH : 'clamp(560px, 54vw, 820px)', mapAria: mapHero ? (loc.name || B.short + ' / ' + loc.place) : 'Location',
       galOn: (loc.gal || []).length > 0, hasInside: !!loc.storyHtml || (loc.gal || []).length > 0, hasStory: !!loc.storyHtml, storyHtml: loc.storyHtml, hasReviews: !!(loc.rv && loc.rv.items.length >= 3), rv: loc.rv || { items: [] }, hasStats: false, hasRoles: false, hasSince: (loc.ms || []).length > 0 || !!(loc.quote && loc.quote.t),
-      b: B, loc, title: B.short + ' / ' + loc.place, hasSib: B.locations.length > 1,
+      b: B, loc: Object.assign(loc, { insideT: loc.name || B.name + ' ' + loc.city }), title: loc.name || B.short + ' / ' + loc.place, former: this.props.data.former || '', hasJoined: !!this.props.data.joined, jn: this.joinedVals(), hasSib: B.locations.length > 1,
       sib: Object.assign({}, sb, { place: sb.city + ', ' + sb.st }),
       story: (loc.story || ['[Place story. Why this address, when it opened, the neighborhood, what the space is built for. 80 to 120 words, true of this location only.]']).map((t) => ({ t })),
       visit: { hours: (loc.hours || []).map((h) => ({ d: h[0], t: h[1] })), hasHours: (loc.hours || []).length > 0, phone: loc.phone || '', tel: 'tel:' + String(loc.phone || '').replace(/[^0-9+]/g, ''), arrive: loc.arrive || '' },

@@ -10,6 +10,7 @@ import * as migration_20261109_194524_episode_audience from './20261109_194524_e
 import * as migration_20261109_225411_location_google_place from './20261109_225411_location_google_place';
 import * as migration_20261111_231533_inside_gallery from './20261111_231533_inside_gallery';
 import * as migration_20261111_233205_inside_title from './20261111_233205_inside_title';
+import * as migration_20261112_001903_location_name_chapter from './20261112_001903_location_name_chapter';
 
 export const migrations = [
   {
@@ -70,6 +71,11 @@ export const migrations = [
   {
     up: migration_20261111_233205_inside_title.up,
     down: migration_20261111_233205_inside_title.down,
-    name: '20261111_233205_inside_title'
+    name: '20261111_233205_inside_title',
+  },
+  {
+    up: migration_20261112_001903_location_name_chapter.up,
+    down: migration_20261112_001903_location_name_chapter.down,
+    name: '20261112_001903_location_name_chapter'
   },
 ];

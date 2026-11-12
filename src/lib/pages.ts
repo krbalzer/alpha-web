@@ -272,8 +272,18 @@ export const getLocation = cache(async (slug: string) => {
   const tones = ['linear-gradient(160deg,#8C7F6B,#4D463C)', 'linear-gradient(160deg,#6F7276,#393B3E)', 'linear-gradient(160deg,#7A6E62,#3E3832)']
   const est = full.established ? String(full.established) : ''
   const rv = pickReviews(await getPlace(cur.googlePlaceId))
+  const tk = cur.origin === 'tuck-in' ? (await (await db()).find({ collection: 'tuck-ins', where: { and: [LIVE, { location: { equals: cur.id } }] }, limit: 1, depth: 1 })).docs[0] : undefined
+  const ch = tk?.chapter?.headline ? tk.chapter : null
+  const ini = (n: string) => n.replace(/^Dr\.\s+/, '').replace(/,.*$/, '').split(/\s+/).map((w) => w[0]).join('').slice(0, 2)
+  const joined = ch ? {
+    eyebrow: `Joined ${full.name}` + (tk?.closed ? ` / ${new Date(tk.closed).getUTCFullYear()}` : ''), yr: tk?.closed ? String(new Date(tk.closed).getUTCFullYear()) : '',
+    h: ch.headline || '', intro: ch.intro || '',
+    pair: (ch.pair || []).map((x) => ({ name: x.name, line: x.line || '', img: url(x.photo as Media, 'card') || '', init: ini(x.name), q: x.quote || '', s: x.source || '' })),
+    kept: (ch.kept || []).map((x) => ({ k: x.label, t: x.title, line: x.line || '', q: x.quote || '', s: x.source || '' })),
+    films: (ch.films || []).map((x) => ({ t: x.title, line: x.line || '', q: x.quote || '', src: video(x.video).src, small: video(x.video).small, poster: x.poster ? posterUrl(x.poster) : '' })).filter((x) => x.src),
+  } : null
   return {
-    li: 0,
+    li: 0, joined, former: cur.origin === 'tuck-in' ? cur.formerName || '' : '',
     b: {
       n: pad3(full.ptr), ptr: `PTR ${pad3(full.ptr)}`, book: full.website || cur.bookingUrl || '', name: full.name, short: full.short || full.name, since: monthYear(full.since), est,
       founder: f.map((x) => x.name).join(' and '), cred: f.length === 1 ? f[0].credentials || '' : '', founderImg: f[0] ? url(f[0].headshot as Media, 'card') || '' : '',
@@ -285,7 +295,7 @@ export const getLocation = cache(async (slug: string) => {
         const lead = l.lead?.name ? { name: l.lead.name, role: l.lead.title || `Lead provider, ${l.city}`, cred: l.lead.credentials || '', img: url(l.lead.photo as Media, 'card') || '',
           href: typeof l.lead.profile === 'object' && l.lead.profile ? `/founders/${l.lead.profile.slug}` : '#' } : null
         return {
-          city: l.city, st: l.state, href: `/locations/${l.slug}`,
+          city: l.city, st: l.state, href: `/locations/${l.slug}`, name: l.name || '', label: l.name || `${full.short || full.name} ${l.city}`,
           img: noMedia ? '' : url(l.photo as Media, 'wide') || '', heroVideo: v.src, heroAv1: v.av1, heroSmall: v.small, heroPoster: v.src ? posterUrl(l.heroPoster) : '',
           est, facts: '', providers: 0, mix: (l.roleMix || []).map((r) => [r.role, r.count]), lead, storyHtml: html(l.story),
           hours: (l.hours || []).map((h) => [h.days, h.time]), phone: l.phone || '', arrive: l.arrivalNote || '',

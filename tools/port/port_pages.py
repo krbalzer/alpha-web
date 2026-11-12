@@ -340,6 +340,69 @@ HERO_VIDEO = ('<video class="hero_vid" ref="{{ vidRef }}" poster="{{ loc.heroPos
               '<source src="{{ loc.heroVideo }}" type="video/mp4"></video>')
 
 
+JOINED = """<!-- ============ JOINED: tuck-in chapter (tuck-ins.chapter). Shows once the tuck-in has a headline. ============ -->
+<section class="sec" style="padding-bottom: clamp(60px, 7vw, 110px)">
+<div class="wrap">
+<hr class="rule" style="margin-bottom: clamp(36px, 4vw, 60px)">
+<div class="split" style="align-items: end">
+<div><p class="eyebrow">{{ jn.eyebrow }}</p><h2 class="h3" style="max-width: 16ch; margin: 0">{{ jn.h }}</h2></div>
+<div><sc-if value="{{ jn.intro }}"><p class="body" style="margin: 0">{{ jn.intro }}</p></sc-if></div>
+</div>
+<sc-if value="{{ jn.hasPair }}"><div class="tk_pair">
+<figure class="tk_f">
+<div class="tk_who"><span class="tk_av"><sc-if value="{{ jn.a.img }}"><img src="{{ jn.a.img }}" alt="{{ jn.a.name }}" loading="lazy"></sc-if><sc-if value="{{ jn.a.noImg }}">{{ jn.a.init }}</sc-if></span><div><span class="tk_n">{{ jn.a.name }}</span><span class="tk_o">{{ jn.a.line }}</span></div></div>
+<sc-if value="{{ jn.a.q }}"><blockquote>&ldquo;{{ jn.a.q }}&rdquo;</blockquote><figcaption>{{ jn.a.s }}</figcaption></sc-if>
+</figure>
+<div class="tk_join" aria-hidden="true"><b>+</b><sc-if value="{{ jn.yr }}"><span>{{ jn.yr }}</span></sc-if></div>
+<figure class="tk_f">
+<div class="tk_who"><span class="tk_av"><sc-if value="{{ jn.b.img }}"><img src="{{ jn.b.img }}" alt="{{ jn.b.name }}" loading="lazy"></sc-if><sc-if value="{{ jn.b.noImg }}">{{ jn.b.init }}</sc-if></span><div><span class="tk_n">{{ jn.b.name }}</span><span class="tk_o">{{ jn.b.line }}</span></div></div>
+<sc-if value="{{ jn.b.q }}"><blockquote>&ldquo;{{ jn.b.q }}&rdquo;</blockquote><figcaption>{{ jn.b.s }}</figcaption></sc-if>
+</figure>
+</div></sc-if>
+<sc-if value="{{ jn.hasKept }}"><dl class="tk_kept"><sc-for list="{{ jn.kept }}" as="k"><div><dt>{{ k.k }}</dt><dd><b>{{ k.t }}</b>{{ k.line }}<sc-if value="{{ k.q }}"><q>&ldquo;{{ k.q }}&rdquo;</q><small>{{ k.s }}</small></sc-if></dd></div></sc-for></dl></sc-if>
+<sc-if value="{{ jn.hasFilms }}"><div class="tk_films">
+<div class="tk_films_h"><p class="eyebrow">{{ jn.filmsH }}</p></div>
+<div class="tk_fr"><sc-for list="{{ jn.films }}" as="f"><figure class="tk_v"><div class="tk_vf"><video src="{{ f.src }}" poster="{{ f.poster }}" controls preload="none" playsinline></video></div><figcaption><b>{{ f.t }}</b>{{ f.line }}<sc-if value="{{ f.q }}"><q>&ldquo;{{ f.q }}&rdquo;</q></sc-if></figcaption></figure></sc-for></div>
+</div></sc-if>
+</div>
+</section>
+"""
+
+JOINED_CSS = """.formerly{display:inline-flex;align-items:center;height:28px;padding:0 13px;border:1px dashed rgba(232,228,218,.55);border-radius:999px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;margin-left:8px}
+.tk_pair{display:grid;grid-template-columns:minmax(0,1fr) 112px minmax(0,1fr);align-items:stretch;margin-top:clamp(28px,3vw,44px)}
+.tk_f{margin:0;display:flex;flex-direction:column;gap:20px;min-width:0}
+.tk_who{display:grid;grid-template-columns:64px minmax(0,1fr);gap:16px;align-items:center}
+.tk_av{width:64px;height:64px;border-radius:50%;overflow:hidden;background:#C9C3B8;display:grid;place-items:center;font-family:var(--disp);font-weight:900;font-size:18px;color:rgba(14,14,13,.4)}
+.tk_av img{width:100%;height:100%;object-fit:cover}
+.tk_n{display:block;font-family:var(--h3);font-weight:700;font-size:18px;line-height:1.2}
+.tk_o{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.tk_f blockquote{margin:0;font-family:var(--h3);font-weight:700;font-size:clamp(20px,1.8vw,26px);line-height:1.22;letter-spacing:-.01em}
+.tk_f figcaption{font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-top:auto}
+.tk_join{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+.tk_join::before{content:"";position:absolute;top:0;bottom:0;left:50%;width:1px;background:var(--line)}
+.tk_join b{position:relative;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--ink);color:var(--bone);font-family:var(--disp);font-weight:900;font-size:20px}
+.tk_join span{position:relative;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;background:var(--bone);padding:4px 6px}
+.tk_kept{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2vw,28px);margin:clamp(40px,4vw,64px) 0 0}
+.tk_kept div{border-top:1px solid var(--ink);padding-top:14px}
+.tk_kept dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.tk_kept dd{margin:10px 0 0;font-size:14.5px;line-height:1.5;color:#2E2C28}
+.tk_kept dd b{display:block;font-family:var(--h3);font-size:19px;color:var(--ink);margin-bottom:4px}
+.tk_kept dd q{display:block;quotes:none;font-family:var(--h3);font-weight:700;font-size:15px;color:var(--ink);margin-top:10px}
+.tk_kept dd small{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.tk_films{margin-top:clamp(48px,5vw,80px);border-top:1px solid var(--line);padding-top:clamp(28px,3vw,40px)}
+.tk_films_h{display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;margin-bottom:22px}
+.tk_films_h .eyebrow{margin:0}
+.tk_fr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,1.4vw,20px)}
+.tk_v{margin:0}
+.tk_vf{position:relative;aspect-ratio:9/16;border-radius:16px;overflow:hidden;background:linear-gradient(170deg,#3A342C,#1B1916 70%)}
+.tk_vf video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.tk_v figcaption{margin-top:12px;font-size:13.5px;line-height:1.45;color:var(--muted)}
+.tk_v figcaption b{display:block;font-family:var(--h3);font-size:16px;color:var(--ink);margin-bottom:2px}
+.tk_v figcaption q{display:block;quotes:none;font-family:var(--h3);font-weight:700;color:var(--ink);margin-top:8px}
+@media (max-width:820px){.tk_pair{grid-template-columns:1fr}.tk_join{flex-direction:row;padding:22px 0}.tk_join::before{top:50%;bottom:auto;left:0;right:0;width:auto;height:1px}.tk_kept{grid-template-columns:1fr}.tk_fr{grid-template-columns:repeat(3,72vw);overflow-x:auto;scroll-snap-type:x mandatory}.tk_v{scroll-snap-align:start}}
+"""
+
+
 def location_markup(b):
     b = rep(b, '<a href="/locations#brands" style="text-decoration: none">{{ b.name }}</a>', '<a href="{{ b.href }}" style="text-decoration: none">{{ b.name }}</a>')
     b = rep(b, '<video class="hero_vid" ref="{{ vidRef }}" src="{{ loc.heroVideo }}" poster="{{ loc.heroPoster }}" autoplay muted loop playsinline aria-hidden="true"></video>', HERO_VIDEO)
@@ -361,6 +424,16 @@ def location_markup(b):
         b = rep(b, '<sc-for list="{{ ' + k + ' }}" as="g" hint-placeholder-count="' + ('2' if k == 'gal2' else '3') + '"><figure><div class="img ph">{{ g.ph }}</div><figcaption class="cap"><b>{{ g.k }}</b>{{ g.t }}</figcaption></figure></sc-for>',
                 '<sc-for list="{{ ' + k + ' }}" as="g"><figure><div class="img"><img class="ph_img" src="{{ g.src }}" alt="{{ g.alt }}" loading="lazy" decoding="async"></div><figcaption class="cap"><b>{{ g.k }}</b>{{ g.t }}</figcaption></figure></sc-for>')
     b = gate(b, 'INSIDE', 'hasInside')
+    # location name (Refined at Blossom) and the tuck-in chapter
+    pill = '<span class="pill">{{ b.ptr }} location</span>'
+    assert b.count(pill) == 2
+    b = b.replace(pill, pill + '<sc-if value="{{ former }}"><span class="formerly">Formerly {{ former }}</span></sc-if>')
+    b = rep(b, '<h2 class="h3">Inside {{ b.name }} {{ loc.city }}</h2>', '<h2 class="h3">Inside {{ loc.insideT }}</h2>')
+    b = rep(b, 'From patients of {{ b.short }} {{ loc.city }}, on Google.', 'From patients of {{ loc.label }}, on Google.')
+    b = rep(b, 'Also {{ b.short }} {{ sib.city }}</h2>', 'Also {{ sib.label }}</h2>')
+    ins = re.search(r'<!-- =+ INSIDE =+ -->', b)
+    b = b[:ins.start()] + JOINED + b[ins.start():]
+    b = gate(b, 'JOINED', 'hasJoined')
     b = rep(b, '<p class="sub">{{ provLine }}</p>', '<sc-if value="{{ provLine }}"><p class="sub">{{ provLine }}</p></sc-if>')
     b = gate(b, 'IN THEIR WORDS', 'hasReviews')
     # live Google reviews (src/lib/reviews.ts): aggregate, up to 6 cards, author linked to their Google profile
@@ -375,7 +448,7 @@ def location_markup(b):
     b = gate(b, 'OPEN ROLES', 'hasRoles')
     b = rep(b, '<a href="#sibling" style="display: block; text-decoration: none"><div class="img ph" style="background: {{ sib.tone }}; color: rgba(232,228,218,.6)">{{ sib.city }} interior</div></a>',
             '<a href="{{ sib.href }}" style="display: block; text-decoration: none"><div class="img ph" style="background: {{ sib.tone }}; color: rgba(232,228,218,.6); position: relative; overflow: hidden"><sc-if value="{{ sib.img }}"><img class="ph_img" src="{{ sib.img }}" alt="" loading="lazy"></sc-if></div></a>')
-    b = rep(b, '<a href="#sibling">View {{ b.short }} {{ sib.city }} →</a>', '<a href="{{ sib.href }}">View {{ b.short }} {{ sib.city }} →</a>')
+    b = rep(b, '<a href="#sibling">View {{ b.short }} {{ sib.city }} →</a>', '<a href="{{ sib.href }}">View {{ sib.label }} →</a>')
     return b
 
 
@@ -396,6 +469,16 @@ def location_engine(e):
     gal = "(loc.gal || []).map((g) => ({ src: g.src, alt: g.alt || '', k: " + GK + "[g.kind] || '', t: g.caption || '' }))"
     e = rep(e, "gal2: [{ k: 'Arrival', t: '[Caption about the arrival]', ph: 'Place image / exterior or entry' }, { k: 'Front desk', t: '[Caption]', ph: 'Place image / reception' }],", "gal2: " + gal + ".slice(0, 2),")
     e = rep(e, "gal3: [{ k: 'Treatment room', t: '[Caption]', ph: 'Place image' }, { k: 'Consult', t: '[Caption]', ph: 'Place image' }, { k: 'Retail', t: '[Caption]', ph: 'Place image' }],", "gal3: " + gal + ".slice(2),")
+    e = rep(e, "mapAria: mapHero ? B.short + ' / ' + loc.place : 'Location',", "mapAria: mapHero ? (loc.name || B.short + ' / ' + loc.place) : 'Location',")
+    e = rep(e, "b: B, loc, title: B.short + ' / ' + loc.place,", "b: B, loc: Object.assign(loc, { insideT: loc.name || B.name + ' ' + loc.city }), title: loc.name || B.short + ' / ' + loc.place, former: this.props.data.former || '', hasJoined: !!this.props.data.joined, jn: this.joinedVals(),")
+    e = rep(e, '  renderVals() {', '''  joinedVals() {
+    const J = this.props.data.joined;
+    if (!J) return { pair: [], kept: [], films: [], a: {}, b: {} };
+    const who = (p) => Object.assign({}, p || {}, { noImg: !(p && p.img) });
+    return Object.assign({}, J, { hasPair: J.pair.length === 2, a: who(J.pair[0]), b: who(J.pair[1]), hasKept: J.kept.length > 0, hasFilms: J.films.length > 0,
+      filmsH: J.films.length === 1 ? 'The story on film' : 'The story in ' + ['', 'one', 'two', 'three'][J.films.length] + ' films' });
+  }
+  renderVals() {''')
     e = rep(e, 'this.tick(now, dt); this.draw(now);', 'this.tick(now, dt); // the real map (MapStage) renders the scene; draw() stays as the fallback reference')
     return e
 
@@ -839,7 +922,7 @@ PAGES = {
     'Founder': dict(dir='founders/[slug]', board='Founder', data=True, markup=founder_markup, engine=founder_engine),
     'Locations': dict(dir='locations', board='Locations', data=True, markup=locations_markup, engine=locations_engine, jsx=locations_jsx, imports="import { FocusMap } from '@/components/site/MapStage'\n",
                       css=IMG_CSS + MAP_CSS + '.map_focus{opacity:0;pointer-events:none}\n.map_focus .maplibregl-canvas-container{transition:opacity .7s}\n.map_focus:not([data-ready="1"]) .maplibregl-canvas-container{opacity:0;transition:opacity .2s}\n'),
-    'Location': dict(dir='locations/[slug]', board='Location', markup=location_markup, engine=location_engine, jsx=location_jsx, imports=MAP_IMPORT, css=IMG_CSS + MAP_CSS + '.rv_who{color:inherit;text-decoration:none}\n.rv_who:hover b{text-decoration:underline}\n.gal .img{position:relative;overflow:hidden;background:#D3CFC5}\n'),
+    'Location': dict(dir='locations/[slug]', board='Location', markup=location_markup, engine=location_engine, jsx=location_jsx, imports=MAP_IMPORT, css=IMG_CSS + MAP_CSS + JOINED_CSS + '.rv_who{color:inherit;text-decoration:none}\n.rv_who:hover b{text-decoration:underline}\n.gal .img{position:relative;overflow:hidden;background:#D3CFC5}\n'),
     'Podcasts': dict(dir='podcasts', board='Podcasts', data=True, markup=podcasts_markup, engine=podcasts_engine, css=PODCAST_CSS + QUEUE_ROW_CSS, imports=QUEUE_IMPORT),
     'Show': dict(dir='podcasts/[show]', board='Show', markup=show_markup, engine=show_engine, imports=QUEUE_IMPORT, css=SHOW_CSS + QUEUE_ROW_CSS + IMG_CSS + '.spk,.person_av{position:relative;overflow:hidden}\n.spk img,.person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}\n'),
     'Episode': dict(dir='podcasts/[show]/[episode]', board='Episode', markup=episode_markup, engine=episode_engine, imports=QUEUE_IMPORT + "import { EpisodeBar } from '@/components/site/EpisodeBar'\n", css=EPBAR_CSS + '.qb_lg{height:44px;padding:0 18px}\n.btn.qb.is-q{background:var(--ink);border-color:var(--ink);color:var(--bone)}\n.btn.qb.is-now{opacity:.55;cursor:default}\n' + IMG_CSS + '.vid_poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.82)}\n.vid .vid_btn{position:relative;z-index:1;border:0;cursor:pointer}\n.vid.is-on{aspect-ratio:16/9;background:#000}\n.vid_ifr{position:absolute;inset:0;width:100%;height:100%;border:0}\n' + '.tv_play{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 22px 0 18px;border-radius:999px;border:0;background:var(--ink);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:transform .3s var(--ease)}\n.tv_play:hover{transform:scale(1.04)}\n' + '.spk,.person_av{position:relative;overflow:hidden}\n.spk img,.person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}\n'),
