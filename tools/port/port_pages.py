@@ -377,7 +377,8 @@ JOINED = """<!-- ============ JOINED: tuck-in chapter (tuck-ins.chapter). Shows 
 </section>
 """
 
-JOINED_CSS = """.formerly{display:inline-flex;align-items:center;height:28px;padding:0 13px;border:1px dashed rgba(232,228,218,.55);border-radius:999px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;margin-left:8px}
+JOINED_CSS = """.b_top{background:var(--bone)}
+.formerly{display:inline-flex;align-items:center;height:28px;padding:0 13px;border:1px dashed rgba(232,228,218,.55);border-radius:999px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;margin-left:8px}
 .tk_pair{display:grid;grid-template-columns:minmax(0,1fr) 112px minmax(0,1fr);align-items:stretch;margin-top:clamp(28px,3vw,44px)}
 .tk_f{margin:0;display:flex;flex-direction:column;gap:20px;min-width:0}
 .tk_who{display:grid;grid-template-columns:64px minmax(0,1fr);gap:16px;align-items:center}

@@ -355,6 +355,7 @@
 .pg-location .map_gl .maplibregl-ctrl-attrib{background:rgba(14,14,13,.5);color:rgba(232,228,218,.5)}
 .pg-location .map_gl .maplibregl-ctrl-attrib a{color:rgba(232,228,218,.6)}
 .pg-location .map_gl .maplibregl-ctrl-attrib-button{filter:invert(1);opacity:.5}
+.pg-location .b_top{background:var(--bone)}
 .pg-location .formerly{display:inline-flex;align-items:center;height:28px;padding:0 13px;border:1px dashed rgba(232,228,218,.55);border-radius:999px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;margin-left:8px}
 .pg-location .tk_pair{display:grid;grid-template-columns:minmax(0,1fr) 112px minmax(0,1fr);align-items:stretch;margin-top:clamp(28px,3vw,44px)}
 .pg-location .tk_f{margin:0;display:flex;flex-direction:column;gap:20px;min-width:0}
