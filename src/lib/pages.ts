@@ -200,7 +200,7 @@ export const getLocationsDir = cache(async () => {
     const n = pad3(b.ptr), key = `${b.ptr}|${l.city}`, g = live[i], [rating, reviews] = g && g.count ? [Math.round(g.rating * 10) / 10, g.count] : RATINGS[key] || [0, 0]
     const a1 = l.address1 || '', a2 = l.address2 || `${l.city}, ${l.state} ${l.zip || ''}`.trim()
     return {
-      i, n, brand: B[n].name, founder: B[n].founder, tone: B[n].tone, city: l.city, st: l.state, lat: l.lat, lng: l.lng, est: B[n].est, since: B[n].since,
+      i, n, brand: l.name || B[n].name, founder: B[n].founder, tone: B[n].tone, city: l.city, st: l.state, lat: l.lat, lng: l.lng, est: B[n].est, since: B[n].since,
       a1, a2, rating, reviews, noMedia: NO_MEDIA.has(key), origin: ORIGIN[l.origin || ''] || '',
       ang: (i * 0.37) % 1 - 0.5, hmax: 14 + (i * 7) % 20, seed: 7 + i * 13, streets: [a1.replace(/^[0-9-]+\s+/, '').replace(/,.*$/, '')].filter(Boolean),
       href: `/locations/${l.slug}`, brandHref: B[n].href, img: NO_MEDIA.has(key) ? '' : url(l.photo as Media, 'card') || '',
@@ -247,7 +247,7 @@ export const getFounder = cache(async (slug: string) => {
   return {
     b: { n, ptr: `PTR ${n}`, name: b.name, short: b.short || b.name, since: monthYear(b.since), est: b.established ? String(b.established) : '', book: fd.status === 'former' ? '' : b.website || locs.find((l) => l.bookingUrl)?.bookingUrl || '',
       states: [...new Set(locs.map((l) => l.state))], href: `/brands/${b.slug}`,
-      locations: locs.map((l) => { const img = NO_MEDIA.has(`${b.ptr}|${l.city}`) ? '' : url(l.photo as Media, 'card') || ''; return { city: l.city, st: l.state, img, noImg: !img, a1: l.address1 || '', tone: 'linear-gradient(160deg,#8C7F6B,#4D463C)', href: `/locations/${l.slug}` } }) },
+      locations: locs.map((l) => { const img = NO_MEDIA.has(`${b.ptr}|${l.city}`) ? '' : url(l.photo as Media, 'card') || ''; return { city: l.city, st: l.state, label: l.name || `${l.city}, ${l.state}`, img, noImg: !img, a1: l.address1 || '', tone: 'linear-gradient(160deg,#8C7F6B,#4D463C)', href: `/locations/${l.slug}` } }) },
     f: { name: fd.name, first: first.replace(/^Dr\.$/, rest[0] || first), last: first === 'Dr.' ? rest.slice(1).join(' ') : rest.join(' '), cred: fd.credentials || '',
       role: fd.kind === 'business' && brandFounders(b).length > 1 ? 'Co-founder' : 'Founder',
       portrait: heroOf(fd), markets: cities.length > 2 ? `${cities.length} locations` : cities.join(' & '),

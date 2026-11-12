@@ -216,6 +216,10 @@ view = view.replace('<video className="hero_vid" ref={v.vidRef} src={v.b.heroVid
 assert 'v.b.hero.av1' in view
 engine = engine.replace("      playFilm: () => { if (B.filmUrl) window.open(B.filmUrl, '_blank', 'noopener'); },\n", open(os.path.join(os.path.dirname(__file__), 'brand_film.js')).read())
 assert 'film_vid' in engine
+# a location with its own name (Refined at Blossom) shows it on the map card and in the locations index
+for a, b in (("city: l.city + ', ' + l.st,", "city: l.name || (l.city + ', ' + l.st),"), ("name: B.name, a1: l.a1", "name: l.name || B.name, a1: l.a1")):
+    assert engine.count(a) == 1, a
+    engine = engine.replace(a, b)
 os.makedirs(APP, exist_ok=True)
 FILM = '{/* ============ LOCATIONS INDEX: only for multi-location brands ============ */}'  # Inside sits right after the stats
 assert view.count(FILM) == 1

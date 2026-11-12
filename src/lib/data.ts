@@ -86,7 +86,7 @@ export const getCtaImages = cache(async (): Promise<CtaPick[]> => {
     if (!src) return []
     const loc = (typeof d.location === 'object' ? d.location : null) as Location | null
     const b = (loc && typeof loc.brand === 'object' ? loc.brand : null) as Brand | null
-    return [{ src, srcSet: srcSet(d.image), soft: !!d.soften, brand: b?.slug, ptr: b ? ptr(b.ptr) : undefined, name: b?.name, city: loc ? `${loc.city}, ${loc.state}` : undefined }]
+    return [{ src, srcSet: srcSet(d.image), soft: !!d.soften, brand: b?.slug, ptr: b ? ptr(b.ptr) : undefined, name: loc?.name || b?.name, city: loc ? `${loc.city}, ${loc.state}` : undefined }]
   })
 })
 
@@ -135,7 +135,7 @@ export const getBrand = cache(async (slug: string) => {
     tone: b.tone || '',
     seo: { title: b.seo?.title || `${b.name} / Alpha partner`, description: b.seo?.description || b.intro || '' },
     locations: locs.docs.map((l, i) => ({
-      city: l.city, st: l.state, a1: l.address1 || '', a2: l.address2 || `${l.city}, ${l.state} ${l.zip || ''}`.trim(),
+      city: l.city, st: l.state, name: l.name || '', a1: l.address1 || '', a2: l.address2 || `${l.city}, ${l.state} ${l.zip || ''}`.trim(),
       lng: l.lng, lat: l.lat, ang: ((l.mapBearing || 0) * Math.PI) / 180,
       hmax: 16 + ((i * 7) % 20), seed: 11 + i * 18,
       tone: 'linear-gradient(160deg,#8C7F6B,#4D463C)', img: url(l.photo, 'card') || '', slug: l.slug, streets: [] as string[],

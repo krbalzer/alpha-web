@@ -79,7 +79,7 @@ export const Locations: CollectionConfig = {
   admin: { useAsTitle: 'title', defaultColumns: ['title', 'brand', 'origin', 'state', 'live'] },
   hooks: {
     beforeValidate: [guard],
-    beforeChange: [({ data }) => ({ ...data, title: [data.city, data.state].filter(Boolean).join(', ') })],
+    beforeChange: [({ data }) => ({ ...data, title: data.name || [data.city, data.state].filter(Boolean).join(', ') })],
   },
   fields: [
     { name: 'title', type: 'text', admin: { hidden: true } },

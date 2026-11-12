@@ -292,8 +292,8 @@ export class BrandEngine extends DCLogic {
       prev: () => this.go(idx - 1), next: () => this.go(idx + 1),
       lxCls: 'lx_list' + (this.lxIn === false ? ' is-pre' : ''), setLx: (el) => this.watchLx(el),
       locHead: 'Visit ' + B.short, locCount: L.length + ' locations',
-      locRows: L.map((l, i) => ({ img: l.img || '', n: String(i + 1).padStart(2, '0'), city: l.city + ', ' + l.st, addr: l.a1 ? [l.a1, l.a2].filter(Boolean).join(', ') : '', d: (.06 + i * .07).toFixed(2) + 's', d2: (.35 + i * .07).toFixed(2) + 's', href: l.slug ? '/locations/' + l.slug : '#location', bg: l.img ? 'center / cover no-repeat url(' + l.img + ')' : l.tone })),
-      cards: L.map((l, i) => ({ img: l.img, noImg: !l.img, cls: 'card' + (i === idx ? ' is-on' : ''), href: l.slug ? '/locations/' + l.slug : '#', go: (ev) => { if (i !== idx || !l.slug) { ev.preventDefault(); this.go(i); } }, aria: (i === idx ? 'Open ' : '') + B.name + ', ' + l.city, cur: i === idx ? 'true' : 'false', tone: l.tone, city: l.city, name: B.name, a1: l.a1, a2: l.a2, st: l.st, est: B.est })),
+      locRows: L.map((l, i) => ({ img: l.img || '', n: String(i + 1).padStart(2, '0'), city: l.name || (l.city + ', ' + l.st), addr: l.a1 ? [l.a1, l.a2].filter(Boolean).join(', ') : '', d: (.06 + i * .07).toFixed(2) + 's', d2: (.35 + i * .07).toFixed(2) + 's', href: l.slug ? '/locations/' + l.slug : '#location', bg: l.img ? 'center / cover no-repeat url(' + l.img + ')' : l.tone })),
+      cards: L.map((l, i) => ({ img: l.img, noImg: !l.img, cls: 'card' + (i === idx ? ' is-on' : ''), href: l.slug ? '/locations/' + l.slug : '#', go: (ev) => { if (i !== idx || !l.slug) { ev.preventDefault(); this.go(i); } }, aria: (i === idx ? 'Open ' : '') + B.name + ', ' + l.city, cur: i === idx ? 'true' : 'false', tone: l.tone, city: l.city, name: l.name || B.name, a1: l.a1, a2: l.a2, st: l.st, est: B.est })),
       setStats: (el) => this.watchStats(el),
       stats: this.counted(B.stats), hasStats: B.stats.length > 0,
       _n: st.n

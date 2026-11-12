@@ -307,6 +307,7 @@ def founder_markup(b):
     b = rep(b, '<a class="prac_brand" href="/locations#brands">', '<a class="prac_brand" href="{{ b.href }}">')
     b = rep(b, '<span class="mono" style="font-size: 10.5px; opacity: .75">{{ f.markets }} · Est {{ b.est }}</span>', '<span class="mono" style="font-size: 10.5px; opacity: .75">{{ f.markets }}<sc-if value="{{ b.est }}"> · Est {{ b.est }}</sc-if></span>')
     b = rep(b, '<a class="prac_loc" href="/locations">', '<a class="prac_loc" href="{{ l.href }}">')
+    b = rep(b, '<b>{{ l.city }}, {{ l.st }}</b>', '<b>{{ l.label }}</b>')
     b = rep(b, '<sc-if value="{{ l.noImg }}" hint-placeholder-val="{{ true }}">{{ l.city }} photo</sc-if>', '<sc-if value="{{ l.noImg }}" hint-placeholder-val="{{ true }}">{{ l.city }}</sc-if>')
     return b
 
