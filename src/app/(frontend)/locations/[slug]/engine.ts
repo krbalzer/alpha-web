@@ -221,7 +221,7 @@ export class LocationEngine extends DCLogic {
       ms: (loc.ms || []).map((m) => ({ y: m[0], t: m[1] })),
       q: loc.quote || { t: '', s: '' },
       provLine: (() => { const m = loc.mix || []; const n = m.reduce((a, x) => a + x[1], 0) || loc.providers; if (!n) return ''; return n + ' providers' + (m.length ? ' / ' + m.map((x) => x[1] + ' ' + x[0]).join(', ') : ''); })(),
-      leads: [B.founder ? { name: B.founder, role: 'Founder', cred: B.cred, img: B.founderImg || '', href: B.founderHref } : null, loc.lead && loc.lead.name ? Object.assign({ role: 'Lead provider, ' + loc.city }, loc.lead) : null].filter(Boolean).map((p) => ({ ...p, hasImg: !!p.img, noImg: !p.img, init: p.name[0] === '[' ? '' : p.name.split(' ').map((w) => w[0]).join('').slice(0, 2) })),
+      leads: [...(B.founders || []), loc.lead && loc.lead.name ? Object.assign({ role: 'Lead provider, ' + loc.city }, loc.lead) : null].filter(Boolean).map((p) => ({ ...p, hasImg: !!p.img, noImg: !p.img, init: p.name[0] === '[' ? '' : p.name.split(' ').map((w) => w[0]).join('').slice(0, 2) })),
       gal2: (loc.gal || []).map((g) => ({ src: g.src, alt: g.alt || '', k: { arrival: 'Arrival', 'front-desk': 'Front desk', 'treatment-room': 'Treatment room', consult: 'Consult', retail: 'Retail', detail: 'Detail' }[g.kind] || '', t: g.caption || '' })).slice(0, 2),
       gal3: (loc.gal || []).map((g) => ({ src: g.src, alt: g.alt || '', k: { arrival: 'Arrival', 'front-desk': 'Front desk', 'treatment-room': 'Treatment room', consult: 'Consult', retail: 'Retail', detail: 'Detail' }[g.kind] || '', t: g.caption || '' })).slice(2),
       roles: [{ t: 'Injector · Full time', where: loc.place }, { t: '[Role] · [Type]', where: loc.place }],

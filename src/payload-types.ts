@@ -613,7 +613,7 @@ export interface Location {
   phone?: string | null;
   bookingUrl?: string | null;
   /**
-   * Google Maps listing for this location. Rating, review count and reviews load from it live (refreshed every 6 hours).
+   * Google Maps listing for this location. Rating, reviews and (when Hours is empty) opening hours sync from it once a day, on deploy.
    */
   googlePlaceId?: string | null;
   /**
@@ -626,6 +626,24 @@ export interface Location {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Written by the daily Google sync (src/seed/places-sync.ts). Not edited by hand.
+   */
+  google?: {
+    rating?: number | null;
+    count?: number | null;
+    syncedAt?: string | null;
+    uri?: string | null;
+    reviews?:
+      | {
+          [k: string]: unknown;
+        }
+      | unknown[]
+      | string
+      | number
+      | boolean
+      | null;
+  };
   /**
    * Parking and entrance, one or two lines.
    */
@@ -1568,6 +1586,15 @@ export interface LocationsSelect<T extends boolean = true> {
         days?: T;
         time?: T;
         id?: T;
+      };
+  google?:
+    | T
+    | {
+        rating?: T;
+        count?: T;
+        syncedAt?: T;
+        uri?: T;
+        reviews?: T;
       };
   arrivalNote?: T;
   milestones?:

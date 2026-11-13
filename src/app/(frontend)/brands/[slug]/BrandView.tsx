@@ -132,16 +132,16 @@ export default function BrandView({ brand, brands }: { brand: BrandData; brands:
 
 {/* ============ FOUNDER ============ */}
 {v.b.founder ? (<><section style={{"paddingBottom": "clamp(90px, 10vw, 160px)"} as React.CSSProperties}>
-<div className="wrap founder">
-<div className="founder_img">{v.b.founderImg ? (<><img src={v.b.founderImg} alt={v.b.founder} style={{"objectPosition": "50% 20%"} as React.CSSProperties} loading="lazy" /></>) : null}</div>
+{(v.b.founders || []).map((f: any, f_i: number) => (<React.Fragment key={f_i}><div className={f.cls}>
+<div className="founder_img">{f.img ? (<><img src={f.img} alt={f.name} style={{"objectPosition": "50% 20%"} as React.CSSProperties} loading="lazy" /></>) : null}</div>
 <div style={{"maxWidth": "32rem", "paddingTop": "4px"} as React.CSSProperties}>
-<p className="eyebrow">The Founder</p>
-<h2 className="founder_name">{v.b.founder}</h2>
-<p className="founder_cred">{v.b.cred}</p>
-<div className="body" dangerouslySetInnerHTML={{ __html: v.b.founderHtml }} />
-<Link className="btn" href={v.founderHref} style={{"marginTop": "10px"} as React.CSSProperties}>Learn more</Link>
+{f.k ? (<><p className="eyebrow">{f.k}</p></>) : null}
+<h2 className="founder_name">{f.name}</h2>
+{f.cred ? (<><p className="founder_cred">{f.cred}</p></>) : null}
+<div className="body" dangerouslySetInnerHTML={{ __html: f.html }} />
+<Link className="btn" href={f.href} style={{"marginTop": "10px"} as React.CSSProperties}>Learn more</Link>
 </div>
-</div>
+</div></React.Fragment>))}
 </section></>) : null}
 
 {/* ============ QUOTE ============ */}

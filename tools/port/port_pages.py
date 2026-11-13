@@ -476,7 +476,7 @@ def location_engine(e):
     e = rep(e, "const n = m.reduce((a, x) => a + x[1], 0) || loc.providers; return n + ' providers'", "const n = m.reduce((a, x) => a + x[1], 0) || loc.providers; if (!n) return ''; return n + ' providers'")
     e = sub(r"leads: \[.*?\]\.map\(\(p\) => \(\{ \.\.\.p,", "leads: B.leads(loc).map((p) => ({ ...p,", e) if False else e
     e = sub(r"leads: \[\s*\{ name: B\.founder.*?\n      \]\.map",
-            "leads: [B.founder ? { name: B.founder, role: 'Founder', cred: B.cred, img: B.founderImg || '', href: B.founderHref } : null, loc.lead && loc.lead.name ? Object.assign({ role: 'Lead provider, ' + loc.city }, loc.lead) : null].filter(Boolean).map", e)
+            "leads: [...(B.founders || []), loc.lead && loc.lead.name ? Object.assign({ role: 'Lead provider, ' + loc.city }, loc.lead) : null].filter(Boolean).map", e)
     GK = "{ arrival: 'Arrival', 'front-desk': 'Front desk', 'treatment-room': 'Treatment room', consult: 'Consult', retail: 'Retail', detail: 'Detail' }"
     gal = "(loc.gal || []).map((g) => ({ src: g.src, alt: g.alt || '', k: " + GK + "[g.kind] || '', t: g.caption || '' }))"
     e = rep(e, "gal2: [{ k: 'Arrival', t: '[Caption about the arrival]', ph: 'Place image / exterior or entry' }, { k: 'Front desk', t: '[Caption]', ph: 'Place image / reception' }],", "gal2: " + gal + ".slice(0, 2),")

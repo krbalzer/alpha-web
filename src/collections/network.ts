@@ -111,10 +111,15 @@ export const Locations: CollectionConfig = {
     { type: 'row', fields: [
       { name: 'phone', type: 'text' },
       { name: 'bookingUrl', type: 'text' },
-      { name: 'googlePlaceId', label: 'Google place ID', type: 'text', admin: { description: 'Google Maps listing for this location. Rating, review count and reviews load from it live (refreshed every 6 hours).' } },
+      { name: 'googlePlaceId', label: 'Google place ID', type: 'text', admin: { description: 'Google Maps listing for this location. Rating, reviews and (when Hours is empty) opening hours sync from it once a day, on deploy.' } },
     ] },
     { name: 'hours', type: 'array', admin: { description: 'One row per day range, e.g. "Mon to Fri" / "9am to 6pm".' }, fields: [
       { type: 'row', fields: [{ name: 'days', type: 'text', required: true }, { name: 'time', type: 'text', required: true }] },
+    ] },
+    { name: 'google', label: 'Google snapshot', type: 'group', admin: { readOnly: true, description: 'Written by the daily Google sync (src/seed/places-sync.ts). Not edited by hand.' }, fields: [
+      { type: 'row', fields: [{ name: 'rating', type: 'number' }, { name: 'count', type: 'number' }, { name: 'syncedAt', type: 'date' }] },
+      { name: 'uri', type: 'text' },
+      { name: 'reviews', type: 'json' },
     ] },
     { name: 'arrivalNote', type: 'textarea', admin: { description: 'Parking and entrance, one or two lines.' } },
     { name: 'milestones', label: 'Since Alpha', type: 'array', maxRows: 5, admin: { description: 'What changed at this address. Dated, one line each.' }, fields: [

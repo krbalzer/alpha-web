@@ -74,6 +74,17 @@ b = sub(r'<img src="/_blob/\w+" alt="\{\{ b.founder \}\}"[^>]*>', '<sc-if value=
 b = sub(r'(<p class="founder_cred">\{\{ b.cred \}\}</p>\s*)<div class="body">.*?</div>', r'\1<x-rich class="body" html="{{ b.founderHtml }}"></x-rich>', b)
 b = b.replace('<a class="btn" href="#founder" style="margin-top: 10px">Learn more</a>', '<x-link class="btn" href="{{ founderHref }}" style="margin-top: 10px">Learn more</x-link>')
 b = sub(r'(<!-- ============ FOUNDER ============ -->\s*)(<section.*?</section>)', r'\1<sc-if value="{{ b.founder }}">\2</sc-if>', b)
+# one founder block per active founder (co-founders each get their own block: Privé)
+i = b.index('<!-- ============ FOUNDER ============ -->'); j = b.index('<!-- ============ QUOTE', i)
+seg = b[i:j]
+for x, y in (('<div class="wrap founder">', '<sc-for list="{{ b.founders }}" as="f"><div class="{{ f.cls }}">'), ('{{ b.founderImg }}', '{{ f.img }}'), ('alt="{{ b.founder }}"', 'alt="{{ f.name }}"'),
+             ('<p class="eyebrow">The Founder</p>', '<sc-if value="{{ f.k }}"><p class="eyebrow">{{ f.k }}</p></sc-if>'), ('<h2 class="founder_name">{{ b.founder }}</h2>', '<h2 class="founder_name">{{ f.name }}</h2>'),
+             ('<p class="founder_cred">{{ b.cred }}</p>', '<sc-if value="{{ f.cred }}"><p class="founder_cred">{{ f.cred }}</p></sc-if>'), ('html="{{ b.founderHtml }}"', 'html="{{ f.html }}"'), ('href="{{ founderHref }}"', 'href="{{ f.href }}"')):
+    assert seg.count(x) >= 1, x
+    seg = seg.replace(x, y)
+k = seg.rindex('</section>'); m = seg.rindex('</div>', 0, k)
+seg = seg[:m] + '</div></sc-for>' + seg[m + 6:]
+b = b[:i] + seg + b[j:]
 # quote
 b = sub(r'<blockquote>“.*?”</blockquote>', '<blockquote>“{{ b.quote }}”</blockquote>', b)
 b = sub(r'(<!-- ============ QUOTE ============ -->\s*)(<section.*?</section>)', r'\1<sc-if value="{{ b.quote }}">\2</sc-if>', b)
@@ -164,7 +175,7 @@ import json
 ASSETS = json.load(open(os.path.join(os.path.dirname(__file__), 'assets.json')))
 c = re.sub(r'/_blob/([0-9a-f]{32})', lambda m: ASSETS.get(m.group(1), m.group(0)), c)
 missing = set(re.findall(r'/_blob/([0-9a-f]{32})', c))
-c += '.b_top,.crumb{background:var(--bone)}\n'  # nav bar matches the page, as on the homepage
+c += '.b_top,.crumb{background:var(--bone)}\n.founder_next{margin-top:clamp(56px,6vw,96px)}\n'  # nav bar matches the page, as on the homepage
 scss = scope_css(c, 'pg-brand')
 
 # ---------- logic ----------

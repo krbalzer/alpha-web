@@ -118,14 +118,20 @@ export const getBrand = cache(async (slug: string) => {
   const b = r.docs[0]
   if (!b) return null
   const locs = await p.find({ collection: 'locations', where: { and: [{ brand: { equals: b.id } }, LIVE] }, limit: 50, depth: 1, sort: ['order', 'createdAt'] })
-  const f = ((b.founders || []) as (Founder | string)[]).find((x): x is Founder => typeof x === 'object')
+  const fs = ((b.founders || []) as (Founder | string)[]).filter((x): x is Founder => typeof x === 'object' && x.status !== 'former')
+  const f = fs[0] || ((b.founders || []) as (Founder | string)[]).find((x): x is Founder => typeof x === 'object')
   const est = b.established ? String(b.established) : ''
   return {
     id: String(b.id), slug: b.slug,
     n: String(b.ptr).padStart(3, '0'), ptr: ptr(b.ptr), name: b.name, short: b.short || b.name, story: (b.short || b.name).replace(/^the\s+/i, ''),
     book: b.website || locs.docs.find((l) => l.bookingUrl)?.bookingUrl || '',
     since: fmtSince(b.since), est,
-    founder: f?.name || '', cred: f?.credentials || '', founderSlug: f?.slug || '',
+    founder: fs.length > 1 ? fs.map((x) => x.name).join(' and ') : f?.name || '', cred: fs.length > 1 ? '' : f?.credentials || '', founderSlug: f?.slug || '',
+    /** One block per active founder on the brand page; co-founders each get their own. */
+    founders: (fs.length ? fs : f ? [f] : []).map((x, i, all) => ({
+      name: x.name, cred: x.credentials || '', slug: x.slug, href: `/founders/${x.slug}`, html: html(x.bio),
+      img: url(x.headshot, 'wide') || url(x.portrait, 'wide') || '', k: i ? '' : all.length > 1 ? 'The Founders' : 'The Founder', cls: 'wrap founder' + (i ? ' founder_next' : ''),
+    })),
     founderImg: url(f?.headshot, 'wide') || url(f?.portrait, 'wide') || '',
     founderHtml: html(f?.bio),
     services: (b.services || []) as string[],

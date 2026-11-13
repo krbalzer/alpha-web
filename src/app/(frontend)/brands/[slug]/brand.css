@@ -318,4 +318,5 @@
 .pg-brand .card.is-on .card_txt b::after{content:"\2192";display:inline-block;margin-left:10px;opacity:0;transform:translateX(-6px);transition:opacity .3s ease,transform .45s var(--ease)}
 .pg-brand .card.is-on:hover .card_txt b::after{opacity:1;transform:none}
 .pg-brand .b_top,.pg-brand .crumb{background:var(--bone)}
+.pg-brand .founder_next{margin-top:clamp(56px,6vw,96px)}
 

@@ -30,6 +30,9 @@ const blobOk = await checkBlob((m) => console.log(m))
       // Google place IDs for live ratings and reviews; fills empty IDs only
       const { importPlaces } = await import('./places')
       await importPlaces(p)
+      // rating, reviews and opening hours from Google into the CMS, at most once a day per location
+      const { syncPlaces } = await import('./places-sync')
+      await syncPlaces(p)
       // founder page copy the Webflow import never had (Michelle Paty from the Founder board); once per founder
       const { applyFounderExtras } = await import('./founder-extras')
       await applyFounderExtras(p)

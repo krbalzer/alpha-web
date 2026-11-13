@@ -13,6 +13,7 @@ import * as migration_20261111_233205_inside_title from './20261111_233205_insid
 import * as migration_20261112_001903_location_name_chapter from './20261112_001903_location_name_chapter';
 import * as migration_20261112_152919_location_order from './20261112_152919_location_order';
 import * as migration_20261112_153419_treatments from './20261112_153419_treatments';
+import * as migration_20261113_031223_location_google_snapshot from './20261113_031223_location_google_snapshot';
 
 export const migrations = [
   {
@@ -88,6 +89,11 @@ export const migrations = [
   {
     up: migration_20261112_153419_treatments.up,
     down: migration_20261112_153419_treatments.down,
-    name: '20261112_153419_treatments'
+    name: '20261112_153419_treatments',
+  },
+  {
+    up: migration_20261113_031223_location_google_snapshot.up,
+    down: migration_20261113_031223_location_google_snapshot.down,
+    name: '20261113_031223_location_google_snapshot'
   },
 ];

@@ -168,7 +168,7 @@ export const getArticle = cache(async (slug: string) => {
 /* ---------------- Network: locations, founders ---------------- */
 import type { Founder, Location } from '@/payload-types'
 import { NO_MEDIA, RATINGS } from './content/ratings'
-import { getPlace, pickReviews } from './reviews'
+import { placeFromDoc, pickReviews } from './reviews'
 
 const pad3 = (n?: number | null) => String(n ?? 0).padStart(3, '0')
 const monthYear = (d?: string | null) => (d ? new Date(d).toLocaleDateString('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' }) : '')
@@ -196,7 +196,7 @@ export const getLocationsDir = cache(async () => {
     .map((l) => ({ l, b: typeof l.brand === 'object' ? (l.brand as Brand) : brands.find((x) => x.id === l.brand) }))
     .filter((x): x is { l: Location; b: Brand } => !!x.b && !!B[pad3(x.b.ptr)])
     .sort((a, z) => (a.b.ptr ?? 0) - (z.b.ptr ?? 0) || byOrder(a.l, z.l))
-  const live = await Promise.all(rows.map(({ l }) => getPlace(l.googlePlaceId)))
+  const live = rows.map(({ l }) => placeFromDoc(l.google))
   const L = rows.map(({ l, b }, i) => {
     const n = pad3(b.ptr), key = `${b.ptr}|${l.city}`, g = live[i], [rating, reviews] = g && g.count ? [Math.round(g.rating * 10) / 10, g.count] : RATINGS[key] || [0, 0]
     const a1 = l.address1 || '', a2 = l.address2 || `${l.city}, ${l.state} ${l.zip || ''}`.trim()
@@ -285,7 +285,7 @@ export const getLocation = cache(async (slug: string) => {
   const f = brandFounders(full).filter((x) => x.status !== 'former').map((x) => founders.find((y) => y.id === x.id) || x)
   const tones = ['linear-gradient(160deg,#8C7F6B,#4D463C)', 'linear-gradient(160deg,#6F7276,#393B3E)', 'linear-gradient(160deg,#7A6E62,#3E3832)']
   const est = full.established ? String(full.established) : ''
-  const rv = pickReviews(await getPlace(cur.googlePlaceId))
+  const rv = pickReviews(placeFromDoc(cur.google))
   const tk = cur.origin === 'tuck-in' ? (await (await db()).find({ collection: 'tuck-ins', where: { and: [LIVE, { location: { equals: cur.id } }] }, limit: 1, depth: 1 })).docs[0] : undefined
   const ch = tk?.chapter?.headline ? tk.chapter : null
   const ini = (n: string) => n.replace(/^Dr\.\s+/, '').replace(/,.*$/, '').split(/\s+/).map((w) => w[0]).join('').slice(0, 2)
@@ -302,6 +302,7 @@ export const getLocation = cache(async (slug: string) => {
       n: pad3(full.ptr), ptr: `PTR ${pad3(full.ptr)}`, book: full.website || cur.bookingUrl || '', name: full.name, short: full.short || full.name, since: monthYear(full.since), est,
       founder: f.map((x) => x.name).join(' and '), cred: f.length === 1 ? f[0].credentials || '' : '', founderImg: f[0] ? url(f[0].headshot as Media, 'card') || '' : '',
       founderHref: f[0] ? `/founders/${f[0].slug}` : '', services: (full.services || []) as string[], href: `/brands/${full.slug}`,
+      founders: f.map((x) => ({ name: x.name, role: f.length > 1 ? 'Co-founder' : 'Founder', cred: x.credentials || '', img: url(x.headshot as Media, 'card') || '', href: `/founders/${x.slug}` })),
       states: [...new Set(locs.map((l) => l.state))],
       locations: locs.map((l, i) => {
         const key = `${full.ptr}|${l.city}`, noMedia = NO_MEDIA.has(key), v = noMedia ? { src: '', av1: '', small: '' } : video(l.heroVideo)

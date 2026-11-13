@@ -34,6 +34,12 @@ export async function getPlace(id?: string | null): Promise<Place | null> {
   } catch { return null }
 }
 
+/** The snapshot the daily sync stores on the location (`locations.google`), in the shape pages already read. */
+export function placeFromDoc(g?: { rating?: number | null; count?: number | null; uri?: string | null; reviews?: unknown } | null): Place | null {
+  if (!g || !g.count) return null
+  return { rating: Number(g.rating) || 0, count: Number(g.count) || 0, uri: g.uri || '', reviews: (Array.isArray(g.reviews) ? g.reviews : []) as Review[] }
+}
+
 /** Treatment named in a review, for the small tag on the card. No match, no tag. */
 const TAGS: [RegExp, string][] = [
   [/\bmoxi\b/i, 'Moxi'], [/\bsculptra\b/i, 'Sculptra'], [/\bmorpheus/i, 'Morpheus8'], [/\bhydra ?facial/i, 'HydraFacial'], [/\bbbl\b|broadband light/i, 'BBL'],
