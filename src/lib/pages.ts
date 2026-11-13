@@ -1,6 +1,6 @@
 import 'server-only'
 import { cache } from 'react'
-import { db, html } from './data'
+import { db, html, getCtaImages } from './data'
 
 /** Server-side shapes for the ported board templates. Each mirrors the board's data() so the board logic runs unchanged. */
 
@@ -189,8 +189,9 @@ const founderLine = (b: Brand) => brandFounders(b).filter((f) => f.status !== 'f
 
 export const getLocationsDir = cache(async () => {
   const { brands, locations, founders } = await getNetworkAll()
-  const B: Record<string, { name: string; founder: string; est: string; since: string; tone: string; href: string }> = {}
-  for (const b of brands) B[pad3(b.ptr)] = { name: b.name, founder: founderLine(b), est: b.established ? String(b.established) : '', since: monthYear(b.since), tone: b.tone || '#4D463C', href: `/brands/${b.slug}` }
+  const B: Record<string, { name: string; founder: string; est: string; since: string; tone: string; href: string; img: string; srcSet: string }> = {}
+  const cta = await getCtaImages()
+  for (const b of brands) { const c = cta.find((x) => x.brand === b.slug); B[pad3(b.ptr)] = { name: b.name, founder: founderLine(b), est: b.established ? String(b.established) : '', since: monthYear(b.since), tone: b.tone || '#4D463C', href: `/brands/${b.slug}`, img: c?.src || '', srcSet: c?.srcSet || '' } }
   const rows = locations
     .map((l) => ({ l, b: typeof l.brand === 'object' ? (l.brand as Brand) : brands.find((x) => x.id === l.brand) }))
     .filter((x): x is { l: Location; b: Brand } => !!x.b && !!B[pad3(x.b.ptr)])

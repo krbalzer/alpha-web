@@ -278,7 +278,7 @@ export class LocationsEngine extends DCLogic {
       founders: D.F.map((f) => ({ href: f[4], name: f[0], cred: f[1], brand: f[2] ? D.B[f[2]].name : '[Brand]', city: f[2] ? L.find((l) => l.n === f[2]).city.replace(/[\[\]]/g, '') : '[City]', img: f[3] || '', hasImg: !!f[3], noImg: !f[3],
         init: f[0].split(' ').map((w) => w[0]).join('').slice(0, 2), cls: 'fc' + (fb && f[2] !== fb ? ' dim' : '') })),
       brands: Object.keys(D.B).map((n) => { const ls = L.filter((l) => l.n === n), sts = uniq(ls.map((l) => l.st));
-        return { n, href: D.B[n].href, name: D.B[n].name, tone: D.B[n].tone, locs: ls.length + (ls.length === 1 ? ' location' : ' locations'), states: sts.join(' / '), cls: 'bt' + (fb && fb !== n ? ' dim' : '') }; })
+        return { n, href: D.B[n].href, img: D.B[n].img || '', srcSet: D.B[n].srcSet || '', name: D.B[n].name, tone: D.B[n].tone, locs: ls.length + (ls.length === 1 ? ' location' : ' locations'), states: sts.join(' / '), cls: 'bt' + (fb && fb !== n ? ' dim' : '') }; })
     };
   }
 }

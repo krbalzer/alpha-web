@@ -9,7 +9,7 @@ export function Treatments({ groups, where }: { groups?: TxGroup[]; where: strin
     <section className="tx" aria-label="Treatments">
       <div className="tx_in">
         <div className="tx_head">
-          <h2 className="tx_t">Treatments</h2>
+          <h2 className="eyebrow tx_k">The Treatments</h2>
           <p className="tx_ct">{n} treatments / {where}</p>
         </div>
         <div className="tx_grid">

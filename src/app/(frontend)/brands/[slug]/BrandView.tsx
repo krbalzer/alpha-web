@@ -70,7 +70,7 @@ export default function BrandView({ brand, brands }: { brand: BrandData; brands:
 <section className="sec">
 <div className="wrap split">
 <div>
-<p className="eyebrow">{v.b.practiceEyebrow}</p>
+<p className="eyebrow">The Practice</p>
 <h2 className="h3">{v.b.practiceHeadline}</h2>
 <div className="body" dangerouslySetInnerHTML={{ __html: v.b.practiceHtml }} />
 </div>
@@ -105,13 +105,13 @@ export default function BrandView({ brand, brands }: { brand: BrandData; brands:
 </div>
 </section></>) : null}
 
-<Inside items={brand.inside} title={brand.insideTitle} where={brand.insideWhere} />
+<Inside items={brand.inside} title={brand.insideTitle} where="The Experience" />
 
 {/* ============ LOCATIONS INDEX: only for multi-location brands ============ */}
 {v.multi ? (<>
 <section style={{"paddingBottom": "clamp(90px, 10vw, 160px)"} as React.CSSProperties}>
 <div className="wrap">
-<div className="lx_head"><h2 className="h3">{v.locHead}</h2><span className="eyebrow" style={{"margin": "0"} as React.CSSProperties}>{v.locCount}</span></div>
+<div className="lx_head"><p className="eyebrow" style={{"margin": "0"} as React.CSSProperties}>The Locations</p><span className="eyebrow" style={{"margin": "0"} as React.CSSProperties}>{v.locCount}</span></div>
 <div className="lx_wrap">
 <div className={v.lxCls} ref={v.setLx}>
 {(v.locRows || []).map((l: any, l_i: number) => (<React.Fragment key={l_i}>
@@ -135,7 +135,7 @@ export default function BrandView({ brand, brands }: { brand: BrandData; brands:
 <div className="wrap founder">
 <div className="founder_img">{v.b.founderImg ? (<><img src={v.b.founderImg} alt={v.b.founder} style={{"objectPosition": "50% 20%"} as React.CSSProperties} loading="lazy" /></>) : null}</div>
 <div style={{"maxWidth": "32rem", "paddingTop": "4px"} as React.CSSProperties}>
-<p className="eyebrow">Founder</p>
+<p className="eyebrow">The Founder</p>
 <h2 className="founder_name">{v.b.founder}</h2>
 <p className="founder_cred">{v.b.cred}</p>
 <div className="body" dangerouslySetInnerHTML={{ __html: v.b.founderHtml }} />

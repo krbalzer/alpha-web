@@ -48,7 +48,7 @@ export function Inside({ items, title, where }: { items: Item[]; title: string; 
           })}
           <div className="in_end" aria-hidden="true" />
         </div>
-        <div className="in_bar" aria-hidden="true"><i style={{ width: p * 100 + '%' }} /></div>
+        <div className={'in_bar' + (p >= 0.995 ? ' is-done' : '')} aria-hidden="true"><i style={{ width: p * 100 + '%' }} /></div>
       </div>
     </section>
   )

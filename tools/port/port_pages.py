@@ -257,6 +257,7 @@ def locations_markup(b):
     b = rep(b, '<option value="{{ o.v }}" selected="{{ o.sel }}">', '<option value="{{ o.v }}">')
     # treatment filter (treatments collection), next to Brand
     b = sub(r'(<label class="sel mono"><span>Brand</span>.*?</label>)', r'\1<label class="sel mono"><span>Treatment</span><select onChange="{{ onTx }}" value="{{ txVal }}" aria-label="Treatment"><sc-for list="{{ txOpts }}" as="o"><option value="{{ o.v }}">{{ o.t }}</option></sc-for></select></label>', b)
+    b = rep(b, '<a class="{{ b.cls }}" href="{{ b.href }}" style="background: {{ b.tone }}"><span class="mono bt_n">', '<a class="{{ b.cls }}" href="{{ b.href }}" style="background: {{ b.tone }}"><sc-if value="{{ b.img }}"><img class="bt_img" src="{{ b.img }}" srcset="{{ b.srcSet }}" sizes="(max-width: 820px) 50vw, 25vw" alt="" loading="lazy" decoding="async"></sc-if><span class="mono bt_n">')
     b = rep(b, 'Filter by state or brand. The map and the numbers above follow along.', 'Filter by state, brand or treatment. The map and the numbers above follow along.')
     return b
 
@@ -282,7 +283,7 @@ def locations_engine(e):
     e = rep(e, "const hasF = !!(q || fb || fs.length);", "const hasF = !!(q || fb || ft || fs.length);")
     e = rep(e, "clear: () => set({ q: '', brand: '', states: [] }),", "clear: () => set({ q: '', brand: '', tx: '', states: [] }),")
     e = rep(e, "if (fb) p.push('brand=' + fb);", "if (fb) p.push('brand=' + fb); if (ft) p.push('treatment=' + ft);")
-    e = rep(e, "return { n, name: D.B[n].name, tone: D.B[n].tone,", "return { n, href: D.B[n].href, name: D.B[n].name, tone: D.B[n].tone,")
+    e = rep(e, "return { n, name: D.B[n].name, tone: D.B[n].tone,", "return { n, href: D.B[n].href, img: D.B[n].img || '', srcSet: D.B[n].srcSet || '', name: D.B[n].name, tone: D.B[n].tone,")
     return e
 
 
@@ -937,7 +938,7 @@ PAGES = {
     'Article': dict(dir='newswire/[slug]', board='Article', markup=article_markup, engine=article_engine, css=IMG_CSS + '.ar_body img{max-width:100%;height:auto}'),
     'Founder': dict(dir='founders/[slug]', board='Founder', data=True, markup=founder_markup, engine=founder_engine),
     'Locations': dict(dir='locations', board='Locations', data=True, markup=locations_markup, engine=locations_engine, jsx=locations_jsx, imports="import { FocusMap } from '@/components/site/MapStage'\n",
-                      css=IMG_CSS + MAP_CSS + '.dbar{grid-template-columns:minmax(0,1fr) auto auto auto}\n.sel select{max-width:220px}\n@media (max-width:820px){.dbar{grid-template-columns:1fr}}\n.map_focus{opacity:0;pointer-events:none}\n.map_focus .maplibregl-canvas-container{transition:opacity .7s}\n.map_focus:not([data-ready="1"]) .maplibregl-canvas-container{opacity:0;transition:opacity .2s}\n'),
+                      css=IMG_CSS + MAP_CSS + '.bt_img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}\n.bt::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,14,13,.15),rgba(14,14,13,.7))}\n.bt>span:not(.bt_go){position:relative;z-index:1}\n.bt .bt_go{z-index:1}\n.bt:hover .bt_img{transform:scale(1.04)}\n.dbar{grid-template-columns:minmax(0,1fr) auto auto auto}\n.sel select{max-width:220px}\n@media (max-width:820px){.dbar{grid-template-columns:1fr}}\n.map_focus{opacity:0;pointer-events:none}\n.map_focus .maplibregl-canvas-container{transition:opacity .7s}\n.map_focus:not([data-ready="1"]) .maplibregl-canvas-container{opacity:0;transition:opacity .2s}\n'),
     'Location': dict(dir='locations/[slug]', board='Location', markup=location_markup, engine=location_engine, jsx=location_jsx, imports=MAP_IMPORT + "import { Treatments } from '@/components/site/Treatments'\n", css=IMG_CSS + MAP_CSS + JOINED_CSS + '.rv_who{color:inherit;text-decoration:none}\n.rv_who:hover b{text-decoration:underline}\n.gal .img{position:relative;overflow:hidden;background:#D3CFC5}\n'),
     'Podcasts': dict(dir='podcasts', board='Podcasts', data=True, markup=podcasts_markup, engine=podcasts_engine, css=PODCAST_CSS + QUEUE_ROW_CSS, imports=QUEUE_IMPORT),
     'Show': dict(dir='podcasts/[show]', board='Show', markup=show_markup, engine=show_engine, imports=QUEUE_IMPORT, css=SHOW_CSS + QUEUE_ROW_CSS + IMG_CSS + '.spk,.person_av{position:relative;overflow:hidden}\n.spk img,.person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}\n'),

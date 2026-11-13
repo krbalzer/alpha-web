@@ -38,7 +38,10 @@ b = sub(r'<span class="map_note ph">.*?</span>\s*', '', b)
 b = sub(r'<button class="\{\{ c\.cls \}\}" onClick="\{\{ c\.go \}\}" aria-label="\{\{ c\.aria \}\}" aria-current="\{\{ c\.cur \}\}">(.*?)</button>',
         r'<a class="{{ c.cls }}" href="{{ c.href }}" onClick="{{ c.go }}" aria-label="{{ c.aria }}" aria-current="{{ c.cur }}">\1</a>', b)
 # practice
-b = b.replace('<p class="eyebrow">The practice she built</p>', '<p class="eyebrow">{{ b.practiceEyebrow }}</p>')
+b = b.replace('<p class="eyebrow">The practice she built</p>', '<p class="eyebrow">The Practice</p>')
+# section eyebrows (Kevin, Nov 2026): The Practice / The Experience / The Locations / The Treatments / The Founder / Why Alpha / Since Partnering
+b = rep_once(b, '<div class="lx_head"><h2 class="h3">{{ locHead }}</h2><span class="eyebrow" style="margin: 0">{{ locCount }}</span></div>', '<div class="lx_head"><p class="eyebrow" style="margin: 0">The Locations</p><span class="eyebrow" style="margin: 0">{{ locCount }}</span></div>')
+b = rep_once(b, '<p class="eyebrow">Founder</p>', '<p class="eyebrow">The Founder</p>')
 b = sub(r'<h2 class="h3" style="width: 508px; height: 258px">.*?</h2>\s*<div class="body">.*?</div>',
         '<h2 class="h3">{{ b.practiceHeadline }}</h2>\n<x-rich class="body" html="{{ b.practiceHtml }}"></x-rich>', b)
 b = sub(r'<div class="img ph" style="aspect-ratio: 1.1 / 1">.*?</div>',
@@ -225,7 +228,7 @@ for a, b in (("city: l.city + ', ' + l.st,", "city: l.name || (l.city + ', ' + l
 os.makedirs(APP, exist_ok=True)
 FILM = '{/* ============ LOCATIONS INDEX: only for multi-location brands ============ */}'  # Inside sits right after the stats
 assert view.count(FILM) == 1
-view = view.replace(FILM, '<Inside items={brand.inside} title={brand.insideTitle} where={brand.insideWhere} />\n\n' + FILM)
+view = view.replace(FILM, '<Inside items={brand.inside} title={brand.insideTitle} where="The Experience" />\n\n' + FILM)
 FOUNDER = '{/* ============ FOUNDER ============ */}'  # treatments index sits right before the founder
 assert view.count(FOUNDER) == 1
 view = view.replace(FOUNDER, '<Treatments groups={brand.treatments} where={brand.short} />\n\n' + FOUNDER)

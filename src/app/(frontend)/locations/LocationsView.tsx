@@ -102,7 +102,7 @@ export default function LocationsView(props: any) {
 <div className="wrap">
 <div className="split_head"><h2 className="display h2">Partner brands</h2><p className="body" style={{"margin": "0", "maxWidth": "24rem"} as React.CSSProperties}>Fifteen brands, each kept intact. Numbered in the order they joined.</p></div>
 <div className="bgrid">
-{(v.brands || []).map((b: any, b_i: number) => (<React.Fragment key={b_i}><a className={b.cls} href={b.href} style={{"background": `${b.tone}`} as React.CSSProperties}><span className="mono bt_n">PTR {b.n}</span><span className="bt_name">{b.name}</span><span className="mono bt_m">{b.locs} · {b.states}</span><span className="mono bt_go">View brand →</span></a></React.Fragment>))}
+{(v.brands || []).map((b: any, b_i: number) => (<React.Fragment key={b_i}><a className={b.cls} href={b.href} style={{"background": `${b.tone}`} as React.CSSProperties}>{b.img ? (<><img className="bt_img" src={b.img} srcSet={b.srcSet} sizes="(max-width: 820px) 50vw, 25vw" alt="" loading="lazy" decoding="async" /></>) : null}<span className="mono bt_n">PTR {b.n}</span><span className="bt_name">{b.name}</span><span className="mono bt_m">{b.locs} · {b.states}</span><span className="mono bt_go">View brand →</span></a></React.Fragment>))}
 </div>
 </div>
 </section>
