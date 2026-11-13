@@ -38,7 +38,7 @@
 @property --muted { syntax: '<color>'; inherits: true; initial-value: #5C5952; }
 @property --copy { syntax: '<color>'; inherits: true; initial-value: #2E2C28; }
 .pg-brand { --copy: #2E2C28; transition: background-color .9s ease, --ink .9s ease, --bone .9s ease, --line .9s ease, --muted .9s ease, --copy .9s ease; }
-.pg-brand .body, .pg-brand .rv_i blockquote, .pg-brand .lx_a { color: var(--copy); }
+:root .pg-brand .body, :root .pg-brand .body p, :root .pg-brand .rv_i blockquote, :root .pg-brand .lx_a { color: var(--copy); }
 .pg-brand.lights-down { --ink: #ECE8DF; --bone: #0E0E0D; --line: rgba(232, 228, 218, .16); --muted: #A39F96; --copy: rgba(236, 232, 223, .78); }
 /* surfaces that are already dark, and the light top bar + brand dock, keep their own palette */
 .pg-brand.lights-down .dark, .pg-brand.lights-down .b_top, .pg-brand.lights-down .crumb { --ink: #0E0E0D; --bone: #DEDAD1; --line: rgba(14, 14, 13, .16); --muted: #5C5952; --copy: #2E2C28; }

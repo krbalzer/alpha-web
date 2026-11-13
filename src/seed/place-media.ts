@@ -277,6 +277,29 @@ const PLACEMENTS: { file: string; alt: string; apply: (p: Payload, id: number) =
   { file: 'prive/gal-lexington-4.jpg', alt: 'A laser treatment at Privé', apply: (p, id) => gallery(p, 'prive-lexington-ky', id, 'treatment-room') },
   { file: 'prive/gal-lexington-5.jpg', alt: 'A treatment detail', apply: (p, id) => gallery(p, 'prive-lexington-ky', id, 'detail') },
   { file: 'prive/cta-lexington.jpg', alt: 'Keeneland in the snow, Lexington', apply: (p, id) => cta(p, 'Privé / Lexington', 'prive-lexington-ky', id) },
+  { file: 'htb/founder-amanda-holden.jpg', alt: 'Dr. Amanda Holden', apply: (p, id) => founder(p, 'amanda-holden-md', { headshot: id }) },
+  { file: 'htb/portrait-amanda-holden.jpg', alt: 'Dr. Amanda Holden at HTB', apply: (p, id) => founder(p, 'amanda-holden-md', { portrait: id }) },
+  { file: 'htb/practice-chandelier.jpg', alt: 'Dr. Amanda Holden treating a patient under the chandelier', apply: (p, id) => brand(p, 'holden-timeless-beauty', (b) => ({ practice: { ...(b.practice as object), image: id } })) },
+  { file: 'htb/why-front-desk.jpg', alt: 'The front desk at HTB Aesthetics', apply: (p, id) => brand(p, 'holden-timeless-beauty', (b) => ({ why: { ...(b.why as object), image: id } })) },
+  { file: 'htb/location-san-diego.jpg', alt: 'A treatment room at HTB San Diego', apply: (p, id) => location(p, 'holden-timeless-beauty-san-diego-ca', { photo: id }) },
+  { file: 'htb/inside-san-diego-opening.jpg', alt: 'The neon wall at the HTB San Diego opening', apply: (p, id) => inside(p, 'holden-timeless-beauty', id, 'Opening night / San Diego') },
+  { file: 'htb/inside-amanda.jpg', alt: 'Dr. Amanda Holden with a patient', apply: (p, id) => inside(p, 'holden-timeless-beauty', id, 'Dr. Amanda Holden') },
+  { file: 'htb/inside-mirror.jpg', alt: 'A provider handing a patient the mirror', apply: (p, id) => inside(p, 'holden-timeless-beauty', id, 'Consult') },
+  { file: 'htb/inside-emsculpt.jpg', alt: 'An Emsculpt Neo treatment', apply: (p, id) => inside(p, 'holden-timeless-beauty', id, 'Emsculpt Neo') },
+  { file: 'htb/inside-consult.jpg', alt: 'A consult at San Marcos', apply: (p, id) => inside(p, 'holden-timeless-beauty', id, 'Consult / San Marcos') },
+  { file: 'htb/inside-facial.jpg', alt: 'A facial under blue light', apply: (p, id) => inside(p, 'holden-timeless-beauty', id, 'Facial') },
+  { file: 'htb/inside-vanity.jpg', alt: 'An injectable treatment in the vanity mirror', apply: (p, id) => inside(p, 'holden-timeless-beauty', id, 'Injectables / San Marcos') },
+  { file: 'htb/inside-san-diego-bath.jpg', alt: 'The bathroom at HTB San Diego', apply: (p, id) => inside(p, 'holden-timeless-beauty', id, 'The bathroom / San Diego') },
+  { file: 'htb/gal-san-diego-1.jpg', alt: 'The neon wall at HTB San Diego', apply: (p, id) => gallery(p, 'holden-timeless-beauty-san-diego-ca', id, 'arrival') },
+  { file: 'htb/gal-san-diego-2.jpg', alt: 'A treatment room at HTB San Diego', apply: (p, id) => gallery(p, 'holden-timeless-beauty-san-diego-ca', id, 'treatment-room') },
+  { file: 'htb/gal-san-diego-3.jpg', alt: 'A treatment room at HTB San Diego', apply: (p, id) => gallery(p, 'holden-timeless-beauty-san-diego-ca', id, 'treatment-room') },
+  { file: 'htb/gal-san-diego-4.jpg', alt: 'The bathroom at HTB San Diego', apply: (p, id) => gallery(p, 'holden-timeless-beauty-san-diego-ca', id, 'detail') },
+  { file: 'htb/gal-san-marcos-1.jpg', alt: 'The front desk at HTB San Marcos', apply: (p, id) => gallery(p, 'holden-timeless-beauty-san-marcos-ca', id, 'front-desk') },
+  { file: 'htb/gal-san-marcos-2.jpg', alt: 'A consult at HTB San Marcos', apply: (p, id) => gallery(p, 'holden-timeless-beauty-san-marcos-ca', id, 'consult') },
+  { file: 'htb/gal-san-marcos-3.jpg', alt: 'A treatment at HTB San Marcos', apply: (p, id) => gallery(p, 'holden-timeless-beauty-san-marcos-ca', id, 'treatment-room') },
+  { file: 'htb/gal-san-marcos-4.jpg', alt: 'A consult at HTB San Marcos', apply: (p, id) => gallery(p, 'holden-timeless-beauty-san-marcos-ca', id, 'consult') },
+  { file: 'htb/cta-san-diego.jpg', alt: 'A treatment room at HTB San Diego', apply: (p, id) => cta(p, 'HTB / San Diego', 'holden-timeless-beauty-san-diego-ca', id) },
+  { file: 'htb/cta-san-marcos.jpg', alt: 'A consult at HTB San Marcos', apply: (p, id) => cta(p, 'HTB / San Marcos', 'holden-timeless-beauty-san-marcos-ca', id) },
   { file: 'atam/cta-lewis-center.jpg', alt: 'Dr. Anne Therese Stubbs with a patient, Lewis Center', apply: (p, id) => cta(p, 'Anne Therese / Lewis Center', 'anne-therese-aesthetic-medicine-columbus-ohio', id) },
   { file: 'atam/cta-bonita-springs.jpg', alt: 'The fountain courtyard, Bonita Springs', apply: (p, id) => cta(p, 'Anne Therese / Bonita Springs', 'anne-therese-aesthetic-medicine-bonita-springs-fl', id) },
   { file: 'atam/inside-bonita-exam-room.jpg', alt: 'An exam room at Bonita Springs', apply: (p, id) => inside(p, 'anne-therese-aesthetic-medicine', id, 'Exam room / Bonita Springs') },
@@ -314,6 +337,19 @@ async function ensureLocations(p: Payload) {
   } as never })
   await p.create({ collection: 'tuck-ins', data: { formerName: 'Blossom Medical', brand: ra.id, kind: 'location', location: loc.id, city: 'Winchester', state: 'VA', slug: 'blossom-medical', live: true } as never })
   p.logger.info('locations: created Refined at Blossom, Winchester')
+}
+
+/** HTB San Diego (Civita), opened Jul 2024 as a de novo. Created once, then the CMS owns it. */
+async function htbSanDiego(p: Payload) {
+  const b = (await p.find({ collection: 'brands', where: { slug: { equals: 'holden-timeless-beauty' } }, limit: 1, depth: 0 })).docs[0]
+  const have = (await p.find({ collection: 'locations', where: { slug: { equals: 'holden-timeless-beauty-san-diego-ca' } }, limit: 1, depth: 0 })).docs[0]
+  if (!b || have) return
+  await p.create({ collection: 'locations', data: {
+    brand: b.id, city: 'San Diego', state: 'CA', zip: '92108', address1: '7995 Civita Blvd', address2: 'Ste 9', lat: 32.7768684, lng: -117.1478188, phone: '(760) 507-2948',
+    origin: 'de-novo', opened: '2024-07-01T00:00:00.000Z', googlePlaceId: 'ChIJ7Ze3GCNV2YARr7aSslsE614', slug: 'holden-timeless-beauty-san-diego-ca', live: true,
+    hours: [{ days: 'Mon, Tue', time: '9am to 5:30pm' }, { days: 'Wed, Thu', time: '8:30am to 5:30pm' }, { days: 'Fri, Sat', time: '9am to 5:30pm' }, { days: 'Sun', time: 'Closed' }],
+  } as never })
+  p.logger.info('locations: created HTB San Diego')
 }
 
 async function location(p: Payload, slug: string, data: Record<string, unknown>) {
@@ -390,6 +426,7 @@ async function orderLocations(p: Payload) {
 
 export async function placeMedia(p: Payload) {
   await ensureLocations(p)
+  await htbSanDiego(p)
   for (const x of PLACEMENTS) {
     const name = 'placed-' + x.file.replace(/\//g, '-')
     const have = await p.find({ collection: 'media', where: { filename: { equals: name } }, limit: 1, depth: 0 })
