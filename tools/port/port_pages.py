@@ -481,8 +481,8 @@ def location_engine(e):
     gal = "(loc.gal || []).map((g) => ({ src: g.src, alt: g.alt || '', k: " + GK + "[g.kind] || '', t: g.caption || '' }))"
     e = rep(e, "gal2: [{ k: 'Arrival', t: '[Caption about the arrival]', ph: 'Place image / exterior or entry' }, { k: 'Front desk', t: '[Caption]', ph: 'Place image / reception' }],", "gal2: " + gal + ".slice(0, 2),")
     e = rep(e, "gal3: [{ k: 'Treatment room', t: '[Caption]', ph: 'Place image' }, { k: 'Consult', t: '[Caption]', ph: 'Place image' }, { k: 'Retail', t: '[Caption]', ph: 'Place image' }],", "gal3: " + gal + ".slice(2),")
-    e = rep(e, "mapAria: mapHero ? B.short + ' / ' + loc.place : 'Location',", "mapAria: mapHero ? (loc.name || B.short + ' / ' + loc.place) : 'Location',")
-    e = rep(e, "b: B, loc, title: B.short + ' / ' + loc.place,", "b: B, loc: Object.assign(loc, { insideT: loc.name || B.name + ' ' + loc.city, cardT: loc.name || B.name }), title: loc.name || B.short + ' / ' + loc.place, former: this.props.data.former || '', hasJoined: !!this.props.data.joined, jn: this.joinedVals(),")
+    e = rep(e, "mapAria: mapHero ? B.short + ' / ' + loc.place : 'Location',", "mapAria: mapHero ? (loc.name || B.short) + ' / ' + loc.place : 'Location',")
+    e = rep(e, "b: B, loc, title: B.short + ' / ' + loc.place,", "b: B, loc: Object.assign(loc, { insideT: loc.name || B.name + ' ' + loc.city, cardT: loc.name || B.name }), title: (loc.name || B.short) + ' / ' + loc.place, former: this.props.data.former || '', hasJoined: !!this.props.data.joined, jn: this.joinedVals(),")
     e = rep(e, '  renderVals() {', '''  joinedVals() {
     const J = this.props.data.joined;
     if (!J) return { pair: [], kept: [], films: [], a: {}, b: {} };
