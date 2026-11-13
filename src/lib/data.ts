@@ -86,7 +86,7 @@ export const getCtaImages = cache(async (): Promise<CtaPick[]> => {
     if (!src) return []
     const loc = (typeof d.location === 'object' ? d.location : null) as Location | null
     const b = (loc && typeof loc.brand === 'object' ? loc.brand : null) as Brand | null
-    return [{ src, srcSet: srcSet(d.image), soft: !!d.soften, brand: b?.slug, ptr: b ? ptr(b.ptr) : undefined, name: loc?.name || b?.name, city: loc ? `${loc.city}, ${loc.state}` : undefined }]
+    return [{ src, srcSet: srcSet(d.image), soft: !!d.soften, brand: b?.slug, loc: loc?.slug || undefined, ptr: b ? ptr(b.ptr) : undefined, name: loc?.name || b?.name, city: loc ? `${loc.city}, ${loc.state}` : undefined }]
   })
 })
 

@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 
-export type CtaPick = { src: string; soft?: boolean; srcSet?: string; brand?: string; ptr?: string; name?: string; city?: string }
+export type CtaPick = { src: string; soft?: boolean; srcSet?: string; brand?: string; loc?: string; ptr?: string; name?: string; city?: string }
 
 /** Picks one CTA image per page load from the pool the Closer hands it. Only the chosen image is ever requested. */
 export function CloserBg({ items }: { items: CtaPick[] }) {

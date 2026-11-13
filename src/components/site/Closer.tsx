@@ -2,10 +2,11 @@ import Link from 'next/link'
 import { getCtaImages } from '@/lib/data'
 import { CloserBg } from './CloserBg'
 
-/** Shared closer: Alpha lockup centered, Let's talk under it. On a brand or location page the background is that brand's own CTA image; elsewhere it rotates through the portfolio. */
-export async function Closer({ brand }: { brand?: string }) {
+/** Shared closer: Alpha lockup centered, Let's talk under it. On a location page the background is that location's own CTA image, on a brand page it rotates through the brand's; elsewhere through the portfolio. */
+export async function Closer({ brand, location }: { brand?: string; location?: string }) {
   const all = await getCtaImages()
-  const own = brand ? all.filter((i) => i.brand === brand) : []
+  const mine = location ? all.filter((i) => i.loc === location) : []
+  const own = mine.length ? mine : brand ? all.filter((i) => i.brand === brand) : []
   const items = own.length ? own : all
   return (
     <section className="closer dark" aria-label="Let's talk">
