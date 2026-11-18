@@ -60,7 +60,7 @@ html body .mpp span { font-size: 10px; margin-top: 2px; display: block }
   html body .pg-podcasts .res_bar { flex-wrap: wrap; row-gap: 8px }
   html body .pg-podcasts .tv_slide.has-hero .tv_bg { filter: brightness(.55) }
   html body .pg-podcasts .tv_d { display: none }
-  html body .pg-podcasts .tv_logo { width: 70%; height: auto; max-height: 120px }
+  html body .pg-podcasts .tv_logo { width: 50%; height: auto; max-height: 120px }
 
   /* home: department cards had a tall empty middle */
   html body .pg-main .dept { min-height: 0 }
