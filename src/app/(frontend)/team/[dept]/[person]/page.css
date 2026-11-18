@@ -130,7 +130,7 @@
 .pg-profile .stat{padding:28px 0}
 .pg-profile .stat+.stat{border-left:0;border-top:1px solid var(--line)}
 .pg-profile .crumb .wrap{grid-template-columns:auto 1fr}
-.pg-profile .crumb .wrap span:last-child{display:none}
+.pg-profile .crumb .wrap > span:last-child{display:none}
 .pg-profile .closer_tags span:nth-child(n+3){display:none}}
 @media (prefers-reduced-motion:reduce){.pg-profile .hero_media{animation:none}
 .pg-profile .track{transition:none}}

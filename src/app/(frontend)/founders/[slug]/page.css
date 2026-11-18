@@ -130,12 +130,12 @@
 .pg-founder .stat{padding:28px 0}
 .pg-founder .stat+.stat{border-left:0;border-top:1px solid var(--line)}
 .pg-founder .crumb .wrap{grid-template-columns:auto 1fr}
-.pg-founder .crumb .wrap span:last-child{display:none}
+.pg-founder .crumb .wrap > span:last-child{display:none}
 .pg-founder .closer_tags span:nth-child(n+3){display:none}}
 @media (prefers-reduced-motion:reduce){.pg-founder .hero_media{animation:none}
 .pg-founder .track{transition:none}}
 .pg-founder .crumb.loc .wrap{grid-template-columns:auto auto auto 1fr auto}
-.pg-founder .crumb.loc .wrap span:nth-child(4){visibility:hidden}
+.pg-founder .crumb.loc .wrap > span:nth-child(4){visibility:hidden}
 .pg-founder .hero_ctas{display:flex;gap:8px;justify-self:end;flex-wrap:wrap}
 .pg-founder .btn .ext{font-size:12px;margin-left:2px}
 .pg-founder .inside_head{margin-bottom:clamp(26px,2.6vw,40px)}

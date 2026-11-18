@@ -131,12 +131,12 @@
 .pg-location .stat{padding:28px 0}
 .pg-location .stat+.stat{border-left:0;border-top:1px solid var(--line)}
 .pg-location .crumb .wrap{grid-template-columns:auto 1fr}
-.pg-location .crumb .wrap span:last-child{display:none}
+.pg-location .crumb .wrap > span:last-child{display:none}
 .pg-location .closer_tags span:nth-child(n+3){display:none}}
 @media (prefers-reduced-motion:reduce){.pg-location .hero_media{animation:none}
 .pg-location .track{transition:none}}
 .pg-location .crumb.loc .wrap{grid-template-columns:auto auto auto 1fr auto}
-.pg-location .crumb.loc .wrap span:nth-child(4){visibility:hidden}
+.pg-location .crumb.loc .wrap > span:nth-child(4){visibility:hidden}
 .pg-location .hero_ctas{display:flex;gap:8px;justify-self:end;flex-wrap:wrap}
 .pg-location .btn .ext{font-size:12px;margin-left:2px}
 .pg-location .inside_head{margin-bottom:clamp(36px,3.6vw,56px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:start}
@@ -397,3 +397,9 @@
 .pg-location .rv_who:hover b{text-decoration:underline}
 .pg-location .gal .img{position:relative;overflow:hidden;background:#D3CFC5}
 
+/* visit block: address, hours, phone in mono. Values bold, day labels regular */
+html body .pg-location .v_col:has(.v_link) .v_t,html body .pg-location .v_t:has(a[href^="tel"]),html body .pg-location .v_rows{font-family:var(--mono);font-size:13px;line-height:1.7;letter-spacing:.03em;text-transform:uppercase}
+html body .pg-location .v_col:has(.v_link) .v_t,html body .pg-location .v_t:has(a[href^="tel"]){font-weight:700;max-width:26ch}
+html body .pg-location .v_rows div{max-width:18rem}
+html body .pg-location .v_rows span{font-weight:400}
+html body .pg-location .v_rows b{font-weight:700}

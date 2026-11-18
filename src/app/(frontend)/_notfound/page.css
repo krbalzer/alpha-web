@@ -130,7 +130,7 @@
 .pg-notfound .stat{padding:28px 0}
 .pg-notfound .stat+.stat{border-left:0;border-top:1px solid var(--line)}
 .pg-notfound .crumb .wrap{grid-template-columns:auto 1fr}
-.pg-notfound .crumb .wrap span:last-child{display:none}
+.pg-notfound .crumb .wrap > span:last-child{display:none}
 .pg-notfound .closer_tags span:nth-child(n+3){display:none}}
 @media (prefers-reduced-motion:reduce){.pg-notfound .hero_media{animation:none}
 .pg-notfound .track{transition:none}}

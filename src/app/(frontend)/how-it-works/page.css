@@ -130,7 +130,7 @@
 .pg-pathway .stat{padding:28px 0}
 .pg-pathway .stat+.stat{border-left:0;border-top:1px solid var(--line)}
 .pg-pathway .crumb .wrap{grid-template-columns:auto 1fr}
-.pg-pathway .crumb .wrap span:last-child{display:none}
+.pg-pathway .crumb .wrap > span:last-child{display:none}
 .pg-pathway .closer_tags span:nth-child(n+3){display:none}}
 @media (prefers-reduced-motion:reduce){.pg-pathway .hero_media{animation:none}
 .pg-pathway .track{transition:none}}

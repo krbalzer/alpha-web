@@ -41,7 +41,7 @@ html body .mpp span { font-size: 10px; margin-top: 2px; display: block }
   html body .pg-founder .peer { padding: 14px 12px 16px; font-size: 10px }
   html body .pg-founder .peer_av { width: 52px; height: 52px; margin-bottom: 16px }
   html body .pg-founder .crumb .wrap, html body .pg-founder .crumb.loc .wrap { display: flex; gap: 14px; height: auto; min-height: 34px; white-space: nowrap; overflow: hidden }
-  html body .pg-founder .crumb.loc .wrap span:nth-child(4) { display: none }
+  html body .pg-founder .crumb.loc .wrap > span:nth-child(4) { display: none }
   html body .pg-founder .why { padding: 64px 0 }
   html body .pg-founder .why_grid { gap: 28px }
 

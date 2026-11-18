@@ -130,7 +130,7 @@
 .pg-podcasts .stat{padding:28px 0}
 .pg-podcasts .stat+.stat{border-left:0;border-top:1px solid var(--line)}
 .pg-podcasts .crumb .wrap{grid-template-columns:auto 1fr}
-.pg-podcasts .crumb .wrap span:last-child{display:none}
+.pg-podcasts .crumb .wrap > span:last-child{display:none}
 .pg-podcasts .closer_tags span:nth-child(n+3){display:none}}
 @media (prefers-reduced-motion:reduce){.pg-podcasts .hero_media{animation:none}
 .pg-podcasts .track{transition:none}}

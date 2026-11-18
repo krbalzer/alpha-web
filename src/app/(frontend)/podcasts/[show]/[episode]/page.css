@@ -130,7 +130,7 @@
 .pg-episode .stat{padding:28px 0}
 .pg-episode .stat+.stat{border-left:0;border-top:1px solid var(--line)}
 .pg-episode .crumb .wrap{grid-template-columns:auto 1fr}
-.pg-episode .crumb .wrap span:last-child{display:none}
+.pg-episode .crumb .wrap > span:last-child{display:none}
 .pg-episode .closer_tags span:nth-child(n+3){display:none}}
 @media (prefers-reduced-motion:reduce){.pg-episode .hero_media{animation:none}
 .pg-episode .track{transition:none}}

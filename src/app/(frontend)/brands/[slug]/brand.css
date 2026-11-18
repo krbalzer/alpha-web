@@ -133,7 +133,7 @@
 .pg-brand .stat{padding:28px 0}
 .pg-brand .stat+.stat{border-left:0;border-top:1px solid var(--line)}
 .pg-brand .crumb .wrap{grid-template-columns:auto 1fr}
-.pg-brand .crumb .wrap span:last-child{display:none}
+.pg-brand .crumb .wrap > span:last-child{display:none}
 .pg-brand .closer_tags span:nth-child(n+3){display:none}}
 @media (prefers-reduced-motion:reduce){.pg-brand .hero_media{animation:none}
 .pg-brand .track{transition:none}}
