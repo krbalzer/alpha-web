@@ -17,7 +17,7 @@ export default function TalkView(props: any) {
 <div className="wrap qual_grid">
 <div>
 <p className="eyebrow">Let&#39;s talk</p>
-<h1 className="display" style={{"fontSize": "clamp(44px, 4.6vw, 84px)", "lineHeight": ".88"} as React.CSSProperties}>Start with<br />a real<br />conversation</h1>
+<h1 className="display" style={{"fontSize": "clamp(44px, 4.6vw, 84px)", "lineHeight": ".88"} as React.CSSProperties}>Start with<br />a call.</h1>
 <p className="lede">No decks, no pressure. A short call with people who have made this decision themselves.</p>
 </div>
 <div>

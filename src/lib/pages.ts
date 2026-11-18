@@ -247,6 +247,7 @@ export const getFounder = cache(async (slug: string) => {
   if (!b) return null
   const n = pad3(b.ptr)
   const locs = firstLoc(b, locations).sort(byOrder)
+  const cta = (await getCtaImages()).find((x) => x.brand === b.slug)
   const [first, ...rest] = fd.name.split(' ')
   const cities = [...new Set(locs.map((l) => l.city))]
   const sinceYear = b.since ? new Date(b.since).getUTCFullYear() : null
@@ -259,7 +260,7 @@ export const getFounder = cache(async (slug: string) => {
   }).filter(Boolean)
   return {
     b: { n, ptr: `PTR ${n}`, name: b.name, short: b.short || b.name, since: monthYear(b.since), est: b.established ? String(b.established) : '', book: fd.status === 'former' ? '' : b.website || locs.find((l) => l.bookingUrl)?.bookingUrl || '',
-      states: [...new Set(locs.map((l) => l.state))], href: `/brands/${b.slug}`,
+      states: [...new Set(locs.map((l) => l.state))], href: `/brands/${b.slug}`, cta: cta?.src || '', ctaSet: cta?.srcSet || '',
       locations: locs.map((l) => { const img = NO_MEDIA.has(`${b.ptr}|${l.city}`) ? '' : url(l.photo as Media, 'card') || ''; return { city: l.city, st: l.state, label: l.name || `${l.city}, ${l.state}`, img, noImg: !img, a1: l.address1 || '', tone: 'linear-gradient(160deg,#8C7F6B,#4D463C)', href: `/locations/${l.slug}` } }) },
     f: { name: fd.name, first: first.replace(/^Dr\.$/, rest[0] || first), last: first === 'Dr.' ? rest.slice(1).join(' ') : rest.join(' '), cred: fd.credentials || '',
       role: fd.kind === 'business' && brandFounders(b).length > 1 ? 'Co-founder' : 'Founder',

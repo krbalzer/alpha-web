@@ -115,8 +115,8 @@ export default function FounderView(props: any) {
 <div className="wrap">
 <p className="eyebrow">06 / {v.f.first}&#39;s practice</p>
 <div className="prac">
-<a className="prac_brand" href={v.b.href}><span className="mono" style={{"fontSize": "10.5px"} as React.CSSProperties}>{v.b.ptr}</span><span className="prac_name">{v.b.name}</span><span className="mono" style={{"fontSize": "10.5px", "opacity": ".75"} as React.CSSProperties}>{v.f.markets}{v.b.est ? (<> · Est {v.b.est}</>) : null}</span><span className="prac_go mono">View brand →</span></a>
-{(v.b.locations || []).map((l: any, l_i: number) => (<React.Fragment key={l_i}><a className="prac_loc" href={l.href}><span className="prac_img ph" style={{"background": `${l.tone}`} as React.CSSProperties}>{l.img ? (<><img src={l.img} alt="" loading="lazy" /></>) : null}{l.noImg ? (<>{l.city}</>) : null}</span><b>{l.label}</b><span>{l.a1}</span><span className="prac_go mono">View location →</span></a></React.Fragment>))}
+<a className="prac_brand" href={v.b.href}>{v.b.cta ? (<img className="prac_bg" src={v.b.cta} srcSet={v.b.ctaSet || undefined} sizes="(max-width: 980px) 100vw, 50vw" alt="" aria-hidden="true" loading="lazy" />) : null}<span className="mono" style={{"fontSize": "10.5px"} as React.CSSProperties}>{v.b.ptr}</span><span className="prac_name">{v.b.name}</span><span className="mono" style={{"fontSize": "10.5px", "opacity": ".75"} as React.CSSProperties}>{v.f.markets}{v.b.est ? (<> · Est {v.b.est}</>) : null}</span><span className="prac_go mono">View brand →</span></a>
+<div className="prac_locs">{(v.b.locations || []).map((l: any, l_i: number) => (<React.Fragment key={l_i}><a className="prac_loc" href={l.href}><span className="prac_img ph" style={{"background": `${l.tone}`} as React.CSSProperties}>{l.img ? (<><img src={l.img} alt="" loading="lazy" /></>) : null}{l.noImg ? (<>{l.city}</>) : null}</span><b>{l.label}</b><span>{l.a1}</span><span className="prac_go mono">View location →</span></a></React.Fragment>))}</div>
 </div>
 </div>
 </section>
