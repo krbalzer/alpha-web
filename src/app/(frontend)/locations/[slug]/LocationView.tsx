@@ -148,12 +148,12 @@ export default function LocationView(props: any) {
 </div>
 </section>
 
-{/* ============ IN THEIR WORDS: Google reviews, synced nightly, top 6 auto-picked. Hidden under 3 qualifying reviews. ============ */}{v.hasReviews ? (<>
+{/* ============ WHAT PATIENTS SAY: Google reviews, synced nightly, top 6 auto-picked. Hidden under 3 qualifying reviews. ============ */}{v.hasReviews ? (<>
 <section style={{"paddingBottom": "clamp(90px, 10vw, 150px)"} as React.CSSProperties}>
 <div className="wrap">
 <hr className="rule" style={{"marginBottom": "clamp(36px, 4vw, 60px)"} as React.CSSProperties} />
 <div className="rv_head">
-<div><h2 className="h3">In their words</h2><p className="sub">From patients of {v.loc.label}, on Google.</p></div>
+<div><h2 className="sec_t">What patients say<br />about their experience</h2><p className="sub">From patients of {v.loc.label}, on Google.</p></div>
 <div className="rv_agg"><span className="rv_n">{v.rv.rating}</span><span className="rv_st" role="img" aria-label={`${v.rv.rating} out of 5 stars`}><i style={{"width": `${v.rv.pct}%`} as React.CSSProperties}></i></span><span className="rv_c">{v.rv.count} Google reviews</span><a className="rv_all" href={v.rv.uri} target="_blank" rel="noopener">Read all on Google<span className="ext" aria-hidden="true">↗</span></a></div>
 </div>
 <div className="rv">{(v.rv.items || []).map((r: any, r_i: number) => (<React.Fragment key={r_i}><figure className={r.cls}>{r.tag ? (<><span className="rv_tag">{r.tag}</span></>) : null}<blockquote>{r.t}</blockquote>{r.long ? (<><label className="rv_more"><input type="checkbox" className="rv_x" /><span className="rv_m">Read more</span><span className="rv_l">Show less</span></label></>) : null}<figcaption className="rv_f"><span><a className="rv_who" href={r.whoUri} target="_blank" rel="noopener nofollow"><b>{r.who}</b></a> / {r.when}</span><span>via Google</span></figcaption></figure></React.Fragment>))}</div>
@@ -166,7 +166,7 @@ export default function LocationView(props: any) {
 <div className="wrap">
 <hr className="rule" style={{"marginBottom": "clamp(36px, 4vw, 60px)"} as React.CSSProperties} />
 <div className="since">
-<div><p className="eyebrow">Since partnering / {v.b.since}</p><h2 className="h3">What changed<br />at {v.loc.city}.</h2></div>
+<div><p className="eyebrow">Since partnering / {v.b.since}</p><h2 className="sec_t">What changed<br />at {v.loc.city}</h2></div>
 <div>
 <ol className="ms">{(v.ms || []).map((m: any, m_i: number) => (<React.Fragment key={m_i}><li><span>{m.y}</span><p>{m.t}</p></li></React.Fragment>))}</ol>
 {v.q.t ? (<><figure className="ms_q"><blockquote>“{v.q.t}”</blockquote><figcaption className="cap">{v.q.s}</figcaption></figure></>) : null}

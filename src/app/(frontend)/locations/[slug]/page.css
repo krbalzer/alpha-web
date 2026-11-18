@@ -409,3 +409,5 @@ html body .pg-location .ms li{grid-template-columns:8.5rem minmax(0,1fr);gap:18p
 html body .pg-location .ms span{font-size:12.5px;letter-spacing:.03em;padding-top:0}
 html body .pg-location .ms p{font-size:12.5px;line-height:1.45}
 @media (max-width:820px){html body .pg-location .ms li{grid-template-columns:6rem minmax(0,1fr)}}
+/* display caps section titles: reviews, since partnering */
+html body .pg-location .sec_t{font-family:var(--disp);font-weight:900;text-transform:uppercase;font-size:clamp(38px,4.4vw,72px);line-height:.88;letter-spacing:-.005em;margin:0 0 14px}
