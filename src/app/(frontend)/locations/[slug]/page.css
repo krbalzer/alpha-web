@@ -398,7 +398,7 @@
 .pg-location .gal .img{position:relative;overflow:hidden;background:#D3CFC5}
 
 /* visit block: address, hours, phone in mono. Values bold, day labels regular */
-html body .pg-location .v_col:has(.v_link) .v_t,html body .pg-location .v_t:has(a[href^="tel"]),html body .pg-location .v_rows{font-family:var(--mono);font-size:13px;line-height:1.7;letter-spacing:.03em;text-transform:uppercase}
+html body .pg-location .v_col:has(.v_link) .v_t,html body .pg-location .v_t:has(a[href^="tel"]),html body .pg-location .v_rows{font-family:var(--mono);font-size:clamp(11px,.66vw,12.5px);line-height:1.52;letter-spacing:.02em;text-transform:uppercase}
 html body .pg-location .v_col:has(.v_link) .v_t,html body .pg-location .v_t:has(a[href^="tel"]){font-weight:700;max-width:26ch}
 html body .pg-location .v_rows div{max-width:18rem}
 html body .pg-location .v_rows span{font-weight:400}
