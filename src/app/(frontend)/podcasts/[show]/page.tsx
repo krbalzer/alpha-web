@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getShow, getShows } from '@/lib/pages'
+import { ArtToContent } from '@/components/site/ArtToContent'
 import ShowView from './ShowView'
 
 export const revalidate = 300
@@ -17,5 +18,10 @@ export async function generateMetadata({ params }: { params: Promise<{ show: str
 export default async function Page({ params }: { params: Promise<{ show: string }> }) {
   const data = await getShow((await params).show)
   if (!data) notFound()
-  return <ShowView key={data.show.name} data={data} />
+  return (
+    <>
+      <ShowView key={data.show.name} data={data} />
+      <ArtToContent />
+    </>
+  )
 }

@@ -551,3 +551,5 @@
 .pg-show .spk,.pg-show .person_av{position:relative;overflow:hidden}
 .pg-show .spk img,.pg-show .person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 
+/* hero art: square, as tall as the text column beside it (measured by ArtToContent) */
+@media (min-width:901px){.pg-show .sh_grid{grid-template-columns:var(--art-h,clamp(200px,22vw,320px)) minmax(0,1fr);align-items:start}.pg-show .sh_art{width:100%;height:auto;aspect-ratio:1}}
