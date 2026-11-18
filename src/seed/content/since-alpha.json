@@ -369,7 +369,8 @@
         },
         {
           "label": "Treatments",
-          "now": "+4"
+          "now": "17",
+          "then": "13"
         }
       ]
     }
@@ -1125,7 +1126,8 @@
         },
         {
           "label": "Treatments",
-          "now": "+13"
+          "now": "21",
+          "then": "8"
         }
       ]
     }
@@ -1171,6 +1173,25 @@
         "title": "2 locations",
         "detail": "Encinitas and Denver. New since partnering: SkinVive and Ariessence PURE PDGF."
       }
-    ]
+    ],
+    "thenNow": {
+      "note": "Then = at partnership, May 2026. Plus = added since.",
+      "rows": [
+        {
+          "label": "Treatment rooms",
+          "then": "7",
+          "now": "8"
+        },
+        {
+          "label": "Providers",
+          "now": "+1"
+        },
+        {
+          "label": "Treatments",
+          "then": "6",
+          "now": "8"
+        }
+      ]
+    }
   }
 }
