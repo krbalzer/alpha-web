@@ -97,7 +97,7 @@ import { TREATMENT_CATEGORIES } from '@/collections/treatments'
 export type TxGroup = { cat: string; items: { name: string; where: string }[] }
 export const getTreatments = cache(async () => (await (await db()).find({ collection: 'treatments', where: LIVE, limit: 300, depth: 0, sort: 'order' })).docs)
 const idOf = (x: unknown) => (typeof x === 'object' && x ? (x as { id: number }).id : (x as number))
-/** What a brand (or one of its locations) offers. A treatment "only at" some of the brand's locations shows on those alone; on the brand page it names them. */
+/** What a brand (or one of its locations) offers. A treatment "only at" some of the brand's locations shows on those location pages alone. */
 export function treatmentsFor(all: Awaited<ReturnType<typeof getTreatments>>, brandId: number, brandLocs: { id: number; city: string; name?: string | null }[], locId?: number): TxGroup[] {
   const ids = new Set(brandLocs.map((l) => l.id))
   const out: Record<string, TxGroup['items']> = {}
@@ -105,8 +105,8 @@ export function treatmentsFor(all: Awaited<ReturnType<typeof getTreatments>>, br
     if (!(t.brands || []).map(idOf).includes(brandId)) continue
     const only = (t.locations || []).map(idOf).filter((i) => ids.has(i))
     if (locId != null && only.length && !only.includes(locId)) continue
-    const where = locId == null && only.length && only.length < ids.size ? brandLocs.filter((l) => only.includes(l.id)).map((l) => l.name || l.city).join(', ') : ''
-    ;(out[t.category] ||= []).push({ name: t.name, where })
+    // Brand pages list every treatment plainly; each location page shows only its own.
+    ;(out[t.category] ||= []).push({ name: t.name, where: '' })
   }
   return TREATMENT_CATEGORIES.filter((c) => out[c]).map((c) => ({ cat: c, items: out[c] }))
 }
