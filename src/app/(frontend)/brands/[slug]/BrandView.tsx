@@ -16,7 +16,7 @@ export default function BrandView({ brand, brands }: { brand: BrandData; brands:
   const v = useDC(BrandEngine, { brand, singleLocation: false, mapbox: hasRealMap })
   return (
     <div className="pg-brand">
-<Nav><div className="crumb"><div className="wrap"><span>{v.b.ptr}</span><BrandDock name={v.b.name} current={brand.slug} brands={brands} /><span>{v.b.sinceLine}</span></div></div></Nav>
+<Nav><div className="crumb x"><div className="wrap"><BrandDock label={v.b.ptr} current={brand.slug} brands={brands} onBrand /><span className="crumb_since">{v.b.sinceLine}</span></div></div></Nav>
 
 {/* ============ HERO: silent loop, everything pinned to the bottom of the fold ============ */}
 <section className="hero dark" style={{"height": `${v.heroH}`} as React.CSSProperties} aria-label={v.b.name}>

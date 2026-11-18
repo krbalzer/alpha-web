@@ -251,3 +251,26 @@ a:hover .img img,a:hover .card_img img{transform:scale(1.025)}
 .pp_art{overflow:visible}
 .pp_art img{z-index:0}
 .pp_qn{z-index:1}
+/* Brand dock: crumb "PTR 000" trigger, shared by brand, location and founder pages */
+.dock_btn{display:inline-flex;align-items:center;gap:8px;border:0;background:none;padding:0;margin:0;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;cursor:pointer;min-height:34px}
+.dock_btn:hover,.dock_btn.is-open{color:var(--ink,#151513)}
+.dock_btn svg{transition:transform .2s ease}
+.dock_btn.is-open svg{transform:rotate(180deg)}
+.dock{position:absolute;left:0;right:0;top:100%;z-index:20;background:#ECEAE3;border-bottom:1px solid var(--line);box-shadow:0 24px 48px -32px rgba(21,21,19,.35);animation:dockIn .22s cubic-bezier(.2,.7,.2,1) both}
+.dock[hidden]{display:none}
+@keyframes dockIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.dock_grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1px;max-width:var(--max,1280px);margin:0 auto;padding:20px var(--gut,clamp(16px,4.5vw,64px)) 24px;height:auto;box-sizing:border-box}
+.dock_i{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:16px 14px 14px;text-decoration:none;color:var(--ink,#151513);text-transform:none;letter-spacing:0;transition:background .15s ease}
+.dock_i:hover{background:#E3E0D8}
+.dock_i.is-on{background:#E3E0D8}
+.dock_mark{height:30px;display:flex;align-items:center;margin-bottom:8px;--m:linear-gradient(#0000,#0000)}
+.dock_mark .bmark{height:26px;max-width:120px}
+.dock_n{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.dock_name{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;line-height:1.35}
+@media (prefers-reduced-motion:reduce){.dock{animation:none}}
+.dock_go{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:auto;padding-top:6px}
+html body .crumb.x .wrap{display:flex;align-items:center;gap:0;height:auto;min-height:34px;white-space:nowrap;overflow:visible}
+html body .crumb.x .crumb_here{overflow:hidden;text-overflow:ellipsis;min-width:0}
+html body .crumb.x .crumb_here::before{content:"/";margin:0 14px;opacity:.45}
+html body .crumb.x .crumb_since{margin-left:auto;padding-left:24px}
+@media (max-width:720px){html body .crumb.x .crumb_since{display:none}html body .crumb.x .dock_btn{min-height:44px}}

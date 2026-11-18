@@ -2,6 +2,7 @@
 /* Generated from design/boards/Founder.dc.html by tools/port/port_pages.py. Edit the board or the porter, not this file. */
 import React from 'react'
 import { Nav } from '@/components/site/Nav'
+import { BrandDock } from '@/components/site/BrandDock'
 import { useDC } from '@/lib/dc'
 import { FounderEngine } from './engine'
 import './page.css'
@@ -12,7 +13,7 @@ export default function FounderView(props: any) {
   return (
     <div className="pg-founder">
 
-<Nav><div className="crumb loc"><div className="wrap"><span>{v.b.ptr}</span><a href={v.b.href} style={{"textDecoration": "none"} as React.CSSProperties}>{v.b.name}</a><span>{v.f.name}</span><span></span><span>Partner since {v.b.since}</span></div></div></Nav>
+<Nav><div className="crumb x"><div className="wrap"><BrandDock label={v.b.ptr} current={v.b.href.split('/').pop()} brands={props.brands || []} /><span className="crumb_here">{v.f.name}</span><span className="crumb_since">Partner since {v.b.since}</span></div></div></Nav>
 
 {/* ============ HERO (from XD) ============ */}
 <section className="fhero" style={{"minHeight": `${v.heroH}`} as React.CSSProperties} aria-label={v.f.name}>
