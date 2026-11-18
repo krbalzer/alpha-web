@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import type { BrandIndex } from '@/lib/data'
 
 /** Crumb trigger ("PTR 014 ▾") that opens a dock of every partner brand. The current brand leads the list; off the brand page it links back as its overview. Esc, outside click or picking a brand closes it. */
@@ -22,10 +22,10 @@ export function BrandDock({ label, current, brands, onBrand = false }: { label: 
       </button>
       <div id="brand-dock" className={'dock' + (open ? ' is-open' : '')} role="region" aria-label="All partner brands" hidden={!open}>
         <div className="dock_grid">
-          {list.map((b) => {
+          {list.map((b, i) => {
             const here = b.slug === current
             return (
-              <Link key={b.slug} href={`/brands/${b.slug}`} className={'dock_i' + (here ? ' is-on' : '')} aria-current={here && onBrand ? 'page' : undefined} onClick={() => setOpen(false)}>
+              <Link key={b.slug} href={`/brands/${b.slug}`} className={'dock_i' + (here ? ' is-on' : '')} aria-current={here && onBrand ? 'page' : undefined} style={{ '--i': i } as React.CSSProperties} onClick={() => setOpen(false)}>
                 <span className="dock_mark"><span className={`bmark b-${b.n}`} aria-hidden="true" /></span>
                 <span className="dock_n">PTR {b.n}</span>
                 <span className="dock_name">{b.name}</span>
