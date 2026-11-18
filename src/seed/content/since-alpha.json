@@ -351,20 +351,25 @@
       ]
     },
     "thenNow": {
-      "plus": true,
-      "note": "Added since partnering, Jun 2023.",
+      "note": "Then = at partnership, Jun 2023. Plus = added since.",
       "rows": [
         {
-          "label": "Treatment rooms",
-          "now": "+8"
+          "label": "Locations",
+          "then": "3",
+          "now": "4"
         },
         {
-          "label": "Treatments",
-          "now": "+4"
+          "label": "Treatment rooms",
+          "then": "10",
+          "now": "18"
         },
         {
           "label": "Providers",
           "now": "+2"
+        },
+        {
+          "label": "Treatments",
+          "now": "+4"
         }
       ]
     }
@@ -1102,16 +1107,21 @@
       }
     ],
     "thenNow": {
-      "plus": true,
-      "note": "Added since partnering, Mar 2023.",
+      "note": "Then = at partnership, Mar 2023. Plus = added since.",
       "rows": [
         {
-          "label": "Providers",
-          "now": "+12"
+          "label": "Locations",
+          "then": "3",
+          "now": "4"
         },
         {
           "label": "Treatment rooms",
-          "now": "+11"
+          "then": "20",
+          "now": "31"
+        },
+        {
+          "label": "Providers",
+          "now": "+12"
         },
         {
           "label": "Treatments",
