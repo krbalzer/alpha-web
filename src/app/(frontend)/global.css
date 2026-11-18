@@ -278,3 +278,8 @@ html body .crumb.x .crumb_here{overflow:hidden;text-overflow:ellipsis;min-width:
 html body .crumb.x .crumb_here::before{content:"/";margin:0 14px;opacity:.45}
 html body .crumb.x .crumb_since{margin-left:auto;padding-left:24px}
 @media (max-width:720px){html body .crumb.x .crumb_since{display:none}html body .crumb.x .dock_btn{min-height:44px}}
+@media (max-width:720px){html body .dock_grid{grid-template-columns:repeat(2,minmax(0,1fr));padding:12px 16px 16px;max-height:calc(100svh - 140px);overflow-y:auto;overscroll-behavior:contain}
+html body .dock_i{padding:12px 10px}
+html body .dock_mark{height:24px;margin-bottom:4px}
+html body .dock .dock_mark .bmark{height:20px;max-width:96px}
+html body .dock_name{font-size:10.5px}}
