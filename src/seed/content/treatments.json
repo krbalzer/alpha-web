@@ -12,13 +12,13 @@
       "flawless-medspa-wellness",
       "holden-timeless-beauty",
       "inbloom",
-      "the-laser-center-of-marin",
       "lexrx",
       "mint-needle",
       "preva",
       "prive",
-      "rn-esthetics",
       "refined-aesthetics",
+      "rn-esthetics",
+      "the-laser-center-of-marin",
       "williams-center"
     ]
   },
@@ -35,13 +35,13 @@
       "flawless-medspa-wellness",
       "holden-timeless-beauty",
       "inbloom",
-      "the-laser-center-of-marin",
       "lexrx",
       "mint-needle",
       "preva",
       "prive",
-      "rn-esthetics",
       "refined-aesthetics",
+      "rn-esthetics",
+      "the-laser-center-of-marin",
       "williams-center"
     ]
   },
@@ -58,12 +58,12 @@
       "flawless-medspa-wellness",
       "holden-timeless-beauty",
       "inbloom",
-      "the-laser-center-of-marin",
       "mint-needle",
       "preva",
       "prive",
-      "rn-esthetics",
       "refined-aesthetics",
+      "rn-esthetics",
+      "the-laser-center-of-marin",
       "williams-center"
     ]
   },
@@ -82,6 +82,14 @@
       "prive",
       "refined-aesthetics",
       "williams-center"
+    ],
+    "only": [
+      "holden-timeless-beauty|San Marcos",
+      "holden-timeless-beauty|San Diego",
+      "esthetics-center|Fair Oaks",
+      "esthetics-center|Sacramento",
+      "esthetics-center|Rocklin",
+      "esthetics-center|El Dorado Hills"
     ]
   },
   {
@@ -91,12 +99,14 @@
     "products": "PRP, PRF, EZ Gel, Ariessence PDGF+",
     "brands": [
       "dontage",
+      "esthetics-center",
       "flawless-medspa-wellness",
+      "holden-timeless-beauty",
       "inbloom",
       "mint-needle",
       "preva",
-      "rn-esthetics",
       "refined-aesthetics",
+      "rn-esthetics",
       "williams-center"
     ]
   },
@@ -113,13 +123,17 @@
       "flawless-medspa-wellness",
       "holden-timeless-beauty",
       "inbloom",
-      "the-laser-center-of-marin",
       "mint-needle",
       "preva",
       "prive",
-      "rn-esthetics",
       "refined-aesthetics",
+      "rn-esthetics",
+      "the-laser-center-of-marin",
       "williams-center"
+    ],
+    "only": [
+      "holden-timeless-beauty|San Marcos",
+      "holden-timeless-beauty|San Diego"
     ]
   },
   {
@@ -134,11 +148,15 @@
       "esthetics-center",
       "holden-timeless-beauty",
       "inbloom",
-      "the-laser-center-of-marin",
       "mint-needle",
-      "rn-esthetics",
       "refined-aesthetics",
+      "rn-esthetics",
+      "the-laser-center-of-marin",
       "williams-center"
+    ],
+    "only": [
+      "holden-timeless-beauty|San Marcos",
+      "holden-timeless-beauty|San Diego"
     ]
   },
   {
@@ -154,10 +172,14 @@
       "flawless-medspa-wellness",
       "holden-timeless-beauty",
       "inbloom",
-      "the-laser-center-of-marin",
       "mint-needle",
+      "refined-aesthetics",
       "rn-esthetics",
-      "refined-aesthetics"
+      "the-laser-center-of-marin"
+    ],
+    "only": [
+      "holden-timeless-beauty|San Marcos",
+      "holden-timeless-beauty|San Diego"
     ]
   },
   {
@@ -167,8 +189,8 @@
     "products": "Laser, Sclerotherapy",
     "brands": [
       "esthetics-center",
-      "rn-esthetics",
       "refined-aesthetics",
+      "rn-esthetics",
       "williams-center"
     ]
   },
@@ -193,9 +215,13 @@
       "dontage",
       "holden-timeless-beauty",
       "inbloom",
-      "the-laser-center-of-marin",
       "mint-needle",
-      "refined-aesthetics"
+      "refined-aesthetics",
+      "the-laser-center-of-marin"
+    ],
+    "only": [
+      "holden-timeless-beauty|San Marcos",
+      "holden-timeless-beauty|San Diego"
     ]
   },
   {
@@ -210,13 +236,13 @@
       "esthetics-center",
       "holden-timeless-beauty",
       "inbloom",
-      "the-laser-center-of-marin",
       "lexrx",
       "mint-needle",
       "preva",
       "prive",
-      "rn-esthetics",
       "refined-aesthetics",
+      "rn-esthetics",
+      "the-laser-center-of-marin",
       "williams-center"
     ]
   },
@@ -232,12 +258,19 @@
       "flawless-medspa-wellness",
       "holden-timeless-beauty",
       "inbloom",
-      "the-laser-center-of-marin",
       "mint-needle",
       "preva",
       "prive",
       "refined-aesthetics",
+      "the-laser-center-of-marin",
       "williams-center"
+    ],
+    "only": [
+      "esthetics-center|Fair Oaks",
+      "esthetics-center|Sacramento",
+      "esthetics-center|Rocklin",
+      "holden-timeless-beauty|San Marcos",
+      "holden-timeless-beauty|San Diego"
     ]
   },
   {
@@ -253,14 +286,17 @@
       "flawless-medspa-wellness",
       "holden-timeless-beauty",
       "inbloom",
-      "the-laser-center-of-marin",
       "lexrx",
       "mint-needle",
       "preva",
       "prive",
-      "rn-esthetics",
       "refined-aesthetics",
+      "rn-esthetics",
+      "the-laser-center-of-marin",
       "williams-center"
+    ],
+    "only": [
+      "holden-timeless-beauty|San Diego"
     ]
   },
   {
@@ -276,12 +312,15 @@
       "flawless-medspa-wellness",
       "holden-timeless-beauty",
       "inbloom",
-      "the-laser-center-of-marin",
       "mint-needle",
       "prive",
-      "rn-esthetics",
       "refined-aesthetics",
+      "rn-esthetics",
+      "the-laser-center-of-marin",
       "williams-center"
+    ],
+    "only": [
+      "holden-timeless-beauty|San Diego"
     ]
   },
   {
@@ -293,10 +332,15 @@
       "anne-therese-aesthetic-medicine",
       "esthetics-center",
       "flawless-medspa-wellness",
+      "holden-timeless-beauty",
       "inbloom",
-      "the-laser-center-of-marin",
       "prive",
+      "the-laser-center-of-marin",
       "williams-center"
+    ],
+    "only": [
+      "esthetics-center|Rocklin",
+      "holden-timeless-beauty|San Marcos"
     ]
   },
   {
@@ -310,8 +354,12 @@
       "flawless-medspa-wellness",
       "holden-timeless-beauty",
       "inbloom",
-      "the-laser-center-of-marin",
-      "prive"
+      "prive",
+      "the-laser-center-of-marin"
+    ],
+    "only": [
+      "esthetics-center|Rocklin",
+      "holden-timeless-beauty|San Marcos"
     ]
   },
   {
@@ -351,6 +399,9 @@
       "mint-needle",
       "prive",
       "rn-esthetics"
+    ],
+    "only": [
+      "esthetics-center|Fair Oaks"
     ]
   },
   {
@@ -376,8 +427,8 @@
       "dontage",
       "mint-needle",
       "prive",
-      "rn-esthetics",
       "refined-aesthetics",
+      "rn-esthetics",
       "williams-center"
     ]
   },
@@ -390,9 +441,13 @@
       "esthetics-center",
       "flawless-medspa-wellness",
       "holden-timeless-beauty",
-      "the-laser-center-of-marin",
       "lexrx",
-      "prive"
+      "prive",
+      "the-laser-center-of-marin"
+    ],
+    "only": [
+      "holden-timeless-beauty|San Marcos",
+      "holden-timeless-beauty|San Diego"
     ]
   },
   {
@@ -403,6 +458,10 @@
     "brands": [
       "holden-timeless-beauty",
       "inbloom"
+    ],
+    "only": [
+      "holden-timeless-beauty|San Marcos",
+      "holden-timeless-beauty|San Diego"
     ]
   },
   {
@@ -413,6 +472,9 @@
     "brands": [
       "esthetics-center",
       "williams-center"
+    ],
+    "only": [
+      "esthetics-center|El Dorado Hills"
     ]
   },
   {
@@ -423,6 +485,9 @@
     "brands": [
       "esthetics-center",
       "williams-center"
+    ],
+    "only": [
+      "esthetics-center|El Dorado Hills"
     ]
   },
   {

@@ -178,8 +178,8 @@
       "source": "Dr. Amanda Holden / Newswire / Jun 6, 2023"
     },
     "gap": {
-      "after": 1,
-      "label": "15 months, building"
+      "after": 2,
+      "label": "12 months, building"
     },
     "milestones": [
       {
@@ -190,7 +190,12 @@
       {
         "date": "Jul 1, 2024",
         "title": "HTB San Diego opens",
-        "detail": "The fifth Southern California location, in Mission Valley, with four treatment rooms. “It’s always been my dream to serve this area that I grew up in.” Dr. Amanda Holden, Newswire."
+        "detail": "The fifth Southern California location, in Mission Valley. “It’s always been my dream to serve this area that I grew up in.” Dr. Amanda Holden, Newswire."
+      },
+      {
+        "date": "Oct 2024",
+        "title": "Carlsbad moves",
+        "detail": "From one treatment room in La Mesa to two at the current Carlsbad address."
       },
       {
         "date": "Oct 2025",
@@ -204,9 +209,14 @@
         "rebrand": true
       },
       {
+        "date": "Jan 2026",
+        "title": "Fallbrook grows",
+        "detail": "A new treatment room."
+      },
+      {
         "date": "Now",
         "title": "4 locations",
-        "detail": "Carlsbad, Fallbrook, San Diego and San Marcos."
+        "detail": "Carlsbad, Fallbrook, San Diego and San Marcos. Since partnering: 8 treatment rooms, 2 providers, and Emface, PDGF, SkinVive and facials."
       }
     ],
     "rebrand": {
@@ -1029,5 +1039,92 @@
         ]
       ]
     }
+  },
+  "esthetics-center": {
+    "milestones": [
+      {
+        "date": "Mar 2023",
+        "title": "Joins Alpha as PTR 001",
+        "detail": "The first partner. Esthetics Center and Alpha start together."
+      },
+      {
+        "date": "Jul 2024",
+        "title": "A medical board",
+        "detail": "One standard across every location: compliance, safety, best practices and new treatments, with shared training and coaching."
+      },
+      {
+        "date": "Aug 2024",
+        "title": "El Dorado Hills expands",
+        "detail": "Two new treatment rooms and an office."
+      },
+      {
+        "date": "Aug 2024",
+        "title": "Fair Oaks opens",
+        "detail": "A new location, built from the ground up, with six treatment rooms."
+      },
+      {
+        "date": "Jul 2025",
+        "title": "A second surgeon",
+        "detail": "The surgical practice in El Dorado Hills doubles its surgeons."
+      },
+      {
+        "date": "Jan 2026",
+        "title": "Promoted from within",
+        "detail": "A medical assistant program opens a path from the front desk to MA."
+      },
+      {
+        "date": "Sep 2026",
+        "title": "Front desk to scrub tech",
+        "detail": "The first front desk team member promoted onto the surgical team."
+      },
+      {
+        "date": "Now",
+        "title": "4 locations",
+        "detail": "El Dorado Hills, Fair Oaks, Rocklin and Sacramento. Since partnering: 11 treatment rooms, 12 providers and 13 new treatments, from Sciton and SkinVive to hair transplants and awake eyelid surgery."
+      }
+    ]
+  },
+  "flawless-medspa-wellness": {
+    "milestones": [
+      {
+        "date": "Jan 2025",
+        "title": "Joins Alpha as PTR 012",
+        "detail": "Flawless keeps its team and both Albuquerque locations."
+      },
+      {
+        "date": "Jan 2025",
+        "title": "The brand shoot",
+        "detail": "Behind the scenes on MSM 048."
+      },
+      {
+        "date": "Now",
+        "title": "2 locations",
+        "detail": "East and West Albuquerque. Since partnering: a new provider, SkinVive, Ariessence PURE PDGF and a new laser."
+      }
+    ]
+  },
+  "preva": {
+    "milestones": [
+      {
+        "date": "May 2026",
+        "title": "Joins Alpha as PTR 016",
+        "detail": "Preva keeps its team and both locations, Encinitas and Denver."
+      },
+      {
+        "date": "Sep 2026",
+        "title": "A new provider",
+        "detail": "Encinitas adds a provider."
+      },
+      {
+        "date": "Nov 2026",
+        "title": "Denver grows",
+        "detail": "A new treatment room."
+      },
+      {
+        "date": "Now",
+        "title": "2 locations",
+        "detail": "Encinitas and Denver. New since partnering: SkinVive and Ariessence PURE PDGF."
+      }
+    ]
   }
 }
