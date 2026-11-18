@@ -234,7 +234,8 @@ type WorkEntry = {
   board: { layout: 'square' | 'wide'; line: string; tiles: WorkTile[] }
   shoot: { where: string; headline: string; items: SAItem[] }
   site: { url: string; desktop: string; mobile: string; ledger: [string, string][] }
-  msm?: { n: number; body: string }
+  /** until: hide chapters at or after this mm:ss (episodes that move on to other topics). quote: overrides the episode's first pull quote. */
+  msm?: { n: number; body: string; until?: string; quote?: { text: string; at: string } }
 }
 const WORK = Object.fromEntries(Object.entries(workContent).filter(([k]) => !k.startsWith('_'))) as unknown as Record<string, WorkEntry>
 export const getWorkSlugs = async () => Object.keys(WORK)
@@ -254,7 +255,9 @@ export const getWork = cache(async (slug: string) => {
   const b = (await p.find({ collection: 'brands', where: { and: [{ slug: { equals: slug } }, LIVE] }, limit: 1, depth: 0, select: { name: true, slug: true, ptr: true } })).docs[0]
   if (!b) return null
   const e = w.msm ? await msmEpisode(w.msm.n) : null
-  const q = e?.pullQuotes?.[0]
+  const q = w.msm?.quote || e?.pullQuotes?.[0]
+  const secs = (t: string) => t.split(':').reduce((a, x) => a * 60 + Number(x), 0)
+  const cut = (ep: ReturnType<typeof toEp>) => (w.msm?.until ? { ...ep, chapters: ep.chapters.filter((c) => secs(c.at) < secs(w.msm!.until!)) } : ep)
   const keys = Object.keys(WORK), nx = keys[(keys.indexOf(slug) + 1) % keys.length]
   const nb = nx !== slug ? (await p.find({ collection: 'brands', where: { slug: { equals: nx } }, limit: 1, depth: 0, select: { name: true } })).docs[0] : null
   return {
@@ -263,7 +266,7 @@ export const getWork = cache(async (slug: string) => {
     board: { ...w.board, tiles: w.board.tiles.map((t) => ({ ...t, src: blob(t.src), poster: blob(t.poster) })) },
     shoot: { ...w.shoot, items: w.shoot.items.map((i) => ({ ...i, src: blob(i.src), poster: blob(i.poster) })) },
     site: { ...w.site, desktop: blob(w.site.desktop), mobile: blob(w.site.mobile) },
-    msm: e && w.msm ? { n: String(w.msm.n).padStart(3, '0'), body: w.msm.body, ep: toEp(e), quote: q?.text ? { text: q.text, at: q.at || '' } : null } : null,
+    msm: e && w.msm ? { n: String(w.msm.n).padStart(3, '0'), body: w.msm.body, ep: cut(toEp(e)), quote: q?.text ? { text: q.text, at: q.at || '' } : null } : null,
     next: nb ? { slug: nx, name: WORK_NAMES[nx] || nb.name, date: WORK[nx].date } : null,
   }
 })
