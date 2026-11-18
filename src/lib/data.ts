@@ -191,7 +191,8 @@ type SAEntry = {
   quote?: { text: string; source: string }
   gap?: { after: number; label: string }
   milestones: { date: string; title: string; detail: string; rebrand?: boolean; link?: { href: string; label: string } }[]
-  thenNow?: { note: string; rows: { label: string; then: string; now: string }[] }
+  /** plus: rows carry only `now` as a gain ("+12") and the note stands alone. */
+  thenNow?: { note: string; plus?: boolean; rows: { label: string; then?: string; now: string }[] }
   rebrand?: { noun?: string; eyebrow: string; headline: string; body: string; msm?: { show: string; n: number }; site?: string; items: SAItem[]; ledger: [string, string][] }
 }
 export const getSinceAlpha = cache(async (slug: string, since?: string) => {

@@ -349,6 +349,24 @@
           "locations on one map"
         ]
       ]
+    },
+    "thenNow": {
+      "plus": true,
+      "note": "Added since partnering, Jun 2023.",
+      "rows": [
+        {
+          "label": "Treatment rooms",
+          "now": "+8"
+        },
+        {
+          "label": "Treatments",
+          "now": "+4"
+        },
+        {
+          "label": "Providers",
+          "now": "+2"
+        }
+      ]
     }
   },
   "the-laser-center-of-marin": {
@@ -1082,7 +1100,25 @@
         "title": "4 locations",
         "detail": "El Dorado Hills, Fair Oaks, Rocklin and Sacramento. Since partnering: 11 treatment rooms, 12 providers and 13 new treatments, from Sciton and SkinVive to hair transplants and awake eyelid surgery."
       }
-    ]
+    ],
+    "thenNow": {
+      "plus": true,
+      "note": "Added since partnering, Mar 2023.",
+      "rows": [
+        {
+          "label": "Providers",
+          "now": "+12"
+        },
+        {
+          "label": "Treatment rooms",
+          "now": "+11"
+        },
+        {
+          "label": "Treatments",
+          "now": "+13"
+        }
+      ]
+    }
   },
   "flawless-medspa-wellness": {
     "milestones": [

@@ -166,7 +166,7 @@ export default function LocationView(props: any) {
 <div className="wrap">
 <hr className="rule" style={{"marginBottom": "clamp(36px, 4vw, 60px)"} as React.CSSProperties} />
 <div className="since">
-<div><h2 className="h3">Since Alpha</h2><p className="sub">Partner since {v.b.since}</p></div>
+<div><p className="eyebrow">Since partnering / {v.b.since}</p><h2 className="h3">What changed<br />at {v.loc.city}.</h2></div>
 <div>
 <ol className="ms">{(v.ms || []).map((m: any, m_i: number) => (<React.Fragment key={m_i}><li><span>{m.y}</span><p>{m.t}</p></li></React.Fragment>))}</ol>
 {v.q.t ? (<><figure className="ms_q"><blockquote>“{v.q.t}”</blockquote><figcaption className="cap">{v.q.s}</figcaption></figure></>) : null}

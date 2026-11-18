@@ -82,10 +82,10 @@ export function SinceAlpha({ d }: { d: SinceAlphaData }) {
             <>
               <div className="sa_tn" style={{ gridTemplateColumns: `repeat(${tn.rows.length}, minmax(0, 1fr))` }}>
                 {tn.rows.map((r) => (
-                  <div key={r.label}><span className="mono">{r.label}</span><div className="sa_v"><s>{r.then}</s><b>{r.now}</b></div></div>
+                  <div key={r.label}><span className="mono">{r.label}</span><div className="sa_v">{r.then ? <s>{r.then}</s> : null}<b>{r.now}</b></div></div>
                 ))}
               </div>
-              <p className="mono sa_note">Then / now. {tn.note}</p>
+              <p className="mono sa_note">{tn.plus ? tn.note : <>Then / now. {tn.note}</>}</p>
             </>
           ) : null}
         </div>
