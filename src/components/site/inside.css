@@ -3,7 +3,7 @@
 .in_pin{position:sticky;top:0;height:100vh;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
 .in_head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;width:100%;max-width:var(--max,1600px);margin:0 auto 28px;padding:0 var(--gut,clamp(16px,4.5vw,64px));box-sizing:border-box}
 .in_k{margin:0}
-.in_t{font-family:var(--disp,"NHD","Helvetica Neue",Arial,sans-serif);font-weight:700;text-transform:none;line-height:1.02;letter-spacing:-.02em;font-size:clamp(28px,2.8vw,44px);margin:8px 0 0}
+.in_t{font-family:var(--disp,"NHD","Helvetica Neue",Arial,sans-serif);font-weight:700;text-transform:none;line-height:1.02;letter-spacing:-.02em;font-size:clamp(28px,2.8vw,44px);margin:8px 0 0;max-width:24ch;text-wrap:balance}
 .in_ct{font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;font-size:10.5px;font-variant-numeric:tabular-nums;color:var(--muted,#5C5952)}
 .in_strip{--g:max(var(--gut,clamp(16px,4.5vw,64px)),calc((100vw - var(--max,1600px))/2 + var(--gut,clamp(16px,4.5vw,64px))));display:flex;align-items:flex-end;gap:18px;padding-left:var(--g);will-change:transform}
 .in_fr{flex:0 0 auto;position:relative;margin:0}
