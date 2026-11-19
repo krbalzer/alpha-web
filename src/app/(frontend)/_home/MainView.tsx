@@ -1,6 +1,7 @@
 'use client'
 /* Generated from design/boards/Main.dc.html by tools/port/port_pages.py. Edit the board or the porter, not this file. */
 import React from 'react'
+import { StoryVideo } from '@/components/site/StoryVideo'
 import { Nav } from '@/components/site/Nav'
 import { useDC } from '@/lib/dc'
 import { MainEngine } from './engine'
@@ -175,10 +176,10 @@ export default function MainView(props: any) {
 <div className="track" style={{"gap": "10px", "transform": `translateX(${v.storyShift})`} as React.CSSProperties}>
 {(v.stories || []).map((s: any, s_i: number) => (<React.Fragment key={s_i}>
 <article className="story">
-<div className="story_media">
+{s.video ? (<StoryVideo src={s.video} poster={s.poster} quote={s.quote} />) : (<div className="story_media">
 <span className="story_play" aria-hidden="true"><svg width="9" height="10" viewBox="0 0 9 10"><path d="M1 .8v8.4L8.3 5z" fill="currentColor"></path></svg></span>
 <p className="story_quote">{s.quote}</p>
-</div>
+</div>)}
 <div className="story_meta"><div><div className="story_name">{s.name}</div><div className="story_role">{s.role}</div></div><span className="story_brand">{s.brand}</span></div>
 </article>
 </React.Fragment>))}
