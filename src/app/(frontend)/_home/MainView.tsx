@@ -180,7 +180,7 @@ export default function MainView(props: any) {
 <span className="story_play" aria-hidden="true"><svg width="9" height="10" viewBox="0 0 9 10"><path d="M1 .8v8.4L8.3 5z" fill="currentColor"></path></svg></span>
 <p className="story_quote">{s.quote}</p>
 </div>)}
-<div className="story_meta"><div><div className="story_name">{s.name}</div><div className="story_role">{s.role}</div></div><span className="story_brand">{s.brand}</span></div>
+<div className="story_meta"><div><div className="story_name">{s.name}</div><div className="story_role">{s.role}</div></div>{s.mark ? (<span className="story_mark" role="img" aria-label={s.brand} style={s.mark as React.CSSProperties}></span>) : (<span className="story_brand">{s.brand}</span>)}</div>
 </article>
 </React.Fragment>))}
 </div>

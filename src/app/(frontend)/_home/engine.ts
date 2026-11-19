@@ -333,7 +333,9 @@ export class MainEngine extends DCLogic {
       { name: 'Katie Martin', role: 'PA injector', brand: 'HTB', quote: '“We got things didn’t know were possible.”' },
       { name: 'Katie Wilson', role: 'RN injector', brand: 'CAMI', quote: '“Alpha changed my life.”' },
       { name: 'Becky McDonald', role: 'Co-founder', brand: 'Privé', quote: '“[Verbatim line from transcript]”' }
-    ].filter((x) => x.quote.indexOf('[') < 0).map((x) => Object.assign({}, x, { brand: x.brand.charAt(0) === '[' ? '' : x.brand }));
+    ].filter((x) => x.quote.indexOf('[') < 0).map((x) => Object.assign({}, x, { brand: x.brand.charAt(0) === '[' ? '' : x.brand }))
+      /* partner marks, same files as the brand dock (brand.css .b-NNN); a name without a mark falls back to type */
+      .map((x) => { const m = ({ 'HTB': ['bf0cb09e099ffd08e157c7a2527b15d4', 4.1729], 'Williams Center': ['11fbe015cfb3fcfcd247c3ad2077da5b', 1.4658], 'Dontage': ['977a1e28842c7d0f1ceaf158d7508117', 1.0], 'CAMI': ['36bfaaba5b556cdc3a1bacb6332ec4e9', 3.3176], 'Privé': ['3338152bcddce0a2936289bcc6c757f6', 2.7449] })[x.brand]; return Object.assign({}, x, m ? { mark: { '--m': `url(/boards/${m[0]}.svg)`, '--ar': String(m[1]) } } : {}); });
     const narrow = typeof window !== 'undefined' && window.innerWidth <= 820
     const sMax = Math.max(0, stories.length - (narrow ? 1 : 4)), si = Math.min(s.story ?? 0, sMax), pdi = s.pod ?? 0, pMax = 3;
     const EP = X.eps || [];

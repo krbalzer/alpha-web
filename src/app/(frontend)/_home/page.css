@@ -430,3 +430,5 @@ html body .pg-main .story{flex:0 0 var(--sw)}
 .pg-main .story_rail:active{cursor:grabbing}
 .pg-main .story_rail img,.pg-main .story_rail video{-webkit-user-drag:none;pointer-events:none}
 .pg-main .story_rail .story_vid{pointer-events:auto}
+.pg-main .story_mark{display:block;flex:0 0 auto;height:22px;max-width:72px;aspect-ratio:var(--ar,1);background:var(--ink);-webkit-mask:var(--m) right center/contain no-repeat;mask:var(--m) right center/contain no-repeat}
+.pg-main .story_vid .story_still{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}

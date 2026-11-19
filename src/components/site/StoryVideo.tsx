@@ -1,36 +1,32 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 
-/** Homepage story card. A tiny silent preview (~100KB) loops while the card is on screen and nothing loads before it is near;
- *  a click swaps in the full clip and plays it from the top with sound, another click mutes it. */
+/** Homepage story card. A still until engaged: hover loops a tiny silent preview (~100KB, loaded on hover only),
+ *  click plays the full clip from the top with sound, click again stops. Touch devices skip the hover step. */
 export function StoryVideo({ src, preview, poster, quote }: { src: string; preview?: string; poster?: string; quote: string }) {
   const v = useRef<HTMLVideoElement>(null)
-  const [on, setOn] = useState(false)
-  const [near, setNear] = useState(false)
-  const [full, setFull] = useState(!preview)
+  const [mode, setMode] = useState<'still' | 'hover' | 'play'>('still')
   useEffect(() => {
     const el = v.current
-    if (!el) return
-    const io = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) { setNear(true); if (el.muted) el.play().catch(() => {}) }
-      else { el.pause(); if (!el.muted) { el.muted = true; setOn(false) } }
-    }, { rootMargin: '200px 0px', threshold: 0.01 })
+    if (!el || mode !== 'play') return
+    const io = new IntersectionObserver(([e]) => { if (!e.isIntersecting) setMode('still') }, { threshold: 0 })
     io.observe(el)
     return () => io.disconnect()
-  }, [])
-  const toggle = () => {
-    const el = v.current
-    if (!el) return
-    if (on) { el.muted = true; setOn(false); return }
-    setFull(true); setOn(true)
-    requestAnimationFrame(() => { el.muted = false; el.currentTime = 0; el.play().catch(() => {}) })
-  }
-  const cur = full ? src : preview
+  }, [mode])
+  const enter = (e: React.PointerEvent) => { if (e.pointerType === 'mouse' && mode === 'still' && preview) setMode('hover') }
+  const leave = (e: React.PointerEvent) => { if (e.pointerType === 'mouse' && mode === 'hover') setMode('still') }
+  const toggle = () => setMode((m) => (m === 'play' ? 'still' : 'play'))
+  const cur = mode === 'play' ? src : mode === 'hover' ? preview : undefined
   return (
-    <button className={'story_media story_vid' + (on ? ' is-on' : '')} onClick={toggle} aria-label={on ? 'Mute' : 'Play with sound'}>
-      <video ref={v} src={near ? cur : undefined} poster={poster} muted loop={!on} playsInline autoPlay={near} preload="none" onEnded={() => setOn(false)} onLoadedData={(e) => { if (on) { const el = e.currentTarget; el.muted = false; el.play().catch(() => {}) } }} />
+    <button className={'story_media story_vid' + (mode === 'play' ? ' is-on' : '')} onClick={toggle} onPointerEnter={enter} onPointerLeave={leave} aria-label={mode === 'play' ? 'Stop' : 'Play with sound'}>
+      {poster ? <img className="story_still" src={poster} alt="" loading="lazy" decoding="async" /> : null}
+      {cur ? (
+        <video key={mode} ref={v} src={cur} autoPlay playsInline muted={mode !== 'play'} loop={mode === 'hover'} preload="auto"
+          onLoadedData={(e) => { const el = e.currentTarget; if (mode === 'play') { el.muted = false; el.currentTime = 0 } el.play().catch(() => {}) }}
+          onEnded={() => setMode('still')} />
+      ) : null}
       <span className="story_play" aria-hidden="true">
-        {on
+        {mode === 'play'
           ? <svg width="9" height="10" viewBox="0 0 10 12"><path d="M1 0h3v12H1zM6 0h3v12H6z" fill="currentColor" /></svg>
           : <svg width="9" height="10" viewBox="0 0 9 10"><path d="M1 .8v8.4L8.3 5z" fill="currentColor" /></svg>}
       </span>
