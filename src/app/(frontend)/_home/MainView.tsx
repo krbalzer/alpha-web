@@ -142,22 +142,16 @@ export default function MainView(props: any) {
 <h2 className="display h2">The people behind<br />every practice.</h2>
 <p className="lede">You keep your brand, your team and your clinical judgment. These are the people who take everything else off your plate.</p>
 </div>
-<div className="arrows"><button className="arrow" aria-label="Previous department" onClick={v.deptPrev} disabled={v.deptAtStart}><svg width="8" height="10" viewBox="0 0 8 10" aria-hidden="true"><path d="M6 1L2 5l4 4" stroke="currentColor" fill="none" strokeWidth="1.3"></path></svg></button><button className="arrow" aria-label="Next department" onClick={v.deptNext} disabled={v.deptAtEnd}><svg width="8" height="10" viewBox="0 0 8 10" aria-hidden="true"><path d="M2 1l4 4-4 4" stroke="currentColor" fill="none" strokeWidth="1.3"></path></svg></button></div>
+<a className="btn" href="/team">Meet the whole team</a>
 </div>
-<div className="rail" style={{"marginTop": "40px"} as React.CSSProperties}>
-<div className="track" style={{"transform": `translateX(${v.deptShift})`} as React.CSSProperties}>
-{(v.depts || []).map((d: any, d_i: number) => (<React.Fragment key={d_i}>
-<article className="dept">
-<div className="mono" style={{"fontSize": "10px", "letterSpacing": ".08em"} as React.CSSProperties}>{d.name}</div>
-<p className="dept_line">{d.line}</p>
-<a className="btn dept_go" href={d.href} style={{"alignSelf": "flex-start", "height": "28px", "padding": "0 12px", "fontSize": "10px"} as React.CSSProperties}>Meet department</a>
-<div className="dept_avs">{(d.avs || []).map((a: any, a_i: number) => (<React.Fragment key={a_i}><a className="av" href={a.href} title={a.name} aria-label={a.name} style={{"overflow": "hidden", "position": "relative"} as React.CSSProperties}>{a.img ? (<><img className="ph_img" src={a.img} alt="" loading="lazy" /></>) : null}{a.iOnly}</a></React.Fragment>))}</div>
-
-</article>
-</React.Fragment>))}
+<div className="ldg">
+{(v.depts || []).map((d: any, d_i: number) => { const all = d.avs || [], cap = 6, shown = all.length > cap ? all.slice(0, cap - 1) : all, more = all.length - shown.length; return (<div className="ldg_row" key={d_i}>
+<a className="ldg_name" href={d.href}>{d.name}</a>
+<p className="ldg_line">{d.line}</p>
+<div className="ldg_avs">{shown.map((a: any, a_i: number) => (<a key={a_i} className="av" href={a.href} title={a.name} aria-label={a.name}>{a.img ? <img className="ph_img" src={a.img} alt="" loading="lazy" /> : null}{a.iOnly}</a>))}{more > 0 ? <a className="ldg_more" href={d.href} aria-label={`${more} more in ${d.name}`}>+{more}</a> : null}</div>
+<span className="ldg_go" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M1 5h8M5.5 1.5L9 5l-3.5 3.5" stroke="currentColor" fill="none" strokeWidth="1.3"></path></svg></span>
+</div>) })}
 </div>
-</div>
-<div style={{"display": "flex", "justifyContent": "flex-end", "marginTop": "36px"} as React.CSSProperties}><a className="btn" href="/team">Meet the whole team</a></div>
 <hr className="rule" style={{"marginTop": "72px"} as React.CSSProperties} />
 </div>
 </section>
