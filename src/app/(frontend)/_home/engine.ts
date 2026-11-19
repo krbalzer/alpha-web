@@ -326,12 +326,12 @@ export class MainEngine extends DCLogic {
     const depts = X.depts || [];
     const di = s.dept ?? 0, dMax = Math.max(0, depts.length - 3);
     const stories = [
-      { name: 'Riley Hadock', role: 'Director of ops', brand: 'Williams Center', quote: '“I’ve never felt so welcomed into a team before.”', video: 'https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/stories/story-riley-hadock.mp4', poster: 'https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/stories/story-riley-hadock.jpg' },
-      { name: 'Lauren Biscotti', role: 'RN injector', brand: '[Brand]', quote: '“Joining Alpha means never feeling alone.”' },
+      { name: 'Riley Hadock', role: 'Director of ops', brand: 'Williams Center', quote: '“I’ve never felt so welcomed into a team before.”', video: 'https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/stories/story-riley-hadock-v2.mp4', preview: 'https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/stories/story-riley-hadock-v2-preview.mp4', poster: 'https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/stories/story-riley-hadock-v2.jpg' },
+      { name: 'Lauren Biscotti', role: 'RN injector', brand: '[Brand]', quote: '“You don’t have to be an injector for 15 years to have a voice.”', video: 'https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/stories/story-lauren-biscotti.mp4', preview: 'https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/stories/story-lauren-biscotti-preview.mp4', poster: 'https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/stories/story-lauren-biscotti.jpg' },
+      { name: 'Mary Carter', role: 'PA injector', brand: 'Dontage', quote: '“I don’t think I’ve ever felt more supported, goal oriented and heard.”', video: 'https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/stories/story-mary-carter.mp4', preview: 'https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/stories/story-mary-carter-preview.mp4', poster: 'https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/stories/story-mary-carter.jpg' },
       { name: 'Allie Oxton', role: 'NP injector', brand: '[Brand]', quote: '“Join if you want to be the best provider you can be.”' },
       { name: 'Katie Martin', role: 'PA injector', brand: 'HTB', quote: '“We got things didn’t know were possible.”' },
       { name: 'Katie Wilson', role: 'RN injector', brand: 'CAMI', quote: '“Alpha changed my life.”' },
-      { name: 'Mary Carter', role: 'PA injector', brand: '[Brand]', quote: '“[Verbatim line from transcript]”' },
       { name: 'Becky McDonald', role: 'Co-founder', brand: 'Privé', quote: '“[Verbatim line from transcript]”' }
     ].filter((x) => x.quote.indexOf('[') < 0).map((x) => Object.assign({}, x, { brand: x.brand.charAt(0) === '[' ? '' : x.brand }));
     const narrow = typeof window !== 'undefined' && window.innerWidth <= 820

@@ -176,7 +176,7 @@ export default function MainView(props: any) {
 <div className="track" style={{"gap": "10px", "transform": `translateX(${v.storyShift})`} as React.CSSProperties}>
 {(v.stories || []).map((s: any, s_i: number) => (<React.Fragment key={s_i}>
 <article className="story">
-{s.video ? (<StoryVideo src={s.video} poster={s.poster} quote={s.quote} />) : (<div className="story_media">
+{s.video ? (<StoryVideo src={s.video} preview={s.preview} poster={s.poster} quote={s.quote} />) : (<div className="story_media">
 <span className="story_play" aria-hidden="true"><svg width="9" height="10" viewBox="0 0 9 10"><path d="M1 .8v8.4L8.3 5z" fill="currentColor"></path></svg></span>
 <p className="story_quote">{s.quote}</p>
 </div>)}
