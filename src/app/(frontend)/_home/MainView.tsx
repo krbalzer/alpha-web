@@ -172,7 +172,7 @@ export default function MainView(props: any) {
 </div>
 <div className="arrows"><button className="arrow" aria-label="Previous story" onClick={v.storyPrev} disabled={v.storyAtStart}><svg width="8" height="10" viewBox="0 0 8 10" aria-hidden="true"><path d="M6 1L2 5l4 4" stroke="currentColor" fill="none" strokeWidth="1.3"></path></svg></button><button className="arrow" aria-label="Next story" onClick={v.storyNext} disabled={v.storyAtEnd}><svg width="8" height="10" viewBox="0 0 8 10" aria-hidden="true"><path d="M2 1l4 4-4 4" stroke="currentColor" fill="none" strokeWidth="1.3"></path></svg></button></div>
 </div>
-<div className="rail" style={{"marginTop": "32px"} as React.CSSProperties}>
+<div className="rail story_rail" style={{"marginTop": "32px"} as React.CSSProperties} onPointerDown={v.storyDown} onPointerMove={v.storyMove} onPointerUp={v.storyUp} onPointerCancel={v.storyUp} onPointerLeave={v.storyUp} onClickCapture={v.storyClick}>
 <div className="track" style={{"gap": "10px", "transform": `translateX(${v.storyShift})`} as React.CSSProperties}>
 {(v.stories || []).map((s: any, s_i: number) => (<React.Fragment key={s_i}>
 <article className="story">

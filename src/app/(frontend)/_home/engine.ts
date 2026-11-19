@@ -326,15 +326,16 @@ export class MainEngine extends DCLogic {
     const depts = X.depts || [];
     const di = s.dept ?? 0, dMax = Math.max(0, depts.length - 3);
     const stories = [
+      { name: 'Riley Hadock', role: 'Director of ops', brand: 'Williams Center', quote: '“I’ve never felt so welcomed into a team before.”', video: 'https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/stories/story-riley-hadock.mp4', poster: 'https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/stories/story-riley-hadock.jpg' },
       { name: 'Lauren Biscotti', role: 'RN injector', brand: '[Brand]', quote: '“Joining Alpha means never feeling alone.”' },
       { name: 'Allie Oxton', role: 'NP injector', brand: '[Brand]', quote: '“Join if you want to be the best provider you can be.”' },
       { name: 'Katie Martin', role: 'PA injector', brand: 'HTB', quote: '“We got things didn’t know were possible.”' },
       { name: 'Katie Wilson', role: 'RN injector', brand: 'CAMI', quote: '“Alpha changed my life.”' },
-      { name: 'Riley Hadock', role: 'Director of ops', brand: 'Williams Center', quote: '“I’ve never felt so welcomed into a team before.”', video: 'https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/stories/story-riley-hadock.mp4', poster: 'https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/stories/story-riley-hadock.jpg' },
       { name: 'Mary Carter', role: 'PA injector', brand: '[Brand]', quote: '“[Verbatim line from transcript]”' },
       { name: 'Becky McDonald', role: 'Co-founder', brand: 'Privé', quote: '“[Verbatim line from transcript]”' }
     ].filter((x) => x.quote.indexOf('[') < 0).map((x) => Object.assign({}, x, { brand: x.brand.charAt(0) === '[' ? '' : x.brand }));
-    const si = s.story ?? 0, sMax = Math.max(0, stories.length - 4), pdi = s.pod ?? 0, pMax = 3;
+    const narrow = typeof window !== 'undefined' && window.innerWidth <= 820
+    const sMax = Math.max(0, stories.length - (narrow ? 1 : 4)), si = Math.min(s.story ?? 0, sMax), pdi = s.pod ?? 0, pMax = 3;
     const EP = X.eps || [];
     const playing = s.playing ?? -1;
     const eps = EP.map((e, i) => ({ ...e, btnCls: i === playing ? 'ep_play is-on' : 'ep_play', play: () => { set({ playing: i }); if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('alpha:play', { detail: e.ep })); } }));
@@ -369,6 +370,11 @@ export class MainEngine extends DCLogic {
       thToggle: () => { const T = this.S; if (T.tt >= 90) T.tt = 0; T.thPlay = !T.thPlay; this.bump(); },
       depts, deptShift: 'calc(' + (-di) + ' * (clamp(260px, 22vw, 300px) + 14px))', deptPrev: () => set({ dept: Math.max(0, di - 1) }), deptNext: () => set({ dept: Math.min(dMax, di + 1) }), deptAtStart: di === 0, deptAtEnd: di === dMax,
       stories, storyShift: 'calc(' + (-si) + ' * (var(--sw) + 10px))', storyPrev: () => set({ story: Math.max(0, si - 1) }), storyNext: () => set({ story: Math.min(sMax, si + 1) }), storyAtStart: si === 0, storyAtEnd: si === sMax,
+      /* drag or swipe the story rail: past 40px steps one card; a drag never counts as a click on a card */
+      storyDown: (e) => { this._sx = e.clientX; this._sMoved = false },
+      storyMove: (e) => { if (this._sx != null && Math.abs(e.clientX - this._sx) > 8) this._sMoved = true },
+      storyUp: (e) => { if (this._sx == null) return; const dx = e.clientX - this._sx; this._sx = null; if (dx < -40) set({ story: Math.min(sMax, si + 1) }); else if (dx > 40) set({ story: Math.max(0, si - 1) }) },
+      storyClick: (e) => { if (this._sMoved) { e.preventDefault(); e.stopPropagation(); this._sMoved = false } },
       podShift: 'calc(' + (-pdi) + ' * (clamp(220px, 18.6vw, 262px) + 8px))', podPrev: () => set({ pod: Math.max(0, pdi - 1) }), podNext: () => set({ pod: Math.min(pMax, pdi + 1) }), podAtStart: pdi === 0, podAtEnd: pdi === pMax,
       eps, hasPlaying: playing >= 0, now: EP[Math.max(0, playing)], closePlayer: () => set({ playing: -1 }),
       notDone: !isDone, isDone, isChoice: !isContact && !isDone, isContact,
