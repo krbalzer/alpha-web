@@ -540,8 +540,8 @@
       "source": "Med Spa Marketing Group Chat / MSM 073 / 7:50"
     },
     "gap": {
-      "after": 0,
-      "label": "17 months, building"
+      "after": 1,
+      "label": "11 months, building"
     },
     "milestones": [
       {
@@ -550,10 +550,20 @@
         "detail": "Two North Carolina locations, Greensboro and Huntersville, join the network. Alpha takes on the back office, training and marketing."
       },
       {
+        "date": "May 2025",
+        "title": "Wellness arrives",
+        "detail": "Wellness treatments join the menu."
+      },
+      {
         "date": "Apr 2026",
         "title": "The rebrand launches",
         "detail": "Carolina Age Management Institute becomes cami: a new wordmark, an espresso palette, real patients shot on Lake Norman, a 24-poster hallway campaign and a new site. Behind the scenes on MSM 073.",
         "rebrand": true
+      },
+      {
+        "date": "Sep 2026",
+        "title": "Surgery on site",
+        "detail": "Williams Center surgeons begin operating at cami. Every treatment on the surgery page arrived with the partnership."
       },
       {
         "date": "Now",
@@ -690,6 +700,20 @@
           "locations"
         ]
       ]
+    },
+    "thenNow": {
+      "note": "Plus = added since partnering, Nov 2024.",
+      "plus": true,
+      "rows": [
+        {
+          "label": "Providers",
+          "now": "+5"
+        },
+        {
+          "label": "Surgery",
+          "now": "On site"
+        }
+      ]
     }
   },
   "anne-therese-aesthetic-medicine": {
@@ -699,7 +723,7 @@
     },
     "gap": {
       "after": 1,
-      "label": "14 months, building"
+      "label": "13 months, building"
     },
     "milestones": [
       {
@@ -713,15 +737,20 @@
         "detail": "Alpha's crew films across the Ohio locations and down to Cape Coral, boat ride included. Behind the scenes on MSM 013."
       },
       {
+        "date": "Mar 2025",
+        "title": "Clear + Brilliant",
+        "detail": "The laser arrives in Ohio, after Cape Coral led the way."
+      },
+      {
         "date": "Apr 2025",
         "title": "The rebrand launches",
         "detail": "A circle-A mark, a palette taken from the Florida coast, studio portraits, a brand film, treatment films and a new site. Behind the scenes on MSM 057.",
         "rebrand": true
       },
       {
-        "date": "Aug 2025",
+        "date": "Nov 2025",
         "title": "Bonita Springs opens",
-        "detail": "The fourth location, and the first one built from an empty suite since partnering. A de novo at 26841 South Bay Dr, Suite 154.",
+        "detail": "The fourth location, and the first one built from an empty suite since partnering. Opens with an esthetician and two injectors.",
         "link": {
           "href": "/locations/anne-therese-aesthetic-medicine-bonita-springs-fl",
           "label": "See Bonita Springs →"
@@ -880,6 +909,24 @@
           "locations"
         ]
       ]
+    },
+    "thenNow": {
+      "note": "Plus = added since partnering, Jan 2024.",
+      "plus": true,
+      "rows": [
+        {
+          "label": "Locations",
+          "now": "+1"
+        },
+        {
+          "label": "Providers",
+          "now": "+5"
+        },
+        {
+          "label": "Treatments",
+          "now": "+5"
+        }
+      ]
     }
   },
   "rn-esthetics": {
@@ -888,8 +935,8 @@
       "source": "Med Spa Marketing Group Chat / MSM 026 / 8:49"
     },
     "gap": {
-      "after": 1,
-      "label": "Two years in"
+      "after": 3,
+      "label": "18 months, building"
     },
     "milestones": [
       {
@@ -903,6 +950,16 @@
         "detail": "Alpha's crew films across Salem, Newburyport and Lynnfield. Behind the scenes on MSM 026."
       },
       {
+        "date": "Oct 2024",
+        "title": "Salem expands",
+        "detail": "Three new treatment rooms."
+      },
+      {
+        "date": "Nov 2024",
+        "title": "Seaside tucks in",
+        "detail": "Seaside Aesthetics joins RN Esthetics, bringing two providers and a new treatment."
+      },
+      {
         "date": "May 2026",
         "title": "Thirty interviews in two days",
         "detail": "23 providers and seven longtime clients on camera, in one studio. What they said became the site."
@@ -912,6 +969,16 @@
         "title": "The new site launches",
         "detail": "Built around the people: provider profiles, client stories, a concern map and the locations, illustrated. Behind the scenes on MSM 077.",
         "rebrand": true
+      },
+      {
+        "date": "Jul 2026",
+        "title": "New lasers",
+        "detail": "Sciton lasers arrive in Lynnfield and Salem, and Salem adds a facial scanning device in August."
+      },
+      {
+        "date": "Aug 2026",
+        "title": "Boston becomes the fourth location",
+        "detail": "A practice in Brighton joins, bringing two providers. Two more are hired the same month."
       },
       {
         "date": "Now",
@@ -1062,6 +1129,24 @@
           "client stories"
         ]
       ]
+    },
+    "thenNow": {
+      "note": "Plus = added since partnering, May 2024.",
+      "plus": true,
+      "rows": [
+        {
+          "label": "Locations",
+          "now": "+1"
+        },
+        {
+          "label": "Treatment rooms",
+          "now": "+3"
+        },
+        {
+          "label": "Providers",
+          "now": "+6"
+        }
+      ]
     }
   },
   "esthetics-center": {
@@ -1190,6 +1275,256 @@
           "label": "Treatments",
           "then": "6",
           "now": "8"
+        }
+      ]
+    }
+  },
+  "williams-center": {
+    "milestones": [
+      {
+        "date": "Dec 2023",
+        "title": "Joins Alpha as PTR 006",
+        "detail": "Williams Center keeps its surgeons, its team and both addresses, Latham and Saratoga."
+      },
+      {
+        "date": "Jan 2024",
+        "title": "Saratoga Hair moves to Latham",
+        "detail": "Hair restoration moves to Latham, and the Saratoga space is freed for something new."
+      },
+      {
+        "date": "Sep 2025",
+        "title": "Rejuva at Saratoga opens",
+        "detail": "After a full remodel, the Saratoga space reopens as a med spa, with a new injector and esthetician."
+      },
+      {
+        "date": "Mar 2026",
+        "title": "Promoted from within",
+        "detail": "Latham adds an RN, and a front desk team member becomes an esthetician."
+      },
+      {
+        "date": "Jun 2026",
+        "title": "New lasers",
+        "detail": "Sciton lasers arrive in Saratoga, then Latham in July. DiamondGlow follows in August."
+      },
+      {
+        "date": "Now",
+        "title": "2 locations",
+        "detail": "Latham and Saratoga Springs, New York."
+      }
+    ],
+    "thenNow": {
+      "note": "Plus = added since partnering, Dec 2023.",
+      "plus": true,
+      "rows": [
+        {
+          "label": "Providers",
+          "now": "+4"
+        },
+        {
+          "label": "Lasers",
+          "now": "+2"
+        }
+      ]
+    }
+  },
+  "dontage": {
+    "milestones": [
+      {
+        "date": "May 2024",
+        "title": "Joins Alpha as PTR 009",
+        "detail": "Dontage keeps its team and its Fairfax practice."
+      },
+      {
+        "date": "Oct 2024",
+        "title": "Ariessence PDGF",
+        "detail": "Regenerative treatments join the menu, then DiamondGlow in April 2025."
+      },
+      {
+        "date": "Jul 2026",
+        "title": "A new esthetician",
+        "detail": "The team grows."
+      },
+      {
+        "date": "Aug 2026",
+        "title": "A Sciton laser",
+        "detail": "Laser resurfacing comes in-house."
+      },
+      {
+        "date": "Now",
+        "title": "1 location",
+        "detail": "Fairfax, Virginia."
+      }
+    ],
+    "thenNow": {
+      "note": "Plus = added since partnering, May 2024.",
+      "plus": true,
+      "rows": [
+        {
+          "label": "Providers",
+          "now": "+1"
+        },
+        {
+          "label": "Lasers",
+          "now": "+1"
+        }
+      ]
+    }
+  },
+  "inbloom": {
+    "milestones": [
+      {
+        "date": "Dec 2024",
+        "title": "Joins Alpha as PTR 011",
+        "detail": "Inbloom keeps its team and its Londonderry practice."
+      },
+      {
+        "date": "Sep 2025",
+        "title": "New treatments",
+        "detail": "Ariessence PDGF and medical weight loss join the menu."
+      },
+      {
+        "date": "Jan 2026",
+        "title": "A new esthetician",
+        "detail": "Then an injector in June."
+      },
+      {
+        "date": "Jul 2026",
+        "title": "A Sciton BBL",
+        "detail": "A new laser for skin and pigment."
+      },
+      {
+        "date": "Now",
+        "title": "1 location",
+        "detail": "Londonderry, New Hampshire."
+      }
+    ],
+    "thenNow": {
+      "note": "Plus = added since partnering, Dec 2024.",
+      "plus": true,
+      "rows": [
+        {
+          "label": "Providers",
+          "now": "+2"
+        },
+        {
+          "label": "Lasers",
+          "now": "+1"
+        }
+      ]
+    }
+  },
+  "mint-needle": {
+    "milestones": [
+      {
+        "date": "Mar 2025",
+        "title": "Joins Alpha as PTR 013",
+        "detail": "Mint + Needle keeps its team and both Delaware locations."
+      },
+      {
+        "date": "Apr 2025",
+        "title": "Ariessence PDGF",
+        "detail": "Regenerative treatments arrive at both locations."
+      },
+      {
+        "date": "Nov 2025",
+        "title": "A new injector",
+        "detail": "Shared between Middletown and Lewes."
+      },
+      {
+        "date": "Apr 2026",
+        "title": "Promoted from within",
+        "detail": "A front desk admin becomes an esthetician."
+      },
+      {
+        "date": "Now",
+        "title": "2 locations",
+        "detail": "Middletown and Lewes, Delaware."
+      }
+    ],
+    "thenNow": {
+      "note": "Plus = added since partnering, Mar 2025.",
+      "plus": true,
+      "rows": [
+        {
+          "label": "Providers",
+          "now": "+1"
+        }
+      ]
+    }
+  },
+  "prive": {
+    "milestones": [
+      {
+        "date": "Nov 2025",
+        "title": "Joins Alpha as PTR 014",
+        "detail": "Privé keeps its team and its Lexington practice."
+      },
+      {
+        "date": "Aug 2026",
+        "title": "A new esthetician",
+        "detail": "The team grows."
+      },
+      {
+        "date": "Sep 2026",
+        "title": "A new injector",
+        "detail": "And again a month later."
+      },
+      {
+        "date": "Now",
+        "title": "1 location",
+        "detail": "Lexington, Kentucky."
+      }
+    ],
+    "thenNow": {
+      "note": "Plus = added since partnering, Nov 2025.",
+      "plus": true,
+      "rows": [
+        {
+          "label": "Providers",
+          "now": "+2"
+        }
+      ]
+    }
+  },
+  "lexrx": {
+    "milestones": [
+      {
+        "date": "Dec 2025",
+        "title": "Joins Alpha as PTR 015",
+        "detail": "LexRx keeps its team and all four locations."
+      },
+      {
+        "date": "Apr 2026",
+        "title": "SkinVive",
+        "detail": "Arrives at every location."
+      },
+      {
+        "date": "Jun 2026",
+        "title": "Biostimulators",
+        "detail": "Then Ariessence PDGF in July, across all four."
+      },
+      {
+        "date": "Sep 2026",
+        "title": "A new esthetician",
+        "detail": "Charlestown grows."
+      },
+      {
+        "date": "Now",
+        "title": "4 locations",
+        "detail": "Beacon Hill, Charlestown and South Boston, and Nantucket."
+      }
+    ],
+    "thenNow": {
+      "note": "Plus = added since partnering, Dec 2025.",
+      "plus": true,
+      "rows": [
+        {
+          "label": "Providers",
+          "now": "+1"
+        },
+        {
+          "label": "Treatments",
+          "now": "+3"
         }
       ]
     }
