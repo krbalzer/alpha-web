@@ -14,8 +14,8 @@ export function Menu() {
   const open = s.menuOpen
   const { brands, locations, states } = s.net
   const items: [string, string, string][] = [
-    ['Partners', '/brands', `${brands} brands, in join order`],
-    ['Map', '/locations', `${locations} locations across ${states} states`],
+    ['Partners', '/brands', `${brands} brands, ${locations} locations`],
+    ['Training', '/training', 'Alpha University and Practice'],
     ['Pathway', '/how-it-works', 'From first call to fully integrated'],
     ['Podcasts', '/podcasts', 'Every show in the network'],
     ['About', '/about', 'Built by operators'],

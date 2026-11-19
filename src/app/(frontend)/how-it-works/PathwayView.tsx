@@ -1,6 +1,7 @@
 'use client'
 /* Generated from design/boards/Pathway.dc.html by tools/port/port_pages.py. Edit the board or the porter, not this file. */
 import React from 'react'
+import { FilmPlay } from '@/components/site/FilmPlay'
 import { Nav } from '@/components/site/Nav'
 import { useDC } from '@/lib/dc'
 import { PathwayEngine } from './engine'
@@ -33,6 +34,13 @@ export default function PathwayView(props: any) {
 <div className="pw_steps"><div><span className="k">01 / [Timing]</span><b>Qualify</b><p>[Five questions, then a real conversation with New Partnerships.]</p></div><div><span className="k">02 / [Timing]</span><b>Meet the partners</b><p>[Founders who have made the decision, in their own words.]</p></div><div><span className="k">03 / [Timing]</span><b>Partnership</b><p>[What changes, what stays, and the first ninety days.]</p></div></div>
 </div>
 </section>
+<section className="team_film dark">
+<div className="wrap">
+<div className="tf_head"><div><p className="eyebrow">What happens to your team</p><h2 className="display h2">What will partnership<br />look like for my team?</h2></div><div><p className="lede">Team members from practices across the network, on what changed after their practice partnered with Alpha.</p></div></div>
+<FilmPlay src="https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/films/alpha-access-1080.mp4" src720="https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/films/alpha-access-720.mp4" poster="https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/films/alpha-access.jpg" label="Alpha Access film" />
+<div className="tf_meta mono"><span>Alpha Access</span><span>3:53</span></div>
+</div>
+</section>
 </>) : null}
 
 {v.isJoin ? (<>
@@ -44,6 +52,14 @@ export default function PathwayView(props: any) {
 <div><span className="k">02 / [Within a month]</span><b>Meet the partner in your market</b><p>You sit down with the founder you would join. Same city, same standards, a practice your patients already drive past.</p></div>
 <div><span className="k">03 / [Day one]</span><b>Two teams, one practice</b><p>Your team, your patients and, where it makes sense, your building carry forward under the partner&#39;s name.</p></div>
 </div>
+</div>
+</section>
+
+<section className="team_film dark">
+<div className="wrap">
+<div className="tf_head"><div><p className="eyebrow">What happens to your team</p><h2 className="display h2">What will partnership<br />look like for my team?</h2></div><div><p className="lede">Team members from practices across the network, on what changed after their practice partnered with Alpha.</p></div></div>
+<FilmPlay src="https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/films/alpha-access-1080.mp4" src720="https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/films/alpha-access-720.mp4" poster="https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/films/alpha-access.jpg" label="Alpha Access film" />
+<div className="tf_meta mono"><span>Alpha Access</span><span>3:53</span></div>
 </div>
 </section>
 
