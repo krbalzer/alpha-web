@@ -425,7 +425,7 @@ html body .pg-main .story{flex:0 0 var(--sw)}
 .pg-main .story_vid video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .pg-main .story_vid .story_quote{transition:opacity .4s ease}
 .pg-main .story_vid.is-on .story_quote{opacity:0}
-@media (max-width:820px){.pg-main #stories{--sw:72vw}}
+@media (max-width:820px){.pg-main #stories{--sw:calc(100vw - 2 * var(--gut, clamp(16px, 4.5vw, 64px)))}}
 .pg-main .story_rail{cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none}
 .pg-main .story_rail:active{cursor:grabbing}
 .pg-main .story_rail img,.pg-main .story_rail video{-webkit-user-drag:none;pointer-events:none}
