@@ -216,6 +216,14 @@ export class LocationEngine extends DCLogic {
       galOn: (loc.gal || []).length > 0, hasInside: !!loc.storyHtml || (loc.gal || []).length > 0, hasStory: !!loc.storyHtml, storyHtml: loc.storyHtml, hasReviews: !!(loc.rv && loc.rv.items.length >= 3), rv: loc.rv || { items: [] }, hasStats: false, hasRoles: false, hasSince: (loc.ms || []).length > 0 || !!(loc.quote && loc.quote.t),
       b: B, loc: Object.assign(loc, { insideT: loc.name || B.name + ' ' + loc.city, cardT: loc.name || B.name }), title: (loc.name || B.short) + ' / ' + loc.place, former: this.props.data.former || '', hasJoined: !!this.props.data.joined, jn: this.joinedVals(), hasSib: B.locations.length > 1,
       sib: Object.assign({}, sb, { place: sb.city + ', ' + sb.st }),
+      /* location switcher: crumb list, edge pills on the map, "Also from" line */
+      swList: B.locations.map((x, k) => ({ place: x.city + ', ' + x.st, meta: k === li ? 'You are here' : mi(loc, x).toLocaleString() + ' mi', href: x.href, here: k === li })),
+      sibPins: (() => {
+        /* each sister location sits at the map edge in its real direction; close bearings are fanned apart so pills never stack */
+        const o = B.locations.map((x, k) => ({ x, k })).filter((q) => q.k !== li && q.x.lat != null).map(({ x }) => ({ x, a: Math.atan2(-(x.lat - loc.lat), x.lng - loc.lng) })).sort((p, q) => p.a - q.a);
+        for (let j = 1; j < o.length; j++) if (o[j].a - o[j - 1].a < .55) o[j].a = o[j - 1].a + .55;
+        return o.map(({ x, a }) => ({ place: x.city + ', ' + x.st, mi: mi(loc, x).toLocaleString() + ' mi', href: x.href, left: (50 + Math.cos(a) * 38).toFixed(1) + '%', top: (46 + Math.sin(a) * 30).toFixed(1) + '%', rot: (Math.atan2(-(x.lat - loc.lat), x.lng - loc.lng) * 180 / Math.PI).toFixed(0) + 'deg' }));
+      })(),
       story: (loc.story || ['[Place story. Why this address, when it opened, the neighborhood, what the space is built for. 80 to 120 words, true of this location only.]']).map((t) => ({ t })),
       visit: { hours: (loc.hours || []).map((h) => ({ d: h[0], t: h[1] })), hasHours: (loc.hours || []).length > 0, phone: loc.phone || '', tel: 'tel:' + String(loc.phone || '').replace(/[^0-9+]/g, ''), arrive: loc.arrive || '' },
       ms: (loc.ms || []).map((m) => ({ y: m[0], t: m[1] })),

@@ -1,6 +1,7 @@
 'use client'
 /* Generated from design/boards/Location.dc.html by tools/port/port_pages.py. Edit the board or the porter, not this file. */
 import React from 'react'
+import { LocationSwitch } from '@/components/site/LocationSwitch'
 import { Nav } from '@/components/site/Nav'
 import { BrandDock } from '@/components/site/BrandDock'
 import { useDC } from '@/lib/dc'
@@ -15,7 +16,7 @@ export default function LocationView(props: any) {
   return (
     <div className="pg-location">
 
-<Nav><div className="crumb x"><div className="wrap"><BrandDock label={v.b.ptr} current={v.b.href.split('/').pop()} brands={props.brands || []} /><span className="crumb_here">{v.loc.place}</span><span className="crumb_since">Partner since {v.b.since}</span></div></div></Nav>
+<Nav><div className="crumb x"><div className="wrap"><BrandDock label={v.b.ptr} current={v.b.href.split('/').pop()} brands={props.brands || []} /><LocationSwitch here={v.loc.place} brand={v.b.short} items={v.swList || []} /><span className="crumb_since">Partner since {v.b.since}</span></div></div></Nav>
 
 {/* ============ HERO ============ */}
 {v.hasVid ? (<>
@@ -73,8 +74,10 @@ export default function LocationView(props: any) {
 </div>
 </>) : null}
 <a className="map_link" href="/locations">See partner map</a>
+{(v.sibPins || []).map((p: any) => (<a key={p.href} className="sibpin" href={p.href} style={{ left: p.left, top: p.top } as React.CSSProperties} aria-label={`Go to ${p.place}, ${p.mi}`}><span className="sibpin_dot"><svg width="10" height="10" viewBox="0 0 10 10" style={{ transform: `rotate(${p.rot})` }} aria-hidden="true"><path d="M1 5h8M5.5 1.5L9 5l-3.5 3.5" stroke="currentColor" fill="none" strokeWidth="1.2" /></svg></span>{p.place}<small>{p.mi}</small><span className="sibpin_go">&nbsp;Go</span></a>))}
 </section>
 
+{(v.sibPins || []).length ? (<div className="wrap"><nav className="sibline" aria-label={`Other ${v.b.short} locations`}><span className="sibline_k">Also from {v.b.short}</span>{v.sibPins.map((p: any) => (<a key={p.href} href={p.href}>{p.place}<small>{p.mi}</small></a>))}</nav></div>) : null}
 {/* ============ VISIT ============ */}
 <section className="visit" aria-label={`Visit ${v.title}`}>
 <div className="wrap visit_in">

@@ -4,13 +4,12 @@ import './treatments.css'
 /** Treatments a brand or location offers, as an index by category. Data: the `treatments` collection (src/lib/data.ts treatmentsFor). */
 export function Treatments({ groups, where }: { groups?: TxGroup[]; where: string }) {
   if (!groups?.length) return null
-  const n = groups.reduce((a, g) => a + g.items.length, 0)
   return (
     <section className="tx" aria-label="Treatments">
       <div className="tx_in">
         <div className="tx_head">
           <h2 className="eyebrow tx_k">The Treatments</h2>
-          <p className="tx_ct">{n} treatments / {where}</p>
+          {where ? <p className="tx_ct">{where}</p> : null}
         </div>
         <div className="tx_grid">
           {groups.map((g) => (
