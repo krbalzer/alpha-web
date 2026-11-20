@@ -5,6 +5,7 @@ import { Nav } from '@/components/site/Nav'
 import { useDC } from '@/lib/dc'
 import { LocationsEngine } from './engine'
 import { FocusMap } from '@/components/site/MapStage'
+import { PartnerDock } from '@/components/site/PartnerDock'
 import './page.css'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -14,6 +15,9 @@ export default function LocationsView(props: any) {
     <div className="pg-locations">
 
 <Nav dark></Nav>
+
+{/* ============ PARTNER DOCK: every brand, newest first ============ */}
+<PartnerDock items={v.dock || []} />
 
 {/* ============ MAP: every location ============ */}
 <section className="dmap dark" ref={v.setMap} aria-label="Partner map">
