@@ -74,7 +74,7 @@ export default function BrandView({ brand, brands }: { brand: BrandData; brands:
 <h2 className="h3">{v.b.practiceHeadline}</h2>
 <div className="body" dangerouslySetInnerHTML={{ __html: v.b.practiceHtml }} />
 </div>
-<div className="img ph" style={{"aspectRatio": "1.1 / 1"} as React.CSSProperties}>{v.b.practiceImg ? (<><img className="fill" src={v.b.practiceImg} alt="" loading="lazy" /></>) : null}</div>
+<div className="img ph pr_img" style={{"aspectRatio": "1.1 / 1"} as React.CSSProperties}>{v.b.practiceImg ? (<><img className="fill" src={v.b.practiceImg} alt="" loading="lazy" /></>) : null}</div>
 </div>
 </section>
 
@@ -165,7 +165,7 @@ export default function BrandView({ brand, brands }: { brand: BrandData; brands:
 <div className="body" dangerouslySetInnerHTML={{ __html: v.b.whyHtml }} />
 <Link className="btn" href="/talk" style={{"marginTop": "10px"} as React.CSSProperties}>Let's talk</Link>
 </div>
-<div className="img ph" style={{"aspectRatio": "4 / 5.2"} as React.CSSProperties}>{v.b.whyImg ? (<><img className="fill" src={v.b.whyImg} alt="" loading="lazy" /></>) : null}</div>
+<div className="img ph why_img" style={{"aspectRatio": "4 / 5.2"} as React.CSSProperties}>{v.b.whyImg ? (<><img className="fill" src={v.b.whyImg} alt="" loading="lazy" /></>) : null}</div>
 </div>
 </div>
 </section></>) : null}

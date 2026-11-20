@@ -304,3 +304,6 @@
 .pg-brand .b_top,.pg-brand .crumb{background:var(--bone)}
 .pg-brand .founder_next{margin-top:clamp(56px,6vw,96px)}
 
+
+/* mobile: the practice photo drops out; Why Alpha leads with its photo */
+@media (max-width:820px){.pg-brand .pr_img{display:none}.pg-brand .why_img{order:-1}}

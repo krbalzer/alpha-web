@@ -70,3 +70,9 @@ html body .mpp span { font-size: 10px; margin-top: 2px; display: block }
   html body .pg-locations .lc_go, html body .pg-locations .lc_or, html body .pg-locations .sh_s { font-size: 10px }
   html body .pg-location .addr { font-size: 10.5px }
 }
+
+/* breadcrumb bar on mobile: no top padding. It shares the nav's color now, so the line sits right under the nav and the page moves up */
+@media (max-width: 720px) {
+  html body .crumb .wrap { height: auto !important; min-height: 0 !important; padding-top: 0 !important; padding-bottom: 10px !important; align-items: flex-start !important }
+  html body .crumb.x .dock_btn { min-height: 0 !important; padding: 0 0 6px !important; margin-bottom: -6px !important }
+}
