@@ -717,3 +717,7 @@
 .pg-locations .dstats .rows{margin-top:12px;gap:0}
 .pg-locations .dstats .row{line-height:1.25;padding:3px 0;border-bottom:0}
 .pg-locations .dstats_note{margin:10px 0 0}
+
+/* map: more room below so Florida clears the bottom fade on desktop */
+@media (min-width:821px){.pg-locations .dmap{height:clamp(680px,60vw,940px)}}
+.pg-locations .map_fade2{background:linear-gradient(180deg,var(--map) 0%,rgba(21,21,19,0) 22%,rgba(21,21,19,0) 90%,var(--map) 100%)}

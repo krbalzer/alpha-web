@@ -83,7 +83,7 @@ export class LocationsEngine extends DCLogic {
     this.fly({ x: w.x, y: w.y, z: this.zc(), arc: !far, loc: l, dur: far ? 2400 : 3000, done: () => { this.selLoc = l; this.landed = true; this.pinG = !this.pinG; this.bump(); } });
     this.setState({ sel: i });
   }
-  home() { this.selLoc = null; this.landed = false; this.fly({ x: 600, y: 340, z: this.zu(), dur: 2000 }); this.setState({ sel: null }); }
+  home() { this.landed = false; this.fly({ x: 600, y: 340, z: this.zu(), dur: 2000 }); this.selLoc = null; this.setState({ sel: null }); }
   tick(now, dt) {
     const cam = this.cam0(), F = this.F;
     if (F) {
@@ -110,7 +110,9 @@ export class LocationsEngine extends DCLogic {
     const cam = this.cam0(), z = cam.z, zc = this.zc(), zu = this.zu();
     const k = Math.max(0, Math.min(1, (Math.log(z) - Math.log(zu)) / (Math.log(zc) - Math.log(zu))));
     const sm = (a, b, x) => { const t = Math.max(0, Math.min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
-    const cityA = sm(.6, .86, k);
+    /* the street layer (and the fade of dots and pins under it) only belongs to a location: zooming into a cluster stays on the dot map */
+    const nearLoc = !!(this.selLoc || (this.F && (this.F.toLoc || this.F.fromLoc)));
+    const cityA = nearLoc ? sm(.6, .86, k) : 0;
     const pit = (16 + 44 * k) * Math.PI / 180, ox = Wc / 2, oy = Hc * .5, Dp = Hc * 1.7;
     const cb = Math.cos(cam.b), sb = Math.sin(cam.b), cp = Math.cos(pit), sp = Math.sin(pit);
     const P = (wx, wy, u) => {

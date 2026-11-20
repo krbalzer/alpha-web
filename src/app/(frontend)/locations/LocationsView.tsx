@@ -24,7 +24,7 @@ export default function LocationsView(props: any) {
 <FocusMap loc={v.realFocus} setRef={v.setRealMap} /><canvas className="map_cv" ref={v.setCanvas} onMouseMove={v.onMove} onMouseLeave={v.onLeave} onClick={v.onClick} style={{"cursor": `${v.cursor}`} as React.CSSProperties} aria-hidden="true"></canvas>
 <div className="map_fade2" aria-hidden="true"></div>
 <div className="wrap dmap_head">
-<div><p className="eyebrow">The portfolio</p><h1 className="display dmap_t">Every partner,<br />on one map</h1></div>
+<div><h1 className="display dmap_t">Our partner<br />footprint</h1></div>
 <p className="mono dmap_hint">{v.hint}</p>
 </div>
 {v.hasTip ? (<>
