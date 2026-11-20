@@ -16,3 +16,6 @@
 
 /* mobile: the two eyebrows sit tight together */
 @media (max-width:820px){.tx_head{gap:0}}
+/* treatments: the location line sits right under the eyebrow */
+html body .tx_head .tx_k,html body .tx_head .tx_ct{margin:0 !important}
+@media (max-width:820px){html body .tx_head{gap:4px !important}}

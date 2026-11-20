@@ -111,7 +111,7 @@ export default function BrandView({ brand, brands }: { brand: BrandData; brands:
 {v.multi ? (<>
 <section style={{"paddingBottom": "clamp(90px, 10vw, 160px)"} as React.CSSProperties}>
 <div className="wrap">
-<div className="lx_head"><p className="eyebrow" style={{"margin": "0"} as React.CSSProperties}>The Locations</p><span className="eyebrow" style={{"margin": "0"} as React.CSSProperties}>{v.locCount}</span></div>
+<div className="lx_head"><p className="eyebrow" style={{"margin": "0"} as React.CSSProperties}>The Locations</p></div>
 <div className="lx_wrap">
 <div className={v.lxCls} ref={v.setLx}>
 {(v.locRows || []).map((l: any, l_i: number) => (<React.Fragment key={l_i}>

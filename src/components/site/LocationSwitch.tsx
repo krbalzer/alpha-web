@@ -21,16 +21,17 @@ export function LocationSwitch({ here, brand, items }: { here: string; brand: st
         {here}
         <svg width="9" height="6" viewBox="0 0 9 6" aria-hidden="true"><path d="M1 1l3.5 3.5L8 1" stroke="currentColor" fill="none" strokeWidth="1.3" /></svg>
       </button>
-      {open ? (
-        <span className="sw_menu" role="menu">
-          <span className="sw_k">{brand} locations</span>
-          {items.map((x) => (
-            <a key={x.href} className={'sw_i' + (x.here ? ' is-on' : '')} href={x.href} role="menuitem" aria-current={x.here ? 'page' : undefined}>
-              <b>{x.place}</b><span>{x.meta}</span>
+      <div className={'dock sw_dock' + (open ? ' is-open' : '')} role="region" aria-label={`${brand} locations`} hidden={!open}>
+        <div className="dock_grid">
+          {items.map((x, i) => (
+            <a key={x.href} className={'dock_i' + (x.here ? ' is-on' : '')} href={x.href} aria-current={x.here ? 'page' : undefined} style={{ '--i': i } as React.CSSProperties} onClick={() => setOpen(false)}>
+              <span className="dock_n">{x.meta}</span>
+              <span className="dock_name">{x.place}</span>
+              {x.here ? null : <span className="dock_go">View →</span>}
             </a>
           ))}
-        </span>
-      ) : null}
+        </div>
+      </div>
     </span>
   )
 }
