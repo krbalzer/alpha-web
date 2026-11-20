@@ -279,6 +279,7 @@ const PLACEMENTS: { file: string; alt: string; apply: (p: Payload, id: number) =
   { file: 'flawless/cta-menaul.jpg', alt: 'Late light at Menaul Blvd', apply: (p, id) => cta(p, 'Flawless / Menaul Blvd', 'flawless-medspa-wellness-albuquerque-nm', id) },
   // Refined Aesthetics, brand + Leesburg (finalra)
   { file: 'ra/inside-leesburg-sign.jpg', alt: 'The Refined sign on Church St, Leesburg', apply: (p, id) => brand(p, 'refined-aesthetics', (b) => ({ why: { ...(b.why as object), image: id } })) },
+  { file: 'ra/why-partnercon.jpg', alt: 'Refined Aesthetics on the dance floor at PartnerCon', apply: (p, id) => brand(p, 'refined-aesthetics', (b) => ({ why: { ...(b.why as object), image: id } })) },
   { file: 'ra/inside-leesburg-room.jpg', alt: 'A treatment room at Leesburg', apply: (p, id) => brand(p, 'refined-aesthetics', (b) => ({ practice: { ...(b.practice as object), image: id } })) },
   { file: 'ra/inside-leesburg-treatment.jpg', alt: 'A laser treatment at Leesburg', apply: (p, id) => inside(p, 'refined-aesthetics', id, 'Laser / Leesburg') },
   { file: 'ra/inside-king-st.jpg', alt: 'Downtown Leesburg at dusk', apply: (p, id) => inside(p, 'refined-aesthetics', id, 'Downtown / Leesburg') },
