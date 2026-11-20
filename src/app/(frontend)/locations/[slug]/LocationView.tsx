@@ -23,7 +23,7 @@ export default function LocationView(props: any) {
 {v.loc.heroVideo ? (<><video className="hero_vid" ref={v.vidRef} poster={v.loc.heroPoster} autoPlay muted loop playsInline preload="auto" aria-hidden="true">{v.loc.heroAv1 ? (<><source src={v.loc.heroAv1} type="video/mp4; codecs=av01.0.08M.08" /></>) : null}{v.loc.heroSmall ? (<><source src={v.loc.heroSmall} type="video/mp4" media="(max-width: 820px)" /></>) : null}<source src={v.loc.heroVideo} type="video/mp4" /></video></>) : null}{v.loc.noVideo ? (<><div className="hero_media" aria-hidden="true"></div></>) : null}
 <div className="hero_shade" aria-hidden="true"></div>
 <div className="hero_in wrap">
-<span className="pill">{v.b.ptr} location</span>{v.former ? (<><span className="formerly">Formerly {v.former}</span></>) : null}
+<span className="pill">{v.b.ptr}<span className="m_hide"> location</span></span>{v.former ? (<><span className="formerly">Formerly {v.former}</span></>) : null}
 <h1 className="h1">{v.title}</h1>
 <div className="hero_meta">
 <p className="addr">{v.loc.a1}, {v.loc.a2} /<br />{v.servicesLine}</p>
@@ -33,7 +33,7 @@ export default function LocationView(props: any) {
 <span className="est"><small>EST</small>{v.loc.est}</span>
 </div>
 <span className="spacer"></span>
-<div className="hero_ctas">{v.b.book ? (<><a className="btn" href={v.b.book} target="_blank" rel="noopener">Book at {v.b.short}<span className="ext" aria-hidden="true">↗</span></a></>) : null}<a className="btn" href="/talk">Partner with Alpha</a></div>
+<div className="hero_ctas">{v.b.book ? (<><a className="btn" href={v.b.book} target="_blank" rel="noopener"><span className="m_hide">Book at {v.b.short}</span><span className="m_show">Book here</span><span className="ext" aria-hidden="true">↗</span></a></>) : null}<a className="btn" href="/talk">Partner with Alpha</a></div>
 </div>
 </div>
 </section>
@@ -58,7 +58,7 @@ export default function LocationView(props: any) {
 </div>
 {v.mapHero ? (<>
 <div className="hero_in wrap map_hin">
-<span className="pill">{v.b.ptr} location</span>{v.former ? (<><span className="formerly">Formerly {v.former}</span></>) : null}
+<span className="pill">{v.b.ptr}<span className="m_hide"> location</span></span>{v.former ? (<><span className="formerly">Formerly {v.former}</span></>) : null}
 <h1 className="h1">{v.title}</h1>
 <div className="hero_meta">
 <p className="addr">{v.loc.a1}, {v.loc.a2} /<br />{v.servicesLine}</p>
@@ -68,7 +68,7 @@ export default function LocationView(props: any) {
 <span className="est"><small>EST</small>{v.loc.est}</span>
 </div>
 <span className="spacer"></span>
-<div className="hero_ctas">{v.b.book ? (<><a className="btn" href={v.b.book} target="_blank" rel="noopener">Book at {v.b.short}<span className="ext" aria-hidden="true">↗</span></a></>) : null}<a className="btn" href="/talk">Partner with Alpha</a></div>
+<div className="hero_ctas">{v.b.book ? (<><a className="btn" href={v.b.book} target="_blank" rel="noopener"><span className="m_hide">Book at {v.b.short}</span><span className="m_show">Book here</span><span className="ext" aria-hidden="true">↗</span></a></>) : null}<a className="btn" href="/talk">Partner with Alpha</a></div>
 </div>
 </div>
 </>) : null}
@@ -82,7 +82,7 @@ export default function LocationView(props: any) {
 {v.visit.hasHours ? (<><div className="v_col"><p className="eyebrow">Hours</p><div className="v_rows">{(v.visit.hours || []).map((h: any, h_i: number) => (<React.Fragment key={h_i}><div><span>{h.d}</span><b>{h.t}</b></div></React.Fragment>))}</div></div></>) : null}
 {v.visit.phone ? (<><div className="v_col"><p className="eyebrow">Phone</p><p className="v_t"><a href={v.visit.tel}>{v.visit.phone}</a></p></div></>) : null}
 {v.visit.arrive ? (<><div className="v_col"><p className="eyebrow">Arriving</p><p className="v_t">{v.visit.arrive}</p></div></>) : null}
-<div className="v_cta">{v.b.book ? (<><a className="btn" href={v.b.book} target="_blank" rel="noopener">Book at {v.b.short}<span className="ext" aria-hidden="true">↗</span></a></>) : null}</div>
+<div className="v_cta">{v.b.book ? (<><a className="btn" href={v.b.book} target="_blank" rel="noopener"><span className="m_hide">Book at {v.b.short}</span><span className="m_show">Book here</span><span className="ext" aria-hidden="true">↗</span></a></>) : null}</div>
 </div>
 </section>
 
@@ -153,7 +153,7 @@ export default function LocationView(props: any) {
 <div className="wrap">
 <hr className="rule" style={{"marginBottom": "clamp(36px, 4vw, 60px)"} as React.CSSProperties} />
 <div className="rv_head">
-<div><h2 className="sec_t">What patients say<br />about their experience</h2><p className="sub">From patients of {v.loc.label}, on Google.</p></div>
+<div><h2 className="sec_t">What patients<br />have to say</h2><p className="sub">From patients of {v.loc.label}, on Google.</p></div>
 <div className="rv_agg"><span className="rv_n">{v.rv.rating}</span><span className="rv_st" role="img" aria-label={`${v.rv.rating} out of 5 stars`}><i style={{"width": `${v.rv.pct}%`} as React.CSSProperties}></i></span><span className="rv_c">{v.rv.count} Google reviews</span><a className="rv_all" href={v.rv.uri} target="_blank" rel="noopener">Read all on Google<span className="ext" aria-hidden="true">↗</span></a></div>
 </div>
 <div className="rv">{(v.rv.items || []).map((r: any, r_i: number) => (<React.Fragment key={r_i}><figure className={r.cls}>{r.tag ? (<><span className="rv_tag">{r.tag}</span></>) : null}<blockquote>{r.t}</blockquote>{r.long ? (<><label className="rv_more"><input type="checkbox" className="rv_x" /><span className="rv_m">Read more</span><span className="rv_l">Show less</span></label></>) : null}<figcaption className="rv_f"><span><a className="rv_who" href={r.whoUri} target="_blank" rel="noopener nofollow"><b>{r.who}</b></a> / {r.when}</span><span>via Google</span></figcaption></figure></React.Fragment>))}</div>

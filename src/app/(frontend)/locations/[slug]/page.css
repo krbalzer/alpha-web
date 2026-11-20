@@ -411,3 +411,14 @@ html body .pg-location .ms p{font-size:12.5px;line-height:1.45}
 @media (max-width:820px){html body .pg-location .ms li{grid-template-columns:6rem minmax(0,1fr)}}
 /* display caps section titles: reviews, since partnering */
 html body .pg-location .sec_t{font-family:var(--disp);font-weight:900;text-transform:uppercase;font-size:clamp(38px,4.4vw,72px);line-height:.88;letter-spacing:-.005em;margin:0 0 14px}
+
+/* mobile: short labels, a bigger review score with its stars beside it, Since partnering stacked */
+.pg-location .m_show{display:none}
+@media (max-width:820px){
+html body .pg-location .m_hide{display:none}
+html body .pg-location .m_show{display:inline}
+html body .pg-location .rv_agg{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:16px;row-gap:4px;align-items:center;justify-content:start}
+html body .pg-location .rv_agg .rv_n{grid-column:1;grid-row:1/span 3;font-size:72px;align-self:center}
+html body .pg-location .rv_agg .rv_st,html body .pg-location .rv_agg .rv_c,html body .pg-location .rv_agg .rv_all{grid-column:2;margin:0;align-self:center}
+html body .pg-location .since{grid-template-columns:1fr;gap:24px}
+}
