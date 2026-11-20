@@ -24,7 +24,7 @@ export default function LocationView(props: any) {
 {v.loc.heroVideo ? (<><video className="hero_vid" ref={v.vidRef} poster={v.loc.heroPoster} autoPlay muted loop playsInline preload="auto" aria-hidden="true">{v.loc.heroAv1 ? (<><source src={v.loc.heroAv1} type="video/mp4; codecs=av01.0.08M.08" /></>) : null}{v.loc.heroSmall ? (<><source src={v.loc.heroSmall} type="video/mp4" media="(max-width: 820px)" /></>) : null}<source src={v.loc.heroVideo} type="video/mp4" /></video></>) : null}{v.loc.noVideo ? (<><div className="hero_media" aria-hidden="true"></div></>) : null}
 <div className="hero_shade" aria-hidden="true"></div>
 <div className="hero_in wrap">
-<span className="pill">{v.b.ptr}<span className="m_hide"> location</span></span>{v.former ? (<><span className="formerly">Formerly {v.former}</span></>) : null}
+<span className="pill">{v.b.ptr}</span>{v.former ? (<><span className="formerly">Formerly {v.former}</span></>) : null}
 <h1 className="h1">{v.title}</h1>
 <div className="hero_meta">
 <p className="addr">{v.loc.a1}, {v.loc.a2} /<br />{v.servicesLine}</p>
@@ -59,7 +59,7 @@ export default function LocationView(props: any) {
 </div>
 {v.mapHero ? (<>
 <div className="hero_in wrap map_hin">
-<span className="pill">{v.b.ptr}<span className="m_hide"> location</span></span>{v.former ? (<><span className="formerly">Formerly {v.former}</span></>) : null}
+<span className="pill">{v.b.ptr}</span>{v.former ? (<><span className="formerly">Formerly {v.former}</span></>) : null}
 <h1 className="h1">{v.title}</h1>
 <div className="hero_meta">
 <p className="addr">{v.loc.a1}, {v.loc.a2} /<br />{v.servicesLine}</p>
