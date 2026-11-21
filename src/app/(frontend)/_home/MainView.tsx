@@ -12,6 +12,31 @@ import './page.css'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function MainView(props: any) {
   const v = useDC(MainEngine, props)
+  /* mobile: the film viewer sticks at the top of its section, so the partner under it becomes the one on screen */
+  const vRef = React.useRef(v); vRef.current = v
+  React.useEffect(() => {
+    let raf = 0, last = -1
+    const f = () => {
+      if (window.innerWidth > 900) return
+      const pv = document.querySelector('.pg-main .p_viewer') as HTMLElement | null, rows = Array.from(document.querySelectorAll('.pg-main .p_list .p_row')) as HTMLElement[]
+      if (!pv || !rows.length) return
+      const line = pv.getBoundingClientRect().bottom + 24
+      let i = 0
+      rows.forEach((r, k) => { if (r.getBoundingClientRect().top <= line) i = k })
+      if (i !== last) { last = i; const p = (vRef.current.partners || [])[i]; if (p && p.focus) p.focus() }
+    }
+    const on = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(f) }
+    addEventListener('scroll', on, { passive: true }); addEventListener('resize', on)
+    return () => { removeEventListener('scroll', on); removeEventListener('resize', on); cancelAnimationFrame(raf) }
+  }, [])
+  /* lightbox: drag or swipe sideways for the next / previous film */
+  const sw = React.useRef<{ x: number; y: number } | null>(null)
+  const swDown = (e: React.PointerEvent) => { sw.current = { x: e.clientX, y: e.clientY } }
+  const swUp = (e: React.PointerEvent) => {
+    const s0 = sw.current; sw.current = null; if (!s0) return
+    const dx = e.clientX - s0.x, dy = e.clientY - s0.y
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) { if (dx < 0) v.thNext(); else v.thPrev() }
+  }
   return (
     <div className="pg-main">
 
@@ -298,7 +323,7 @@ export default function MainView(props: any) {
 {v.thOpen ? (<>
 <div className="theater" role="dialog" aria-modal="true" aria-label="Brand film" tabIndex={-1} ref={v.thRef} onKeyDown={v.thKey}>
 <div className="th_bar"><span>Film {v.th.idx} of {v.th.total}</span><button className="th_close" onClick={v.thClose}>Close <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" strokeWidth="1.4"></path></svg></button></div>
-<div className="th_stage">
+<div className="th_stage" onPointerDown={swDown} onPointerUp={swUp} onPointerCancel={() => { sw.current = null }}>
 <button className="th_arrow" aria-label="Previous film" onClick={v.thPrev}><svg width="14" height="12" viewBox="0 0 14 12" aria-hidden="true"><path d="M13 6H1M6 1L1 6l5 5" stroke="currentColor" fill="none" strokeWidth="1.3"></path></svg></button>
 <div className="th_screen">{v.th.src ? (<><video className="th_vid" src={v.th.src} poster={v.th.poster} ref={v.thVid} autoPlay controls playsInline></video></>) : null}
 <div className={v.th.pcls} style={{"background": `${v.th.tone}`} as React.CSSProperties}>

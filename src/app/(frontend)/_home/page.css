@@ -455,3 +455,12 @@ html body .pg-main .story{flex:0 0 var(--sw)}
 @media (max-width:900px){.pg-main .ldg_row{grid-template-columns:1fr auto;gap:10px 16px}.pg-main .ldg_row:hover{padding-left:4px;padding-right:4px}.pg-main .ldg_line{grid-column:1/-1;grid-row:2}.pg-main .ldg_avs{grid-column:1/-1;grid-row:3;justify-content:flex-start;min-width:0}.pg-main .ldg_go{grid-row:1;grid-column:2;width:36px;height:36px}.pg-main .ldg_avs .av,.pg-main .ldg_more{width:48px;height:48px;margin-left:-18px}}
 @media (hover:none){.pg-main .ldg_row:hover .ldg_avs .av,.pg-main .ldg_row:hover .ldg_more{margin-left:-18px}.pg-main .ldg_row:hover .ldg_avs > :first-child{margin-left:0}}
 @media (prefers-reduced-motion:reduce){.pg-main .ldg_row,.pg-main .ldg_avs .av,.pg-main .ldg_more{transition:none}}
+
+/* mobile films: viewer + info stick to the top of the section; lightbox gets arrows over the film and swipe */
+@media (max-width:900px){
+html body .pg-main .p_viewer{position:sticky;top:0;z-index:4;background:var(--bone);padding:12px 0 14px;margin-top:-12px}
+html body .pg-main .th_stage{position:relative;touch-action:pan-y}
+html body .pg-main .th_arrow{display:grid;position:absolute;top:50%;transform:translateY(-50%);z-index:4;width:42px;height:42px;background:rgba(10,10,9,.55);border-color:rgba(243,240,233,.35)}
+html body .pg-main .th_stage>.th_arrow:first-child{left:8px}
+html body .pg-main .th_stage>.th_arrow:last-child{right:8px}
+}
