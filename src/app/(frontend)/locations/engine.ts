@@ -88,8 +88,11 @@ export class LocationsEngine extends DCLogic {
     const cam = this.cam0(), F = this.F;
     if (F) {
       const t = Math.min(1, (now - F.t0) / F.dur), e = t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2, lzA = Math.log(F.zA), lzE = Math.log(F.zEnd);
-      cam.x = F.a.x + (F.b.x - F.a.x) * e; cam.y = F.a.y + (F.b.y - F.a.y) * e;
       const base = lzA + (lzE - lzA) * e; cam.z = Math.exp(F.zMid ? base + (Math.log(F.zMid) - base) * Math.pow(Math.sin(Math.PI * t), .8) : base);
+      /* zooming in: the target's screen offset shrinks steadily, so the dot glides to center as the map dives toward it,
+         instead of zooming on the middle of the screen and sliding over at the end. Arcs and zoom-outs keep the straight pan. */
+      if (!F.zMid && F.zEnd > F.zA) { const k = (F.zA / cam.z) * (1 - e); cam.x = F.b.x - (F.b.x - F.a.x) * k; cam.y = F.b.y - (F.b.y - F.a.y) * k; }
+      else { cam.x = F.a.x + (F.b.x - F.a.x) * e; cam.y = F.a.y + (F.b.y - F.a.y) * e; }
       cam.b = F.b0 * (1 - Math.min(1, t / .45));
       if (t >= 1) { this.F = null; if (F.done) F.done(); else this.bump(); }
     } else if (this.landed && !this.rm) cam.b += dt * .000016;
