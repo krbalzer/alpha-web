@@ -454,3 +454,11 @@ html body .pg-location .crumb.x .crumb_here.sw{overflow:visible;position:static}
 .pg-location .sw_dock .dock_i{min-height:84px}
 .pg-location .sw_dock .dock_name{font-size:12px;font-weight:700}
 @media (max-width:720px){html body .pg-location .sw_dock{border:0}}
+
+/* "Also from" strip: full-width black band, light type */
+.pg-location .sibline_bg{background:var(--ink);color:var(--paper)}
+html body .pg-location .sibline{border-bottom:0;padding:16px 0}
+html body .pg-location .sibline_k{color:var(--muted-d)}
+html body .pg-location .sibline a{color:var(--paper);border-bottom-color:var(--line-d)}
+html body .pg-location .sibline a small{color:var(--muted-d)}
+@media (max-width:820px){html body .pg-location .sibline{row-gap:8px}html body .pg-location .sibline_k{flex-basis:100%;margin-bottom:-8px}}
