@@ -58,6 +58,7 @@ const PLACEMENTS: { file: string; alt: string; apply: (p: Payload, id: number) =
   { file: 'prive/founder-brandice-harrison.jpg', alt: 'Brandice Harrison', apply: (p, id) => founder(p, 'brandice-harrison', { headshot: id }) },
   { file: 'prive/portrait-brandice-harrison.jpg', alt: 'Brandice Harrison at Privé', apply: (p, id) => founder(p, 'brandice-harrison', { portrait: id }) },
   { file: 'prive/founder-becky-mcdonald.jpg', alt: 'Becky McDonald', apply: (p, id) => founder(p, 'becky-mcdonald', { headshot: id }) },
+  { file: 'prive/founder-becky-mcdonald-final.jpg', alt: 'Becky McDonald', apply: (p, id) => founder(p, 'becky-mcdonald', { headshot: id }) },
   { file: 'prive/founder-brandice-harrison-final.jpg', alt: 'Brandice Harrison', apply: (p, id) => founder(p, 'brandice-harrison', { headshot: id }) },
   { file: 'prive/practice-front-desk.jpg', alt: 'The front desk at Privé', apply: (p, id) => brand(p, 'prive', (b) => ({ practice: { ...(b.practice as object), image: id } })) },
   { file: 'prive/cta-lexington-seats.jpg', alt: 'The grandstand seats at Keeneland', apply: async (p, id) => { await p.update({ collection: 'cta-images', where: { label: { equals: 'Privé / Lexington' } }, data: { active: false } as never }); await cta(p, 'Privé / Lexington, Keeneland seats', 'prive-lexington-ky', id) } },
