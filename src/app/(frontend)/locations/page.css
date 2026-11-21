@@ -721,3 +721,21 @@
 /* map: more room below so Florida clears the bottom fade on desktop */
 @media (min-width:821px){.pg-locations .dmap{height:clamp(680px,60vw,940px)}}
 .pg-locations .map_fade2{background:linear-gradient(180deg,var(--map) 0%,rgba(21,21,19,0) 22%,rgba(21,21,19,0) 90%,var(--map) 100%)}
+
+/* mobile: dock with no top padding, a free swipe/drag row that runs off the right edge, no arrows */
+@media (max-width:900px){
+html body .pg-locations .pdock{padding-top:0}
+html body .pg-locations .pdock_row{gap:0}
+html body .pg-locations .pdock_row>button{display:none}
+html body .pg-locations .pdock_v{overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;scrollbar-width:none;margin-right:calc(-1 * clamp(16px,4.5vw,64px));cursor:grab}
+html body .pg-locations .pdock_v::-webkit-scrollbar{display:none}
+html body .pg-locations .pdock_l{transform:none !important;transition:none;padding-right:clamp(16px,4.5vw,64px)}
+html body .pg-locations .pdock_l li{flex:0 0 64px}
+html body .pg-locations .pdock_c{width:56px}
+}
+/* mobile: the selected-location card fits inside the map and scrolls if it's taller */
+@media (max-width:640px){
+html body .pg-locations .pan{top:auto;bottom:12px;max-height:calc(100% - 24px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}
+html body .pg-locations .pan::-webkit-scrollbar{display:none}
+html body .pg-locations .pan_img{aspect-ratio:2.2/1}
+}

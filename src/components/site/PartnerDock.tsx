@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type Item = { n: string; name: string; href: string; hasMark: boolean }
 
@@ -14,6 +14,12 @@ export function PartnerDock({ items }: { items: Item[] }) {
     return () => window.removeEventListener('resize', fit)
   }, [])
   const mx = Math.max(0, items.length - pv), at = Math.min(i, mx), step = Math.max(1, pv - 1)
+  /* mobile: the row is a native scroller; a mouse can click-drag it too */
+  const vp = useRef<HTMLDivElement>(null)
+  const drag = useRef<{ x: number; left: number; moved: boolean } | null>(null)
+  const down = (e: React.PointerEvent) => { const el = vp.current; if (e.pointerType !== 'mouse' || !el || el.scrollWidth <= el.clientWidth + 2) return; drag.current = { x: e.clientX, left: el.scrollLeft, moved: false } }
+  const move = (e: React.PointerEvent) => { const d = drag.current, el = vp.current; if (!d || !el) return; const dx = e.clientX - d.x; if (Math.abs(dx) > 4) d.moved = true; el.scrollLeft = d.left - dx }
+  const up = () => { setTimeout(() => { drag.current = null }, 0) }
   const arrow = (d: 1 | -1) => (
     <button type="button" aria-label={d < 0 ? 'Previous brands' : 'Next brands'} disabled={d < 0 ? at === 0 : at >= mx}
       onClick={() => setI(Math.max(0, Math.min(mx, at + d * step)))}>
@@ -24,7 +30,7 @@ export function PartnerDock({ items }: { items: Item[] }) {
     <nav className="pdock" aria-label="Partner brands" style={{ ['--pv' as string]: String(pv) }}>
       <div className="wrap pdock_row">
         {arrow(-1)}
-        <div className="pdock_v">
+        <div className="pdock_v" ref={vp} onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerLeave={up} onClickCapture={(e) => { if (drag.current?.moved) { e.preventDefault(); e.stopPropagation() } }}>
           <ul className="pdock_l" style={{ transform: `translateX(calc(${-at} * ((100% - (var(--pv) - 1) * var(--pg)) / var(--pv) + var(--pg))))` }}>
             {items.map((d) => (
               <li key={d.n}>
