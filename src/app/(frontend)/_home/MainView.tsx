@@ -23,7 +23,7 @@ export default function MainView(props: any) {
       const line = pv.getBoundingClientRect().bottom + 24
       let i = 0
       rows.forEach((r, k) => { if (r.getBoundingClientRect().top <= line) i = k })
-      if (i !== last) { last = i; const p = (vRef.current.partners || [])[i]; if (p && p.focus) p.focus() }
+      if (i !== last) { last = i; const ps = vRef.current.partners || [], p = ps[ps.length - 1 - i]; if (p && p.focus) p.focus() }
     }
     const on = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(f) }
     addEventListener('scroll', on, { passive: true }); addEventListener('resize', on)
@@ -127,10 +127,10 @@ export default function MainView(props: any) {
 <section id="partners" className="partners">
 <div className="wrap">
 <h2 className="display h2">The partners raising<br />the standard</h2>
-<p className="lede">Every brand in the network, in the order they joined, and the founder who built it. Open a brand for its story, or a founder for theirs.</p>
+<p className="lede">Every brand in the network, newest first, and the founder who built it. Open a brand for its story, or a founder for theirs.</p>
 <div className="p_grid">
 <div className="p_list" role="list">
-{(v.partners || []).map((p: any, p_i: number) => (<React.Fragment key={p_i}>
+{(v.partners || []).slice().reverse().map((p: any, p_i: number) => (<React.Fragment key={p_i}>
 <a className={p.cls} href={p.href} onMouseEnter={p.hover} onFocus={p.focus} role="listitem" style={{"textDecoration": "none"} as React.CSSProperties}><span>{p.n}</span><span className="nm">{p.name}</span><span className="ct">{p.city}</span><span className="yr">{p.yr}</span></a>
 </React.Fragment>))}
 </div>

@@ -81,7 +81,7 @@ export class MainEngine extends DCLogic {
   sim0() {
     if (this.S) return this.S;
     const S = { tk: 0, min: 9 * 60, c1: 0, ans: 0, rt: [], fired: {}, lines: [], rings: [], sso: {}, chips: [], snaps: [], moment: { on: false, until: 0 }, flash: {}, jobs: [], feed: [], lastSnap: [], inView: true,
-      pi: 1, pvFrom: -99, th: false, thPlay: false, tt: 0, thG: 0 };
+      pi: Math.max(0, (this.data().P || []).length - 1), pvFrom: -99, th: false, thPlay: false, tt: 0, thG: 0 };
     for (let i = 0; i < 3; i++) S.chips.push({ on: false, until: 0, d: null, rect: null });
     for (let i = 0; i < 2; i++) S.snaps.push({ on: false, until: 0, label: '', bg: '', rect: null });
     this.S = S;
@@ -318,7 +318,7 @@ export class MainEngine extends DCLogic {
     const pv = S.tk >= S.pvFrom && S.tk < S.pvFrom + 16;
     const tsec = Math.floor(S.tt), capIdx = Math.floor(S.tt / 6) % 4;
     const FL = P.filter((p) => p.film && p.film.src), cf = c.film || {}, wide = typeof window === 'undefined' || window.innerWidth > 820;
-    const th = { total: FL.length, src: cf.src ? (wide ? cf.src : (cf.small || cf.src)) : '', poster: c.filmPoster || c.img || '', idx: Math.max(1, FL.indexOf(c) + 1), n: c.n, name: c.name, founder: c.founder, role: c.role || 'Founder', cityLong: c.city, tone: c.tone, hasImg: !!c.img, noImg: !c.img, img: c.img || '',
+    const th = { total: FL.length, src: cf.src ? (wide ? cf.src : (cf.small || cf.src)) : '', poster: c.filmPoster || c.img || '', idx: Math.max(1, FL.length - FL.indexOf(c)), n: c.n, name: c.name, founder: c.founder, role: c.role || 'Founder', cityLong: c.city, tone: c.tone, hasImg: !!c.img, noImg: !c.img, img: c.img || '',
       pcls: 'th_poster' + (S.thPlay ? (S.thG ? ' kbA' : ' kbB') : ''), pct: (S.tt / 90 * 100).toFixed(2), time: Math.floor(tsec / 60) + ':' + (tsec % 60 < 10 ? '0' : '') + (tsec % 60),
       cap: D.CAPS[capIdx % 3], capOp: capIdx < 3 && S.tt > 1.2 ? 1 : 0, ppIcon: S.thPlay ? '❚❚' : '▶', ppLabel: S.thPlay ? 'Pause' : 'Play' };
 
@@ -367,8 +367,8 @@ export class MainEngine extends DCLogic {
       partners, posters, cur, frameCls: 'p_frame' + (pv ? ' is-preview' : ''), openCur: () => { const c = P[this.S.pi]; if (c.film && c.film.src) this.thOpen(this.S.pi); else if (typeof window !== 'undefined') window.location.assign(c.href); },
       thOpen: S.th, th,
       thRef: (el) => { if (el && el !== this._th) { this._th = el; el.focus(); } },
-      thKey: (e) => { if (e.key === 'Escape') this.thClose(); else if (e.key === 'ArrowRight') this.thLoad(this.S.pi + 1); else if (e.key === 'ArrowLeft') this.thLoad(this.S.pi - 1); else if (e.key === ' ' && e.target === e.currentTarget) { e.preventDefault(); const vd = this._th && this._th.querySelector('video'); if (vd) { if (vd.paused) vd.play(); else vd.pause(); } } },
-      thClose: () => this.thClose(), thVid: (el) => { if (el && el !== this._tv) { this._tv = el; const p = el.play(); if (p && p.catch) p.catch(() => {}); } }, thPrev: () => this.thLoad(this.S.pi - 1), thNext: () => this.thLoad(this.S.pi + 1),
+      thKey: (e) => { if (e.key === 'Escape') this.thClose(); else if (e.key === 'ArrowRight') this.thLoad(this.S.pi - 1); else if (e.key === 'ArrowLeft') this.thLoad(this.S.pi + 1); else if (e.key === ' ' && e.target === e.currentTarget) { e.preventDefault(); const vd = this._th && this._th.querySelector('video'); if (vd) { if (vd.paused) vd.play(); else vd.pause(); } } },
+      thClose: () => this.thClose(), thVid: (el) => { if (el && el !== this._tv) { this._tv = el; const p = el.play(); if (p && p.catch) p.catch(() => {}); } }, thPrev: () => this.thLoad(this.S.pi + 1), thNext: () => this.thLoad(this.S.pi - 1),
       thToggle: () => { const T = this.S; if (T.tt >= 90) T.tt = 0; T.thPlay = !T.thPlay; this.bump(); },
       depts, deptShift: 'calc(' + (-di) + ' * (clamp(260px, 22vw, 300px) + 14px))', deptPrev: () => set({ dept: Math.max(0, di - 1) }), deptNext: () => set({ dept: Math.min(dMax, di + 1) }), deptAtStart: di === 0, deptAtEnd: di === dMax,
       stories, storyShift: 'calc(' + (-si) + ' * (var(--sw) + 10px))', storyPrev: () => set({ story: Math.max(0, si - 1) }), storyNext: () => set({ story: Math.min(sMax, si + 1) }), storyAtStart: si === 0, storyAtEnd: si === sMax,

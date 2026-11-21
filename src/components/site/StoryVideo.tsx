@@ -6,6 +6,14 @@ import { useEffect, useRef, useState } from 'react'
 export function StoryVideo({ src, preview, poster, quote }: { src: string; preview?: string; poster?: string; quote: string }) {
   const v = useRef<HTMLVideoElement>(null)
   const [mode, setMode] = useState<'still' | 'hover' | 'play'>('still')
+  /* only one story plays with sound at a time: starting one stops the others */
+  const me = useRef({})
+  useEffect(() => {
+    const stop = (e: Event) => { if ((e as CustomEvent).detail !== me.current) setMode((m) => (m === 'play' ? 'still' : m)) }
+    window.addEventListener('story:play', stop)
+    return () => window.removeEventListener('story:play', stop)
+  }, [])
+  useEffect(() => { if (mode === 'play') window.dispatchEvent(new CustomEvent('story:play', { detail: me.current })) }, [mode])
   useEffect(() => {
     const el = v.current
     if (!el || mode !== 'play') return
