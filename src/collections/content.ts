@@ -1,3 +1,4 @@
+import { admin, adminField, allow } from '../access'
 import { guard } from './guard'
 import type { CollectionConfig, GlobalConfig } from 'payload'
 import { img, live, publicRead, seo, slug } from './fields'
@@ -49,7 +50,7 @@ export const Resources: CollectionConfig = {
 /** Network numbers live in one place. Homepage, menu and Locations read from here. */
 export const Network: GlobalConfig = {
   slug: 'network',
-  access: { read: () => true },
+  access: { read: () => true, update: admin },
   fields: [
     { type: 'row', fields: [
       { name: 'brandsOverride', type: 'number', admin: { description: 'Leave empty to count live Brands.' } },
@@ -61,7 +62,7 @@ export const Network: GlobalConfig = {
     { name: 'linkedin', type: 'text' },
     {
       name: 'suppressed', label: 'Never publish', type: 'array',
-      access: { read: ({ req }) => !!req.user, update: ({ req }) => !!req.user },
+      access: { read: ({ req }) => !!req.user, update: adminField },
       admin: { description: 'People who must not appear anywhere on the site. Any save that mentions one of these names is blocked. Staff only; never sent to the site.' },
       fields: [{ name: 'name', type: 'text', required: true }],
     },
@@ -87,7 +88,7 @@ export const Legal: CollectionConfig = {
 /** Let's talk submissions. Written by /talk/submit; staff only. */
 export const Leads: CollectionConfig = {
   slug: 'leads',
-  access: { read: ({ req }) => !!req.user, create: () => false, update: ({ req }) => !!req.user, delete: ({ req }) => !!req.user },
+  access: { read: allow('partnerships'), create: () => false, update: allow('partnerships'), delete: admin },
   admin: { useAsTitle: 'email', defaultColumns: ['createdAt', 'kind', 'name', 'practice', 'email', 'status'] },
   defaultSort: '-createdAt',
   fields: [

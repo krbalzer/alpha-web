@@ -2,6 +2,7 @@ import { guard } from './guard'
 import type { CollectionConfig } from 'payload'
 import { img, live, publicRead, seo, slug } from './fields'
 
+
 export const Shows: CollectionConfig = {
   slug: 'shows',
   access: publicRead,
@@ -64,6 +65,7 @@ export const Episodes: CollectionConfig = {
     { name: 'pullQuotes', type: 'array', admin: { description: 'Verbatim from the transcript, with timestamp.' }, fields: [
       { name: 'text', type: 'textarea' }, { name: 'at', type: 'text' },
     ] },
+    { name: 'transcriptRaw', label: 'Transcript (source)', type: 'textarea', admin: { rows: 12, description: 'Synced from the show\'s Drive Transcripts folder (SHOW_E###_Title.txt). Chapters, quotes and topics are drafted from this.' } },
     { name: 'transcript', type: 'richText' },
     { name: 'video', label: 'YouTube URL', type: 'text' },
     live,
@@ -80,7 +82,7 @@ export const Speakers: CollectionConfig = {
   fields: [
     { name: 'name', type: 'text', required: true },
     { name: 'role', type: 'text' },
-    img('headshot'),
+    { name: 'headshot', type: 'upload', relationTo: 'media', admin: { description: 'Original, uncropped, at least 1200px, plain background.' } },
     { name: 'bio', type: 'textarea' },
     { name: 'teamMember', type: 'relationship', relationTo: 'team', admin: { description: 'Link if they are on the Alpha team.' } },
     { name: 'founder', type: 'relationship', relationTo: 'founders', admin: { description: 'Link if they are a partner founder.' } },

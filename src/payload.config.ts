@@ -3,7 +3,7 @@ import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import path from 'path'
-import { buildConfig } from 'payload'
+import { buildConfig, type CollectionConfig } from 'payload'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
@@ -13,8 +13,17 @@ import { Brands, CtaImages, Founders, Locations, TuckIns } from './collections/n
 import { Episodes, Shows, Speakers, Tags } from './collections/podcast'
 import { Departments, Team } from './collections/team'
 import { Users } from './collections/Users'
+import { Jobs } from './collections/jobs'
+import { visibleTo, type Role } from './access'
 import { Treatments } from './collections/treatments'
 import { migrations } from './migrations'
+
+/** Who sees which collection in the admin nav. Admin sees everything; unlisted collections are admin-only. */
+const NAV: Record<string, Role[]> = {
+  leads: ['partnerships'],
+  media: ['contributor'],
+}
+const nav = (c: CollectionConfig): CollectionConfig => ({ ...c, admin: { ...c.admin, hidden: c.admin?.hidden ?? visibleTo(...(NAV[c.slug] || [])) } })
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 // Neon on Vercel sets POSTGRES_URL / DATABASE_URL; locally fall back to a SQLite file
@@ -40,12 +49,14 @@ export default buildConfig({
     Shows, Episodes, Speakers, Tags,
     // content
     Articles, Resources, Legal,
+    // people
+    Jobs,
     // inbox
     Leads,
     // system
     Media, Users,
-  ],
-  globals: [Network],
+  ].map(nav),
+  globals: [{ ...Network, admin: { ...Network.admin, hidden: visibleTo() } }],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },
@@ -58,6 +69,7 @@ export default buildConfig({
       enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
       collections: { media: { disablePayloadAccessControl: true } }, // files served straight from the Blob CDN, not proxied through a function
       alwaysInsertFields: true, // same schema with or without the token, so migrations never drift
+      clientUploads: true, // browser uploads straight to Blob; full-res photos would hit Vercel's 4.5 MB function body limit
       token: process.env.BLOB_READ_WRITE_TOKEN || '',
     }),
   ],

@@ -37,4 +37,4 @@ export const live: Field = {
   admin: { position: 'sidebar', description: 'Off hides it everywhere on the site.' },
 }
 
-export const publicRead = { read: () => true }
+export { publicRead } from '../access'
