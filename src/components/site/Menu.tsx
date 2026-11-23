@@ -19,6 +19,7 @@ export function Menu() {
     ['Pathway', '/how-it-works', 'From first call to fully integrated'],
     ['Podcasts', '/podcasts', 'Every show in the network'],
     ['About', '/about', 'Built by operators'],
+    ['Careers', '/careers', 'Open roles across the network'],
     ['News', '/newswire', 'From the newswire'],
   ]
   const live = s.ep || s.latest

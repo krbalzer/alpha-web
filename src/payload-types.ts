@@ -82,6 +82,7 @@ export interface Config {
     articles: Article;
     resources: Resource;
     legal: Legal;
+    jobs: Job;
     leads: Lead;
     media: Media;
     users: User;
@@ -119,6 +120,7 @@ export interface Config {
     articles: ArticlesSelect<false> | ArticlesSelect<true>;
     resources: ResourcesSelect<false> | ResourcesSelect<true>;
     legal: LegalSelect<false> | LegalSelect<true>;
+    jobs: JobsSelect<false> | JobsSelect<true>;
     leads: LeadsSelect<false> | LeadsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -613,6 +615,10 @@ export interface Location {
   phone?: string | null;
   bookingUrl?: string | null;
   /**
+   * Exactly as job postings name this location in Paylocity. Matches open jobs to this page.
+   */
+  paylocityName?: string | null;
+  /**
    * Google Maps listing for this location. Rating, reviews and (when Hours is empty) opening hours sync from it once a day, on deploy.
    */
   googlePlaceId?: string | null;
@@ -658,6 +664,10 @@ export interface Location {
          */
         when: string;
         line: string;
+        /**
+         * Who confirmed it, e.g. Jess York, Q1 2027. Not shown on the site.
+         */
+        source?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -741,6 +751,35 @@ export interface Media {
   id: number;
   alt: string;
   /**
+   * Which partner this is for.
+   */
+  brand?: (number | null) | Brand;
+  /**
+   * Optional: a specific address.
+   */
+  location?: (number | null) | Location;
+  /**
+   * Where you think it belongs. Placement is decided by the site admin.
+   */
+  kind?:
+    | (
+        | 'practice'
+        | 'experience'
+        | 'why-alpha'
+        | 'milestone'
+        | 'cta'
+        | 'arrival'
+        | 'rebrand-identity'
+        | 'rebrand-application'
+        | 'headshot'
+      )[]
+    | null;
+  /**
+   * Photographer or designer.
+   */
+  credit?: string | null;
+  createdBy?: (number | null) | User;
+  /**
    * Web renditions, written by pnpm ingest:video. This file is the H.264 1080p default.
    */
   variants?: {
@@ -790,6 +829,37 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  name?: string | null;
+  /**
+   * Admin: everything. Partnerships: leads. Contributor: uploads only (photos, rebrand assets).
+   */
+  roles?: ('admin' | 'partnerships' | 'contributor')[] | null;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  resetPasswordRequestedAt?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+  collection: 'users';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "episodes".
  */
 export interface Episode {
@@ -832,6 +902,10 @@ export interface Episode {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Synced from the show's Drive Transcripts folder (SHOW_E###_Title.txt). Chapters, quotes and topics are drafted from this.
+   */
+  transcriptRaw?: string | null;
   transcript?: {
     root: {
       type: string;
@@ -919,6 +993,9 @@ export interface Speaker {
   id: number;
   name: string;
   role?: string | null;
+  /**
+   * Original, uncropped, at least 1200px, plain background.
+   */
   headshot?: (number | null) | Media;
   bio?: string | null;
   /**
@@ -1278,6 +1355,47 @@ export interface Legal {
   createdAt: string;
 }
 /**
+ * Synced from Paylocity. Edit postings there, not here.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "jobs".
+ */
+export interface Job {
+  id: number;
+  title: string;
+  /**
+   * From the location, or the hiring organization when the role is remote.
+   */
+  brand?: (number | null) | Brand;
+  /**
+   * Matched by ZIP, then city + state, then a location's Paylocity name.
+   */
+  location?: (number | null) | Location;
+  /**
+   * As written in Paylocity.
+   */
+  paylocityLocation?: string | null;
+  remote?: boolean | null;
+  /**
+   * HTML from the Paylocity posting.
+   */
+  description?: string | null;
+  applyUrl: string;
+  status: 'open' | 'filled';
+  /**
+   * Keep off the site even while open in Paylocity.
+   */
+  hidden?: boolean | null;
+  posted?: string | null;
+  paylocityId?: string | null;
+  /**
+   * URL segment. Lowercase, hyphens. Usually from title.
+   */
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "leads".
  */
@@ -1306,32 +1424,6 @@ export interface Lead {
   page?: string | null;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
- */
-export interface User {
-  id: number;
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  resetPasswordRequestedAt?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
-    | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
-      }[]
-    | null;
-  password?: string | null;
-  collection: 'users';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1416,6 +1508,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'legal';
         value: number | Legal;
+      } | null)
+    | ({
+        relationTo: 'jobs';
+        value: number | Job;
       } | null)
     | ({
         relationTo: 'leads';
@@ -1579,6 +1675,7 @@ export interface LocationsSelect<T extends boolean = true> {
   story?: T;
   phone?: T;
   bookingUrl?: T;
+  paylocityName?: T;
   googlePlaceId?: T;
   hours?:
     | T
@@ -1602,6 +1699,7 @@ export interface LocationsSelect<T extends boolean = true> {
     | {
         when?: T;
         line?: T;
+        source?: T;
         id?: T;
       };
   quote?:
@@ -1948,6 +2046,7 @@ export interface EpisodesSelect<T extends boolean = true> {
         at?: T;
         id?: T;
       };
+  transcriptRaw?: T;
   transcript?: T;
   video?: T;
   live?: T;
@@ -2057,6 +2156,26 @@ export interface LegalSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "jobs_select".
+ */
+export interface JobsSelect<T extends boolean = true> {
+  title?: T;
+  brand?: T;
+  location?: T;
+  paylocityLocation?: T;
+  remote?: T;
+  description?: T;
+  applyUrl?: T;
+  status?: T;
+  hidden?: T;
+  posted?: T;
+  paylocityId?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "leads_select".
  */
 export interface LeadsSelect<T extends boolean = true> {
@@ -2079,6 +2198,11 @@ export interface LeadsSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  brand?: T;
+  location?: T;
+  kind?: T;
+  credit?: T;
+  createdBy?: T;
   variants?:
     | T
     | {
@@ -2139,6 +2263,8 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  name?: T;
+  roles?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;

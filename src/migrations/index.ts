@@ -14,6 +14,7 @@ import * as migration_20261112_001903_location_name_chapter from './20261112_001
 import * as migration_20261112_152919_location_order from './20261112_152919_location_order';
 import * as migration_20261112_153419_treatments from './20261112_153419_treatments';
 import * as migration_20261113_031223_location_google_snapshot from './20261113_031223_location_google_snapshot';
+import * as migration_20261123_210306_roles_jobs_contributors from './20261123_210306_roles_jobs_contributors';
 
 export const migrations = [
   {
@@ -94,6 +95,11 @@ export const migrations = [
   {
     up: migration_20261113_031223_location_google_snapshot.up,
     down: migration_20261113_031223_location_google_snapshot.down,
-    name: '20261113_031223_location_google_snapshot'
+    name: '20261113_031223_location_google_snapshot',
+  },
+  {
+    up: migration_20261123_210306_roles_jobs_contributors.up,
+    down: migration_20261123_210306_roles_jobs_contributors.down,
+    name: '20261123_210306_roles_jobs_contributors'
   },
 ];

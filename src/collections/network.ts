@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { guard } from './guard'
 import { img, live, publicRead, seo, slug } from './fields'
 
+
 // 'Oh' and 'OH' must be the same state: flags, grouping and filters key on the code
 const upperState = ({ value }: { value?: unknown }) => (typeof value === 'string' ? value.trim().toUpperCase() : value)
 
@@ -111,6 +112,7 @@ export const Locations: CollectionConfig = {
     { type: 'row', fields: [
       { name: 'phone', type: 'text' },
       { name: 'bookingUrl', type: 'text' },
+      { name: 'paylocityName', label: 'Paylocity location', type: 'text', admin: { description: 'Exactly as job postings name this location in Paylocity. Matches open jobs to this page.' } },
       { name: 'googlePlaceId', label: 'Google place ID', type: 'text', admin: { description: 'Google Maps listing for this location. Rating, reviews and (when Hours is empty) opening hours sync from it once a day, on deploy.' } },
     ] },
     { name: 'hours', type: 'array', admin: { description: 'One row per day range, e.g. "Mon to Fri" / "9am to 6pm".' }, fields: [
@@ -124,6 +126,7 @@ export const Locations: CollectionConfig = {
     { name: 'arrivalNote', type: 'textarea', admin: { description: 'Parking and entrance, one or two lines.' } },
     { name: 'milestones', label: 'Since Alpha', type: 'array', maxRows: 5, admin: { description: 'What changed at this address. Dated, one line each.' }, fields: [
       { type: 'row', fields: [{ name: 'when', type: 'text', required: true, admin: { description: 'e.g. Jun 2025' } }, { name: 'line', type: 'text', required: true }] },
+      { name: 'source', type: 'text', admin: { description: 'Who confirmed it, e.g. Jess York, Q1 2027. Not shown on the site.' } },
     ] },
     { name: 'quote', type: 'group', fields: [
       { name: 'text', type: 'textarea', admin: { description: 'Verbatim only, from the provider who leads this location.' } },

@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { Closer } from '@/components/site/Closer'
 import { SinceAlpha } from '@/components/site/SinceAlpha'
+import { Hiring } from '@/components/site/Hiring'
+import { getRoles } from '@/lib/careers'
 import { getBrand, getBrandIndex, getBrandSlugs, getSinceAlpha } from '@/lib/data'
 import BrandView from './BrandView'
 
@@ -19,13 +21,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function BrandPage({ params }: { params: Promise<{ slug: string }> }) {
   const [brand, brands] = await Promise.all([getBrand((await params).slug), getBrandIndex()])
   if (!brand) notFound()
-  const since = await getSinceAlpha(brand.slug, brand.since)
+  const [since, roles] = await Promise.all([getSinceAlpha(brand.slug, brand.since), getRoles()])
   return (
     <>
       {/* The poster is the first thing anyone sees: fetch it ahead of the video and everything else. React hoists this into <head>. */}
       {brand.heroPoster ? <link rel="preload" as="image" href={brand.heroPoster} fetchPriority="high" /> : null}
       <BrandView brand={brand} brands={brands} />
       {since ? <SinceAlpha d={since} /> : null}
+      <Hiring roles={roles.filter((r) => r.brand.slug === brand.slug)} name={brand.short || brand.name} total={roles.length} />
       <Closer brand={brand.slug} />
     </>
   )
