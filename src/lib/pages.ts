@@ -432,6 +432,10 @@ export const getEpisodes = cache(async () => {
 const SHOW_MEDIA: Record<string, { logo?: string; ar?: number; hero?: string }> = {
   'dear-tiffany': { logo: '/podcasts/dear-tiffany-logo.svg', ar: 252.38 / 196.71, hero: '/podcasts/dear-tiffany-hero.jpg' },
   'holding-time-back': { logo: '/podcasts/holding-time-back-logo.svg', ar: 728.02 / 211.03, hero: '/podcasts/holding-time-back-hero.jpg' },
+  'operation-med-spa': { logo: '/podcasts/operation-med-spa-logo.svg', ar: 1051.91 / 437.82 },
+  'med-spa-marketing-group-chat': { logo: '/podcasts/med-spa-marketing-group-chat-logo.svg', ar: 702.75 / 469.9 },
+  /* ready for when the show lands in the CMS (slug assumed) */
+  'white-coat-entrepreneur': { logo: '/podcasts/white-coat-entrepreneur-logo.svg', ar: 957.56 / 562.74 },
 }
 
 const AUD: Record<string, string> = { owners: 'Practice owners', directors: 'Directors', providers: 'Providers', 'front-desk': 'Front desk', marketers: 'Marketers', patients: 'Patients' }
