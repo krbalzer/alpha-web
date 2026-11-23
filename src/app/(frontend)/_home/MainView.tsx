@@ -257,7 +257,7 @@ export default function MainView(props: any) {
 {(v.eps || []).map((e: any, e_i: number) => (<React.Fragment key={e_i}>
 <div className="ep">
 <button className={e.btnCls} aria-label={`Play ${e.title}`} onClick={e.play}><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M1.5 1v12L11 7z" fill="currentColor"></path></svg></button>
-<div className="ep_art" style={{"background": `${e.tone}`} as React.CSSProperties}></div>
+<div className="ep_art" style={{"background": `${e.tone}`} as React.CSSProperties}>{e.ep?.art ? (<img src={e.ep.art} alt="" loading="lazy" />) : null}</div>
 <div><p className="ep_title">{e.title}</p><div className="ep_show">{e.show}</div></div>
 <span className="ep_end"><QueueBtn ep={e.ep}></QueueBtn><span className="ep_len">{e.len}</span></span>
 </div>

@@ -241,7 +241,10 @@
 .pg-main .ep{display:grid;grid-template-columns:44px 64px minmax(0,1fr) auto;gap:16px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
 .pg-main .ep_play{width:44px;height:44px;border-radius:50%;border:1px solid var(--ink);background:transparent;display:grid;place-items:center;cursor:pointer}
 .pg-main .ep_play:hover,.pg-main .ep_play.is-on{background:var(--ink);color:var(--bone)}
-.pg-main .ep_art{width:64px;height:64px}
+.pg-main .ep_art{width:64px;height:64px;overflow:hidden}
+.pg-main .ep_art img{width:100%;height:100%;object-fit:cover;display:block}
+/* + Queue: the global .qb pill, restored after .pg-main button{font:inherit} */
+.pg-main .ep_end .qb{height:30px;padding:0 14px;font-family:var(--mono);font-size:10.5px;line-height:1;letter-spacing:.05em;text-transform:uppercase}
 .pg-main .ep_title{font-family:var(--h3);font-weight:700;font-size:17px;margin:0;letter-spacing:.005em}
 .pg-main .ep_show{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-top:4px}
 .pg-main .ep_len{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em}
