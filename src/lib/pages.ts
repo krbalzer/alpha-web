@@ -464,8 +464,8 @@ export const getPodcasts = cache(async () => {
       date: iso(e.published), len: lenOf(e.duration), sec: e.duration || 0, href: `/podcasts/${sh.slug}/${e.slug}`, ep: toEp(e, SP, shows.find((x) => x.slug === sh.slug)?.art) }
   }).map((x) => Object.assign(x, { label: (x.n ? `EP ${x.n} / ` : '') + x.title }))
   const withEps = shows.filter((s) => E.some((e) => e.show === s.slug))
-  // every show with episodes is a hero slide, featured first, so each shelf card drives the hero
-  const feat = [...withEps.filter((s) => s.raw.featured), ...withEps.filter((s) => !s.raw.featured)].map((s) => s.slug)
+  // every show with episodes is a hero slide, in the CMS order, so each shelf card drives the hero
+  const feat = withEps.map((s) => s.slug)
   // filter groups from the board: topic and audience in a fixed order, speakers by how often they're on the mic
   const used = (k: 'topics' | 'aud' | 'spk') => { const c = new Map<string, number>(); E.forEach((e) => e[k].forEach((v) => c.set(v, (c.get(v) || 0) + 1))); return c }
   const tc = used('topics'), ac = used('aud'), sc = used('spk')

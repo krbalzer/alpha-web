@@ -40,23 +40,34 @@ async function feedFor(p: Payload, show: { id: number; rss?: string | null; link
 }
 
 
-/** Shows added after the Webflow import. Created once (by slug) with their artwork; edit them in the CMS after that. */
+/** Shows added after the Webflow import. Created once (by slug); after that only the artwork syncs (new filename = new art). */
 const NEW_SHOWS = [{
   slug: 'white-coat-entrepreneur', name: 'The White Coat Entrepreneur', short: 'WCE', order: 7, bg: '#1F2433', fg: '#FFFFFF',
-  art: 'wce-art.jpg', rss: 'https://rss.libsyn.com/shows/634274/destinations/5602059.xml',
+  art: 'wce-art-2.jpg', rss: 'https://rss.libsyn.com/shows/634274/destinations/5602059.xml',
   apple: 'https://podcasts.apple.com/us/podcast/the-white-coat-entrepreneur/id1491976901',
   tagline: "Physicians have been sold out by the system, and there's no one teaching doctors the business of medicine. In this podcast, Dr. Edwin Williams helps physician entrepreneurs learn to think like a small business person, develop an organic culture, understand the importance of planning, and acquire with purpose.",
 }]
 
+async function upload(p: Payload, name: string, alt: string) {
+  const hit = (await p.find({ collection: 'media', where: { filename: { equals: name } }, limit: 1, depth: 0 })).docs[0]
+  if (hit) return hit.id as number
+  const file = path.resolve(process.cwd(), 'src/seed/media/podcasts', name)
+  if (!fs.existsSync(file)) return undefined
+  const data = fs.readFileSync(file)
+  return (await p.create({ collection: 'media', data: { alt }, file: { data, mimetype: 'image/jpeg', name, size: data.length } })).id as number
+}
+
 async function ensureShows(p: Payload) {
   for (const x of NEW_SHOWS) {
-    if ((await p.find({ collection: 'shows', where: { slug: { equals: x.slug } }, limit: 1, depth: 0 })).docs.length) continue
-    const file = path.resolve(process.cwd(), 'src/seed/media/podcasts', x.art)
-    let artwork: number | undefined
-    if (fs.existsSync(file)) {
-      const data = fs.readFileSync(file)
-      artwork = (await p.create({ collection: 'media', data: { alt: x.name }, file: { data, mimetype: 'image/jpeg', name: x.art, size: data.length } })).id as number
+    const have = (await p.find({ collection: 'shows', where: { slug: { equals: x.slug } }, limit: 1, depth: 1 })).docs[0] as { id: number; artwork?: { filename?: string } | null } | undefined
+    if (have) {
+      if (have.artwork?.filename !== x.art) {
+        const artwork = await upload(p, x.art, x.name)
+        if (artwork) { await p.update({ collection: 'shows', id: have.id, data: { artwork } as never }); p.logger.info(`episodes: new artwork for ${x.name}`) }
+      }
+      continue
     }
+    const artwork = await upload(p, x.art, x.name)
     await p.create({ collection: 'shows', data: {
       name: x.name, short: x.short, slug: x.slug, order: x.order, bg: x.bg, fg: x.fg, tagline: x.tagline, rss: x.rss,
       links: { apple: x.apple }, artwork, featured: false, live: true,
