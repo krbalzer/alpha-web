@@ -16,10 +16,9 @@ export function Menu() {
   const items: [string, string, string][] = [
     ['Partners', '/brands', `${brands} brands, ${locations} locations`],
     ['Training', '/training', 'Alpha University and Practice'],
-    ['Pathway', '/how-it-works', 'From first call to fully integrated'],
+    ['Careers', '/careers', 'Open roles across the network'],
     ['Podcasts', '/podcasts', 'Every show in the network'],
     ['About', '/about', 'Built by operators'],
-    ['Careers', '/careers', 'Open roles across the network'],
     ['News', '/newswire', 'From the newswire'],
   ]
   const live = s.ep || s.latest
