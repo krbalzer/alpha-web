@@ -337,7 +337,7 @@ export class MainEngine extends DCLogic {
       /* partner marks, same files as the brand dock (brand.css .b-NNN); a name without a mark falls back to type */
       .map((x) => { const m = ({ 'RN Esthetics': ['ca83c659da266b70ecee710da39049b6', 1.4291], 'Esthetics Center': ['acd758d2c7d28315fa698dbe9ec586a4', 1.0], 'HTB': ['bf0cb09e099ffd08e157c7a2527b15d4', 4.1729], 'Williams Center': ['11fbe015cfb3fcfcd247c3ad2077da5b', 1.4658], 'Dontage': ['977a1e28842c7d0f1ceaf158d7508117', 1.0], 'CAMI': ['36bfaaba5b556cdc3a1bacb6332ec4e9', 3.3176], 'Privé': ['3338152bcddce0a2936289bcc6c757f6', 2.7449] })[x.brand]; return Object.assign({}, x, m ? { mark: { '--m': `url(/boards/${m[0]}.svg)`, '--ar': String(m[1]) } } : {}); });
     const narrow = typeof window !== 'undefined' && window.innerWidth <= 820
-    const sMax = Math.max(0, stories.length - (narrow ? 1 : 4)), si = Math.min(s.story ?? 0, sMax), pdi = s.pod ?? 0, pMax = 3;
+    const sMax = Math.max(0, stories.length - (narrow ? 1 : 4)), si = Math.min(s.story ?? 0, sMax), pv = narrow ? 2 : 5, pMax = Math.max(0, (X.shows || []).length - pv), pdi = Math.min(s.pod ?? 0, pMax);
     const EP = X.eps || [];
     const playing = s.playing ?? -1;
     const eps = EP.map((e, i) => ({ ...e, btnCls: i === playing ? 'ep_play is-on' : 'ep_play', play: () => { set({ playing: i }); if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('alpha:play', { detail: e.ep })); } }));
@@ -377,7 +377,7 @@ export class MainEngine extends DCLogic {
       storyMove: (e) => { if (this._sx != null && Math.abs(e.clientX - this._sx) > 8) this._sMoved = true },
       storyUp: (e) => { if (this._sx == null) return; const dx = e.clientX - this._sx; this._sx = null; if (dx < -40) set({ story: Math.min(sMax, si + 1) }); else if (dx > 40) set({ story: Math.max(0, si - 1) }) },
       storyClick: (e) => { if (this._sMoved) { e.preventDefault(); e.stopPropagation(); this._sMoved = false } },
-      podShift: 'calc(' + (-pdi) + ' * (clamp(220px, 18.6vw, 262px) + 8px))', podPrev: () => set({ pod: Math.max(0, pdi - 1) }), podNext: () => set({ pod: Math.min(pMax, pdi + 1) }), podAtStart: pdi === 0, podAtEnd: pdi === pMax,
+      podShift: 'calc(' + (-pdi) + ' * (100% + 8px) / var(--pv))', podPrev: () => set({ pod: Math.max(0, pdi - 1) }), podNext: () => set({ pod: Math.min(pMax, pdi + 1) }), podAtStart: pdi === 0, podAtEnd: pdi === pMax,
       eps, hasPlaying: playing >= 0, now: EP[Math.max(0, playing)], closePlayer: () => set({ playing: -1 }),
       notDone: !isDone, isDone, isChoice: !isContact && !isDone, isContact,
       q, qBars: [0, 1, 2, 3, 4].map((i) => ({ cls: i <= qs ? 'is-on' : '' })), qLabel: isContact ? 'Contact' : 'Your practice', qCount: String(Math.min(qs + 1, 5)).padStart(2, '0') + ' / 05',
