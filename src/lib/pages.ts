@@ -429,10 +429,10 @@ export const getEpisodes = cache(async () => {
 
 /** Show logos (white SVG, used as a mask so they take each surface's color) and hero photography.
  *  Files live in /public/podcasts. Static until Shows gets logo + hero upload fields in the CMS. */
-const SHOW_MEDIA: Record<string, { logo?: string; ar?: number; hero?: string }> = {
+const SHOW_MEDIA: Record<string, { logo?: string; ar?: number; hero?: string; heroSide?: 'right' }> = {
   'dear-tiffany': { logo: '/podcasts/dear-tiffany-logo.svg', ar: 252.38 / 196.71, hero: '/podcasts/dear-tiffany-hero.jpg' },
   'holding-time-back': { logo: '/podcasts/holding-time-back-logo.svg', ar: 728.02 / 211.03, hero: '/podcasts/holding-time-back-hero.jpg' },
-  'the-beauty-filter': { logo: '/podcasts/the-beauty-filter-logo.svg', ar: 480.75 / 91.36, hero: '/podcasts/the-beauty-filter-hero.jpg' },
+  'the-beauty-filter': { logo: '/podcasts/the-beauty-filter-logo.svg', ar: 480.75 / 91.36, hero: '/podcasts/the-beauty-filter-hero.jpg', heroSide: 'right' },
   'operation-med-spa': { logo: '/podcasts/operation-med-spa-logo.svg', ar: 1051.91 / 437.82 },
   'med-spa-marketing-group-chat': { logo: '/podcasts/med-spa-marketing-group-chat-logo.svg', ar: 702.75 / 469.9 },
   /* ready for when the show lands in the CMS (slug assumed) */
@@ -450,11 +450,11 @@ const PATHS: { t: string; f: { topics?: string[]; aud?: string[] } }[] = [
 
 export const getPodcasts = cache(async () => {
   const [shows, eps, SP] = await Promise.all([getShows(), getEpisodes(), getSpeakers()])
-  const S: Record<string, { name: string; short: string; sched: string; hosts: string; bg: string; fg: string; tag: string; art: string; href: string; logo: string; noLogo: boolean; ar: string; hero: string }> = {}
+  const S: Record<string, { name: string; short: string; sched: string; hosts: string; bg: string; fg: string; tag: string; art: string; href: string; logo: string; noLogo: boolean; ar: string; hero: string; heroSide: string }> = {}
   for (const s of shows) {
     const m = SHOW_MEDIA[s.slug] || {}
     S[s.slug] = { name: s.name, short: s.name.replace(/^The /, ''), sched: cleanSched(s.raw.schedule), hosts: hostLine(SP, s.raw), bg: s.bg, fg: s.fg, tag: firstSentence(s.raw.tagline), art: url(s.raw.artwork as Media, 'wide') || s.art, href: s.href,
-      logo: m.logo || '', noLogo: !m.logo, ar: String(m.ar || 2.2), hero: m.hero || '' }
+      logo: m.logo || '', noLogo: !m.logo, ar: String(m.ar || 2.2), hero: m.hero || '', heroSide: m.heroSide || '' }
   }
   const E = eps.map((e, i) => {
     const sh = e.show as Show

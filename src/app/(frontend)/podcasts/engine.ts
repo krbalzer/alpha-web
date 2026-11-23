@@ -45,7 +45,7 @@ export class PodcastsEngine extends DCLogic {
     const now = s.now != null ? D.E[s.now] : null;
     const eq = (a, b) => ['show','topics','aud','spk'].every((k) => JSON.stringify((a[k] || []).slice().sort()) === JSON.stringify((b[k] || []).slice().sort()));
     return {
-      slides: D.feat.map((k, i) => ({ hero: D.S[k].hero || '', art: D.S[k].art, noArt: !D.S[k].art, cls: 'tv_slide' + (D.S[k].hero ? ' has-hero' : '') + (i === hi ? ' is-on' : ''), bg: D.S[k].bg, fg: D.S[k].fg, short: D.S[k].short, hidden: i === hi ? 'false' : 'true' })),
+      slides: D.feat.map((k, i) => ({ hero: D.S[k].hero || '', art: D.S[k].art, noArt: !D.S[k].art, cls: 'tv_slide' + (D.S[k].hero ? ' has-hero' : '') + (D.S[k].heroSide === 'right' ? ' hero-right' : '') + (i === hi ? ' is-on' : ''), bg: D.S[k].bg, fg: D.S[k].fg, short: D.S[k].short, hidden: i === hi ? 'false' : 'true' })),
       heroTxtCls: 'tv_txt' + (s.hg ? ((s.hg % 2) ? ' gA' : ' gB') : ''),
       hs: Object.assign({}, hs, { ep: lat, play: () => play(lat.id) }), hasPaths: D.paths.length > 0,
       pause: () => set({ paused: true }), resume: () => set({ paused: false }),

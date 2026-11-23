@@ -5,6 +5,8 @@
  *
  *   pnpm import:episodes            # standalone
  */
+import fs from 'node:fs'
+import path from 'node:path'
 import type { Payload } from 'payload'
 
 type Item = { guid: string; title: string; published: string; audioUrl: string; duration: number; number: number | null; summary: string }
@@ -37,7 +39,34 @@ async function feedFor(p: Payload, show: { id: number; rss?: string | null; link
   return url || null
 }
 
+
+/** Shows added after the Webflow import. Created once (by slug) with their artwork; edit them in the CMS after that. */
+const NEW_SHOWS = [{
+  slug: 'white-coat-entrepreneur', name: 'The White Coat Entrepreneur', short: 'WCE', order: 7, bg: '#1F2433', fg: '#FFFFFF',
+  art: 'wce-art.jpg', rss: 'https://rss.libsyn.com/shows/634274/destinations/5602059.xml',
+  apple: 'https://podcasts.apple.com/us/podcast/the-white-coat-entrepreneur/id1491976901',
+  tagline: "Physicians have been sold out by the system, and there's no one teaching doctors the business of medicine. In this podcast, Dr. Edwin Williams helps physician entrepreneurs learn to think like a small business person, develop an organic culture, understand the importance of planning, and acquire with purpose.",
+}]
+
+async function ensureShows(p: Payload) {
+  for (const x of NEW_SHOWS) {
+    if ((await p.find({ collection: 'shows', where: { slug: { equals: x.slug } }, limit: 1, depth: 0 })).docs.length) continue
+    const file = path.resolve(process.cwd(), 'src/seed/media/podcasts', x.art)
+    let artwork: number | undefined
+    if (fs.existsSync(file)) {
+      const data = fs.readFileSync(file)
+      artwork = (await p.create({ collection: 'media', data: { alt: x.name }, file: { data, mimetype: 'image/jpeg', name: x.art, size: data.length } })).id as number
+    }
+    await p.create({ collection: 'shows', data: {
+      name: x.name, short: x.short, slug: x.slug, order: x.order, bg: x.bg, fg: x.fg, tagline: x.tagline, rss: x.rss,
+      links: { apple: x.apple }, artwork, featured: false, live: true,
+    } as never })
+    p.logger.info(`episodes: created show ${x.name}`)
+  }
+}
+
 export async function importEpisodes(p: Payload) {
+  await ensureShows(p)
   const shows = (await p.find({ collection: 'shows', limit: 50, depth: 0 })).docs
   let added = 0, updated = 0
   for (const s of shows) {

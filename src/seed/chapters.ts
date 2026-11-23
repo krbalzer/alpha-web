@@ -1,5 +1,5 @@
 /**
- * Episode chapters and key quotes drafted from the transcripts in Drive (ALPHA - Queue Bank > Finalized > Transcripts),
+ * Episode chapters and key quotes drafted from the transcripts in Drive (ALPHA - Queue Bank > Finalized > Transcripts; WCE from its own show folder),
  * src/seed/podcast-chapters.json. Runs in prebuild. Fills `chapters` and `pullQuotes` only when empty (hand edits win).
  * Quotes are verbatim from the transcript (first letter capitalized), with the timestamp of the block they sit in.
  * Episodes are matched by show + title first (some transcript files are misnumbered, e.g. MSM 084/085),
@@ -10,7 +10,7 @@ import data from './podcast-chapters.json'
 
 type Ep = { show: string; n: string; title: string; chapters: { at: string; title: string }[]; quote?: { text: string; at: string } }
 const D = data as { episodes: Ep[] }
-const SHOW: Record<string, string> = { MSM: 'med-spa-marketing-group-chat', OMS: 'operation-med-spa', GF: 'the-great-friends-podcast', DT: 'dear-tiffany' }
+const SHOW: Record<string, string> = { MSM: 'med-spa-marketing-group-chat', OMS: 'operation-med-spa', GF: 'the-great-friends-podcast', DT: 'dear-tiffany', WCE: 'white-coat-entrepreneur' }
 
 const norm = (s: string) => s.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, ' ').trim()
 const idOf = (x: unknown) => (x && typeof x === 'object' ? (x as { id: number }).id : (x as number))

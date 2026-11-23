@@ -24,7 +24,7 @@ const blobOk = await checkBlob((m) => console.log(m))
       // topics, audience and YouTube links from the old Webflow site; fills empty fields only
       const { importTopics } = await import('./topics')
       await importTopics(p)
-      // chapters drafted from the Drive transcripts (MSM, OMS, GF); fills empty chapters only
+      // chapters drafted from the Drive transcripts (MSM, OMS, GF, DT, WCE); fills empty chapters only
       const { importChapters } = await import('./chapters')
       await importChapters(p)
       // Google place IDs for live ratings and reviews; fills empty IDs only
