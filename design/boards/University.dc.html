@@ -1,0 +1,730 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Alpha / University</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@font-face{font-family:"NHD";src:url(/_blob/bf901fbfee077add5b8fbd5af7b4b4a7) format("woff2");font-weight:900;font-display:swap;ascent-override:85.7%;descent-override:14.3%;line-gap-override:0%}
+@font-face{font-family:"NHD";src:url(/_blob/630fc1e4ee22b0eecfe2535aceaaad9c) format("woff2");font-weight:700;font-display:swap;ascent-override:85.7%;descent-override:14.3%;line-gap-override:0%}
+@font-face{font-family:"Diatype Mono";src:url(/_blob/bad569f2d2757d8e40320972d9f13e4b) format("opentype");font-weight:400;font-display:swap}
+@font-face{font-family:"Diatype Mono";src:url(/_blob/888f2a0a7a1517cff04dd7bb1810c18d) format("opentype");font-weight:700;font-display:swap}
+@font-face{font-family:"Corvinus";src:url(/_blob/76ab99dc530fdc3aeb5aeb11ce47bee5) format("opentype");font-weight:400;font-display:swap}
+/* University theme: same tokens as the Alpha system, University values. Cream ground, deep green as ink. */
+:root{--bone:#F3F2EA;--ink:#134A30;--paper:#F3F2EA;--muted:#4E6656;--muted-d:#A9BBAF;--line:rgba(19,74,48,.18);--line-d:rgba(243,242,234,.16);--copy:#22392C;--map:#0F3D27;--signal:#C9A26B;--sf:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif;--mono:"Diatype Mono",ui-monospace,Menlo,monospace;--disp:"NHD","Helvetica Neue",Arial,sans-serif;--ease:cubic-bezier(.22,.66,.16,1)}
+body{margin:0;background:var(--bone);color:var(--ink);font-family:var(--sf);-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:inherit}a:hover{opacity:.75}
+button{font:inherit;color:inherit}
+.wrap{max-width:1280px;margin:0 auto;padding:0 clamp(16px,4.5vw,64px)}
+.eyebrow{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 14px}
+.h2{font-family:var(--disp);font-weight:700;font-size:clamp(34px,3.6vw,56px);line-height:1;letter-spacing:-.02em;margin:0}
+.h3{font-family:var(--disp);font-weight:700;font-size:clamp(28px,2.6vw,40px);line-height:1;letter-spacing:-.02em;margin:0}
+.body{font-size:15px;line-height:1.6;color:var(--copy);max-width:32rem;margin:0}
+.draft{display:inline-block;margin-top:12px;font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;padding:3px 7px;border:1px dashed currentColor;border-radius:999px;opacity:.7}
+.ph{background:rgba(19,74,48,.08);border-bottom:1px dashed rgba(19,74,48,.45);padding:0 3px}
+.dark .ph{background:rgba(243,242,234,.08);border-bottom-color:rgba(243,242,234,.4)}
+.btn{display:inline-flex;align-items:center;height:34px;padding:0 16px;border:1px solid currentColor;border-radius:999px;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.05em;text-decoration:none;background:transparent;cursor:pointer;white-space:nowrap}
+.btn:hover{background:var(--ink);color:var(--bone);opacity:1}
+.dark .btn:hover{background:var(--paper);color:var(--ink)}
+.dark{background:var(--ink);color:var(--paper)}
+.dark .eyebrow{color:var(--muted-d)}
+.dark .body{color:rgba(243,242,234,.78)}
+.sec_h{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:clamp(24px,5vw,90px);align-items:end;margin-bottom:clamp(36px,4vw,56px)}
+
+/* chrome */
+/* Site chrome stays Alpha: bone ground, ink, NHD / Diatype, regardless of the University theme below */
+.b_top{background:var(--bone);color:var(--ink);border-bottom:1px solid var(--line)}
+.b_top .btn:hover{background:var(--ink);color:var(--bone)}
+.nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:92px}
+.nav_menu{width:44px;height:44px;margin-left:-10px;border:0;background:none;display:flex;flex-direction:column;justify-content:center;gap:7px;padding:0 10px}
+.nav_menu span{display:block;height:1.5px;background:currentColor;width:26px}
+.nav_logo img{display:block;height:clamp(22px,1.5vw,29px);width:auto}
+.nav_cta{justify-self:end}
+
+/* 1 / HERO: background video, small logo, h1 */
+.hero{position:relative;height:calc(100vh - 92px);min-height:560px;max-height:900px;overflow:hidden;color:var(--paper);display:grid;place-items:center;text-align:center}
+.hero_vid{position:absolute;inset:0;background:radial-gradient(ellipse at 30% 40%,#2C5E43 0%,#163D2A 55%,#0C2A1C 100%)}
+.hero_vid video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.hero_vid::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 38% 42% at 50% 45%,rgba(0,0,0,.34) 0%,rgba(0,0,0,.18) 55%,rgba(0,0,0,0) 100%),radial-gradient(ellipse at center,rgba(0,0,0,.08) 0%,rgba(0,0,0,.38) 100%)}
+.hero_ph{position:absolute;left:18px;top:16px;z-index:2;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:rgba(243,242,234,.55)}
+.hero_in{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:clamp(26px,3vw,40px);padding:0 16px}
+.hero_logo{width:clamp(220px,20vw,300px);height:auto;display:block}
+.hero_crest{width:clamp(64px,5.4vw,88px);height:auto;display:block;margin-bottom:-12px}
+.hero_name{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(243,242,234,.8)}
+.h1{font-family:var(--disp);font-weight:900;text-transform:uppercase;font-size:clamp(46px,7.4vw,124px);line-height:.86;letter-spacing:-.02em;margin:0;max-width:12ch}
+.hero_ctas{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:-6px}
+.hero .btn{color:var(--paper);height:40px;padding:0 20px}
+.hero .btn:hover{background:var(--paper);color:var(--ink)}
+.hero .btn_fill{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.hero .btn_fill:hover{background:transparent;color:var(--paper)}
+.hero_cue{position:absolute;left:0;right:0;bottom:22px;z-index:2;display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:rgba(243,242,234,.7)}
+
+/* 2 / H2 + BODY */
+.intro{padding:clamp(90px,9vw,150px) 0 clamp(80px,8vw,130px)}
+.legend{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:clamp(50px,5vw,80px);border-top:1px solid var(--ink)}
+.lg_i{display:flex;flex-direction:column;gap:10px;padding:20px 22px 0 0}
+.lg_i+.lg_i{padding-left:22px;border-left:1px solid var(--line)}
+.lg_ic{height:20px;width:auto;align-self:flex-start}
+.lg_w{height:40px;width:auto;align-self:flex-start}
+.lg_i span{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);line-height:1.5}
+
+/* Corvinus rules: names only (never sentences), 48px+ all caps, max 3 words, one per screen, never numbers/buttons/labels, always paired with mono or NHD. Used on: role toggle, map title. */
+.h1,.rtog button,.cart_t{font-family:"Corvinus","NHD",serif;font-weight:400;font-synthesis:none;text-transform:uppercase;letter-spacing:.01em}
+.h1{font-size:clamp(72px,11vw,184px);line-height:.88;max-width:14ch}
+.rtog button{font-size:clamp(64px,9vw,148px);line-height:.88}
+
+/* program explorer */
+.px{margin-top:clamp(50px,5vw,80px)}
+.px_tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line)}
+.px_tabs button{display:flex;flex-direction:column;gap:10px;align-items:flex-start;text-align:left;background:none;border:0;border-top:3px solid transparent;margin-top:-2px;padding:20px 22px 22px 0;cursor:pointer;opacity:.42;transition:opacity .3s var(--ease)}
+.px_tabs button+button{padding-left:22px;border-left:1px solid var(--line)}
+.px_tabs button:hover{opacity:.75}
+.px_tabs button.is-on{opacity:1;border-top-color:var(--ink)}
+.px_tabs span{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);line-height:1.5}
+.px_body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:clamp(24px,4vw,64px);border-top:1px solid var(--ink);padding-top:clamp(30px,3vw,44px);align-items:start}
+.px_stats{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line)}
+.px_st{padding:20px 14px 22px 0;border-bottom:1px solid var(--line);animation:rpIn .5s var(--ease) both}
+.px_st:nth-child(even){padding-left:14px;border-left:1px solid var(--line)}
+.px_n{display:block;font-family:var(--disp);font-weight:900;font-size:clamp(40px,4vw,62px);line-height:.86;margin-bottom:10px}
+.px_l{font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.sim{background:#fff;border:1px solid var(--line);padding:18px 20px 16px;min-height:380px;display:flex;flex-direction:column;gap:12px}
+.sim_h,.sim_f{display:flex;justify-content:space-between;gap:12px;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.sim_h{padding-bottom:12px;border-bottom:1px solid var(--line)}
+.sim_f{margin-top:auto;padding-top:12px;border-top:1px solid var(--line);align-items:center}
+.msg{max-width:84%;opacity:0;animation:msgIn .5s var(--ease) forwards}
+.msg p{margin:4px 0 2px;font-size:14px;line-height:1.45;color:var(--copy);background:rgba(19,74,48,.06);padding:10px 12px;border-radius:2px 12px 12px 12px}
+.msg.mine{align-self:flex-end;text-align:right}
+.msg.mine p{background:var(--ink);color:var(--paper);border-radius:12px 2px 12px 12px;text-align:left}
+.who{font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase}
+.who b{font-weight:400;color:var(--muted)}
+.t{font-family:var(--mono);font-size:9.5px;color:var(--muted)}
+.m1{animation-delay:.2s}.m2{animation-delay:1.4s}.m3{animation-delay:2.6s}.m4{animation-delay:3.8s}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.typing{display:inline-flex;gap:3px}
+.typing i{width:5px;height:5px;border-radius:50%;background:var(--muted);animation:blink 1.2s infinite}
+.typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.25}40%{opacity:1}}
+.day{list-style:none;margin:0;padding:0;position:relative}
+.day::before{content:"";position:absolute;left:5px;top:8px;bottom:8px;width:1px;background:var(--line)}
+.day li{position:relative;display:grid;grid-template-columns:6.5rem 1fr;gap:14px;padding:13px 0 13px 24px;opacity:0;animation:msgIn .5s var(--ease) forwards}
+.day li::before{content:"";position:absolute;left:0;top:18px;width:11px;height:11px;border-radius:50%;background:var(--bone);border:1.5px solid var(--ink)}
+.day li.d1{animation-delay:.2s}.day li.d2{animation-delay:.9s}.day li.d3{animation-delay:1.6s}.day li.d4{animation-delay:2.3s}.day li.d5{animation-delay:3s}
+.day li.d1::before{background:var(--ink)}
+.dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);padding-top:2px}
+.day b{font-family:var(--disp);font-weight:700;font-size:17px;line-height:1.25}
+.mos{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:6px;flex:1;min-height:300px}
+.tile{position:relative;background:linear-gradient(135deg,rgba(19,74,48,.16),rgba(19,74,48,.06));overflow:hidden;opacity:0;animation:tileIn .6s var(--ease) forwards}
+.tile.big{grid-row:span 2}
+.tile.wide{grid-column:span 2}
+.tile span{position:absolute;left:10px;bottom:8px;font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.tile::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);transform:translateX(-100%);animation:sheen 2.8s ease-in-out infinite;animation-delay:inherit}
+.tile:nth-child(1){animation-delay:.05s}.tile:nth-child(2){animation-delay:.15s}.tile:nth-child(3){animation-delay:.25s}.tile:nth-child(4){animation-delay:.35s}.tile:nth-child(5){animation-delay:.45s}
+@keyframes tileIn{from{opacity:0;transform:scale(.98)}to{opacity:1;transform:none}}
+@keyframes sheen{to{transform:translateX(100%)}}
+.lab_sw{display:flex;gap:5px;flex-wrap:wrap}
+.lab_sw button{height:26px;padding:0 10px;border:1px solid var(--line);border-radius:999px;background:transparent;font-family:var(--mono);font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;color:var(--ink)}
+.lab_sw button.is-on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.learn{display:grid;grid-template-rows:auto auto;gap:18px}
+.lrn_aim,.lrn_pod{display:flex;flex-direction:column;gap:8px;animation:msgIn .5s var(--ease) both}
+.lrn_pod{animation-delay:.5s;padding-top:18px;border-top:1px solid var(--line)}
+.lrn_mark{height:40px;width:auto;align-self:flex-start;margin-bottom:6px}
+.lrn_k{display:flex;gap:8px;align-items:center;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.lrn_t{font-family:var(--disp);font-weight:700;font-size:20px;line-height:1.2}
+.lrn_s{font-size:13px;color:var(--copy)}
+.player{display:grid;grid-template-columns:44px minmax(0,1fr) minmax(0,1.2fr);gap:14px;align-items:center;background:var(--ink);color:var(--paper);padding:12px 14px;margin-top:4px}
+.pl_btn{width:44px;height:44px;border-radius:50%;border:0;background:var(--paper);color:var(--ink);cursor:pointer;font-size:13px}
+.pl_show{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-d)}
+.pl_t{display:block;font-size:13.5px;margin-top:3px}
+.wave{display:flex;gap:3px;align-items:center;height:30px}
+.wave i{flex:1;background:rgba(243,242,234,.75);border-radius:1px;animation:wv 1.1s ease-in-out infinite;height:30%}
+.wave i:nth-child(3n){animation-delay:.15s}.wave i:nth-child(3n+1){animation-delay:.35s}.wave i:nth-child(4n){animation-delay:.55s}.wave i:nth-child(5n){animation-delay:.75s}
+@keyframes wv{0%,100%{height:25%}50%{height:95%}}
+@media (max-width:820px){.px_tabs{grid-template-columns:1fr}.px_tabs button,.px_tabs button+button{padding:16px 0;border-left:0}.px_body{grid-template-columns:1fr}.player{grid-template-columns:44px 1fr}.wave{display:none}}
+@media (prefers-reduced-motion:reduce){.msg,.day li,.lrn_aim,.lrn_pod,.px_st{animation:none;opacity:1}.wave i,.typing i{animation:none}}
+
+/* 3 / LIVE MAP: Labs pins + Loop conversations */
+.live_sec{padding:clamp(80px,8vw,120px) 0 clamp(60px,6vw,90px)}
+.map{position:relative;aspect-ratio:100/45;background-color:var(--map);background-image:radial-gradient(rgba(243,242,234,.12) 1px,transparent 1.2px);background-size:16px 16px;border:1px solid var(--line-d);overflow:hidden}
+.map svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.arc{fill:none;stroke:rgba(243,242,234,.7);stroke-width:.18;stroke-linecap:round;stroke-dasharray:0 100;animation:arc 9s var(--ease) infinite}
+.a1{animation-delay:0s}.a2{animation-delay:1.5s}.a3{animation-delay:3s}.a4{animation-delay:4.5s}.a5{animation-delay:6s}.a6{animation-delay:7.5s}
+@keyframes arc{0%{stroke-dasharray:0 100;stroke-dashoffset:0;opacity:1}18%{stroke-dasharray:100 100;stroke-dashoffset:0;opacity:1}30%{stroke-dasharray:100 100;stroke-dashoffset:-100;opacity:0}100%{opacity:0}}
+.pin{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;gap:8px}
+.pin i{position:relative;display:block;border-radius:50%;background:var(--paper);box-shadow:0 0 0 2px var(--map)}
+.pin i::after{content:"";position:absolute;inset:-2px;border-radius:50%;border:1px solid rgba(243,242,234,.7);animation:ripple 4.5s ease-out infinite;animation-delay:var(--d,0s);opacity:0}
+@keyframes ripple{0%{transform:scale(1);opacity:.9}60%{transform:scale(4);opacity:0}100%{opacity:0}}
+.pin span{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-d);white-space:nowrap}
+.pin.r span{order:-1}
+.ticker{position:absolute;left:18px;top:16px;display:flex;flex-direction:column;gap:6px}
+.tk{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--paper);display:flex;gap:8px;align-items:center;opacity:0;animation:tk 9s var(--ease) infinite}
+.tk b{font-weight:400;color:var(--muted-d)}
+.tk:nth-child(1){animation-delay:.2s}.tk:nth-child(2){animation-delay:1.7s}.tk:nth-child(3){animation-delay:3.2s}
+@keyframes tk{0%{opacity:0;transform:translateY(4px)}6%,30%{opacity:1;transform:none}40%,100%{opacity:0}}
+.map_key{position:absolute;right:18px;bottom:14px;display:flex;gap:18px;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-d)}
+.map_key span{display:flex;align-items:center;gap:7px}
+.k_dot{width:7px;height:7px;border-radius:50%;background:var(--paper)}
+.k_arc{width:18px;height:1px;background:rgba(243,242,234,.7)}
+.term{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line-d);margin-top:28px}
+.term a{display:block;text-decoration:none;padding:20px 24px 0}
+.term a:first-child{padding-left:0}
+.term a+a{border-left:1px solid var(--line-d)}
+.term_k{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-d);display:flex;gap:8px;align-items:center}
+.live{width:7px;height:7px;border-radius:50%;background:var(--signal);display:inline-block}
+.term_t{display:block;font-family:var(--disp);font-weight:700;font-size:20px;line-height:1.15;margin:10px 0 6px}
+.term_s{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase}
+
+/* 4 / ROLE TOGGLE */
+.roles_sec{padding:clamp(100px,10vw,170px) 0 0}
+.rtog{display:flex;flex-wrap:wrap;gap:clamp(14px,2.4vw,40px);align-items:baseline;margin:6px 0 clamp(36px,4vw,56px)}
+.rtog button{border:0;background:none;padding:0 0 6px;cursor:pointer;font-family:var(--disp);font-weight:900;text-transform:uppercase;font-size:clamp(44px,6.4vw,104px);line-height:.86;letter-spacing:-.02em;color:var(--line);transition:color .4s var(--ease);border-bottom:3px solid transparent}
+.rtog button:hover{color:var(--muted)}
+.rtog button.is-on{color:var(--ink);border-bottom-color:var(--ink)}
+.rtog button{display:inline-flex;align-items:center;gap:.16em}
+.ricon{height:.56em;width:auto;flex:none;display:block;opacity:.18;transition:opacity .4s var(--ease);transform:translateY(-.03em)}
+.rtog button:hover .ricon{opacity:.5}
+.rtog button.is-on .ricon{opacity:1}
+.rp{border-top:1px solid var(--ink)}
+.rp_row{display:grid;grid-template-columns:12rem minmax(0,1fr) 14rem;gap:clamp(18px,3vw,48px);align-items:start;padding:26px 0 28px;border-bottom:1px solid var(--line);animation:rpIn .55s var(--ease) both}
+.rp_row:nth-child(2){animation-delay:.06s}.rp_row:nth-child(3){animation-delay:.12s}.rp_row:nth-child(4){animation-delay:.18s}
+@keyframes rpIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.rp_k{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:6px}
+.rp_ic{height:14px;width:auto}
+.rp_t{display:block;font-family:var(--disp);font-weight:700;font-size:clamp(22px,2vw,30px);line-height:1.08;letter-spacing:-.01em;margin-bottom:8px}
+.rp_main .rp_t{font-weight:900;text-transform:uppercase;font-size:clamp(34px,3.4vw,52px);line-height:.9}
+.rp_p{font-size:14.5px;line-height:1.55;color:var(--copy);margin:0;max-width:34rem}
+.rp_p .draft{margin:0 0 0 6px;vertical-align:middle}
+.rp_stat{justify-self:end;text-align:right}
+.rp_n{display:block;font-family:var(--disp);font-weight:900;font-size:clamp(44px,4.4vw,68px);line-height:.86;margin-bottom:8px}
+.rp_l{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.rp_l2{display:block;font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;margin-top:6px}
+
+.pods{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.pod{display:inline-flex;gap:8px;align-items:center;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;border:1px solid var(--line);border-radius:999px;padding:6px 11px}
+.pod b{font-weight:700}
+
+/* 5 / CONTENT */
+.sec{padding:clamp(100px,10vw,170px) 0 0}
+.aim_mark{height:clamp(44px,4vw,60px);width:auto;display:block;margin-bottom:22px}
+.tabs{display:flex;gap:6px;margin-bottom:22px;flex-wrap:wrap}
+.tab{height:32px;padding:0 14px;border:1px solid var(--line);border-radius:999px;background:transparent;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer}
+.tab.is-on{background:var(--ink);color:var(--bone);border-color:var(--ink)}
+.aim{list-style:none;margin:0;padding:0;border-top:1px solid var(--ink)}
+.aim li{border-bottom:1px solid var(--line)}
+.aim a{display:grid;grid-template-columns:7rem minmax(0,1.1fr) minmax(0,1fr) 9rem;gap:20px;align-items:baseline;padding:22px 0;text-decoration:none}
+.aim_d{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.aim_n{font-family:var(--disp);font-weight:700;font-size:clamp(22px,2vw,30px);line-height:1.05;letter-spacing:-.01em}
+.aim_t{font-size:14px;line-height:1.45;color:var(--copy)}
+.aim_s{font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;justify-self:end;display:flex;gap:8px;align-items:center}
+.lock{display:inline-block;width:9px;height:9px;border:1.2px solid currentColor;border-radius:2px}
+.aim a:hover .aim_n{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+.aim_note{font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin:18px 0 0}
+.loops{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.loop{padding:26px 18px 30px}
+.loop:first-child{padding-left:0}
+.loop+.loop{border-left:1px solid var(--line)}
+.loop_c{font-family:var(--mono);font-size:11px;letter-spacing:.03em;color:var(--muted);text-transform:uppercase}
+.loop_n{display:block;font-family:var(--disp);font-weight:900;font-size:clamp(40px,4vw,62px);line-height:.86;margin:18px 0 10px}
+.loop_l{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.pracx{position:relative;overflow:hidden;margin-top:clamp(100px,10vw,170px);border-top:1px solid var(--line);border-bottom:1px solid var(--line);min-height:clamp(560px,52vw,800px);display:flex;align-items:center}
+.pracx_img{position:absolute;left:auto;right:45%;bottom:0;height:100%;width:auto;max-width:none;display:block;pointer-events:none}
+.pracx.neutral{margin-top:clamp(100px,10vw,170px);border:0}
+.ulogos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:30px}
+.ulogos{align-items:center;gap:clamp(14px,2vw,28px)}
+.ulogos img{display:block;max-width:100%;height:34px;width:auto;object-fit:contain;justify-self:start}
+.ulogos img.ul_wide{height:22px}
+.ulogos img.ul_tall{height:40px}
+.pracx_in{position:relative;z-index:1;width:100%;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)}
+.pracx_txt{grid-column:2;padding:clamp(60px,6vw,90px) 0}
+@media (max-width:980px){.pracx{display:block;min-height:0}.pracx_img{position:relative;height:auto;width:100%}.pracx_in{grid-template-columns:1fr}.pracx_txt{grid-column:1;padding:30px 0 60px}}
+/* Practice: independent, shown in its own brand (Practice brand standards: #E3DBD6 / #C9C0BA / #3B352F, SF Pro, SF Mono) */
+.neutral{background:#E3DBD6;color:#3B352F;margin-top:clamp(100px,10vw,170px);--ink:#3B352F;--muted:#6E655D;--line:rgba(59,53,47,.2);--copy:#3B352F;--mono:"SF Mono",ui-monospace,Menlo,monospace}
+.neutral .prac_g{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(28px,4.5vw,80px)}
+.prac_vid{aspect-ratio:16/10;overflow:hidden;background:#C9C0BA}
+.prac_vid video{width:100%;height:100%;object-fit:cover;object-position:60% center;display:block}
+.prac_logo{display:block;width:min(400px,100%);height:auto;margin:6px 0 26px}
+.neutral .unis span{border-color:rgba(59,53,47,.3)}
+.prac_ctas{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.pbtn{display:inline-flex;align-items:center;height:40px;padding:0 22px;border:1px solid #3B352F;border-radius:999px;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif;font-size:14px;font-weight:500;color:#3B352F;text-decoration:none}
+.pbtn_fill{background:#3B352F;color:#E3DBD6}
+.pbtn:hover{opacity:.82}
+.prac{padding:clamp(60px,6vw,90px) 0}
+.prac_g{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:clamp(24px,5vw,90px);align-items:center}
+.prac_mark{font-family:var(--disp);font-weight:900;text-transform:uppercase;font-size:clamp(44px,5vw,80px);line-height:.86;margin:0}
+.unis{display:flex;flex-wrap:wrap;gap:6px;margin:22px 0 26px}
+.unis span{font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;border:1px solid var(--line);border-radius:999px;padding:6px 10px}
+.close{padding:clamp(100px,10vw,170px) 0 clamp(90px,9vw,140px)}
+.close_t{font-family:var(--disp);font-weight:900;text-transform:uppercase;font-size:clamp(48px,6.6vw,110px);line-height:.86;margin:0 0 34px;max-width:12ch}
+.close_c{display:flex;gap:10px;flex-wrap:wrap}
+
+@media (max-width:820px){.sec_h,.prac_g{grid-template-columns:1fr}.legend,.term{grid-template-columns:1fr}.lg_i,.lg_i+.lg_i{padding:18px 0;border-left:0}.lg_i+.lg_i{border-top:1px solid var(--line)}.term a,.term a:first-child{padding:18px 0}.term a+a{border-left:0;border-top:1px solid var(--line-d)}.map{aspect-ratio:4/3}.pin span,.ticker{display:none}.rp_row{grid-template-columns:1fr;gap:10px}.rp_stat{justify-self:start;text-align:left}.aim a{grid-template-columns:1fr;gap:6px}.aim_s{justify-self:start}.loops{grid-template-columns:1fr 1fr}.loop,.loop:first-child{padding:20px 12px 22px 0}.loop+.loop{border-left:0}}
+@media (prefers-reduced-motion:reduce){.arc,.pin i::after,.tk,.rp_row{animation:none}.arc{stroke-dasharray:none;opacity:.35}.tk{opacity:1}}
+
+/* ===== SPORTY & RICH PASS: film grade, athletic trim, jersey numerals, scoreboard ===== */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* hero: the seal, big */
+.hero_seal{display:block;height:min(56vh,540px);width:auto;max-width:80vw;filter:drop-shadow(0 2px 18px rgba(0,0,0,.25))}
+.hero_in{gap:clamp(26px,3vw,40px)}
+.hero_ctas{margin-top:0}
+/* film grade on photography and video, plus grain */
+.hero_vid video,.pracx_img,.tile,.prac_vid video{filter:sepia(.16) saturate(.92) contrast(1.06) brightness(1.02)}
+.hero_vid::before,.pracx::after,.mos::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:url(/_blob/5890a6fc994e3c51e9063484e122de4a);background-size:256px;opacity:.16;mix-blend-mode:overlay}
+.mos{position:relative}
+.pracx::after{opacity:.1}
+/* athletic trim: double pinstripe instead of single rules */
+.px_tabs,.px_body,.rp{border-top:2px solid var(--ink);box-shadow:inset 0 3px 0 var(--bone),inset 0 4px 0 var(--ink)}
+.px_body{padding-top:calc(clamp(30px,3vw,44px) + 4px)}
+.loops{border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);box-shadow:inset 0 3px 0 var(--bone),inset 0 4px 0 var(--ink),inset 0 -3px 0 var(--bone),inset 0 -4px 0 var(--ink)}
+/* jersey numerals */
+.px_n,.rp_n,.loop_n{font-family:var(--disp);font-weight:900;letter-spacing:-.01em;line-height:.86}
+.rnum{font-family:var(--mono);font-weight:400;font-size:.13em;letter-spacing:.06em;align-self:flex-start;margin-top:.5em;opacity:.9}
+/* scoreboard band */
+.band{background:var(--ink);color:var(--paper);overflow:hidden;border-top:3px solid var(--paper);border-bottom:3px solid var(--paper);box-shadow:inset 0 2px 0 var(--ink),inset 0 3px 0 rgba(243,242,234,.6),inset 0 -2px 0 var(--ink),inset 0 -3px 0 rgba(243,242,234,.6)}
+.band_t{display:flex;width:max-content;gap:28px;align-items:center;padding:15px 0;animation:band 48s linear infinite;font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.band_t b{font-weight:400;color:#C9A26B;margin-left:6px}
+.band_t i{font-style:normal;font-size:10px;opacity:.6}
+@keyframes band{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.band_t{animation:none}}
+/* collegiate campus map: paper, green ink, double frame, cartouche, compass */
+.map.campus{--mink:#134A30;background:#F3F2EA;border:0;color:var(--mink);outline:2px solid #EDE3C8;outline-offset:0;box-shadow:0 0 0 6px var(--ink),0 0 0 7px rgba(237,227,200,.6)}
+.map.campus::before{content:"";position:absolute;inset:10px;border:1px solid var(--mink);box-shadow:inset 0 0 0 3px #F3F2EA,inset 0 0 0 4px rgba(19,74,48,.5);pointer-events:none;z-index:2}
+.map.campus::after{content:"";position:absolute;inset:0;background:url(/_blob/5890a6fc994e3c51e9063484e122de4a);background-size:256px;opacity:.12;mix-blend-mode:multiply;pointer-events:none;z-index:3}
+.map_in{position:absolute;inset:11% 6% 13% 6%}
+.map_in svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.grat path{fill:none;stroke:var(--mink);stroke-width:1;vector-effect:non-scaling-stroke;opacity:.12;stroke-dasharray:2 4}
+.usa{fill:rgba(19,74,48,.07);stroke:var(--mink);stroke-width:1.4;vector-effect:non-scaling-stroke;stroke-linejoin:round}
+.campus .arc{stroke:var(--mink);stroke-width:1.2;vector-effect:non-scaling-stroke;opacity:.85}
+.campus .pin i{background:var(--mink);box-shadow:0 0 0 2px #F3F2EA,0 0 0 3px var(--mink)}
+.campus .pin i::after{border-color:var(--mink)}
+.campus .pin span{font-family:"Graduate",serif;font-size:9px;letter-spacing:.08em;color:var(--mink)}
+.cart{position:absolute;left:28px;top:26px;z-index:4;display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 14px 11px;background:#F3F2EA;border:1px solid var(--mink);box-shadow:0 0 0 3px #F3F2EA,0 0 0 4px var(--mink)}
+.cart_k{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase}
+.cart_t{font-size:clamp(48px,4.4vw,68px);line-height:.88;margin:4px 0 6px}
+.cart_s{font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;opacity:.75}
+.compass{position:absolute;right:30px;top:24px;width:clamp(40px,4vw,58px);height:auto;z-index:4;color:var(--mink);overflow:visible}
+.campus .ticker{top:auto;bottom:26px;left:30px;z-index:4}
+.campus .tk{color:var(--mink);font-family:var(--mono);font-size:10px;letter-spacing:.08em}
+.campus .tk b{color:var(--muted);font-family:var(--mono);letter-spacing:.04em}
+.campus .map_key{right:30px;bottom:24px;color:var(--mink);z-index:4}
+.campus .k_dot{background:var(--mink)}
+.campus .k_arc{background:var(--mink)}
+@media (max-width:820px){.cart,.compass{display:none}.map_in{inset:6%}}
+/* map v2: green field, cream USA silhouette */
+.map.campus{background:#17543A;color:#EDE3C8;outline-color:#EDE3C8}
+.map.campus::before{border-color:#EDE3C8;box-shadow:inset 0 0 0 3px #17543A,inset 0 0 0 4px rgba(237,227,200,.55)}
+.map.campus::after{mix-blend-mode:soft-light;opacity:.22}
+.map_in{inset:auto;top:11%;bottom:auto;left:50%;right:auto;transform:translateX(-50%);aspect-ratio:2000/1229;height:77%;width:auto}
+.campus .pin{display:block;width:0;height:0;transform:none;gap:0}
+.campus .pin i{position:absolute;left:0;top:0;transform:translate(-50%,-50%)}
+.campus .pin span{display:none}
+.usa_img{position:absolute;inset:0;width:100%;height:100%;display:block}
+.campus .arc{stroke:#134A30;opacity:.9}
+.campus .pin i{background:#134A30;box-shadow:0 0 0 2px #EDE3C8,0 0 0 3px #134A30}
+.campus .pin span{background:#EDE3C8;color:#134A30;padding:2px 5px 1px}
+.cart{background:#17543A;border-color:#EDE3C8;color:#EDE3C8;box-shadow:0 0 0 3px #17543A,0 0 0 4px #EDE3C8}
+.compass{color:#EDE3C8}
+.campus .tk{color:#EDE3C8}
+.campus .tk b{color:rgba(237,227,200,.65)}
+.campus .map_key{color:#EDE3C8}
+.campus .k_dot{background:#EDE3C8}
+.campus .k_arc{background:#EDE3C8}
+@media (max-width:820px){.map_in{top:8%;bottom:8%;height:84%}}
+/* map v3: no frames, faint country, cream marks */
+.map.campus{outline:0;box-shadow:none;border:0}
+.map.campus::before{display:none}
+.cart{border:0;box-shadow:none;background:transparent;padding:0}
+.usa_img{opacity:.1}
+.campus .arc{stroke:#EDE3C8;opacity:.85}
+.campus .pin i{background:#EDE3C8;box-shadow:0 0 0 2px #17543A}
+.campus .pin i::after{border-color:#EDE3C8}
+/* brand marks in the role list + loops */
+.rp_logo{display:block;height:clamp(54px,5vw,72px);width:auto;max-width:100%;margin:0 0 12px}
+.rp_logo.rp_lab{height:clamp(40px,3.6vw,52px)}
+.rp_logo.rp_aim{height:clamp(30px,2.8vw,40px)}
+.loop_logo{display:block;height:46px;width:auto;max-width:100%}
+/* AIM: perspective grid header */
+.aim_sec{margin-top:clamp(100px,10vw,170px);padding:0 0 clamp(80px,8vw,130px);background:#E2DED3}
+.aim_sec>.wrap{position:relative}
+.aim_hero{position:relative;height:clamp(420px,42vw,640px);overflow:hidden;display:grid;place-items:center;padding-bottom:clamp(70px,7vw,120px);margin-bottom:calc(-1 * clamp(50px,5vw,90px));background:linear-gradient(180deg,var(--bone) 0,var(--bone) 40%,#E2DED3 82%)}
+.aim_grid{position:absolute;left:-60%;right:-60%;top:0;height:400%;transform-origin:50% 0;transform:perspective(900px) rotateX(-45deg);background-image:linear-gradient(var(--ink) 3px,transparent 3px),linear-gradient(90deg,var(--ink) 3px,transparent 3px);background-size:7% 90px;background-position:50% 0;opacity:.85;-webkit-mask:linear-gradient(#000 0,#000 28%,transparent 58%);mask:linear-gradient(#000 0,#000 28%,transparent 58%)}
+.aim_big{position:relative;width:min(76vw,1080px);height:auto;display:block}
+.aim a{grid-template-columns:72px 6rem minmax(0,1.1fr) minmax(0,1fr) 7rem;align-items:center;padding:16px 0}
+.aim_cv{width:72px;aspect-ratio:4/5;overflow:hidden;background:var(--ink);display:grid;place-items:center}
+.aim_cv img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s var(--ease)}
+.aim_cv b{font-family:var(--disp);font-weight:900;font-size:16px;color:var(--bone);letter-spacing:.02em}
+.aim a:hover .aim_cv img{transform:scale(1.06)}
+@media (max-width:820px){.aim a{grid-template-columns:60px minmax(0,1fr);gap:4px 14px}.aim_cv{width:60px;grid-row:span 3}.aim_s{justify-self:start}}
+
+/* ============ CLINICAL DIRECTOR (Cotofana) ============ */
+.cd{background:var(--ink);color:var(--paper);padding:clamp(80px,9vw,140px) 0;position:relative}
+.cd_hold{position:absolute;top:22px;right:22px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;border:1px dashed rgba(232,228,218,.5);padding:5px 9px;color:rgba(232,228,218,.7)}
+.cd_grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(32px,5vw,80px);align-items:start}
+.cd_plate{position:relative;aspect-ratio:4/5;background:linear-gradient(160deg,#2A2925,#141412);overflow:hidden}
+.cd_plate .cd_ph{position:absolute;left:16px;bottom:14px;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:rgba(232,228,218,.45);max-width:26ch;line-height:1.5}
+.cd_plate svg{position:absolute;inset:0;width:100%;height:100%}
+.cd_plate path{fill:none;stroke:rgba(232,228,218,.38);stroke-width:.6;stroke-dasharray:1.6 2.2;animation:cdDraw 9s linear infinite}
+@keyframes cdDraw{to{stroke-dashoffset:-38}}
+.cd_pin{position:absolute;display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:rgba(232,228,218,.8);white-space:nowrap}
+.cd_pin i{width:7px;height:7px;border-radius:50%;border:1px solid currentColor;flex:0 0 auto}
+.cd_pin b{font-weight:400;opacity:.5}
+.cd_k{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:rgba(232,228,218,.6);margin:0 0 18px}
+.cd_name{font-family:var(--disp);font-weight:900;text-transform:uppercase;font-size:clamp(48px,6.4vw,96px);line-height:.86;letter-spacing:-.01em;margin:0}
+.cd_cred{font-family:var(--mono);font-weight:700;font-size:11px;letter-spacing:.06em;text-transform:uppercase;margin:22px 0 0;color:var(--paper)}
+.cd_lede{font-size:17px;line-height:1.5;max-width:34rem;margin:26px 0 0;color:rgba(232,228,218,.82)}
+.cd_q{margin:34px 0 0;padding:0 0 0 20px;border-left:1px solid rgba(232,228,218,.3);font-family:var(--disp);font-weight:700;font-size:clamp(20px,1.8vw,26px);line-height:1.2;max-width:30ch}
+.cd_q cite{display:block;margin-top:12px;font-style:normal;font-family:var(--mono);font-weight:400;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:rgba(232,228,218,.5)}
+.cd_scope{list-style:none;margin:40px 0 0;padding:0;border-bottom:1px solid rgba(232,228,218,.14)}
+.cd_scope li{display:grid;grid-template-columns:36px minmax(140px,200px) 1fr;gap:16px;align-items:baseline;padding:14px 0;border-top:1px solid rgba(232,228,218,.14)}
+.cd_scope span{font-family:var(--mono);font-size:10px;color:rgba(232,228,218,.45)}
+.cd_scope b{font-family:var(--disp);font-weight:700;font-size:18px}
+.cd_scope em{font-style:normal;font-family:var(--mono);font-weight:700;font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;color:rgba(232,228,218,.6)}
+.cd_ctas{display:flex;gap:10px;flex-wrap:wrap;margin-top:32px}
+.cd_btn{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 16px;border:1px solid currentColor;border-radius:999px;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:inherit}
+.cd_btn.fill{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.cd_cab{margin-top:clamp(56px,6vw,88px);display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(32px,5vw,80px);padding-top:28px;border-top:1px solid rgba(232,228,218,.14)}
+.cd_cab_l{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.cd_m{display:flex;gap:12px;align-items:center}
+.cd_m .cd_av{width:48px;height:48px;border-radius:50%;background:#3A3833;flex:0 0 auto;display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:rgba(232,228,218,.5)}
+.cd_m b{display:block;font-family:var(--disp);font-weight:700;font-size:15px;line-height:1.15}
+.cd_m small{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:rgba(232,228,218,.5);margin-top:3px}
+.cd_draft{display:inline-block;margin-top:14px;font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;padding:3px 7px;border:1px dashed currentColor;border-radius:999px;opacity:.6}
+/* compact (About) */
+.cd.cd_compact{padding:clamp(56px,6vw,88px) 0}
+.cd_compact .cd_grid{grid-template-columns:minmax(0,4fr) minmax(0,8fr)}
+.cd_compact .cd_name{font-size:clamp(40px,4.6vw,68px)}
+@media (max-width:900px){.cd_grid,.cd_cab,.cd_compact .cd_grid{grid-template-columns:1fr}.cd_plate{max-width:420px}.cd_cab_l{grid-template-columns:1fr}.cd_scope li{grid-template-columns:28px 1fr}.cd_scope em{grid-column:2}}
+@media (prefers-reduced-motion:reduce){.cd_plate path{animation:none}}
+</style>
+</helmet>
+<div ref="{{ moRoot }}">
+
+<header class="b_top"><div class="wrap"><nav class="nav"></nav></div></header>
+
+<!-- ============ 1 / HERO ============ -->
+<section class="hero">
+<div class="hero_vid" aria-hidden="true"><video src="/_blob/b9a5cac7c1f2e194c4c5af8a9093738b" poster="/_blob/95bf28959414f346faf61a9f754936bf" autoplay="" muted="" loop="" playsinline="" preload="auto"></video></div>
+<div class="hero_in">
+<h1 class="sr">Alpha Aesthetics University: training excellence in aesthetics</h1>
+<img class="hero_seal" src="/_blob/f4b98dee67f5480a25dd50b627f40526" alt="" aria-hidden="true">
+<div class="hero_ctas"><a class="btn btn_fill" href="#roles">Find your role</a><a class="btn" href="#signin">Member sign in</a></div>
+</div>
+</section>
+
+<!-- SCOREBOARD: slow ticker, live numbers from the Loops sync and Labs log -->
+<div class="band" aria-label="Alpha University this week">
+<div class="band_t"><span>Injector Loop <b>[N]</b></span><i>★</i><span>Labs this year <b>[N]</b></span><i>★</i><span>AIM Season <b>3</b></span><i>★</i><span>Manager Loop <b>[N]</b></span><i>★</i><span>Masters <b>8</b></span><i>★</i><span>Est. <b>2023</b></span><i>★</i><span>Simul fortes</span><i>★</i><span>Injector Loop <b>[N]</b></span><i>★</i><span>Labs this year <b>[N]</b></span><i>★</i><span>AIM Season <b>3</b></span><i>★</i><span>Manager Loop <b>[N]</b></span><i>★</i><span>Masters <b>8</b></span><i>★</i><span>Est. <b>2023</b></span><i>★</i><span>Simul fortes</span><i>★</i></div>
+</div>
+
+<!-- ============ 2 / H2 + BODY ============ -->
+<section class="intro">
+<div class="wrap">
+<div class="sec_h" style="margin-bottom: 0">
+<div>
+<p class="eyebrow">Alpha University</p>
+<h2 class="h2">Raising the standard<br>for every role<br>in aesthetics.</h2>
+</div>
+<div>
+<p class="body">Injectors, estheticians, managers and the teams around them never work alone here. Every one of them has the whole network behind them: someone to ask in a Loop on any given day, a Lab nearby to train hands-on, and the masters of the specialty through AIM and the Alpha podcasts. Whatever your role, there is always someone who has solved it before and wants you to be the best at what you do.</p>
+<span class="draft">Draft copy</span>
+</div>
+</div>
+<!-- PROGRAM EXPLORER: tabs, stats, and a simulation of what each one is like -->
+<div class="px">
+<div class="px_tabs" role="tablist" aria-label="Programs">
+<sc-for list="{{ progs }}" as="p" hint-placeholder-count="3">
+<button class="{{ p.cls }}" role="tab" aria-selected="{{ p.sel }}" onClick="{{ p.go }}"><img class="lg_ic" src="{{ p.ic }}" alt=""><img class="lg_w" src="{{ p.w }}" alt="{{ p.name }}"><span>{{ p.line }}</span></button>
+</sc-for>
+</div>
+
+<div class="px_body">
+<div class="px_stats">
+<sc-for list="{{ prog.stats }}" as="s" hint-placeholder-count="4">
+<div class="px_st"><span class="px_n">{{ s.n }}</span><span class="px_l">{{ s.l }}</span></div>
+</sc-for>
+</div>
+
+<!-- LOOPS: a thread playing out -->
+<sc-if value="{{ prog.isLoops }}">
+<div class="sim">
+<div class="sim_h"><span># injector-loop</span><span>Illustration, not a real conversation</span></div>
+<div class="msg m1"><span class="who">NP <b>/ Columbus, OH</b></span><p>Patient 2 weeks post filler, small firm nodule at the injection site. Anyone seen this with this product? What would you do first?</p><span class="t">9:12 AM</span></div>
+<div class="msg m2"><span class="who">RN <b>/ San Diego, CA</b></span><p>Seen it twice. Massage protocol first, recheck in a week. Happy to share our follow-up sheet.</p><span class="t">9:19 AM</span></div>
+<div class="msg m3"><span class="who">Medical director <b>/ Leesburg, VA</b></span><p>Agree. Photo it today so you can compare. Flag me if it changes before then.</p><span class="t">9:24 AM</span></div>
+<div class="msg m4 mine"><span class="who">NP <b>/ Columbus, OH</b></span><p>Perfect, thank you. Booking the recheck now.</p><span class="t">9:26 AM</span></div>
+<div class="sim_f"><span class="typing"><i></i><i></i><i></i></span><span>Answered in 7 min by 2 clinics, 2 states</span></div>
+</div>
+</sc-if>
+
+<!-- LABS: photo sets from several Labs, switch between them -->
+<sc-if value="{{ prog.isLabs }}">
+<div class="sim labsim">
+<div class="sim_h"><span>{{ lab.track }} / {{ lab.city }}</span><span>{{ lab.date }}</span></div>
+<div class="mos" aria-label="Photos from this Lab">
+<sc-for list="{{ lab.tiles }}" as="t" hint-placeholder-count="5"><div class="{{ t.cls }}"><span>{{ t.l }}</span></div></sc-for>
+</div>
+<div class="sim_f">
+<div class="lab_sw" role="tablist" aria-label="Choose a Lab"><sc-for list="{{ labsw }}" as="b" hint-placeholder-count="4"><button class="{{ b.cls }}" role="tab" aria-selected="{{ b.sel }}" onClick="{{ b.go }}">{{ b.l }}</button></sc-for></div>
+<span>Photos from the Labs log</span>
+</div>
+</div>
+</sc-if>
+
+<!-- LEARN: AIM + podcasts -->
+<sc-if value="{{ prog.isLearn }}">
+<div class="sim learn">
+<div class="lrn_aim">
+<img src="/_blob/554a8a8e509b09403e64dc211e58732e" alt="AIM" class="lrn_mark">
+<span class="lrn_k"><i class="lock" aria-hidden="true"></i>Closed door / Alpha providers only</span>
+<span class="lrn_t">Season 3, next: <span class="ph">[Speaker]</span> on <span class="ph">[topic]</span></span>
+<span class="lrn_s">Season 2: Dr. Steve Yoelin, Dr. Kian Karimi, Dr. Rami Batniji, Lori Robertson</span>
+</div>
+<div class="lrn_pod">
+<span class="lrn_k">Podcasts / the network on demand</span>
+<div class="player">
+<button class="pl_btn" aria-label="Play">▶</button>
+<div class="pl_meta"><span class="pl_show">Operation Med Spa</span><span class="pl_t"><span class="ph">[Start-here episode title]</span></span></div>
+<div class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+</div>
+<div class="pods"><span class="pod"><b>OMS</b>Operation Med Spa</span><span class="pod"><b>MSM</b>[Show name]</span><span class="pod"><b>WCE</b>White Coat Entrepreneur</span><span class="pod"><b>HTB</b>[Show name]</span></div>
+</div>
+</div>
+</sc-if>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ============ 3 / LIVE MAP: Labs + Loop conversations ============ -->
+<section class="live_sec dark" id="labs">
+<div class="wrap">
+<div class="sec_h">
+<div>
+<p class="eyebrow">Right now</p>
+<h2 class="h3">The network,<br>training.</h2>
+</div>
+<p class="body">Every pin is a Lab. Every line is a Loop conversation, a question in one clinic answered by a provider in another.</p>
+</div>
+
+<div class="map campus" role="img" aria-label="Map of Alpha Labs and Loop conversations across the network">
+<div class="cart" aria-hidden="true"><span class="cart_k">Est. 2023</span><span class="cart_t">The Alpha Campus</span><span class="cart_s">Labs &amp; Loops across the network</span></div>
+<div class="map_in">
+<img class="usa_img" src="/_blob/f54bae1f4c4142475527039946b9c31d" alt="">
+<svg viewBox="0 0 100 61.45" preserveAspectRatio="none" aria-hidden="true">
+<path class="arc a1" d="M93.8 16.2 Q51.7 -0.6 9.6 40.0" pathLength="100"></path>
+<path class="arc a2" d="M74.4 26.1 Q39.2 10.9 4.0 24.9" pathLength="100"></path>
+<path class="arc a3" d="M81.5 57.7 Q85.4 11.7 89.3 16.7" pathLength="100"></path>
+<path class="arc a4" d="M84.6 26.5 Q59.5 16.5 34.5 27.6" pathLength="100"></path>
+<path class="arc a5" d="M30.3 38.5 Q51.3 22.7 72.3 31.1" pathLength="100"></path>
+<path class="arc a6" d="M88.9 26.4 Q49.2 10.5 9.6 40.0" pathLength="100"></path>
+</svg>
+<sc-for list="{{ pins }}" as="p" hint-placeholder-count="12">
+<div class="{{ p.cls }}" style="left: {{ p.x }}; top: {{ p.y }}"><i style="width: {{ p.s }}; height: {{ p.s }}; --d: {{ p.d }}" title="{{ p.c }}"></i></div>
+</sc-for>
+</div>
+<div class="ticker" aria-hidden="true">
+<span class="tk">Injector Loop <b>/ Boston to San Diego</b></span>
+<span class="tk">Manager Loop <b>/ Columbus to Sacramento</b></span>
+<span class="tk">Esthie Loop <b>/ Cape Coral to Albany</b></span>
+</div>
+<div class="map_key"><span><i class="k_dot"></i>Lab</span><span><i class="k_arc"></i>Loop conversation</span></div>
+</div>
+
+<div class="term">
+<a href="#roles"><span class="term_k"><i class="live" aria-hidden="true"></i>In the Loops now</span><span class="term_t"><span class="ph">[N]</span> providers and staff</span><span class="term_s"><span class="ph">[N]</span> conversations this week</span></a>
+<a href="#roles"><span class="term_k">Next Lab</span><span class="term_t"><span class="ph">[Topic]</span></span><span class="term_s"><span class="ph">[City, ST / Date]</span></span></a>
+<a href="#aim"><span class="term_k">Next AIM</span><span class="term_t"><span class="ph">[Speaker]</span> on <span class="ph">[topic]</span></span><span class="term_s"><span class="ph">[Date]</span> / Season 3 / Closed door</span></a>
+</div>
+<p class="eyebrow" style="margin: 22px 0 0">Mock: pins at partner cities, lines illustrative. Live version: Lab log plus Slack activity counts per channel, mapped to the poster's clinic. No message content.</p>
+</div>
+</section>
+
+<!-- ============ 4 / ROLE TOGGLE ============ -->
+<section class="roles_sec" id="roles">
+<div class="wrap">
+<p class="eyebrow">Your training, by role</p>
+<div class="rtog" role="tablist" aria-label="Choose a role">
+<sc-for list="{{ roles }}" as="r" hint-placeholder-count="3"><button class="{{ r.cls }}" role="tab" aria-selected="{{ r.sel }}" onClick="{{ r.go }}"><img class="ricon" src="/_blob/be377151688ce69babad74319a514d46" alt=""><span class="rnum">{{ r.n }}</span><span>{{ r.label }}</span></button></sc-for>
+</div>
+<div class="rp">
+<div class="rp_row rp_main">
+<span class="rp_k"><img src="/_blob/781844e9227a4e9b3ff9e8036fa70ef6" alt="" class="rp_ic">Every day</span>
+<div><img class="rp_logo" src="{{ role.logo }}" alt="{{ role.loop }}"><p class="rp_p">{{ role.loopFor }} <span class="draft">Draft</span></p></div>
+<div class="rp_stat"><span class="rp_n"><span class="ph">[N]</span></span><span class="rp_l">members / live from Slack</span></div>
+</div>
+<div class="rp_row">
+<span class="rp_k"><img src="/_blob/5ce2f428f29c7b5c6bcf47b0cad77fa8" alt="" class="rp_ic">In person</span>
+<div><img class="rp_logo rp_lab" src="/_blob/a28b7b088a4a3d839b5506e2526f9e8b" alt="Alpha Labs"><p class="rp_p">Open to every provider, all over the network. {{ role.labFit }}</p></div>
+<div class="rp_stat"><span class="rp_l">Next Lab</span><span class="rp_l2"><span class="ph">[City, ST / Date]</span></span></div>
+</div>
+<sc-if value="{{ role.hasLearn }}">
+<div class="rp_row">
+<span class="rp_k"><img src="/_blob/3eb611c0c71bd95a8927e9367e3a8c2b" alt="" class="rp_ic">From the masters</span>
+<div><img class="rp_logo rp_aim" src="/_blob/874fda3901b8e9a1580c65c030131cf2" alt="AIM, the Alpha Injector Masterclass"><p class="rp_p">Closed-door sessions with the people who shaped the specialty. 2 seasons, 8 masters so far.</p></div>
+<div class="rp_stat"><span class="rp_l">Next session</span><span class="rp_l2"><span class="ph">[Speaker / Date]</span></span></div>
+</div>
+</sc-if>
+<div class="rp_row">
+<span class="rp_k"><img src="/_blob/3eb611c0c71bd95a8927e9367e3a8c2b" alt="" class="rp_ic">Listen</span>
+<div>
+<span class="rp_t">From the Alpha podcast network</span>
+<p class="rp_p">Start-here episodes picked for this role. They play in the site player, so the page keeps going while you listen.</p>
+<div class="pods"><sc-for list="{{ role.pods }}" as="p" hint-placeholder-count="2"><span class="pod"><b>{{ p.s }}</b>{{ p.t }}</span></sc-for></div>
+</div>
+<div class="rp_stat"><span class="rp_l">Start here</span><span class="rp_l2"><span class="ph">[Episode title]</span></span><button class="btn" style="margin-top: 14px">▶ Play</button></div>
+</div>
+<sc-if value="{{ role.hasPath }}">
+<div class="rp_row">
+<span class="rp_k">Where it goes</span>
+<div><span class="rp_t">From the chair to the faculty</span><p class="rp_p">Alpha's best injectors teach the next generation at Practice.</p></div>
+<div class="rp_stat"><span class="rp_l">Practice faculty from Alpha</span><span class="rp_l2"><span class="ph">[N]</span></span></div>
+</div>
+</sc-if>
+</div>
+</div>
+</section>
+
+<!-- ============ 5 / CONTENT ============ -->
+<section class="aim_sec" id="aim">
+<div class="aim_hero" aria-hidden="true"><div class="aim_grid"></div><img class="aim_big" src="/_blob/874fda3901b8e9a1580c65c030131cf2" alt=""></div>
+<div class="wrap">
+<div class="sec_h">
+<div>
+<p class="eyebrow">Learn / Alpha Injector Masterclass</p>
+<h2 class="h3">The masters,<br>behind closed doors.</h2>
+</div>
+<p class="body">The room is for Alpha providers only. The lineup is not a secret. Each session gets its own page: who taught, what they covered, and a short recap after.</p>
+</div>
+<div class="tabs" role="tablist" aria-label="AIM seasons">
+<sc-for list="{{ seasons }}" as="s" hint-placeholder-count="3"><button class="{{ s.cls }}" role="tab" aria-selected="{{ s.sel }}" onClick="{{ s.go }}">{{ s.label }}</button></sc-for>
+</div>
+<ol class="aim">
+<sc-for list="{{ sessions }}" as="x" hint-placeholder-count="4">
+<li><a href="#session"><span class="aim_cv"><sc-if value="{{ x.hasC }}" hint-placeholder-val="{{ true }}"><img src="{{ x.c }}" alt="" loading="lazy"></sc-if><sc-if value="{{ x.noC }}" hint-placeholder-val="{{ false }}"><b>AIM</b></sc-if></span><span class="aim_d">{{ x.d }}</span><span class="aim_n">{{ x.n }}</span><span class="aim_t">{{ x.t }}</span><span class="aim_s"><i class="lock" aria-hidden="true"></i>{{ x.s }}</span></a></li>
+</sc-for>
+</ol>
+<p class="aim_note">Dates and topics from the session covers. Years and the Weiner, Karimi, Robertson and Batniji topics: to confirm.</p>
+</div>
+</section>
+
+<section class="sec" id="loops">
+<div class="wrap">
+<div class="sec_h">
+<div>
+<p class="eyebrow">Alpha Loops</p>
+<h2 class="h3">Six Loops,<br>one network.</h2>
+</div>
+<p class="body">Member counts update nightly from Slack.</p>
+</div>
+<div class="loops">
+<sc-for list="{{ loops }}" as="l" hint-placeholder-count="6">
+<div class="loop"><sc-if value="{{ l.logo }}" hint-placeholder-val="{{ true }}"><img class="loop_logo" src="{{ l.logo }}" alt="{{ l.c }}"></sc-if><sc-if value="{{ l.noLogo }}" hint-placeholder-val="{{ false }}"><span class="loop_c">{{ l.c }}</span></sc-if><span class="loop_n"><span class="ph">[N]</span></span><span class="loop_l">Members</span></div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<!-- ============ CLINICAL DIRECTOR ============ -->
+<section class="cd" id="clinical" aria-label="Curriculum lead">
+<span class="cd_hold">Hold until signed</span>
+<div class="wrap">
+<div class="cd_grid">
+<div class="cd_plate">
+<svg viewBox="0 0 100 125" preserveAspectRatio="none" aria-hidden="true"><path d="M30 20 C 22 45, 24 80, 42 104 C 48 112, 56 112, 62 104 C 78 82, 80 46, 70 20"></path><path d="M38 52 C 44 48, 50 48, 54 52"></path><path d="M56 70 C 62 74, 66 80, 66 90"></path><path d="M34 74 C 40 84, 46 92, 50 98"></path><path d="M64 40 C 70 50, 72 62, 70 72"></path></svg>
+<span class="cd_pin" style="left: 58%; top: 33%"><i></i>Temporal fat <b>/ 01</b></span>
+<span class="cd_pin" style="left: 54%; top: 58%"><i></i>Midface ligaments <b>/ 02</b></span>
+<span class="cd_pin" style="left: 22%; top: 70%"><i></i>Facial artery <b>/ 03</b></span>
+<span class="cd_ph">[Portrait, b/w, studio. Anatomy layers trace over the face on scroll]</span>
+</div>
+<div>
+<p class="cd_k">Curriculum lead</p>
+<h2 class="cd_name">Sebastian<br>Cotofana</h2>
+<p class="cd_cred">Clinical Director · Founder, Cotofana Anatomy</p>
+<p class="cd_lede">Every course in the University starts from the same anatomy. Sebastian signs off the curriculum, from a first Loop question to a hands-on Lab, so what an injector learns in Denver is what they learn in Boston.</p>
+<span class="cd_draft">Draft copy</span>
+<blockquote class="cd_q">[Verbatim line on teaching anatomy]<cite>Sebastian Cotofana</cite></blockquote>
+<ul class="cd_scope">
+<li><span>01</span><b>Labs</b><em>Hands-on, anatomy-first</em></li>
+<li><span>02</span><b>AIM</b><em>Masters of the specialty</em></li>
+<li><span>03</span><b>Practice</b><em>Cohorts with university partners</em></li>
+</ul>
+<div class="cd_ctas"><a class="cd_btn fill" href="#film">▶ Watch him teach</a><a class="cd_btn" href="#profile">Full profile</a></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Practice: integrated into the page flow; the cutout bleeds off the left edge and runs the full height of the section -->
+<section class="pracx neutral">
+<img class="pracx_img" src="/_blob/392e241a23618abb912648d8c6ec9a60" alt="An injector working with facial anatomy revealed">
+<div class="wrap pracx_in">
+<div class="pracx_txt">
+<img class="prac_logo" src="/_blob/61d74f5022381b7e1176ee00c08807c5" alt="Practice Aesthetics Training">
+<p class="body">Alpha's best injectors teach the next generation at Practice, university-partnered injector training open to every clinician, not just ours.</p>
+<p class="eyebrow" style="margin: 28px 0 12px">University partners</p>
+<div class="ulogos"><img src="/_blob/9eab333d38ada9aabf6cbb01e76df8dd" alt="Boston College"><img src="/_blob/abef9b9743aa7d5d6d2166fecd5eecc0" alt="Columbia University School of Nursing" class="ul_wide"><img src="/_blob/9573ede0958de66276486f793e899ca6" alt="University of Pennsylvania"><img src="/_blob/b71b440fcf235106d42bf4f1ab5cd27c" alt="UNC Chapel Hill School of Nursing" class="ul_tall"></div>
+<div class="prac_ctas"><a class="pbtn pbtn_fill" href="#practice">Apply to Cohort</a><a class="pbtn" href="#practice">Visit Practice ↗</a></div>
+</div>
+</div>
+</section>
+
+<section class="close">
+<div class="wrap">
+<p class="eyebrow">Two ways in</p>
+<p class="close_t">Train with the network.</p>
+<div class="close_c"><a class="btn" href="#talk">Partner with Alpha</a><a class="btn" href="#careers">Join a partner</a></div>
+</div>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":6400}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const s = this.state || {}, set = (o) => this.setState(o);
+    const season = s.season || 2;
+    const S = {
+      1: [['Nov 5', 'Julie Horne', 'Advanced lip techniques', '/_blob/ae6bf2aa38b7035471407dad24609861'], ['Jan 7', 'Dr. Tom van Eijk', 'The fern pattern technique', '/_blob/f2ba54476af1c2585e26599b30787776'], ['Mar 11', 'Dr. Steve Yoelin', 'Advanced injectables', '/_blob/844bd79282d02c15f29e4fc6a5672cfb'], ['Apr 1', 'Leslie Fletcher', 'Advanced injectables', '/_blob/e7e296d3e488483e3a279f125f7b9a8e'], ['May 13', 'Dr. Steve Weiner', '[Topic]', '/_blob/5d8d15f01bf6fc9dc086bd20919fa021']],
+      2: [['Sep 24', 'Dr. Kian Karimi', '[Topic]', '/_blob/014e7a3fddadc45dafab2597410b549e'], ['Oct 7', 'Lori Robertson', '[Topic]', '/_blob/99d1c90b0e3c3c920445246b1f061174'], ['Dec 2', 'Dr. Rami Batniji', '[Topic]', '/_blob/05e422993a69e21653935a193e352bbe']],
+      3: [['[Date]', '[Speaker]', '[Topic]', ''], ['[Date]', '[Speaker]', '[Topic]', ''], ['[Date]', '[Speaker]', '[Topic]', '']]
+    };
+    const RANGE = { 1: ' / Nov 24 to Jun 25', 2: ' / Sep 25 to Jan 26', 3: ' / next' };
+    const seasons = [1, 2, 3].map((n) => ({ label: 'Season ' + n + RANGE[n], cls: 'tab' + (n === season ? ' is-on' : ''), sel: n === season ? 'true' : 'false', go: () => set({ season: n }) }));
+    const sessions = S[season].map((r) => ({ d: r[0], n: r[1], t: r[2], c: r[3], hasC: !!r[3], noC: !r[3], s: season === 3 ? 'Upcoming' : 'Recap' }));
+    const C = [['Sacramento', 4.0, 40.6, 3, 0], ['Corte Madera', 2.8, 42.1, 1, 0], ['San Diego', 9.6, 65.1, 4, 0], ['Albuquerque', 30.3, 62.6, 2, 0], ['Denver', 34.5, 44.9, 1, 0], ['Columbus', 74.4, 42.6, 3, 1], ['Lexington', 72.3, 50.6, 2, 1], ['Leesburg', 84.6, 43.1, 2, 1], ['Lewes', 88.9, 43.0, 1, 1], ['Albany', 89.3, 27.2, 2, 1], ['Boston', 93.8, 26.4, 3, 1], ['Cape Coral', 81.5, 93.9, 2, 1]];
+    const pins = C.map((c, i) => ({ c: c[0], x: c[1] + '%', y: c[2] + '%', s: (6 + c[3] * 3) + 'px', d: (i * 0.37).toFixed(2) + 's', cls: 'pin' + (c[4] ? ' r' : '') }));
+    const LG = {'Injector': '/_blob/6d567961229c9455e665242c89ca3a22', 'Esthie': '/_blob/39f4241c24389044ba658c79b815abb5', 'Manager': '/_blob/5648b428ab0857f5499b5e9d7bdb86ea', 'Surgery': '/_blob/c14f9ea28f185e37abb96a806fe4b684', 'Marketing': '/_blob/9f4a31be4df3b111056b8189c8f56cf1'};
+    const loops = ['Injector', 'Marketing', 'Surgery', 'Manager', 'Body', 'Esthie'].map((l) => ({ c: l + ' Loop', logo: LG[l] || '', noLogo: !LG[l] }));
+    const R = {
+      injector: { label: 'Injector', loop: 'Injector Loop', logo: '/_blob/6d567961229c9455e665242c89ca3a22', loopFor: 'Technique, product, complications and second opinions, answered by injectors across the network.', labFit: 'Injector Labs are hands-on technique days.', hasLearn: true, hasPath: true, pods: [{ s: 'HTB', t: '[Show name]' }, { s: 'WCE', t: 'White Coat Entrepreneur' }] },
+      esthie: { label: 'Esthetician', loop: 'Esthie Loop', logo: '/_blob/39f4241c24389044ba658c79b815abb5', loopFor: 'Facials, devices, skincare protocols and product questions, shared between estheticians in every clinic.', labFit: 'Skincare Labs cover devices, facials and protocols.', hasLearn: false, hasPath: false, pods: [{ s: '[Show]', t: '[Episodes tagged Esthetician]' }] },
+      manager: { label: 'Manager', loop: 'Manager Loop', logo: '/_blob/5648b428ab0857f5499b5e9d7bdb86ea', loopFor: 'Scheduling, staffing, systems and the day-to-day of running a clinic, with managers who have solved it before.', labFit: '', hasLearn: false, hasPath: false, pods: [{ s: 'OMS', t: 'Operation Med Spa' }, { s: 'MSM', t: '[Show name]' }] }
+    };
+    const rk = s.role || 'injector';
+    const roles = Object.keys(R).map((k, i) => ({ n: 'No. 0' + (i + 1), label: R[k].label, cls: k === rk ? 'is-on' : '', sel: k === rk ? 'true' : 'false', go: () => set({ role: k }) }));
+    const P = {
+      loops: { name: 'Loops', ic: '/_blob/781844e9227a4e9b3ff9e8036fa70ef6', w: '/_blob/831a1074afbeeb1afb1efa38a3eecc7c', line: 'Every day, in Slack. One for every role.', stats: [{ n: '6', l: 'Loops, by role' }, { n: '[N]', l: 'Members, live from Slack' }, { n: '[N]', l: 'Conversations this week' }, { n: '[N] min', l: 'Typical time to first answer' }] },
+      labs: { name: 'Labs', ic: '/_blob/5ce2f428f29c7b5c6bcf47b0cad77fa8', w: '/_blob/49168940dee51506299e8f6c1693b289', line: 'In person, all over, all the time. Open to every provider.', stats: [{ n: '[N]', l: 'Labs in 2026' }, { n: '[N]', l: 'Cities' }, { n: '2', l: 'Tracks: Skincare and Injector' }, { n: '[N]', l: 'Providers trained' }] },
+      learn: { name: 'Learn', ic: '/_blob/3eb611c0c71bd95a8927e9367e3a8c2b', w: '/_blob/142230bde794cc4b54fe52c8712a3ddd', line: 'AIM sessions and the podcast network, on demand.', stats: [{ n: '2', l: 'AIM seasons' }, { n: '8', l: 'Masters so far' }, { n: '[N]', l: 'Podcast shows' }, { n: '[N]', l: 'Episodes' }] }
+    };
+    const pk = s.prog || 'loops';
+    const progs = Object.keys(P).map((k) => ({ name: P[k].name, ic: P[k].ic, w: P[k].w, line: P[k].line, cls: k === pk ? 'is-on' : '', sel: k === pk ? 'true' : 'false', go: () => set({ prog: k }) }));
+    const prog = Object.assign({}, P[pk], { isLoops: pk === 'loops', isLabs: pk === 'labs', isLearn: pk === 'learn' });
+    const LABS = [
+      { track: 'Injector Lab', city: '[City, ST]', date: '[Month Year]', layout: ['big', '', '', 'wide'], tiles: ['Demo', 'Hands on', 'Group', 'Cases'] },
+      { track: 'Skincare Lab', city: '[City, ST]', date: '[Month Year]', layout: ['wide', '', '', 'wide'], tiles: ['Devices', 'Facial demo', 'Products', 'Group'] },
+      { track: 'Injector Lab', city: '[City, ST]', date: '[Month Year]', layout: ['big', '', '', '', ''], tiles: ['Live model', 'Mapping', 'Hands on', 'Q and A', 'Team'] },
+      { track: 'Skincare Lab', city: '[City, ST]', date: '[Month Year]', layout: ['big', 'wide', '', ''], tiles: ['Treatment', 'Group', 'Detail', 'Host clinic'] }
+    ];
+    const li = s.lab || 0, L0 = LABS[li];
+    const lab = { track: L0.track, city: L0.city, date: L0.date, tiles: L0.tiles.map((l, i) => ({ l: '[Photo] ' + l, cls: 'tile ' + (L0.layout[i] || '') })) };
+    const labsw = LABS.map((x, i) => ({ l: x.track.split(' ')[0] + ' / ' + (i + 1), cls: i === li ? 'is-on' : '', sel: i === li ? 'true' : 'false', go: () => set({ lab: i }) }));
+    return { seasons, sessions, pins, loops, roles, role: R[rk], progs, prog, lab, labsw };
+  }
+}
+</script>
+</body>
+</html>

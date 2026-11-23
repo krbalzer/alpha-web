@@ -2,6 +2,7 @@
 @font-face{font-family:"NHD";src:url(/fonts/nhd-700.woff2) format("woff2");font-weight:700;font-display:swap;ascent-override:85.7%;descent-override:14.3%;line-gap-override:0%}
 @font-face{font-family:"Diatype Mono";src:url(/fonts/diatype-mono-400.woff2) format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"Diatype Mono";src:url(/fonts/diatype-mono-700.woff2) format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"Corvinus";src:url(/fonts/corvinus-400.woff2) format("woff2");font-weight:400;font-display:swap}
 
 /* tokens + base */
 :root{--bone:#DEDAD1;--bone-2:#D3CFC5;--ink:#0E0E0D;--paper:#E8E4DA;--muted:#5C5952;--muted-d:#9B978E;--line:rgba(14,14,13,.16);--line-d:rgba(232,228,218,.14);--map:#151513;--sf:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue",Arial,sans-serif;--mono:"Diatype Mono",ui-monospace,Menlo,monospace;--disp:"NHD","Helvetica Neue",Arial,sans-serif;--h3:"NHD","Helvetica Neue","HelveticaNeue",Helvetica,Arial,sans-serif;--ease:cubic-bezier(.22,.66,.16,1);--cw:clamp(280px,27vw,400px)}

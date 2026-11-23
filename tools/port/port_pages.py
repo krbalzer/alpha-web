@@ -29,6 +29,7 @@ HREF = {
     # template links that data wiring replaces with real slugs; until then they land on the index
     '#dept': '/team', '#profile': '/team', '#show': '/podcasts', '#episode': '/podcasts', '#speaker': '/podcasts',
     '#brand': '/locations#brands', '#founder': '/locations#founders', '#location': '/locations', '#article': '/newswire',
+    '#signin': 'https://alphaaesthetics.university', '#careers': '/careers', '#session': '#aim', '#film': '#clinical',
     '#portal': '/talk', '#qualify': '/talk', '#apply': '/talk', '#contact': '/talk',
 }
 
@@ -922,6 +923,55 @@ def episode_engine(e):
 """ + e[j:]
 
 
+# ---------- University (/training): numbers and lineup come from src/lib/training.ts (Liz's training log) ----------
+def university_markup(b):
+    i = b.index('<div class="band_t">'); j = b.index('</div>', i) + 6
+    one = ('<span>AIM sessions <b>{{ d.aimN }}</b></span><i>★</i><span>Labs since 2024 <b>{{ d.labsN }}</b></span><i>★</i>'
+           '<span>AIM Season <b>{{ d.seasonN }}</b></span><i>★</i><span>Podcast episodes <b>{{ d.eps }}</b></span><i>★</i>'
+           '<span>Masters <b>{{ d.masters }}</b></span><i>★</i><span>Est. <b>2023</b></span><i>★</i><span>Simul fortes</span><i>★</i>')
+    b = b[:i] + '<div class="band_t">' + one + one + '</div>' + b[j:]
+    b = rep(b, '<span class="lrn_t">Season 3, next: <span class="ph">[Speaker]</span> on <span class="ph">[topic]</span></span>',
+            '<span class="lrn_t">{{ d.learnNow }}</span>')
+    b = rep(b, '<span class="lrn_s">Season 2: Dr. Steve Yoelin, Dr. Kian Karimi, Dr. Rami Batniji, Lori Robertson</span>',
+            '<span class="lrn_s">{{ d.learnPrev }}</span>')
+    b = rep(b, '<span class="pod"><b>MSM</b>[Show name]</span>', '<span class="pod"><b>MSM</b>Med Spa Marketing Group Chat</span>')
+    b = rep(b, '<span class="pod"><b>HTB</b>[Show name]</span>', '<span class="pod"><b>HTB</b>Holding Time Back</span>')
+    b = rep(b, 'Mock: pins at partner cities, lines illustrative. Live version: Lab log plus Slack activity counts per channel, mapped to the poster\'s clinic. No message content.',
+            'Pins: every Lab since 2024, sized by how many it has hosted. Lines: how Loop questions travel.')
+    i = b.index('<div class="term">'); j = b.index('</div>', i) + 6
+    b = b[:i] + ('<div class="term">'
+                 '<a href="#aim"><span class="term_k"><i class="live" aria-hidden="true"></i>Vendor education</span><span class="term_t">{{ d.vendorN }} Alpha-exclusive sessions</span><span class="term_s">AMI x Alpha, launches, Train the Trainer</span></a>'
+                 '<a href="#roles"><span class="term_k">Latest Lab</span><span class="term_t">{{ d.lastLab.t }}</span><span class="term_s">{{ d.lastLab.s }}</span></a>'
+                 '<a href="#aim"><span class="term_k">Latest AIM</span><span class="term_t">{{ d.lastAim.t }}</span><span class="term_s">{{ d.lastAim.s }}</span></a>'
+                 '</div>') + b[j:]
+    b = rep(b, '<div class="rp_stat"><span class="rp_l">Next Lab</span><span class="rp_l2"><span class="ph">[City, ST / Date]</span></span></div>',
+            '<div class="rp_stat"><span class="rp_l">Latest Lab</span><span class="rp_l2">{{ d.lastLab.s }}</span></div>')
+    b = rep(b, '2 seasons, 8 masters so far.', '{{ d.seasonN }} seasons, {{ d.masters }} masters so far.')
+    b = rep(b, '<div class="rp_stat"><span class="rp_l">Next session</span><span class="rp_l2"><span class="ph">[Speaker / Date]</span></span></div>',
+            '<div class="rp_stat"><span class="rp_l">Latest session</span><span class="rp_l2">{{ d.lastAim.t }} / {{ d.lastAim.d }}</span></div>')
+    b = rep(b, '<p class="aim_note">Dates and topics from the session covers. Years and the Weiner, Karimi, Robertson and Batniji topics: to confirm.</p>', '')
+    b = rep(b, '<section class="pracx neutral">', '<section class="pracx neutral" id="practice">')
+    b = gate(b, 'CLINICAL DIRECTOR', 'd.showCD')
+    b = rep(b, 'autoplay="" muted="" loop="" playsinline=""', 'autoplay muted loop playsinline')
+    return b
+
+
+def university_engine(e):
+    e = sub(r'const season = s\.season \|\| 2;', 'const D = this.props.data;\n    const season = s.season || D.season;', e)
+    e = sub(r'const S = \{.*?\n    \};', 'const S = D.aim;', e)
+    e = sub(r'const RANGE = \{[^}]*\};', 'const RANGE = D.range;', e)
+    e = rep(e, "s: season === 3 ? 'Upcoming' : 'Recap'", "s: 'Closed door'")
+    e = sub(r'const C = \[.*?\];', 'const C = D.pins;', e)
+    e = sub(r"(labs: \{[^\n]*?stats: )\[.*?\] \}", r'\1D.labStats }', e)
+    e = sub(r"(learn: \{[^\n]*?stats: )\[.*?\] \}", r'\1D.learnStats }', e)
+    e = sub(r'const LABS = \[.*?\n    \];', 'const LABS = D.labs;', e)
+    e = rep(e, "{ s: 'HTB', t: '[Show name]' }", "{ s: 'HTB', t: 'Holding Time Back' }")
+    e = rep(e, "{ s: 'MSM', t: '[Show name]' }", "{ s: 'MSM', t: 'Med Spa Marketing Group Chat' }")
+    e = rep(e, "{ s: '[Show]', t: '[Episodes tagged Esthetician]' }", "{ s: 'BF', t: 'The Beauty Filter' }")
+    e = rep(e, 'return { seasons, sessions,', 'return { d: D, seasons, sessions,')
+    return e
+
+
 PAGES = {
     # name: route dir, board, options
     'About': dict(dir='about', board='About', markup=about_markup, engine=about_engine, css=IMG_CSS + '.ex_i{position:relative;overflow:hidden}'),
@@ -944,6 +994,7 @@ PAGES = {
     'Show': dict(dir='podcasts/[show]', board='Show', markup=show_markup, engine=show_engine, imports=QUEUE_IMPORT, css=SHOW_CSS + QUEUE_ROW_CSS + IMG_CSS + '.spk,.person_av{position:relative;overflow:hidden}\n.spk img,.person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}\n'),
     'Episode': dict(dir='podcasts/[show]/[episode]', board='Episode', markup=episode_markup, engine=episode_engine, imports=QUEUE_IMPORT + "import { EpisodeBar } from '@/components/site/EpisodeBar'\n", css=EPBAR_CSS + '.qb_lg{height:44px;padding:0 18px}\n.btn.qb.is-q{background:var(--ink);border-color:var(--ink);color:var(--bone)}\n.btn.qb.is-now{opacity:.55;cursor:default}\n' + IMG_CSS + '.vid_poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.82)}\n.vid .vid_btn{position:relative;z-index:1;border:0;cursor:pointer}\n.vid.is-on{aspect-ratio:16/9;background:#000}\n.vid_ifr{position:absolute;inset:0;width:100%;height:100%;border:0}\n' + '.tv_play{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 22px 0 18px;border-radius:999px;border:0;background:var(--ink);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:transform .3s var(--ease)}\n.tv_play:hover{transform:scale(1.04)}\n' + '.spk,.person_av{position:relative;overflow:hidden}\n.spk img,.person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}\n'),
     # 'Speaker': ported when the Speakers collection has people in it
+    'University': dict(dir='training', board='University', data=False, markup=university_markup, engine=university_engine, css=IMG_CSS),
     'Main': dict(dir='_home', board='Main', markup=main_markup, engine=main_engine, css=MAIN_CSS + REEL_CSS, imports=QUEUE_IMPORT + "import { HomeReel } from '@/components/site/HomeReel'\n"),
 }
 
