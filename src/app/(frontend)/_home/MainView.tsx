@@ -241,7 +241,7 @@ export default function MainView(props: any) {
 <div className="arrows"><button className="arrow" aria-label="Previous show" onClick={v.podPrev} disabled={v.podAtStart}><svg width="8" height="10" viewBox="0 0 8 10" aria-hidden="true"><path d="M6 1L2 5l4 4" stroke="currentColor" fill="none" strokeWidth="1.3"></path></svg></button><button className="arrow" aria-label="Next show" onClick={v.podNext} disabled={v.podAtEnd}><svg width="8" height="10" viewBox="0 0 8 10" aria-hidden="true"><path d="M2 1l4 4-4 4" stroke="currentColor" fill="none" strokeWidth="1.3"></path></svg></button></div>
 </div>
 </div>
-<div className="rail pods" style={{"marginTop": "28px"} as React.CSSProperties}>
+<div className="rail pcar" style={{"marginTop": "28px"} as React.CSSProperties}>
 <div className="track" style={{"gap": "8px", "transform": `translateX(${v.podShift})`} as React.CSSProperties}>{(v.shows || []).map((c: any, c_i: number) => (<React.Fragment key={c_i}><a className="cover" href={c.href} style={{"textDecoration": "none"} as React.CSSProperties}><div className="cover_art" style={{"background": `${c.bg}`, "padding": "0", "overflow": "hidden", "position": "relative"} as React.CSSProperties}>{c.art ? (<><img className="ph_img" src={c.art} alt={c.name} loading="lazy" /></>) : null}</div><div className="cover_meta"><span className="mono" style={{"fontSize": "10px"} as React.CSSProperties}>{c.name}</span></div></a></React.Fragment>))}</div>
 </div>
 

@@ -31,6 +31,7 @@
         { "kind": "image", "src": "since-alpha/ra-collateral.jpg", "w": 638, "h": 358, "caption": "Print" }
       ]
     },
+    "before": {"src": "/work/before/ra.webp", "host": "refinedaestheticsmedspa.com", "when": "Jan 2025", "archive": "https://web.archive.org/web/20250126131337/https://refinedaestheticsmedspa.com/"},
     "site": {
       "url": "https://www.refinedaestheticsmedspa.com/",
       "desktop": "work/ra-site-d.jpg",
@@ -70,6 +71,7 @@
       ]
     },
     "msm": { "n": 68, "until": "13:11", "body": "Every launch is recorded for the Group Chat. This one is about the first partner to join after Esthetics Center: real patients in every photo, a coastline locals will recognize, and four ethos pillars written into every page.", "quote": { "text": "That's not really something that you can get from a template. It takes sitting down, it takes listening, even going onsite and figuring out what they're about.", "at": "10:03" } },
+    "before": {"src": "/work/before/htb.webp", "host": "holdentimelessbeauty.com", "when": "Mar 2024", "archive": "https://web.archive.org/web/20240329061442/https://holdentimelessbeauty.com/"},
     "site": {
       "url": "https://www.holdentimelessbeauty.com/",
       "desktop": "work/htb-site-d.jpg",
@@ -109,6 +111,7 @@
         { "kind": "image", "src": "since-alpha/lcm-tx32.jpg", "w": 666, "h": 1000 }
       ]
     },
+    "before": {"src": "/work/before/lcm.webp", "host": "marinlaser.com"},
     "site": {
       "url": "https://marinlaser.com/",
       "desktop": "work/lcm-site-d.jpg",
@@ -149,6 +152,7 @@
         { "kind": "image", "src": "since-alpha/cami-dsc00717.jpg", "w": 667, "h": 1000 }
       ]
     },
+    "before": {"src": "/work/before/cami.webp", "host": "carolinaagemanagement.com", "when": "Feb 2025", "archive": "https://web.archive.org/web/20250228225641/https://carolinaagemanagement.com/"},
     "site": {
       "url": "https://camiaesthetics.com/",
       "desktop": "work/cami-site-d.jpg",
@@ -190,6 +194,7 @@
         { "kind": "image", "src": "since-alpha/atam-edit4.jpg", "w": 1000, "h": 1500 }
       ]
     },
+    "before": {"src": "/work/before/atam.webp", "host": "annetherese.com"},
     "site": {
       "url": "https://www.annetherese.com/",
       "desktop": "work/atam-site-d.jpg",

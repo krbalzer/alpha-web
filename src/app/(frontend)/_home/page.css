@@ -470,6 +470,6 @@ html body .pg-main .th_stage>.th_arrow:last-child{right:8px}
 
 /* podcast covers: five covers span the content width exactly (the 5th ends on the content edge); the rail still bleeds right so the 6th peeks in. Sized off the wrap (container units), not the bleeding rail. */
 .pg-main #podcasts > .wrap{container-type:inline-size}
-.pg-main .rail.pods{--pv:5}
-.pg-main .rail.pods .cover{flex:0 0 calc((100cqw - (var(--pv) - 1) * 8px) / var(--pv));min-width:0}
-@media (max-width:820px){.pg-main .rail.pods{--pv:2}}
+.pg-main .rail.pcar{--pv:5}
+.pg-main .rail.pcar .cover{flex:0 0 calc((100cqw - (var(--pv) - 1) * 8px) / var(--pv));min-width:0}
+@media (max-width:820px){.pg-main .rail.pcar{--pv:2}}

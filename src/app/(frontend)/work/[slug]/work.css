@@ -106,3 +106,16 @@
   .pg-work .crumb .wrap>span:nth-child(2){display:none}
 }
 @media (prefers-reduced-motion:reduce){.wk_t{opacity:1;transform:none;transition:none}.wk_build{height:auto!important}.wk_pin{position:static;height:auto;padding:56px 0}}
+
+/* before / after: the old hero sits over the scrolling capture and fades in */
+.wk_acts{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.wk_ba{display:inline-flex;border:1px solid currentColor;border-radius:999px;padding:3px;gap:2px}
+.wk_ba button{height:26px;padding:0 12px;border:0;border-radius:999px;background:transparent;font:inherit;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;color:inherit;transition:background .3s var(--ease),color .3s var(--ease)}
+.wk_ba button.is-on{background:var(--ink);color:var(--bone)}
+.wk_old{position:absolute;inset:0;width:100%;height:100%!important;object-fit:cover;object-position:top center;opacity:0;transition:opacity .6s var(--ease);pointer-events:none}
+.is-was .wk_old{opacity:1}
+.wk_arch{margin-left:auto!important;color:#c9a26b}
+.wk_phone{transition:opacity .6s var(--ease)}
+.is-was .wk_phone{opacity:.18}
+.wk_wb{margin-top:14px}
+.wk_wb a{color:inherit}

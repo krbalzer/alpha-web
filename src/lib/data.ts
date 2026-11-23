@@ -226,7 +226,7 @@ export type SinceAlphaData = NonNullable<Awaited<ReturnType<typeof getSinceAlpha
 
 /* ---------- Work: rebrand case studies at /work/[slug] (src/seed/content/work.json) ---------- */
 const BLOB = 'https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/'
-const blob = (f?: string) => (f ? (/^https?:/.test(f) ? f : BLOB + f) : '')
+const blob = (f?: string) => (f ? (/^(https?:|\/)/.test(f) ? f : BLOB + f) : '')
 type WorkTile = { kind: 'image' | 'video' | 'palette' | 'quote'; label: string; src?: string; poster?: string; fit?: 'cover' | 'contain'; bg?: string; fg?: string; colors?: [string, string, boolean?][]; text?: string; source?: string }
 type WorkEntry = {
   date: string; headline: string; intro: string; kept: string[]; changed: string[]
@@ -235,6 +235,8 @@ type WorkEntry = {
   board: { layout: 'square' | 'wide'; line: string; tiles: WorkTile[] }
   shoot: { where: string; headline: string; items: SAItem[] }
   site: { url: string; desktop: string; mobile: string; ledger: [string, string][] }
+  /** The old site's hero, captured before the rebuild. archive: a Wayback snapshot of the whole page. */
+  before?: { src: string; host: string; when?: string; archive?: string }
   /** until: hide chapters at or after this mm:ss (episodes that move on to other topics). quote: overrides the episode's first pull quote. */
   msm?: { n: number; body: string; until?: string; quote?: { text: string; at: string } }
 }

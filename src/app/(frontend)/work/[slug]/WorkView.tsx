@@ -30,6 +30,8 @@ export default function WorkView({ d }: { d: WorkData }) {
   const mob = useRef<HTMLImageElement>(null)
   const board = useRef<HTMLDivElement>(null)
   const [k, setK] = useState(0)
+  const [was, setWas] = useState(false)
+  const b = d.before
   const { rail, prog, prev, next } = useRail()
   const T = d.board.tiles
 
@@ -139,12 +141,16 @@ export default function WorkView({ d }: { d: WorkData }) {
       <section className="wrap wk_site" ref={ap}>
         <div className="wk_sh">
           <div><p className="eyebrow">Applied / the system at work</p><h2 className="display wk_h2">Then the site.</h2></div>
-          <a className="btn" href={d.site.url} target="_blank" rel="noopener">{host(d.site.url)} ↗</a>
+          <div className="wk_acts">
+            {b ? <div className="wk_ba mono" role="tablist" aria-label="Before and after"><button role="tab" aria-selected={was} className={was ? 'is-on' : ''} onClick={() => setWas(true)}>Before</button><button role="tab" aria-selected={!was} className={!was ? 'is-on' : ''} onClick={() => setWas(false)}>After</button></div> : null}
+            <a className="btn" href={d.site.url} target="_blank" rel="noopener">{host(d.site.url)} ↗</a>
+          </div>
         </div>
-        <div className="wk_dev">
-          <div className="wk_browser"><div className="wk_chrome" aria-hidden="true"><i /><i /><i /><span className="mono">{host(d.site.url)}</span></div><div className="wk_scr"><img ref={dsk} src={d.site.desktop} alt={`${host(d.site.url)} on desktop`} loading="lazy" decoding="async" /></div></div>
+        <div className={'wk_dev' + (was ? ' is-was' : '')}>
+          <div className="wk_browser"><div className="wk_chrome" aria-hidden="true"><i /><i /><i /><span className="mono">{was && b ? b.host : host(d.site.url)}</span>{was && b?.when ? <span className="mono wk_arch">Archived {b.when}</span> : null}</div><div className="wk_scr"><img ref={dsk} src={d.site.desktop} alt={`${host(d.site.url)} on desktop`} loading="lazy" decoding="async" />{b ? <img className="wk_old" src={b.src} alt={`${b.host} before the rebuild`} loading="lazy" decoding="async" /> : null}</div></div>
           <div className="wk_phone"><div className="wk_scr"><img ref={mob} src={d.site.mobile} alt={`${host(d.site.url)} on a phone`} loading="lazy" decoding="async" /></div></div>
         </div>
+        {was && b?.archive ? <p className="mono wk_note wk_wb"><a href={b.archive} target="_blank" rel="noopener">The whole old page, on the Wayback Machine ↗</a></p> : null}
         <div className="wk_ship">
           <div><p className="eyebrow">What shipped</p><h3 className="h3">One system,<br />every surface.</h3><p className="mono wk_note">Counted from the live sitemap, Nov 2026</p></div>
           <div className="wk_led">{d.site.ledger.map(([n, l]) => <div key={l}><b>{n}</b><span>{l}</span></div>)}</div>
