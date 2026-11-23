@@ -371,7 +371,7 @@
 .pg-show .r_pi{position:absolute;inset:0;display:grid;place-items:center;background:rgba(14,14,13,.55);color:#fff;font-style:normal;font-size:16px;opacity:0;transition:opacity .2s}
 .pg-show .r_play:hover .r_pi,.pg-show .row.is-now .r_pi{opacity:1}
 .pg-show .r_main{display:flex;flex-direction:column;gap:5px;text-decoration:none;min-width:0}
-.pg-show .r_main b{font-family:var(--h3);font-weight:700;font-size:16px;line-height:1.25}
+.pg-show .r_main b{font-family:var(--h3);font-weight:700;font-size:16px;line-height:1.25;text-transform:none;letter-spacing:-.005em}
 .pg-show .r_main .mono{font-size:9.5px;color:var(--muted)}
 .pg-show .r_spk{display:flex}
 .pg-show .face{width:30px;height:30px;border-radius:50%;border:2px solid var(--bone);background:#C2BBAF;font-family:var(--disp);font-weight:900;font-size:8.5px;color:rgba(14,14,13,.5);cursor:pointer;padding:0}
