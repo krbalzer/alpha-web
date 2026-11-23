@@ -57,7 +57,23 @@ async function upload(p: Payload, name: string, alt: string) {
   return (await p.create({ collection: 'media', data: { alt }, file: { data, mimetype: 'image/jpeg', name, size: data.length } })).id as number
 }
 
+/** Artwork for existing shows, by slug. Files in src/seed/media/podcasts; a new filename swaps the art on the next build. */
+const SHOW_ART: Record<string, string> = {
+  'holding-time-back': 'htb-art-3.jpg',
+  'dear-tiffany': 'dt-art-2.jpg',
+}
+
+async function syncArt(p: Payload) {
+  for (const [slug, art] of Object.entries(SHOW_ART)) {
+    const s = (await p.find({ collection: 'shows', where: { slug: { equals: slug } }, limit: 1, depth: 1 })).docs[0] as { id: number; name: string; artwork?: { filename?: string } | null } | undefined
+    if (!s || s.artwork?.filename === art) continue
+    const artwork = await upload(p, art, s.name)
+    if (artwork) { await p.update({ collection: 'shows', id: s.id, data: { artwork } as never }); p.logger.info(`episodes: new artwork for ${s.name}`) }
+  }
+}
+
 async function ensureShows(p: Payload) {
+  await syncArt(p)
   for (const x of NEW_SHOWS) {
     const have = (await p.find({ collection: 'shows', where: { slug: { equals: x.slug } }, limit: 1, depth: 1 })).docs[0] as { id: number; artwork?: { filename?: string } | null } | undefined
     if (have) {
