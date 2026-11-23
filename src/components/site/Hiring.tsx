@@ -14,8 +14,8 @@ export function Hiring({ roles, name, total, where }: { roles: Role[]; name: str
     <section className="cr mod" id="careers" aria-label={`Open roles at ${name}`}>
       <div className="wrap mod_g">
         <div>
-          <p className="eyebrow">Join the team</p>
-          <h2 className="h3">{where ? 'Hiring here.' : `${name} is hiring.`}</h2>
+          <p className="eyebrow">{where ? 'Open positions' : 'Join the team'}</p>
+          <h2 className="h3">{where ? 'We are hiring here.' : `${name} is hiring.`}</h2>
           <p className="body">{n} open {n === 1 ? 'role' : 'roles'}{cities.length ? ` in ${cities.join(', ')}` : ''}. Apply directly; the practice&apos;s hiring manager reviews every application.</p>
         </div>
         <div>

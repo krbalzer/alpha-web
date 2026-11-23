@@ -2,7 +2,7 @@
 .cr{background:var(--bone);color:var(--ink);font-family:var(--sf);-webkit-font-smoothing:antialiased}
 .cr *{box-sizing:border-box}
 .cr a{color:inherit;text-decoration:none}
-.cr .wrap{max-width:1280px;margin:0 auto;padding:0 clamp(16px,4.5vw,64px)}
+/* .wrap width comes from global.css + tune.css (--max / --gut), same as every other section */
 .cr .mono{font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em}
 .cr .btn{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 16px;border:1px solid currentColor;border-radius:999px;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.05em;background:transparent;cursor:pointer;white-space:nowrap;transition:background .2s,color .2s}
 .cr .btn:hover{background:var(--ink);color:var(--bone)}
@@ -31,7 +31,7 @@
 .cr .fbar select{margin-left:auto;height:32px;border:1px solid var(--line);border-radius:999px;background:transparent;font-family:var(--mono);font-size:10.5px;text-transform:uppercase;padding:0 12px;color:var(--ink)}
 /* ledger */
 .cr .ledger{padding:24px 0 clamp(80px,9vw,140px)}
-.cr .grp{padding-top:36px}
+.cr .grp{padding:36px 0 clamp(28px,3.2vw,52px)}
 .cr .grp_h{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;padding-bottom:14px;border-bottom:1px solid var(--ink)}
 .cr .grp_h .bm{height:30px;max-width:110px}
 .cr .grp_c{font-size:10.5px;color:var(--muted)}.cr .grp_l{font-size:10.5px}
