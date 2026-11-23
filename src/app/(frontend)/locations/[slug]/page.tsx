@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { Closer } from '@/components/site/Closer'
+import { Hiring } from '@/components/site/Hiring'
+import { getRoles } from '@/lib/careers'
 import { getLocation, getLocationSlugs } from '@/lib/pages'
 import { getBrandIndex } from '@/lib/data'
 import LocationView from './LocationView'
@@ -18,14 +20,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
-  const [data, brands] = await Promise.all([getLocation((await params).slug), getBrandIndex()])
+  const slug = (await params).slug
+  const [data, brands, roles] = await Promise.all([getLocation(slug), getBrandIndex(), getRoles()])
   if (!data) notFound()
   const poster = data.b.locations[0].heroPoster
   return (
     <>
       {poster ? <link rel="preload" as="image" href={poster} fetchPriority="high" /> : null}
       <LocationView key={data.b.locations[0].href} data={data} brands={brands} />
-      <Closer brand={data.b.href.split('/').pop()} location={(await params).slug} />
+      <Hiring roles={roles.filter((r) => r.locHref === `/locations/${slug}`)} name={data.b.short} total={roles.length} where={data.b.locations[0].city} />
+      <Closer brand={data.b.href.split('/').pop()} location={slug} />
     </>
   )
 }
