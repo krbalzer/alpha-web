@@ -43,7 +43,7 @@ async function feedFor(p: Payload, show: { id: number; rss?: string | null; link
 /** Shows added after the Webflow import. Created once (by slug); after that only the artwork syncs (new filename = new art). */
 const NEW_SHOWS = [{
   slug: 'white-coat-entrepreneur', name: 'The White Coat Entrepreneur', short: 'WCE', order: 7, bg: '#1F2433', fg: '#FFFFFF',
-  art: 'wce-art-3.jpg', rss: 'https://rss.libsyn.com/shows/634274/destinations/5602059.xml',
+  art: 'wce-art-4.jpg', rss: 'https://rss.libsyn.com/shows/634274/destinations/5602059.xml',
   apple: 'https://podcasts.apple.com/us/podcast/the-white-coat-entrepreneur/id1491976901',
   tagline: "Physicians have been sold out by the system, and there's no one teaching doctors the business of medicine. In this podcast, Dr. Edwin Williams helps physician entrepreneurs learn to think like a small business person, develop an organic culture, understand the importance of planning, and acquire with purpose.",
 }]

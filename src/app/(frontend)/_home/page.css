@@ -468,7 +468,8 @@ html body .pg-main .th_stage>.th_arrow:first-child{left:8px}
 html body .pg-main .th_stage>.th_arrow:last-child{right:8px}
 }
 
-/* podcast covers: exactly five fill the content width (two on phones), no bleed past the wrap */
-html body .pg-main .rail.pods{--pv:5;margin-left:0;margin-right:0;padding-left:0;overflow:hidden}
-.pg-main .rail.pods .cover{flex:0 0 calc((100% - (var(--pv) - 1) * 8px) / var(--pv));min-width:0}
-@media (max-width:820px){html body .pg-main .rail.pods{--pv:2}}
+/* podcast covers: five covers span the content width exactly (the 5th ends on the content edge); the rail still bleeds right so the 6th peeks in. Sized off the wrap (container units), not the bleeding rail. */
+.pg-main #podcasts > .wrap{container-type:inline-size}
+.pg-main .rail.pods{--pv:5}
+.pg-main .rail.pods .cover{flex:0 0 calc((100cqw - (var(--pv) - 1) * 8px) / var(--pv));min-width:0}
+@media (max-width:820px){.pg-main .rail.pods{--pv:2}}

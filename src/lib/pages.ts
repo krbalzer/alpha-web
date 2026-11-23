@@ -347,6 +347,14 @@ const HOME_REEL = {
   m: { av1: 'https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/home/alpha-2025-m-av1.mp4', h264: 'https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/home/alpha-2025-m-h264.mp4', poster: 'https://l61f00rkpzjhtyjz.public.blob.vercel-storage.com/home/alpha-2025-m-poster.jpg' },
 }
 
+/** "Thinking about partnership? Start here": hand-picked, in this order (episode slugs). A missing or unpublished one is skipped. */
+const HOME_EPISODES = [
+  '052-john-wheeler-unlocking-generational-wealth-the-art-of-selling-your-11bd66', // GF 052, John Wheeler: selling your med spa
+  '011-mike-pisani-this-moment-in-aesthetics-a-level-of-euphoria-unlike-a-67e638', // GF 011, Mike Pisani
+  'everything-you-need-to-know-about-private-equity-winning-big-and-why-m-a9294a', // WCE 58, Ed Williams on private equity
+  '044-brian-colao-choosing-the-right-partner-entering-the-next-era-of-ae-717f18', // GF 044, Brian Colao: choosing the right partner
+]
+
 export const getHome = cache(async () => {
   const [{ brands, locations, founders }, net, depAll, shows] = await Promise.all([getNetworkAll(), getNetwork(), getTeamAll(), getShows()])
   const P = brands.map((b) => {
@@ -368,8 +376,9 @@ export const getHome = cache(async () => {
     return { name: d.name, line: d.line || '', href: `/team/${d.slug}`, avs: m.map((x) => ({ img: x.img, iOnly: x.img ? '' : x.init, href: x.href, name: x.name })) }
   })
   const p = await db()
-  const [er, SPK, SHW] = await Promise.all([p.find({ collection: 'episodes', where: { and: [LIVE, { number: { greater_than: 0 } }] }, sort: '-published', limit: 4, depth: 1 }), getSpeakers(), getShows()])
-  const eps = (er.docs as Episode[]).map((e) => {
+  const [er, SPK, SHW] = await Promise.all([p.find({ collection: 'episodes', where: { and: [LIVE, { slug: { in: HOME_EPISODES } }] }, limit: HOME_EPISODES.length, depth: 1 }), getSpeakers(), getShows()])
+  const picked = HOME_EPISODES.map((sl) => (er.docs as Episode[]).find((e) => e.slug === sl)).filter(Boolean) as Episode[]
+  const eps = picked.map((e) => {
     const sh = typeof e.show === 'object' ? (e.show as Show) : null
     const d = e.duration || 0
     return { ep: toEp(e, SPK, SHW.find((x) => x.slug === sh?.slug)?.art), id: String(e.id), title: e.title, show: `${sh?.name || ''}${e.number ? ` · Ep ${String(e.number).padStart(2, '0')}` : ''}`, len: d ? `${Math.floor(d / 60)}:${String(d % 60).padStart(2, '0')}` : '', tone: sh?.bg || '#1D1B1A' }

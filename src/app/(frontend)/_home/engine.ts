@@ -377,7 +377,7 @@ export class MainEngine extends DCLogic {
       storyMove: (e) => { if (this._sx != null && Math.abs(e.clientX - this._sx) > 8) this._sMoved = true },
       storyUp: (e) => { if (this._sx == null) return; const dx = e.clientX - this._sx; this._sx = null; if (dx < -40) set({ story: Math.min(sMax, si + 1) }); else if (dx > 40) set({ story: Math.max(0, si - 1) }) },
       storyClick: (e) => { if (this._sMoved) { e.preventDefault(); e.stopPropagation(); this._sMoved = false } },
-      podShift: 'calc(' + (-pdi) + ' * (100% + 8px) / var(--pv))', podPrev: () => set({ pod: Math.max(0, pdi - 1) }), podNext: () => set({ pod: Math.min(pMax, pdi + 1) }), podAtStart: pdi === 0, podAtEnd: pdi === pMax,
+      podShift: 'calc(' + (-pdi) + ' * (100cqw + 8px) / var(--pv))', podPrev: () => set({ pod: Math.max(0, pdi - 1) }), podNext: () => set({ pod: Math.min(pMax, pdi + 1) }), podAtStart: pdi === 0, podAtEnd: pdi === pMax,
       eps, hasPlaying: playing >= 0, now: EP[Math.max(0, playing)], closePlayer: () => set({ playing: -1 }),
       notDone: !isDone, isDone, isChoice: !isContact && !isDone, isContact,
       q, qBars: [0, 1, 2, 3, 4].map((i) => ({ cls: i <= qs ? 'is-on' : '' })), qLabel: isContact ? 'Contact' : 'Your practice', qCount: String(Math.min(qs + 1, 5)).padStart(2, '0') + ' / 05',
