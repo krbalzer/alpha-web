@@ -1,8 +1,8 @@
-# Hourly mirror of Libsyn episodes and Paylocity jobs. Runs on GitHub, so it works on any Vercel plan.
+# Mirror of Libsyn episodes and Paylocity jobs every 6 hours (plus every deploy). Runs on GitHub, so it works on any Vercel plan.
 # Repo secrets: SITE_URL (e.g. https://partnerwithalpha.com) and CRON_SECRET (same value as on Vercel).
 name: Sync episodes + jobs
 on:
-  schedule: [{ cron: '7 * * * *' }]
+  schedule: [{ cron: '7 */6 * * *' }]
   workflow_dispatch:
 jobs:
   sync:

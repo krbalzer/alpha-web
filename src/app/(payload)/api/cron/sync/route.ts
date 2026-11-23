@@ -4,7 +4,7 @@ import { importEpisodes } from '@/seed/episodes'
 import { syncJobs } from '@/seed/jobs'
 
 /**
- * Hourly mirror of the systems other teams already use: Libsyn (episodes) and Paylocity (open roles).
+ * Mirror (every 6 hours) of the systems other teams already use: Libsyn (episodes) and Paylocity (open roles).
  * Called by .github/workflows/sync.yml with `Authorization: Bearer $CRON_SECRET`. Pages revalidate every 5 minutes.
  */
 export const maxDuration = 60

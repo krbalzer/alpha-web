@@ -23,7 +23,7 @@ export default function CareersView({ roles }: { roles: Role[] }) {
     <div className="cr">
       <Nav>
         <div className="crumb"><div className="wrap" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: 34, fontFamily: 'var(--mono)', fontSize: 10.5, textTransform: 'uppercase', letterSpacing: '.05em', color: 'var(--muted)' }}>
-          <span>Alpha / Careers</span><span>{roles.length} open {roles.length === 1 ? 'role' : 'roles'} · Updated hourly</span>
+          <span>Alpha / Careers</span><span>{roles.length} open {roles.length === 1 ? 'role' : 'roles'} · Updated daily</span>
         </div></div>
       </Nav>
       <section className="hero">
@@ -61,7 +61,7 @@ export default function CareersView({ roles }: { roles: Role[] }) {
             {rs.map((r) => <RoleRow key={r.slug} r={r} />)}
           </div>
         ))}
-        {groups.length ? null : <p className="empty">No openings match. Check back: roles post here within the hour they go live.</p>}
+        {groups.length ? null : <p className="empty">No openings match. Check back: new roles post here the same day they go live.</p>}
       </div></section>
     </div>
   )

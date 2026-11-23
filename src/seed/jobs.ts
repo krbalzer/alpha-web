@@ -1,6 +1,6 @@
 /**
  * Open roles from Alpha's public Paylocity careers board. People Ops posts and removes jobs in Paylocity; this mirrors it.
- * Runs in prebuild and hourly via /api/cron/sync. Upserts by Paylocity job id; anything no longer on the board is marked filled.
+ * Runs in prebuild and every 6 hours via /api/cron/sync. Upserts by Paylocity job id; anything no longer on the board is marked filled.
  * Location match: ZIP, then unique city + state, then a location's "Paylocity location" name. Brand: the location's brand,
  * else the posting's hiring organization (remote roles). Unmatched jobs are kept but never shown.
  *
