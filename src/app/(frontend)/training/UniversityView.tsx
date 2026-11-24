@@ -146,7 +146,6 @@ export default function UniversityView(props: any) {
 <section className="roles_sec dark" id="roles">
 <div className="rph" aria-hidden="true">{(v.rphotos || []).map((ph: any, ph_i: number) => (<img key={ph_i} className={ph.cls} src={ph.src} alt="" loading="lazy" style={{"objectPosition": ph.pos} as React.CSSProperties} />))}</div>
 <div className="rstage">
-<div className="wrap rtop"><p className="eyebrow">Your training, by role</p>{v.role.cap ? (<p className="eyebrow">{v.role.cap}</p>) : null}</div>
 <div className="wrap rbot">
 <div className="rtog" role="tablist" aria-label="Choose a role">
 {(v.roles || []).map((r: any, r_i: number) => (<React.Fragment key={r_i}><button className={r.cls} role="tab" aria-selected={r.sel} onClick={r.go}><span className="ricon" /><span className="rlabel">{r.label}</span><span className="rnum">{r.n}</span></button></React.Fragment>))}
