@@ -17,7 +17,7 @@ export default function AboutView(props: any) {
 <div className="wrap">
 <p className="eyebrow">About Alpha</p>
 <h1 className="display">Aesthetics<br />is growing up.</h1>
-<div className="ab_sub"><p className="lead">Independent practices, with the scale of a national platform. Your brand stays yours.</p><p className="lede">The industry is consolidating. Alpha gives founders the muscle that consolidation brings (capital, buying power, a team behind every function) without asking them to give up the practice they built.</p></div>
+<div className="ab_sub"><p className="lead">Your practice keeps its name. We bring the capital, the back office and the training.</p><p className="lede">The industry is consolidating. Alpha gives founders the muscle that consolidation brings (capital, buying power, a team behind every function) without asking them to give up the practice they built.</p></div>
 </div>
 </section>
 
@@ -33,7 +33,7 @@ export default function AboutView(props: any) {
 
 <section className="who dark">
 <div className="wrap">
-<div className="pg_grid"><div><p className="eyebrow">Who are you?</p><h2 className="display h2">Three reasons owners<br />call us</h2></div><p className="lede">Most founders recognise themselves in one of these. Pick yours.</p></div>
+<div className="pg_grid"><div><p className="eyebrow">Who are you?</p><h2 className="display h2">Three reasons owners<br />call us</h2></div><p className="lede">Most owners we talk to fit one of these. Pick yours.</p></div>
 <div className="who_tabs">{(v.who || []).map((w: any, w_i: number) => (<React.Fragment key={w_i}><button className={w.cls} onClick={w.go}><b>{w.t}</b><span>{w.s}</span></button></React.Fragment>))}</div>
 <div className="who_body">
 <p className="who_q">{v.cur.q}</p>
@@ -44,7 +44,7 @@ export default function AboutView(props: any) {
 
 <section className="sec">
 <div className="wrap">
-<div className="split_head"><div><p className="eyebrow">Alpha, by the year</p><h2 className="display h2">From one practice<br />to sixteen</h2></div><p className="body" style={{"margin": "0", "maxWidth": "24rem"} as React.CSSProperties}>Every milestone links to its release on the Newswire.</p></div>
+<div className="split_head"><div><p className="eyebrow">Since 2023</p><h2 className="display h2">Our partners, in the<br />order they joined</h2></div><p className="body" style={{"margin": "0", "maxWidth": "24rem"} as React.CSSProperties}>Each one links to its press release.</p></div>
 {(v.years || []).map((y: any, y_i: number) => (<React.Fragment key={y_i}>
 <div className="yr"><span className="yr_y">{y.y}</span><ol className="yr_l">{(y.items || []).map((i: any, i_i: number) => (<React.Fragment key={i_i}><li><span className="mono">{i.d}</span><b>{i.t}</b><a href="/newswire">Release →</a></li></React.Fragment>))}</ol></div>
 </React.Fragment>))}
@@ -54,7 +54,7 @@ export default function AboutView(props: any) {
 <section style={{"paddingBottom": "clamp(90px, 10vw, 150px)"} as React.CSSProperties}>
 <div className="wrap">
 <div className="backer">
-<div><p className="eyebrow">Who&#39;s backing us</p><h2 className="display h2">Thurston Group</h2><p className="body" style={{"marginTop": "18px"} as React.CSSProperties}>A private equity firm that specializes in healthcare consolidation. Alpha is the aesthetics platform in a portfolio that has done this before.</p></div>
+<div><p className="eyebrow">Who&#39;s backing us</p><h2 className="display h2">Thurston Group</h2><p className="body" style={{"marginTop": "18px"} as React.CSSProperties}>We&#39;re private equity backed, not a private equity company. Thurston has built healthcare groups before us, in orthodontics, endodontics, orthopaedics and more.</p></div>
 <div><span className="k">Thurston healthcare platforms</span><div className="backer_logos"><span>Smile Doctors</span><span>US Endo Partners</span><span>Options Medical Weight Loss</span><span>Arc Health</span><span>US Orthopaedic Partners</span></div><p className="ph" style={{"color": "#5C5952", "marginTop": "18px"} as React.CSSProperties}>Swap for logos with permission</p></div>
 </div>
 </div>
@@ -70,7 +70,7 @@ export default function AboutView(props: any) {
 <section id="qualify" className="qual dark">
 <div className="wrap qual_grid" style={{"alignItems": "end"} as React.CSSProperties}>
 <div><h2 className="display h2">Make the next era<br />your best one</h2></div>
-<div><p className="lede" style={{"margin": "0 0 22px"} as React.CSSProperties}>Five questions about your practice. If it&#39;s a fit, you&#39;ll talk with people who have already made this decision.</p><a className="btn" href="/talk" style={{"color": "#E8E4DA"} as React.CSSProperties}>Is your practice qualified?</a></div>
+<div><p className="lede" style={{"margin": "0 0 22px"} as React.CSSProperties}>Five questions about your practice. If it&#39;s a fit, we&#39;ll set up a call with people who&#39;ve made this decision themselves.</p><a className="btn" href="/talk" style={{"color": "#E8E4DA"} as React.CSSProperties}>Is your practice qualified?</a></div>
 </div>
 </section>
 
