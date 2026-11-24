@@ -4,7 +4,7 @@ import type { Access, Field, FieldAccess, PayloadRequest, Where } from 'payload'
  * Roles. Everyone else feeds the site from systems they already use (Libsyn + Drive, Paylocity, quarterly ops notes).
  *   admin         everything
  *   partnerships  leads (the only role that can see them)
- *   contributor   uploads to media (photos, rebrand assets), tagged for placement; sets AIM covers on training events
+ *   contributor   uploads to media (photos, rebrand assets), tagged for placement; sets AIM covers on training events; writes Newswire releases
  *   university    training events (AIM sessions, Labs) and University settings, plus their photos
  */
 export const ROLES = ['admin', 'partnerships', 'contributor', 'university'] as const

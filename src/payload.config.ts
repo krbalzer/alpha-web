@@ -24,6 +24,7 @@ const NAV: Record<string, Role[]> = {
   leads: ['partnerships'],
   media: ['contributor', 'university'],
   'training-events': ['university', 'contributor'],
+  articles: ['contributor'],
 }
 const nav = (c: CollectionConfig): CollectionConfig => ({ ...c, admin: { ...c.admin, hidden: c.admin?.hidden ?? visibleTo(...(NAV[c.slug] || [])) } })
 

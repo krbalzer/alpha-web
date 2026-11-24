@@ -6,7 +6,8 @@ import { img, live, publicRead, seo, slug } from './fields'
 export const Articles: CollectionConfig = {
   slug: 'articles',
   labels: { singular: 'Newswire article', plural: 'Newswire' },
-  access: publicRead,
+  // contributors (Lauren runs the PR account) write and publish releases; deleting stays with admin
+  access: { ...publicRead, create: allow('contributor'), update: allow('contributor') },
   admin: { useAsTitle: 'title', defaultColumns: ['title', 'category', 'published', 'live'] },
   defaultSort: '-published',
   hooks: { beforeValidate: [guard] },
