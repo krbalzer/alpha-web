@@ -382,6 +382,9 @@ const PLACEMENTS: { file: string; alt: string; apply: (p: Payload, id: number) =
   { file: 'htb/gal-san-marcos-2.jpg', alt: 'A consult at HTB San Marcos', apply: (p, id) => gallery(p, 'holden-timeless-beauty-san-marcos-ca', id, 'consult') },
   { file: 'htb/gal-san-marcos-3.jpg', alt: 'A treatment at HTB San Marcos', apply: (p, id) => gallery(p, 'holden-timeless-beauty-san-marcos-ca', id, 'treatment-room') },
   { file: 'htb/cta-san-diego.jpg', alt: 'A treatment room at HTB San Diego', apply: (p, id) => cta(p, 'HTB / San Diego', 'holden-timeless-beauty-san-diego-ca', id) },
+  // HTB Fallbrook (Kevin's picks, Nov 2026)
+  { file: 'htb/location-fallbrook.jpg', alt: 'A patient checking his results in the mirror at HTB Fallbrook', apply: async (p, id) => { await location(p, 'holden-timeless-beauty-fallbrook-ca', { photo: id }); await gallery(p, 'holden-timeless-beauty-fallbrook-ca', id, 'consult') } },
+  { file: 'htb/gal-fallbrook-lobby.jpg', alt: 'The boutique at HTB Fallbrook, looking through to the treatment room', apply: async (p, id) => { await gallery(p, 'holden-timeless-beauty-fallbrook-ca', id, 'arrival'); await inside(p, 'holden-timeless-beauty', id, 'The boutique / Fallbrook') } },
   { file: 'htb/cta-san-marcos.jpg', alt: 'A consult at HTB San Marcos', apply: (p, id) => cta(p, 'HTB / San Marcos', 'holden-timeless-beauty-san-marcos-ca', id) },
   { file: 'atam/cta-lewis-center.jpg', alt: 'Dr. Anne Therese Stubbs with a patient, Lewis Center', apply: (p, id) => cta(p, 'Anne Therese / Lewis Center', 'anne-therese-aesthetic-medicine-columbus-ohio', id) },
   { file: 'atam/cta-bonita-springs.jpg', alt: 'The fountain courtyard, Bonita Springs', apply: (p, id) => cta(p, 'Anne Therese / Bonita Springs', 'anne-therese-aesthetic-medicine-bonita-springs-fl', id) },
