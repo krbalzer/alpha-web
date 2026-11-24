@@ -15,12 +15,13 @@ export class UniversityEngine extends DCLogic {
     const LG = {'Injector': '/university/loop-injector.svg', 'Esthie': '/university/loop-esthie.svg', 'Manager': '/university/loop-manager.svg', 'Surgery': '/university/loop-surgery.svg', 'Marketing': '/university/loop-marketing.svg'};
     const loops = ['Injector', 'Marketing', 'Surgery', 'Manager', 'Body', 'Esthie'].map((l) => ({ c: l + ' Loop', logo: LG[l] || '', noLogo: !LG[l], n: (D.members || {})[l.toLowerCase()] || '' }));
     const R = {
-      injector: { label: 'Injector', loop: 'Injector Loop', logo: '/university/loop-injector.svg', loopFor: 'Technique, product, complications and second opinions, answered by injectors across the network.', labFit: 'Injector Labs are hands-on technique days.', hasLearn: true, hasPath: true, pods: [{ s: 'HTB', t: 'Holding Time Back' }, { s: 'WCE', t: 'White Coat Entrepreneur' }] },
-      esthie: { label: 'Esthetician', loop: 'Esthie Loop', logo: '/university/loop-esthie.svg', loopFor: 'Facials, devices, skincare protocols and product questions, shared between estheticians in every clinic.', labFit: 'Skincare Labs cover devices, facials and protocols.', hasLearn: false, hasPath: false, pods: [{ s: 'BF', t: 'The Beauty Filter' }] },
-      manager: { label: 'Manager', loop: 'Manager Loop', logo: '/university/loop-manager.svg', loopFor: 'Scheduling, staffing, systems and the day-to-day of running a clinic, with managers who have solved it before.', labFit: '', hasLearn: false, hasPath: false, pods: [{ s: 'OMS', t: 'Operation Med Spa' }, { s: 'MSM', t: 'Med Spa Marketing Group Chat' }] }
+      injector: { label: 'Injector', photo: '/university/role-injector.jpg', pos: '62% 30%', say: 'Every injector gets a room full of second opinions.', cap: 'Pictured: injector, partner clinic', loop: 'Injector Loop', logo: '/university/loop-injector.svg', loopFor: 'Technique, product, complications and second opinions, answered by injectors across the network.', labFit: 'Injector Labs are hands-on technique days.', hasLearn: true, hasPath: true, pods: [{ s: 'HTB', t: 'Holding Time Back' }, { s: 'WCE', t: 'White Coat Entrepreneur' }] },
+      esthie: { label: 'Esthetician', photo: '/university/role-esthie.jpg', pos: '50% 40%', say: 'Protocols that travel from one treatment room to every other.', cap: 'Pictured: esthetician, treatment room', loop: 'Esthie Loop', logo: '/university/loop-esthie.svg', loopFor: 'Facials, devices, skincare protocols and product questions, shared between estheticians in every clinic.', labFit: 'Skincare Labs cover devices, facials and protocols.', hasLearn: false, hasPath: false, pods: [{ s: 'BF', t: 'The Beauty Filter' }] },
+      manager: { label: 'Manager', photo: '', pos: '50% 50%', say: 'The front desk, backed by every manager who has solved it before.', cap: '', loop: 'Manager Loop', logo: '/university/loop-manager.svg', loopFor: 'Scheduling, staffing, systems and the day-to-day of running a clinic, with managers who have solved it before.', labFit: '', hasLearn: false, hasPath: false, pods: [{ s: 'OMS', t: 'Operation Med Spa' }, { s: 'MSM', t: 'Med Spa Marketing Group Chat' }] }
     };
     const rk = s.role || 'injector';
     const roles = Object.keys(R).map((k, i) => ({ n: 'No. 0' + (i + 1), label: R[k].label, cls: k === rk ? 'is-on' : '', sel: k === rk ? 'true' : 'false', go: () => set({ role: k }) }));
+    const rphotos = Object.keys(R).filter((k) => R[k].photo).map((k) => ({ src: R[k].photo, pos: R[k].pos, cls: 'rph_img' + (k === rk ? ' is-on' : '') }));
     const P = {
       loops: { name: 'Loops', ic: '/university/icon-loops.png', w: '/university/loops-word.png', line: 'Every day, in Slack. One for every role.', stats: D.loopStats },
       labs: { name: 'Labs', ic: '/university/icon-labs.png', w: '/university/labs-word.png', line: 'In person, all over, all the time. Open to every provider.', stats: D.labStats },
@@ -33,6 +34,6 @@ export class UniversityEngine extends DCLogic {
     const li = s.lab || 0, L0 = LABS[li] || { track: 'Lab', city: '', date: '', layout: [], tiles: [] };
     const lab = { track: L0.track, city: L0.city, date: L0.date, tiles: L0.tiles.map((t, i) => ({ l: t.l, src: t.src, cls: 'tile ' + (L0.layout[i] || '') + (t.src ? ' has-img' : '') })) };
     const labsw = LABS.map((x, i) => ({ l: x.track.split(' ')[0] + ' / ' + (i + 1), cls: i === li ? 'is-on' : '', sel: i === li ? 'true' : 'false', go: () => set({ lab: i }) }));
-    return { d: D, seasons, sessions, pins, loops, roles, role: Object.assign({}, R[rk], { members: (D.members || {})[rk] || '', noMembers: !(D.members || {})[rk] }), progs, prog, lab, labsw };
+    return { d: D, seasons, sessions, pins, loops, roles, rphotos, role: Object.assign({}, R[rk], { members: (D.members || {})[rk] || '', noMembers: !(D.members || {})[rk] }), progs, prog, lab, labsw };
   }
 }

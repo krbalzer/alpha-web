@@ -143,12 +143,18 @@ export default function UniversityView(props: any) {
 </section>
 
 {/* ============ 4 / ROLE TOGGLE ============ */}
-<section className="roles_sec" id="roles">
-<div className="wrap">
-<p className="eyebrow">Your training, by role</p>
+<section className="roles_sec dark" id="roles">
+<div className="rph" aria-hidden="true">{(v.rphotos || []).map((ph: any, ph_i: number) => (<img key={ph_i} className={ph.cls} src={ph.src} alt="" loading="lazy" style={{"objectPosition": ph.pos} as React.CSSProperties} />))}</div>
+<div className="rstage">
+<div className="wrap rtop"><p className="eyebrow">Your training, by role</p>{v.role.cap ? (<p className="eyebrow">{v.role.cap}</p>) : null}</div>
+<div className="wrap rbot">
 <div className="rtog" role="tablist" aria-label="Choose a role">
-{(v.roles || []).map((r: any, r_i: number) => (<React.Fragment key={r_i}><button className={r.cls} role="tab" aria-selected={r.sel} onClick={r.go}><img className="ricon" src="/university/role-icon.png" alt="" /><span className="rnum">{r.n}</span><span>{r.label}</span></button></React.Fragment>))}
+{(v.roles || []).map((r: any, r_i: number) => (<React.Fragment key={r_i}><button className={r.cls} role="tab" aria-selected={r.sel} onClick={r.go}><span className="ricon" /><span className="rlabel">{r.label}</span><span className="rnum">{r.n}</span></button></React.Fragment>))}
 </div>
+<p className="rsay" key={v.role.label}>{v.role.say}</p>
+</div>
+</div>
+<div className="wrap">
 <div className="rp">
 <div className="rp_row rp_main">
 <span className="rp_k"><img src="/university/icon-loops.png" alt="" className="rp_ic" />Every day</span>
