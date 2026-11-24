@@ -149,6 +149,8 @@ export const getBrand = cache(async (slug: string) => {
     filmUrl: b.film?.url || '',
     film: video(b.film?.video),
     filmCaption: b.film?.caption || '',
+    /** no film yet (e.g. CAMI): the whole section stays off the page instead of a poster that plays nothing */
+    hasFilm: !!(b.film?.video || b.film?.url),
     stats: (b.stats || []).map((s) => ({ k: s.kicker || '', n: s.value || '', l: s.label || '', rows: (s.rows || []).map((r) => ({ k: r.k || '', v: r.v || '' })) })),
     quote: b.quote?.text || '',
     whyHeadline: b.why?.headline ? `\u201C${b.why.headline.replace(/^["\u201C]|["\u201D]$/g, '')}\u201D` : '', // verbatim, so always in quote marks

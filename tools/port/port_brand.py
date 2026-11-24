@@ -55,6 +55,9 @@ b = sub(r'<button class="play" aria-label="Play the \{\{ b.short \}\} story">(<s
         r'<button class="play" onClick="{{ playFilm }}" onMouseMove="{{ filmMove }}" aria-label="Play the {{ b.story }} story"><span class="film_cur">\1<span>Play</span></span></button>', b)
 b = sub(r'<hr class="rule">\s*<div class="bar"><span>\{\{ b.ptr \}\}</span><span>\{\{ b.short \}\} story</span></div>\s*', '', b)
 b = rep_once(b, '<!-- ============ STORY FILM ============ -->\n<section style="padding-bottom: clamp(80px, 9vw, 140px)">', '<!-- ============ STORY FILM ============ -->\n<section class="film_sec" ref="{{ filmSec }}" style="padding-bottom: clamp(80px, 9vw, 140px)">')
+# no film yet: hide the whole section (a poster with a play button that plays nothing reads as broken)
+_i = b.index('<section class="film_sec"'); _j = b.index('</section>', _i) + len('</section>')
+b = b[:_i] + '<sc-if value="{{ b.hasFilm }}">' + b[_i:_j] + '</sc-if>' + b[_j:]
 b = sub(r'<div class="body" style="margin-top: clamp\(28px, 3vw, 44px\)"><p>\[Film caption.*?</div>',
         '<sc-if value="{{ b.filmCaption }}"><div class="body" style="margin-top: clamp(28px, 3vw, 44px)"><p>{{ b.filmCaption }}</p></div></sc-if>', b)
 b = b.replace('<sc-if value="{{ c.noImg }}" hint-placeholder-val="{{ true }}">{{ c.city }}<br>photo</sc-if>', '<sc-if value="{{ c.noImg }}">{{ c.city }}</sc-if>')

@@ -79,7 +79,7 @@ export default function BrandView({ brand, brands }: { brand: BrandData; brands:
 </section>
 
 {/* ============ STORY FILM ============ */}
-<section className="film_sec" ref={v.filmSec} style={{"paddingBottom": "clamp(80px, 9vw, 140px)"} as React.CSSProperties}>
+{v.b.hasFilm ? (<><section className="film_sec" ref={v.filmSec} style={{"paddingBottom": "clamp(80px, 9vw, 140px)"} as React.CSSProperties}>
 <div className="wrap">
 <div className="film">
 {v.b.filmPoster ? (<><img className="fill" src={v.b.filmPoster} alt="" loading="lazy" decoding="async" /></>) : null}
@@ -87,7 +87,7 @@ export default function BrandView({ brand, brands }: { brand: BrandData; brands:
 </div>
 {v.b.filmCaption ? (<><div className="body" style={{"marginTop": "clamp(28px, 3vw, 44px)"} as React.CSSProperties}><p>{v.b.filmCaption}</p></div></>) : null}
 </div>
-</section>
+</section></>) : null}
 
 {/* ============ STATS ============ */}
 {v.hasStats ? (<><section style={{"paddingBottom": "clamp(90px, 10vw, 160px)"} as React.CSSProperties}>
