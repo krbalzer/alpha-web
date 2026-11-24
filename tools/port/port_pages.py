@@ -1013,7 +1013,8 @@ def university_engine(e):
 PAGES = {
     # name: route dir, board, options
     'About': dict(dir='about', board='About', markup=about_markup, engine=about_engine, css=IMG_CSS + '.ex_i{position:relative;overflow:hidden}'),
-    'Pathway': dict(dir='how-it-works', board='Pathway'),
+    # hand-built since Nov 2026 (path to partnership); do not re-port
+    # 'Pathway': dict(dir='how-it-works', board='Pathway'),
     'Talk': dict(dir='talk', board='Talk', markup=talk_markup, engine=talk_engine),
     'Resources': dict(dir='resources', board='Resources'),
     # 'Landing': campaign template, ported when the first campaign exists
