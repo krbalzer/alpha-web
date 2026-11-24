@@ -20,8 +20,10 @@ export function Inside({ items, title, where }: { items: Item[]; title: string; 
     const f = () => {
       const frames = Array.from(st.querySelectorAll('.in_fr')) as HTMLElement[]
       const x = st.scrollLeft
+      // measure frames the same way go() scrolls to them (minus the gutter), or the counter never moves past 1 on wide screens
+      const pad = parseFloat(getComputedStyle(st).paddingLeft || '0')
       let i = 0
-      frames.forEach((fr, k) => { if (fr.offsetLeft - st.offsetLeft <= x + 40) i = k })
+      frames.forEach((fr, k) => { if (fr.offsetLeft - st.offsetLeft - pad <= x + 40) i = k })
       setAt(i)
       setEnds({ start: x <= 2, end: x >= st.scrollWidth - st.clientWidth - 2 })
     }
