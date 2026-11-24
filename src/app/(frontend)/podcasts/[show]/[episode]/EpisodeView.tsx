@@ -64,7 +64,7 @@ export default function EpisodeView(props: any) {
 </div></section></>) : null}
 <section style={{"paddingBottom": "clamp(90px, 10vw, 150px)"} as React.CSSProperties}><div className="wrap">
 <h2 className="h3">Explore other shows</h2><hr className="rule" style={{"margin": "clamp(20px, 2vw, 30px) 0 clamp(24px, 2.4vw, 36px)"} as React.CSSProperties} />
-<div className="shows">{(v.shows || []).map((s: any, s_i: number) => (<React.Fragment key={s_i}><a className="tile" href={s.href} style={{"background": `${s.bg}`, "color": `${s.fg}`, "position": "relative", "overflow": "hidden"} as React.CSSProperties}>{s.art ? (<><img className="ph_img" src={s.art} alt={s.name} loading="lazy" /></>) : null}{s.noArt ? (<><span className="tile_t">{s.name}</span></>) : null}</a></React.Fragment>))}</div>
+<div className="shows">{(v.shows || []).map((s: any, s_i: number) => (<React.Fragment key={s_i}><a className="tile" href={s.href} style={{"background": `${s.bg}`, "color": `${s.fg}`, "position": "relative", "overflow": "hidden"} as React.CSSProperties}>{s.hero ? (<img className="nw_hero" src={s.hero} alt="" loading="lazy" style={{"objectPosition": s.heroPos} as React.CSSProperties} />) : null}{s.art ? (<><img className="ph_img" src={s.art} alt={s.name} loading="lazy" /></>) : null}{s.logo ? (<span className="nw_logo" role="img" aria-label={s.name} style={{"--logo": s.logo, "--ar": s.ar} as React.CSSProperties} />) : null}{!s.logo && s.noArt ? (<><span className="tile_t">{s.name}</span></>) : null}</a></React.Fragment>))}</div>
 </div></section>
 
 

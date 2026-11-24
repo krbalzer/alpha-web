@@ -338,3 +338,9 @@
 .pg-episode .spk,.pg-episode .person_av{position:relative;overflow:hidden}
 .pg-episode .spk img,.pg-episode .person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 
+
+/* More shows: hero photo + white logo bottom-left (matches the show page) */
+.pg-episode .nw_hero{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease)}
+.pg-episode .tile:has(.nw_hero)::after{content:"";position:absolute;inset:0;background:linear-gradient(to top right,rgba(14,14,13,.62),rgba(14,14,13,0) 58%);pointer-events:none}
+.pg-episode .tile:hover .nw_hero{transform:scale(1.04)}
+.pg-episode .nw_logo{position:absolute;left:clamp(18px,2vw,30px);bottom:clamp(18px,2vw,30px);z-index:1;width:min(56%,calc(30% * var(--ar)));aspect-ratio:var(--ar);background:currentColor;-webkit-mask:var(--logo) left bottom/contain no-repeat;mask:var(--logo) left bottom/contain no-repeat}
