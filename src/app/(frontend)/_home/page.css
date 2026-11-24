@@ -483,3 +483,15 @@ html body .pg-main .th_stage>.th_arrow:last-child{right:8px}
 .pg-main .practice_logo{display:block;width:clamp(240px,26vw,420px);aspect-ratio:2011.16/451.55;background:#fff;-webkit-mask:url(/home/practice-lockup.svg) left center/contain no-repeat;mask:url(/home/practice-lockup.svg) left center/contain no-repeat}
 .pg-main .practice_tag{font-family:"Exposure",Georgia,serif;font-style:italic;font-weight:400;font-size:clamp(28px,2.8vw,44px);line-height:1.02;letter-spacing:-.01em;margin:0;text-align:right}
 @media (max-width:700px){.pg-main .practice_grid{flex-direction:column;align-items:flex-start;gap:28px}.pg-main .practice_tag{text-align:left}}
+.pg-main .practice_r{display:flex;flex-direction:column;align-items:flex-end;gap:22px}
+.pg-main .practice_cta{display:inline-flex;align-items:center;gap:10px;height:40px;padding:0 20px;border:1px solid rgba(255,255,255,.85);border-radius:999px;color:#fff;text-decoration:none;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;transition:background .3s,color .3s}
+.pg-main .practice_cta:hover{background:#fff;color:#14110F;opacity:1}
+.pg-main .practice_unis{position:absolute;left:0;right:0;bottom:0;padding:22px 0;border-top:1px solid rgba(255,255,255,.18);overflow:hidden;-webkit-mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.pg-main .pu_track{display:flex;align-items:center;gap:clamp(48px,6vw,96px);width:max-content;padding-right:clamp(48px,6vw,96px);animation:puScroll 40s linear infinite}
+.pg-main .practice_unis:hover .pu_track{animation-play-state:paused}
+.pg-main .pu_track img{display:block;height:32px;width:auto;flex:none;filter:brightness(0) invert(1);opacity:.85}
+.pg-main .pu_track img.pu_wide{height:20px}
+.pg-main .pu_track img.pu_tall{height:40px}
+@keyframes puScroll{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.pg-main .pu_track{animation:none}}
+@media (max-width:700px){.pg-main .practice_r{align-items:flex-start}.pg-main .practice{padding-bottom:90px}}

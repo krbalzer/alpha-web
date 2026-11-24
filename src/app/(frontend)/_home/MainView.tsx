@@ -214,9 +214,10 @@ export default function MainView(props: any) {
 <div className="wrap" style={{"width": "100%"} as React.CSSProperties}>
 <div className="practice_grid">
 <span className="practice_logo" role="img" aria-label="Practice Aesthetics Training"></span>
-<p className="practice_tag">University-Backed<br />Injector Training</p>
+<div className="practice_r"><p className="practice_tag">University-Backed<br />Injector Training</p><a className="practice_cta" href="/training#practice">Learn more <span aria-hidden="true">→</span></a></div>
 </div>
 </div>
+<div className="practice_unis"><div className="pu_track"><img src="/university/uni-bc.png" alt="Boston College" /><img src="/university/uni-cuson.png" alt="Columbia University School of Nursing" className="pu_wide" /><img src="/university/uni-upenn.png" alt="University of Pennsylvania" /><img src="/university/uni-unc.png" alt="UNC Chapel Hill School of Nursing" className="pu_tall" /><img src="/university/uni-bc.png" aria-hidden="true" alt="Boston College" /><img src="/university/uni-cuson.png" aria-hidden="true" alt="Columbia University School of Nursing" className="pu_wide" /><img src="/university/uni-upenn.png" aria-hidden="true" alt="University of Pennsylvania" /><img src="/university/uni-unc.png" aria-hidden="true" alt="UNC Chapel Hill School of Nursing" className="pu_tall" /><img src="/university/uni-bc.png" aria-hidden="true" alt="Boston College" /><img src="/university/uni-cuson.png" aria-hidden="true" alt="Columbia University School of Nursing" className="pu_wide" /><img src="/university/uni-upenn.png" aria-hidden="true" alt="University of Pennsylvania" /><img src="/university/uni-unc.png" aria-hidden="true" alt="UNC Chapel Hill School of Nursing" className="pu_tall" /><img src="/university/uni-bc.png" aria-hidden="true" alt="Boston College" /><img src="/university/uni-cuson.png" aria-hidden="true" alt="Columbia University School of Nursing" className="pu_wide" /><img src="/university/uni-upenn.png" aria-hidden="true" alt="University of Pennsylvania" /><img src="/university/uni-unc.png" aria-hidden="true" alt="UNC Chapel Hill School of Nursing" className="pu_tall" /></div></div>
 </section>
 
 {/* ============ PODCASTS ============ */}
