@@ -20,7 +20,10 @@ export class AboutEngine extends DCLogic {
     return {
       who: W.map((w, i) => ({ t: w.t, s: w.s, cls: 'wtab' + (i === wi ? ' is-on' : ''), go: () => set({ w: i }) })),
       cur: Object.assign({}, W[wi], { pts: W[wi].pts.map((t, i) => ({ n: '0' + (i + 1), t })) }),
-      years: Y.map((y) => ({ y: y[0], items: y[1].slice().reverse().map((i) => ({ d: i[0], t: i[1] })) })),
+      years: Y.map((y) => ({ y: y[0], items: y[1].slice().reverse().map((i) => {
+        const [m, dd] = i[0].split(' '), key = `${y[0]}-${String('JanFebMarAprMayJunJulAugSepOctNovDec'.indexOf(m) / 3 + 1).padStart(2, '0')}-${dd.padStart(2, '0')}`
+        return { d: i[0], t: i[1], href: (this.props.releases || {})[key] || '' }
+      }) })),
       execs: (this.props.execs && this.props.execs.length) ? this.props.execs : [['John Wheeler', 'CEO'], ['Jeff Peel', 'COO'], ['Henry Neely', 'CFO'], ['Andrea Beck', 'CMO'], ['Karin Durham', 'CHRO'], ['Andrew Goldfein', 'VP of New Partnerships']].map((e) => ({ n: e[0], t: e[1], i: e[0].split(' ').map((w) => w[0]).join(''), iOnly: e[0].split(' ').map((w) => w[0]).join(''), href: '/team', img: '' }))
     };
   }

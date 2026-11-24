@@ -46,7 +46,7 @@ export default function AboutView(props: any) {
 <div className="wrap">
 <div className="split_head"><div><p className="eyebrow">Since 2023</p><h2 className="display h2">Our partners, in the<br />order they joined</h2></div><p className="body" style={{"margin": "0", "maxWidth": "24rem"} as React.CSSProperties}>Each one links to its press release.</p></div>
 {(v.years || []).map((y: any, y_i: number) => (<React.Fragment key={y_i}>
-<div className="yr"><span className="yr_y">{y.y}</span><ol className="yr_l">{(y.items || []).map((i: any, i_i: number) => (<React.Fragment key={i_i}><li><span className="mono">{i.d}</span><b>{i.t}</b><a href="/newswire">Release →</a></li></React.Fragment>))}</ol></div>
+<div className="yr"><span className="yr_y">{y.y}</span><ol className="yr_l">{(y.items || []).map((i: any, i_i: number) => (<React.Fragment key={i_i}><li>{i.href ? (<a className="yr_r" href={i.href}><span className="mono">{i.d}</span><b>{i.t}</b><span className="yr_go">Release →</span></a>) : (<div className="yr_r"><span className="mono">{i.d}</span><b>{i.t}</b><span></span></div>)}</li></React.Fragment>))}</ol></div>
 </React.Fragment>))}
 </div>
 </section>
