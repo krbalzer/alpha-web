@@ -116,6 +116,8 @@
 .is-was .wk_old{opacity:1}
 .wk_arch{margin-left:auto!important;color:#c9a26b}
 .wk_phone{transition:opacity .6s var(--ease)}
-.is-was .wk_phone{opacity:.18}
+.is-was .wk_phone:not(.has-old){opacity:.18}
+/* full-page captures scroll with the section, same as the after */
+.wk_scr .wk_full{height:auto!important;bottom:auto;object-fit:initial;will-change:transform,opacity}
 .wk_wb{margin-top:14px}
 .wk_wb a{color:inherit}

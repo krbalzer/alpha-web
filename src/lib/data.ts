@@ -236,7 +236,7 @@ type WorkEntry = {
   shoot: { where: string; headline: string; items: SAItem[] }
   site: { url: string; desktop: string; mobile: string; ledger: [string, string][] }
   /** The old site's hero, captured before the rebuild. archive: a Wayback snapshot of the whole page. */
-  before?: { src: string; host: string; when?: string; archive?: string }
+  before?: { src: string; desktop?: string; mobile?: string; host: string; when?: string; archive?: string }
   /** until: hide chapters at or after this mm:ss (episodes that move on to other topics). quote: overrides the episode's first pull quote. */
   msm?: { n: number; body: string; until?: string; quote?: { text: string; at: string } }
 }

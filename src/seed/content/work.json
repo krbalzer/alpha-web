@@ -152,7 +152,7 @@
         { "kind": "image", "src": "since-alpha/cami-dsc00717.jpg", "w": 667, "h": 1000 }
       ]
     },
-    "before": {"src": "/work/before/cami.webp", "host": "carolinaagemanagement.com", "when": "Feb 2025", "archive": "https://web.archive.org/web/20250228225641/https://carolinaagemanagement.com/"},
+    "before": {"src": "/work/before/cami.webp", "desktop": "/work/before/cami-d.webp", "mobile": "/work/before/cami-m.webp", "host": "carolinaagemanagement.com", "when": "Feb 2025", "archive": "https://web.archive.org/web/20250228225641/https://carolinaagemanagement.com/"},
     "site": {
       "url": "https://camiaesthetics.com/",
       "desktop": "work/cami-site-d.jpg",

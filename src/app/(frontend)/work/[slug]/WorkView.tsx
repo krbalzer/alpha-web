@@ -28,6 +28,8 @@ export default function WorkView({ d }: { d: WorkData }) {
   const ap = useRef<HTMLElement>(null)
   const dsk = useRef<HTMLImageElement>(null)
   const mob = useRef<HTMLImageElement>(null)
+  const oldD = useRef<HTMLImageElement>(null)
+  const oldM = useRef<HTMLImageElement>(null)
   const board = useRef<HTMLDivElement>(null)
   const [k, setK] = useState(0)
   const [was, setWas] = useState(false)
@@ -45,8 +47,11 @@ export default function WorkView({ d }: { d: WorkData }) {
       }
       const a = ap.current
       if (a && !still) {
-        const r = a.getBoundingClientRect(), p = Math.min(1, Math.max(0, (innerHeight - r.top) / (r.height + innerHeight)))
-        for (const im of [dsk.current, mob.current]) {
+        // start once the devices are fully on screen, finish as they begin to leave
+        const dv = (a.querySelector('.wk_dev') || a).getBoundingClientRect()
+        const t0 = innerHeight - dv.height, t1 = -dv.height * 0.3
+        const p = Math.min(1, Math.max(0, (t0 - dv.top) / Math.max(1, t0 - t1)))
+        for (const im of [dsk.current, mob.current, oldD.current, oldM.current]) {
           if (!im?.parentElement) continue
           const max = im.offsetHeight - im.parentElement.offsetHeight
           im.style.transform = max > 0 ? `translate3d(0,${(-max * p).toFixed(1)}px,0)` : ''
@@ -147,8 +152,8 @@ export default function WorkView({ d }: { d: WorkData }) {
           </div>
         </div>
         <div className={'wk_dev' + (was ? ' is-was' : '')}>
-          <div className="wk_browser"><div className="wk_chrome" aria-hidden="true"><i /><i /><i /><span className="mono">{was && b ? b.host : host(d.site.url)}</span>{was && b?.when ? <span className="mono wk_arch">Archived {b.when}</span> : null}</div><div className="wk_scr"><img ref={dsk} src={d.site.desktop} alt={`${host(d.site.url)} on desktop`} loading="lazy" decoding="async" />{b ? <img className="wk_old" src={b.src} alt={`${b.host} before the rebuild`} loading="lazy" decoding="async" /> : null}</div></div>
-          <div className="wk_phone"><div className="wk_scr"><img ref={mob} src={d.site.mobile} alt={`${host(d.site.url)} on a phone`} loading="lazy" decoding="async" /></div></div>
+          <div className="wk_browser"><div className="wk_chrome" aria-hidden="true"><i /><i /><i /><span className="mono">{was && b ? b.host : host(d.site.url)}</span>{was && b?.when ? <span className="mono wk_arch">Archived {b.when}</span> : null}</div><div className="wk_scr"><img ref={dsk} src={d.site.desktop} alt={`${host(d.site.url)} on desktop`} loading="lazy" decoding="async" />{b ? (b.desktop ? <img ref={oldD} className="wk_old wk_full" src={b.desktop} alt={`${b.host} before the rebuild`} loading="lazy" decoding="async" /> : <img className="wk_old" src={b.src} alt={`${b.host} before the rebuild`} loading="lazy" decoding="async" />) : null}</div></div>
+          <div className={'wk_phone' + (b?.mobile ? ' has-old' : '')}><div className="wk_scr"><img ref={mob} src={d.site.mobile} alt={`${host(d.site.url)} on a phone`} loading="lazy" decoding="async" />{b?.mobile ? <img ref={oldM} className="wk_old wk_full" src={b.mobile} alt={`${b.host} on a phone, before`} loading="lazy" decoding="async" /> : null}</div></div>
         </div>
         {was && b?.archive ? <p className="mono wk_note wk_wb"><a href={b.archive} target="_blank" rel="noopener">The whole old page, on the Wayback Machine ↗</a></p> : null}
         <div className="wk_ship">
