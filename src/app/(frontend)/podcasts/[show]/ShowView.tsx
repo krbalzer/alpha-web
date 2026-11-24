@@ -46,7 +46,7 @@ export default function ShowView(props: any) {
 <section style={{"paddingBottom": "clamp(90px, 10vw, 150px)"} as React.CSSProperties}><div className="wrap">
 <div className="nw_h"><h2 className="h3">More from the network</h2><a className="lnk mono" href="/podcasts" style={{"fontSize": "10.5px", "textTransform": "uppercase", "letterSpacing": ".05em"} as React.CSSProperties}>All shows</a></div>
 <hr className="rule" style={{"margin": "20px 0 24px"} as React.CSSProperties} />
-<div className="nw">{(v.shows || []).map((s: any, s_i: number) => (<React.Fragment key={s_i}><a className="nw_c" href={s.href}><div className="nw_art" style={{"background": `${s.bg}`, "color": `${s.fg}`, "position": "relative", "overflow": "hidden"} as React.CSSProperties}>{s.art ? (<><img className="ph_img" src={s.art} alt={s.name} loading="lazy" /></>) : null}</div><div className="nw_cap"><span>{s.name}</span><span>{s.count}</span></div></a></React.Fragment>))}</div>
+<div className="nw">{(v.shows || []).map((s: any, s_i: number) => (<React.Fragment key={s_i}><a className="nw_c" href={s.href}><div className="nw_art" style={{"background": `${s.bg}`, "color": `${s.fg}`, "position": "relative", "overflow": "hidden"} as React.CSSProperties}>{s.hero ? (<img className="nw_hero" src={s.hero} alt="" loading="lazy" style={{"objectPosition": s.heroPos}} />) : null}{s.art ? (<><img className="ph_img" src={s.art} alt={s.name} loading="lazy" /></>) : null}{s.logo ? (<span className="nw_logo" role="img" aria-label={s.name} style={{"--logo": s.logo, "--ar": s.ar} as React.CSSProperties} />) : null}</div><div className="nw_cap"><span>{s.name}</span><span>{s.count}</span></div></a></React.Fragment>))}</div>
 </div></section>
 
 

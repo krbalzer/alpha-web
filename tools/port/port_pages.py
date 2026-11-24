@@ -722,7 +722,8 @@ def podcasts_engine(e):
 PODCAST_CSS = IMG_CSS + """
 .tv_img{position:absolute;right:clamp(16px,6vw,96px);top:50%;transform:translateY(-50%);height:min(70%,440px);aspect-ratio:1;object-fit:cover;box-shadow:0 30px 80px rgba(0,0,0,.35)}
 .r_play{position:relative;overflow:hidden}
-.r_play .r_pi{position:relative;z-index:1}
+/* hover: a slight darkening over the whole artwork, play mark centered */
+.r_play .r_pi{position:absolute;inset:0;z-index:1;display:grid;place-items:center;background:rgba(14,14,13,.32)}
 @media (max-width:820px){.tv_img{opacity:.25;height:60%}}
 .tv_bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% 30%}
 .tv_slide.has-hero{background:#0E0E0D!important}
@@ -772,7 +773,7 @@ SHOW_BODY = """
 <section style="padding-bottom: clamp(90px, 10vw, 150px)"><div class="wrap">
 <div class="nw_h"><h2 class="h3">More from the network</h2><a class="lnk mono" href="/podcasts" style="font-size: 10.5px; text-transform: uppercase; letter-spacing: .05em">All shows</a></div>
 <hr class="rule" style="margin: 20px 0 24px">
-<div class="nw"><sc-for list="{{ shows }}" as="s"><a class="nw_c" href="{{ s.href }}"><div class="nw_art" style="background: {{ s.bg }}; color: {{ s.fg }}; position: relative; overflow: hidden"><sc-if value="{{ s.art }}"><img class="ph_img" src="{{ s.art }}" alt="{{ s.name }}" loading="lazy"></sc-if></div><div class="nw_cap"><span>{{ s.name }}</span><span>{{ s.count }}</span></div></a></sc-for></div>
+<div class="nw"><sc-for list="{{ shows }}" as="s"><a class="nw_c" href="{{ s.href }}"><div class="nw_art" style="background: {{ s.bg }}; color: {{ s.fg }}; position: relative; overflow: hidden"><sc-if value="{{ s.hero }}"><img class="nw_hero" src="{{ s.hero }}" alt="" loading="lazy" style="object-position: {{ s.heroPos }}"></sc-if><sc-if value="{{ s.art }}"><img class="ph_img" src="{{ s.art }}" alt="{{ s.name }}" loading="lazy"></sc-if><sc-if value="{{ s.logo }}"><span class="nw_logo" role="img" aria-label="{{ s.name }}" style="--logo: {{ s.logo }}; --ar: {{ s.ar }}"></span></sc-if></div><div class="nw_cap"><span>{{ s.name }}</span><span>{{ s.count }}</span></div></a></sc-for></div>
 </div></section>
 """
 

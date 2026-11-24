@@ -494,7 +494,11 @@ export const getPodcasts = cache(async () => {
 })
 
 const platsOf = (s: Show) => [['Spotify', s.links?.spotify], ['Apple Podcasts', s.links?.apple], ['YouTube', s.links?.youtube]].filter((x) => x[1]).map((x) => ({ t: x[0] as string, href: x[1] as string }))
-const showCard = (s: Awaited<ReturnType<typeof getShows>>[number], n: number) => ({ name: s.name, href: s.href, bg: s.bg, fg: s.fg, art: s.art, noArt: !s.art, count: `${n} episodes` })
+const showCard = (s: Awaited<ReturnType<typeof getShows>>[number], n: number) => {
+  const m = SHOW_MEDIA[s.slug] || {}
+  // hero photo + white logo bottom-left; no hero falls back to the show color + logo, no logo falls back to the cover art
+  return { name: s.name, href: s.href, bg: s.bg, fg: m.hero ? '#fff' : s.fg, art: m.logo ? '' : s.art, noArt: !s.art, hero: m.hero || '', heroPos: m.heroSide === 'right' ? '70% 50%' : '50% 50%', logo: m.logo ? `url(${m.logo})` : '', ar: m.ar || 2, count: `${n} episodes` }
+}
 const epRow = (e: Episode, sh: Show, SP?: Map<number, PersonCard>) => ({
   title: e.title, n: e.number ? String(e.number).padStart(3, '0') : '', date: fmtLong(e.published), len: lenOf(e.duration), href: `/podcasts/${sh.slug}/${e.slug}`, ep: toEp(e, SP, url(sh.artwork, 'card')),
   label: e.number ? `EP ${String(e.number).padStart(3, '0')}` : 'Episode', sum: firstSentence(e.summary),

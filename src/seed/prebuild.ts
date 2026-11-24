@@ -43,6 +43,9 @@ const blobOk = await checkBlob((m) => console.log(m))
       const { importSpeakers } = await import('./speakers')
       if (blobOk) await importSpeakers(p)
       else console.warn('speakers: skipped, Blob token cannot write (see blob: lines above)')
+      // people on episodes newer than the Webflow export (current site's Podcast people refs)
+      const { seedEpisodePeople } = await import('./episode-people')
+      await seedEpisodePeople(p, { photos: blobOk }).catch((e) => console.warn('episode people: skipped', e))
     } catch (e) { console.warn('episodes: import skipped', e) }
   }
 }

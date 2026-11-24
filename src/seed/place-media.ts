@@ -112,6 +112,8 @@ const PLACEMENTS: { file: string; alt: string; apply: (p: Payload, id: number) =
   { file: 'atam/location-gahanna.jpg', alt: 'Anne Therese, Gahanna', apply: (p, id) => location(p, 'anne-therese-aesthetic-medicine-gahanna-oh', { photo: id }) },
   { file: 'atam/location-cape-coral.jpg', alt: 'Anne Therese on Cape Coral Parkway', apply: (p, id) => location(p, 'anne-therese-aesthetic-medicine-cape-coral-fl', { photo: id }) },
   { file: 'atam/cta-cape-coral.jpg', alt: 'Sunrise on the water, Cape Coral', apply: (p, id) => cta(p, 'Anne Therese / Cape Coral', 'anne-therese-aesthetic-medicine-cape-coral-fl', id) },
+  // Lewis Center CTA swap (Nov 2026): replaces the image on the existing CTA rather than adding a second one
+  { file: 'atam/cta-lewis-center-hall.jpg', alt: 'Looking down the hall into a treatment room at Anne Therese, Lewis Center', apply: async (p, id) => { const n = (await p.update({ collection: 'cta-images', where: { label: { equals: 'Anne Therese / Lewis Center' } }, data: { image: id, active: true } as never })).docs.length; if (!n) await cta(p, 'Anne Therese / Lewis Center', 'anne-therese-aesthetic-medicine-columbus-ohio', id) } },
   { file: 'atam/cta-gahanna.jpg', alt: 'A crystal sconce at Anne Therese, Gahanna', apply: (p, id) => cta(p, 'Anne Therese / Gahanna', 'anne-therese-aesthetic-medicine-gahanna-oh', id) },
   // Inside the practice rail (brand page) and location galleries
   { file: 'atam/inside-lobby-chandeliers.jpg', alt: 'Chandeliers in the Lewis Center lobby', apply: (p, id) => inside(p, 'anne-therese-aesthetic-medicine', id, 'Lobby / Lewis Center') },
