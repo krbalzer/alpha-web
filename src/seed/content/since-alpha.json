@@ -552,7 +552,9 @@
       {
         "date": "May 2025",
         "title": "Wellness arrives",
-        "detail": "Wellness treatments join the menu."
+        "detail": "Wellness treatments join the menu.",
+        "img": "/since-alpha/cami-wellness.webp",
+        "alt": "An IV wellness treatment at cami"
       },
       {
         "date": "Apr 2026",
