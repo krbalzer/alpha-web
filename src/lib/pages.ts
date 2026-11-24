@@ -494,6 +494,8 @@ export const getPodcasts = cache(async () => {
 })
 
 const platsOf = (s: Show) => [['Spotify', s.links?.spotify], ['Apple Podcasts', s.links?.apple], ['YouTube', s.links?.youtube]].filter((x) => x[1]).map((x) => ({ t: x[0] as string, href: x[1] as string }))
+/** The other shows (up to six) in random order. Pages revalidate every 5 minutes, so the order rotates. */
+const shuffle6 = <T,>(xs: T[]) => xs.map((x) => [Math.random(), x] as const).sort((p, q) => p[0] - q[0]).slice(0, 6).map((p) => p[1])
 const showCard = (s: Awaited<ReturnType<typeof getShows>>[number], n: number) => {
   const m = SHOW_MEDIA[s.slug] || {}
   // hero photo + white logo bottom-left; no hero falls back to the show color + logo, no logo falls back to the cover art
@@ -518,7 +520,7 @@ export const getShow = cache(async (slug: string) => {
     hosts: withLabel(peopleOf(SP, s.raw.hosts), ids(s.raw.hosts)),
     guests: String(new Set(mine.flatMap((e) => ids(e.speakers)).filter((i) => !ids(s.raw.hosts).includes(i))).size),
     eps: mine.map((e) => epRow(e, s.raw, SP)),
-    shows: shows.filter((x) => x.slug !== slug).slice(0, 4).map((x) => showCard(x, count(x.slug))),
+    shows: shuffle6(shows.filter((x) => x.slug !== slug)).map((x) => showCard(x, count(x.slug))),
   }
 })
 
@@ -552,6 +554,6 @@ export const getEpisodePage = cache(async (showSlug: string, slug: string) => {
     trHtml: html(e.transcript),
     share: { li: `https://www.linkedin.com/sharing/share-offsite/?url=${u}`, x: `https://x.com/intent/post?url=${u}&text=${encodeURIComponent(e.title)}`, fb: `https://www.facebook.com/sharer/sharer.php?u=${u}` },
     more: mine.filter((x) => x.id !== e.id).slice(0, 4).map((x) => epRow(x, s.raw, SP)),
-    shows: shows.filter((x) => x.slug !== showSlug).slice(0, 6).map((x) => showCard(x, count(x.slug))),
+    shows: shuffle6(shows.filter((x) => x.slug !== showSlug)).map((x) => showCard(x, count(x.slug))),
   }
 })

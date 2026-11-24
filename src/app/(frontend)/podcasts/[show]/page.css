@@ -557,3 +557,8 @@
 
 /* hero art: square, as tall as the text column beside it (measured by ArtToContent) */
 @media (min-width:901px){.pg-show .sh_grid{grid-template-columns:var(--art-h,clamp(200px,22vw,320px)) minmax(0,1fr);align-items:start}.pg-show .sh_art{width:100%;height:auto;aspect-ratio:1}}
+/* More shows: wide tiles (square is reserved for cover art), matches the episode page */
+.pg-show .nw{grid-template-columns:repeat(3,minmax(0,1fr))}
+.pg-show .nw_art{aspect-ratio:1.45/1}
+@media (max-width:980px){.pg-show .nw{grid-template-columns:1fr 1fr}}
+@media (max-width:600px){.pg-show .nw{grid-template-columns:1fr}}
