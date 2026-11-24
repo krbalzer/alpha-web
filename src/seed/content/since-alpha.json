@@ -558,12 +558,16 @@
         "date": "Apr 2026",
         "title": "The rebrand launches",
         "detail": "Carolina Age Management Institute becomes cami: a new wordmark, an espresso palette, real patients shot on Lake Norman, a 24-poster hallway campaign and a new site. Behind the scenes on MSM 073.",
-        "rebrand": true
+        "rebrand": true,
+        "img": "/since-alpha/cami-launch.webp",
+        "alt": "Guests checking in at the cami launch party"
       },
       {
         "date": "Sep 2026",
         "title": "Surgery on site",
-        "detail": "Williams Center surgeons begin operating at cami. Every treatment on the surgery page arrived with the partnership."
+        "detail": "Williams Center surgeons begin operating at cami. Every treatment on the surgery page arrived with the partnership.",
+        "img": "/since-alpha/cami-surgery.webp",
+        "alt": "A Williams Center surgeon presenting at cami"
       },
       {
         "date": "Now",

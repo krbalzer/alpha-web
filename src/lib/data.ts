@@ -192,7 +192,8 @@ type SAItem = { kind: 'ann' | 'video' | 'image' | 'palette'; src?: string; poste
 type SAEntry = {
   quote?: { text: string; source: string }
   gap?: { after: number; label: string }
-  milestones: { date: string; title: string; detail: string; rebrand?: boolean; link?: { href: string; label: string } }[]
+  /** img: one square photo of the moment (repo path under /since-alpha or a Blob path), only where there is a real one */
+  milestones: { date: string; title: string; detail: string; rebrand?: boolean; link?: { href: string; label: string }; img?: string; alt?: string }[]
   /** plus: rows carry only `now` as a gain ("+12") and the note stands alone. */
   thenNow?: { note: string; plus?: boolean; rows: { label: string; then?: string; now: string }[] }
   rebrand?: { noun?: string; eyebrow: string; headline: string; body: string; msm?: { show: string; n: number }; site?: string; items: SAItem[]; ledger: [string, string][] }
@@ -210,14 +211,14 @@ export const getSinceAlpha = cache(async (slug: string, since?: string) => {
     const show = ep && typeof ep.show === 'object' ? (ep.show as Show) : null
     if (ep && show) msm = { href: `/podcasts/${show.slug}/${ep.slug}`, label: `MSM ${String(e.rebrand.msm.n).padStart(3, '0')} / ${Math.round((ep.duration || 0) / 60)} min` }
   }
-  const abs = (f?: string) => (f ? (/^https?:/.test(f) ? f : SA_BLOB + f) : '')
+  const abs = (f?: string) => (f ? (/^(https?:|\/)/.test(f) ? f : SA_BLOB + f) : '')
   return {
     since: since || '',
     work: WORK[slug] ? `/work/${slug}` : null,
     date: WORK[slug]?.date || '',
     quote: e.quote || null,
     gap: e.gap || null,
-    milestones: e.milestones,
+    milestones: e.milestones.map((x) => ({ ...x, img: abs(x.img) })),
     thenNow: e.thenNow || null,
     rebrand: e.rebrand
       ? { ...e.rebrand, msm, items: e.rebrand.items.map((i) => ({ ...i, src: abs(i.src), poster: abs(i.poster) })) }

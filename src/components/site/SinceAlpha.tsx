@@ -72,9 +72,10 @@ export function SinceAlpha({ d }: { d: SinceAlphaData }) {
             ))}
           </div>
 
-          <div className="sa_det" role="tabpanel">
+          <div className={'sa_det' + (M.some((x) => x.img) ? ' has-ph' : '')} role="tabpanel">
             <span className="mono sa_dd">{m.date}</span>
             <div><b>{m.title}</b><p>{m.detail}</p></div>
+            {M.some((x) => x.img) ? <span className="sa_ph">{m.img ? <img key={m.img} src={m.img} alt={m.alt || ''} loading="lazy" decoding="async" /> : null}</span> : null}
             {m.rebrand && d.rebrand ? <button className="btn sa_go" onClick={() => rebrand.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>See the {d.rebrand.noun || 'rebrand'} ↓</button> : m.link ? <a className="btn sa_go" href={m.link.href}>{m.link.label}</a> : <span />}
           </div>
 

@@ -164,6 +164,7 @@ const PLACEMENTS: { file: string; alt: string; apply: (p: Payload, id: number) =
   { file: 'flawless/film-poster-old-town.jpg', alt: 'Adobe in Old Town Albuquerque', apply: (p, id) => brand(p, 'flawless-medspa-wellness', (b) => ({ film: { ...(b.film as object), poster: id } })) },
   { file: 'htb/film-poster-rocks.jpg', alt: 'On the rocks above the Pacific, HTB rebrand shoot', apply: (p, id) => brand(p, 'holden-timeless-beauty', (b) => ({ film: { ...(b.film as object), poster: id } })) },
   { file: 'ec/film-poster-consult.jpg', alt: 'A surgical consult at Esthetics Center', apply: (p, id) => brand(p, 'esthetics-center', (b) => ({ film: { ...(b.film as object), poster: id } })) },
+  { file: 'cami/why-launch-hug.jpg', alt: 'Guests at the cami launch party', apply: (p, id) => brand(p, 'cami', (b) => ({ why: { ...(b.why as object), image: id } })) },
   { file: 'cami/film-poster-lake.jpg', alt: 'On the lake, Cami rebrand shoot', apply: (p, id) => brand(p, 'cami', (b) => ({ film: { ...(b.film as object), poster: id } })) },
   { file: 'dontage/film-poster-injector.jpg', alt: 'An injection at Dontage', apply: (p, id) => brand(p, 'dontage', (b) => ({ film: { ...(b.film as object), poster: id } })) },
   { file: 'inbloom/film-poster-town.jpg', alt: 'Southern New Hampshire from above', apply: (p, id) => brand(p, 'inbloom', (b) => ({ film: { ...(b.film as object), poster: id } })) },

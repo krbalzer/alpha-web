@@ -83,3 +83,11 @@
   .sa_rail{--h:min(62vh,420px)}
 }
 @media (prefers-reduced-motion:reduce){.sa_fill{transition:none}}
+
+/* one square photo per moment, where there is a real one; the slot holds its place so the panel never jumps */
+.sa_det.has-ph{grid-template-columns:200px 1fr clamp(120px,12vw,168px) auto}
+.sa_ph{display:block;aspect-ratio:1;overflow:hidden;background:rgba(232,228,218,.06)}
+.sa_ph img{display:block;width:100%;height:100%;object-fit:cover;animation:saPh .6s var(--ease) both}
+@keyframes saPh{from{opacity:0;transform:scale(1.04)}to{opacity:1;transform:none}}
+@media (max-width:820px){.sa_det.has-ph{grid-template-columns:1fr}.sa_ph{width:min(220px,60vw)}}
+@media (prefers-reduced-motion:reduce){.sa_ph img{animation:none}}
