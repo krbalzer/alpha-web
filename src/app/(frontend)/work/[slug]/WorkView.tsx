@@ -47,12 +47,12 @@ export default function WorkView({ d }: { d: WorkData }) {
       }
       const a = ap.current
       if (a && !still) {
-        // start once the devices are fully on screen, finish as they begin to leave
-        const dv = (a.querySelector('.wk_dev') || a).getBoundingClientRect()
-        const t0 = innerHeight - dv.height, t1 = -dv.height * 0.3
-        const p = Math.min(1, Math.max(0, (t0 - dv.top) / Math.max(1, t0 - t1)))
         for (const im of [dsk.current, mob.current, oldD.current, oldM.current]) {
           if (!im?.parentElement) continue
+          // each device starts scrolling once it is fully on screen, and finishes as it starts to leave
+          const dv = (im.parentElement.parentElement || im.parentElement).getBoundingClientRect()
+          const t0 = Math.max(0, innerHeight - dv.height), t1 = -dv.height * 0.3
+          const p = Math.min(1, Math.max(0, (t0 - dv.top) / Math.max(1, t0 - t1)))
           const max = im.offsetHeight - im.parentElement.offsetHeight
           im.style.transform = max > 0 ? `translate3d(0,${(-max * p).toFixed(1)}px,0)` : ''
         }
