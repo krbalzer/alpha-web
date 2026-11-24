@@ -70,8 +70,8 @@ export default function MainView(props: any) {
 <div className="net_head">
 <div>
 <p className="eyebrow" style={{"color": "#9B978E"} as React.CSSProperties}>The network</p>
-<h2 className="display h2">Separate brands.<br />One team.</h2>
-<p className="lede">Every dot is a partner practice. Every gold line is Alpha, already inside all of them. This is last week, replayed. It looks like this every week.</p>
+<h2 className="display h2">Our partners talk<br />to each other every day.</h2>
+<p className="lede">Each dot is a partner practice. Each gold line is our team at work inside one of them. This is last week, replayed.</p>
 </div>
 <div className="net_stats">
 <div className="net_stat clk"><span className="net_num">{v.clock}</span><span className="net_lab">Last week, replayed</span><div className="net_days">{(v.days || []).map((d: any, d_i: number) => (<React.Fragment key={d_i}><i className={d.cls}></i></React.Fragment>))}</div></div>
@@ -127,7 +127,7 @@ export default function MainView(props: any) {
 <section id="partners" className="partners">
 <div className="wrap">
 <h2 className="display h2">The partners raising<br />the standard</h2>
-<p className="lede">Every brand in the network, newest first, and the founder who built it. Open a brand for its story, or a founder for theirs.</p>
+<p className="lede">Newest first, with the founder who built each one. Open a brand for its story, or a founder for theirs.</p>
 <div className="p_grid">
 <div className="p_list" role="list">
 {(v.partners || []).slice().reverse().map((p: any, p_i: number) => (<React.Fragment key={p_i}>
@@ -164,8 +164,8 @@ export default function MainView(props: any) {
 <div className="wrap">
 <div className="sec_head">
 <div>
-<h2 className="display h2">The people behind<br />every practice.</h2>
-<p className="lede">You keep your brand, your team and your clinical judgment. These are the people who take everything else off your plate.</p>
+<h2 className="display h2">The team behind<br />our partners</h2>
+<p className="lede">You keep your brand, your team and your clinical judgment. We take the back office, the marketing and the training. These are the people who do it.</p>
 </div>
 <a className="btn" href="/team">Meet the whole team</a>
 </div>
@@ -186,7 +186,7 @@ export default function MainView(props: any) {
 <div className="wrap">
 <div className="sec_head">
 <div>
-<h2 className="display h2">In their<br />own words</h2>
+<h2 className="display h2">&ldquo;Will I lose<br />my team?&rdquo;</h2>
 <p className="lede">Providers, managers and founders from across the network, on what they were worried about going in and what partnership has actually been like.</p>
 </div>
 <div className="arrows"><button className="arrow" aria-label="Previous story" onClick={v.storyPrev} disabled={v.storyAtStart}><svg width="8" height="10" viewBox="0 0 8 10" aria-hidden="true"><path d="M6 1L2 5l4 4" stroke="currentColor" fill="none" strokeWidth="1.3"></path></svg></button><button className="arrow" aria-label="Next story" onClick={v.storyNext} disabled={v.storyAtEnd}><svg width="8" height="10" viewBox="0 0 8 10" aria-hidden="true"><path d="M2 1l4 4-4 4" stroke="currentColor" fill="none" strokeWidth="1.3"></path></svg></button></div>
@@ -225,8 +225,8 @@ export default function MainView(props: any) {
 <div className="wrap">
 <div className="sec_head">
 <div>
-<h2 className="display h2">Hear from<br />the network</h2>
-<p className="lede">Seven shows hosted by founders, providers and the Alpha team. Everything from the front desk to the balance sheet, published every week.</p>
+<h2 className="display h2">The Alpha<br />podcast network</h2>
+<p className="lede">Seven shows hosted by founders, providers and our team, from the front desk to the balance sheet. New episodes each week.</p>
 </div>
 <div style={{"display": "flex", "flexDirection": "column", "alignItems": "flex-end", "gap": "28px"} as React.CSSProperties}>
 <div className="stats">
@@ -244,7 +244,7 @@ export default function MainView(props: any) {
 <div>
 <hr className="rule" style={{"marginBottom": "40px"} as React.CSSProperties} />
 <h2 className="display h2">Thinking about<br />partnership?<br />Start here.</h2>
-<p className="lede">Four conversations picked for owners weighing the decision. Press play and keep browsing; the player stays with you.</p>
+<p className="lede">Four episodes we'd send any owner thinking about partnering. Hit play and keep browsing. The player follows you.</p>
 </div>
 <div>
 <hr className="rule" />
@@ -267,7 +267,7 @@ export default function MainView(props: any) {
 <div className="wrap qual_grid">
 <div>
 <h2 className="display h2">Is your practice<br />qualified?</h2>
-<p className="lede">Five questions about your practice. If it's a fit, we set up a real conversation, with people who have already made this decision.</p>
+<p className="lede">Five questions about your practice. If it's a fit, we'll set up a call with people who've made this decision themselves.</p>
 
 </div>
 <div className="form">
@@ -299,7 +299,7 @@ export default function MainView(props: any) {
 {v.isDone ? (<>
 <div style={{"margin": "auto 0"} as React.CSSProperties}>
 <p className="eyebrow" style={{"color": "#C9A26B"} as React.CSSProperties}>Received</p>
-<h3 className="form_q" style={{"fontSize": "40px"} as React.CSSProperties}>Thanks. We'll be in touch.</h3>
+<h3 className="form_q" style={{"fontSize": "40px"} as React.CSSProperties}>Got it. Tyler will reach out.</h3>
 <p className="form_hint" style={{"maxWidth": "440px"} as React.CSSProperties}>While you wait, the four conversations above are the ones owners in your position listen to first.</p>
 <button className="ulink" style={{"background": "none", "borderTop": "0", "borderLeft": "0", "borderRight": "0", "cursor": "pointer"} as React.CSSProperties} onClick={v.qReset}>Start over</button>
 </div>
