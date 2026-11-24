@@ -210,20 +210,13 @@ export default function MainView(props: any) {
 
 {/* ============ PRACTICE ============ */}
 <section id="practice" className="practice" aria-label="Practice Aesthetics Training">
+<img className="practice_bg" src="/home/practice-bg.jpg" alt="" loading="lazy" aria-hidden="true" />
 <div className="wrap" style={{"width": "100%"} as React.CSSProperties}>
 <div className="practice_grid">
-<div className="practice_lock">
-<span className="practice_mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
-<span style={{"width": "1px", "height": "84px", "background": "rgba(255,255,255,.8)"} as React.CSSProperties}></span>
-<span><span className="practice_word">Practice®</span><span className="practice_sub" style={{"display": "block"} as React.CSSProperties}>Aesthetics Training™</span></span>
-</div>
-<div style={{"maxWidth": "320px"} as React.CSSProperties}>
-<p className="practice_tag">Become an injector<br />the field can trust</p>
-
+<span className="practice_logo" role="img" aria-label="Practice Aesthetics Training"></span>
+<p className="practice_tag">University-Backed<br />Injector Training</p>
 </div>
 </div>
-</div>
-
 </section>
 
 {/* ============ PODCASTS ============ */}
