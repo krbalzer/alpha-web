@@ -75,7 +75,7 @@ export default function UniversityView(props: any) {
 <div className="sim labsim">
 <div className="sim_h"><span>{v.lab.track} / {v.lab.city}</span><span>{v.lab.date}</span></div>
 <div className="mos" aria-label="Photos from this Lab">
-{(v.lab.tiles || []).map((t: any, t_i: number) => (<React.Fragment key={t_i}><div className={t.cls}><span>{t.l}</span></div></React.Fragment>))}
+{(v.lab.tiles || []).map((t: any, t_i: number) => (<React.Fragment key={t_i}><div className={t.cls}>{t.src ? (<><img src={t.src} alt="" loading="lazy" decoding="async" /></>) : null}<span>{t.l}</span></div></React.Fragment>))}
 </div>
 <div className="sim_f">
 <div className="lab_sw" role="tablist" aria-label="Choose a Lab">{(v.labsw || []).map((b: any, b_i: number) => (<React.Fragment key={b_i}><button className={b.cls} role="tab" aria-selected={b.sel} onClick={b.go}>{b.l}</button></React.Fragment>))}</div>
@@ -137,7 +137,7 @@ export default function UniversityView(props: any) {
 <div className="map_key"><span><i className="k_net"></i>Partner clinic</span><span><i className="k_dot"></i>Lab</span><span><i className="k_arc"></i>Loop conversation</span></div>
 </div>
 
-<div className="term"><a href="#aim"><span className="term_k"><i className="live" aria-hidden="true"></i>Vendor education</span><span className="term_t">{v.d.vendorN} Alpha-exclusive sessions</span><span className="term_s">AMI x Alpha, launches, Train the Trainer</span></a><a href="#roles"><span className="term_k">Latest Lab</span><span className="term_t">{v.d.lastLab.t}</span><span className="term_s">{v.d.lastLab.s}</span></a><a href="#aim"><span className="term_k">Latest AIM</span><span className="term_t">{v.d.lastAim.t}</span><span className="term_s">{v.d.lastAim.s}</span></a></div>
+<div className="term"><a href="#aim"><span className="term_k"><i className="live" aria-hidden="true"></i>Vendor education</span><span className="term_t">{v.d.vendorN} Alpha-exclusive sessions</span><span className="term_s">AMI x Alpha, launches, Train the Trainer</span></a><a href="#roles"><span className="term_k">{v.d.labLabel}</span><span className="term_t">{v.d.lastLab.t}</span><span className="term_s">{v.d.lastLab.s}</span></a><a href="#aim"><span className="term_k">{v.d.aimLabel}</span><span className="term_t">{v.d.lastAim.t}</span><span className="term_s">{v.d.lastAim.s}</span></a></div>
 <p className="eyebrow" style={{"margin": "22px 0 0"} as React.CSSProperties}>Pins: every Lab since 2024, sized by how many it has hosted. Lines: how Loop questions travel.</p>
 </div>
 </section>
@@ -158,13 +158,13 @@ export default function UniversityView(props: any) {
 <div className="rp_row">
 <span className="rp_k"><img src="/university/icon-labs.png" alt="" className="rp_ic" />In person</span>
 <div><img className="rp_logo rp_lab" src="/university/labs-logo.svg" alt="Alpha Labs" /><p className="rp_p">Open to every provider, all over the network. {v.role.labFit}</p></div>
-<div className="rp_stat"><span className="rp_l">Latest Lab</span><span className="rp_l2">{v.d.lastLab.s}</span></div>
+<div className="rp_stat"><span className="rp_l">{v.d.labLabel}</span><span className="rp_l2">{v.d.lastLab.s}</span></div>
 </div>
 {v.role.hasLearn ? (<>
 <div className="rp_row">
 <span className="rp_k"><img src="/university/icon-learn.png" alt="" className="rp_ic" />From the masters</span>
 <div><img className="rp_logo rp_aim" src="/university/aim-logo.svg" alt="AIM, the Alpha Injector Masterclass" /><p className="rp_p">Closed-door sessions with the people who shaped the specialty. {v.d.seasonN} seasons, {v.d.masters} masters so far.</p></div>
-<div className="rp_stat"><span className="rp_l">Latest session</span><span className="rp_l2">{v.d.lastAim.t} / {v.d.lastAim.d}</span></div>
+<div className="rp_stat"><span className="rp_l">{v.d.aimLabel}</span><span className="rp_l2">{v.d.lastAim.t} / {v.d.lastAim.d}</span></div>
 </div>
 </>) : null}
 <div className="rp_row">
@@ -180,7 +180,7 @@ export default function UniversityView(props: any) {
 <div className="rp_row">
 <span className="rp_k">Where it goes</span>
 <div><span className="rp_t">From the chair to the faculty</span><p className="rp_p">Alpha's best injectors teach the next generation at Practice.</p></div>
-<div className="rp_stat"><span className="rp_l">Practice faculty from Alpha</span><span className="rp_l2"><span className="ph">[N]</span></span></div>
+<div className="rp_stat">{v.d.practiceFaculty ? (<><span className="rp_n">{v.d.practiceFaculty}</span><span className="rp_l">Practice faculty from Alpha</span></>) : null}</div>
 </div>
 </>) : null}
 </div>

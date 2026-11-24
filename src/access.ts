@@ -4,9 +4,10 @@ import type { Access, Field, FieldAccess, PayloadRequest, Where } from 'payload'
  * Roles. Everyone else feeds the site from systems they already use (Libsyn + Drive, Paylocity, quarterly ops notes).
  *   admin         everything
  *   partnerships  leads (the only role that can see them)
- *   contributor   uploads to media (photos, rebrand assets), tagged for placement
+ *   contributor   uploads to media (photos, rebrand assets), tagged for placement; sets AIM covers on training events
+ *   university    training events (AIM sessions, Labs) and University settings, plus their photos
  */
-export const ROLES = ['admin', 'partnerships', 'contributor'] as const
+export const ROLES = ['admin', 'partnerships', 'contributor', 'university'] as const
 export type Role = (typeof ROLES)[number]
 
 type U = { id?: number | string; roles?: Role[] | null } | null | undefined

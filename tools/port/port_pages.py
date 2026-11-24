@@ -929,6 +929,9 @@ UNI_CSS = '''
 .campus .pin.net i::after{display:none}
 .campus .arc{vector-effect:none;stroke-width:.16}
 .k_net{width:5px;height:5px;border-radius:50%;background:#EDE3C8;opacity:.5}
+/* Labs photo sets: real photos when the Lab record has them */
+.tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.tile.has-img span{color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.4);z-index:1}
 '''
 
 
@@ -951,15 +954,19 @@ def university_markup(b):
     i = b.index('<div class="term">'); j = b.index('</div>', i) + 6
     b = b[:i] + ('<div class="term">'
                  '<a href="#aim"><span class="term_k"><i class="live" aria-hidden="true"></i>Vendor education</span><span class="term_t">{{ d.vendorN }} Alpha-exclusive sessions</span><span class="term_s">AMI x Alpha, launches, Train the Trainer</span></a>'
-                 '<a href="#roles"><span class="term_k">Latest Lab</span><span class="term_t">{{ d.lastLab.t }}</span><span class="term_s">{{ d.lastLab.s }}</span></a>'
-                 '<a href="#aim"><span class="term_k">Latest AIM</span><span class="term_t">{{ d.lastAim.t }}</span><span class="term_s">{{ d.lastAim.s }}</span></a>'
+                 '<a href="#roles"><span class="term_k">{{ d.labLabel }}</span><span class="term_t">{{ d.lastLab.t }}</span><span class="term_s">{{ d.lastLab.s }}</span></a>'
+                 '<a href="#aim"><span class="term_k">{{ d.aimLabel }}</span><span class="term_t">{{ d.lastAim.t }}</span><span class="term_s">{{ d.lastAim.s }}</span></a>'
                  '</div>') + b[j:]
     b = rep(b, '<div class="rp_stat"><span class="rp_l">Next Lab</span><span class="rp_l2"><span class="ph">[City, ST / Date]</span></span></div>',
-            '<div class="rp_stat"><span class="rp_l">Latest Lab</span><span class="rp_l2">{{ d.lastLab.s }}</span></div>')
+            '<div class="rp_stat"><span class="rp_l">{{ d.labLabel }}</span><span class="rp_l2">{{ d.lastLab.s }}</span></div>')
     b = rep(b, '2 seasons, 8 masters so far.', '{{ d.seasonN }} seasons, {{ d.masters }} masters so far.')
     b = rep(b, '<div class="rp_stat"><span class="rp_l">Next session</span><span class="rp_l2"><span class="ph">[Speaker / Date]</span></span></div>',
-            '<div class="rp_stat"><span class="rp_l">Latest session</span><span class="rp_l2">{{ d.lastAim.t }} / {{ d.lastAim.d }}</span></div>')
+            '<div class="rp_stat"><span class="rp_l">{{ d.aimLabel }}</span><span class="rp_l2">{{ d.lastAim.t }} / {{ d.lastAim.d }}</span></div>')
     b = rep(b, '<p class="aim_note">Dates and topics from the session covers. Years and the Weiner, Karimi, Robertson and Batniji topics: to confirm.</p>', '')
+    b = rep(b, '<sc-for list="{{ lab.tiles }}" as="t" hint-placeholder-count="5"><div class="{{ t.cls }}"><span>{{ t.l }}</span></div></sc-for>',
+            '<sc-for list="{{ lab.tiles }}" as="t"><div class="{{ t.cls }}"><sc-if value="{{ t.src }}"><img src="{{ t.src }}" alt="" loading="lazy" decoding="async"></sc-if><span>{{ t.l }}</span></div></sc-for>')
+    b = rep(b, '<div class="rp_stat"><span class="rp_l">Practice faculty from Alpha</span><span class="rp_l2"><span class="ph">[N]</span></span></div>',
+            '<div class="rp_stat"><sc-if value="{{ d.practiceFaculty }}"><span class="rp_n">{{ d.practiceFaculty }}</span><span class="rp_l">Practice faculty from Alpha</span></sc-if></div>')
     b = rep(b, '<section class="pracx neutral">', '<section class="pracx neutral" id="practice">')
     b = gate(b, 'CLINICAL DIRECTOR', 'd.showCD')
     # Loops: Slack support standard + member counts we have (the rest stay hidden until we do)
@@ -995,6 +1002,9 @@ def university_engine(e):
     e = rep(e, "logo: LG[l] || '', noLogo: !LG[l] }))", "logo: LG[l] || '', noLogo: !LG[l], n: (D.members || {})[l.toLowerCase()] || '' }))")
     e = sub(r"(loops: \{[^\n]*?stats: )\[.*?\] \}", r'\1D.loopStats }', e)
     e = rep(e, 'role: R[rk],', "role: Object.assign({}, R[rk], { members: (D.members || {})[rk] || '', noMembers: !(D.members || {})[rk] }),")
+    e = rep(e, "tiles: L0.tiles.map((l, i) => ({ l: '[Photo] ' + l, cls: 'tile ' + (L0.layout[i] || '') }))", "tiles: L0.tiles.map((t, i) => ({ l: t.l, src: t.src, cls: 'tile ' + (L0.layout[i] || '') + (t.src ? ' has-img' : '') }))")
+    e = rep(e, 'const sessions = S[season].map(', 'const sessions = (S[season] || []).map(')
+    e = rep(e, 'const li = s.lab || 0, L0 = LABS[li];', "const li = s.lab || 0, L0 = LABS[li] || { track: 'Lab', city: '', date: '', layout: [], tiles: [] };")
     e = rep(e, 'return { seasons, sessions,', 'return { d: D, seasons, sessions,')
     return e
 

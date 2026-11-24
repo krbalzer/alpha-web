@@ -83,6 +83,7 @@ export interface Config {
     resources: Resource;
     legal: Legal;
     jobs: Job;
+    'training-events': TrainingEvent;
     leads: Lead;
     media: Media;
     users: User;
@@ -121,6 +122,7 @@ export interface Config {
     resources: ResourcesSelect<false> | ResourcesSelect<true>;
     legal: LegalSelect<false> | LegalSelect<true>;
     jobs: JobsSelect<false> | JobsSelect<true>;
+    'training-events': TrainingEventsSelect<false> | TrainingEventsSelect<true>;
     leads: LeadsSelect<false> | LeadsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -135,9 +137,11 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     network: Network;
+    university: University;
   };
   globalsSelect: {
     network: NetworkSelect<false> | NetworkSelect<true>;
+    university: UniversitySelect<false> | UniversitySelect<true>;
   };
   locale: null;
   widgets: {
@@ -835,9 +839,9 @@ export interface User {
   id: number;
   name?: string | null;
   /**
-   * Admin: everything. Partnerships: leads. Contributor: uploads only (photos, rebrand assets).
+   * Admin: everything. Partnerships: leads. Contributor: uploads only (photos, rebrand assets), plus AIM covers. University: training events and settings.
    */
-  roles?: ('admin' | 'partnerships' | 'contributor')[] | null;
+  roles?: ('admin' | 'partnerships' | 'contributor' | 'university')[] | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -1396,6 +1400,65 @@ export interface Job {
   createdAt: string;
 }
 /**
+ * Every AIM session and Lab. Log it when it is announced (Upcoming), mark it Held after. AIM covers: filter by "Needs cover".
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "training-events".
+ */
+export interface TrainingEvent {
+  id: number;
+  kind: 'aim' | 'lab';
+  date: string;
+  status: 'upcoming' | 'held' | 'cancelled';
+  /**
+   * As it should read on the site, e.g. "Dr. Kian Karimi".
+   */
+  speaker?: string | null;
+  /**
+   * AIM season number.
+   */
+  season?: number | null;
+  /**
+   * AIM: the topic ("Live Q&A" if none). Lab: what it covered.
+   */
+  topic?: string | null;
+  track?: ('injector' | 'skincare' | 'cadaver' | 'regional' | 'surgical') | null;
+  /**
+   * The partner location that hosted. Sets the city and the map pin.
+   */
+  location?: (number | null) | Location;
+  /**
+   * Shown instead of the partner name.
+   */
+  venue?: string | null;
+  /**
+   * City, ST
+   */
+  city?: string | null;
+  lat?: number | null;
+  lng?: number | null;
+  /**
+   * Up to five, for the Labs photo sets on the page.
+   */
+  photos?: (number | Media)[] | null;
+  /**
+   * Off keeps it out of the page and its counts.
+   */
+  public?: boolean | null;
+  /**
+   * Internal. Never shown.
+   */
+  note?: string | null;
+  /**
+   * Lauren: the AIM session cover, 4:5 (e.g. 1120 x 1400).
+   */
+  cover?: (number | null) | Media;
+  coverNeeded?: boolean | null;
+  title?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "leads".
  */
@@ -1512,6 +1575,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'jobs';
         value: number | Job;
+      } | null)
+    | ({
+        relationTo: 'training-events';
+        value: number | TrainingEvent;
       } | null)
     | ({
         relationTo: 'leads';
@@ -2176,6 +2243,32 @@ export interface JobsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "training-events_select".
+ */
+export interface TrainingEventsSelect<T extends boolean = true> {
+  kind?: T;
+  date?: T;
+  status?: T;
+  speaker?: T;
+  season?: T;
+  topic?: T;
+  track?: T;
+  location?: T;
+  venue?: T;
+  city?: T;
+  lat?: T;
+  lng?: T;
+  photos?: T;
+  public?: T;
+  note?: T;
+  cover?: T;
+  coverNeeded?: T;
+  title?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "leads_select".
  */
 export interface LeadsSelect<T extends boolean = true> {
@@ -2358,6 +2451,39 @@ export interface Network {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "university".
+ */
+export interface University {
+  id: number;
+  /**
+   * Leave a Loop empty to hide its count.
+   */
+  members?: {
+    injector?: number | null;
+    esthie?: number | null;
+    manager?: number | null;
+    marketing?: number | null;
+    surgery?: number | null;
+    body?: number | null;
+  };
+  support?: {
+    reply?: string | null;
+    solved?: string | null;
+  };
+  vendorSessions?: number | null;
+  /**
+   * Empty hides it.
+   */
+  practiceFaculty?: number | null;
+  /**
+   * Leave off until the announcement.
+   */
+  showClinicalDirector?: boolean | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "network_select".
  */
 export interface NetworkSelect<T extends boolean = true> {
@@ -2373,6 +2499,34 @@ export interface NetworkSelect<T extends boolean = true> {
         name?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "university_select".
+ */
+export interface UniversitySelect<T extends boolean = true> {
+  members?:
+    | T
+    | {
+        injector?: T;
+        esthie?: T;
+        manager?: T;
+        marketing?: T;
+        surgery?: T;
+        body?: T;
+      };
+  support?:
+    | T
+    | {
+        reply?: T;
+        solved?: T;
+      };
+  vendorSessions?: T;
+  practiceFaculty?: T;
+  showClinicalDirector?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

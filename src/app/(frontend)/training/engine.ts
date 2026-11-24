@@ -10,7 +10,7 @@ export class UniversityEngine extends DCLogic {
     const S = D.aim;
     const RANGE = D.range;
     const seasons = [1, 2, 3].map((n) => ({ label: 'Season ' + n + RANGE[n], cls: 'tab' + (n === season ? ' is-on' : ''), sel: n === season ? 'true' : 'false', go: () => set({ season: n }) }));
-    const sessions = S[season].map((r) => ({ d: r[0], n: r[1], t: r[2], c: r[3], hasC: !!r[3], noC: !r[3], s: 'Closed door' }));
+    const sessions = (S[season] || []).map((r) => ({ d: r[0], n: r[1], t: r[2], c: r[3], hasC: !!r[3], noC: !r[3], s: 'Closed door' }));
     const pins = D.pins;
     const LG = {'Injector': '/university/loop-injector.svg', 'Esthie': '/university/loop-esthie.svg', 'Manager': '/university/loop-manager.svg', 'Surgery': '/university/loop-surgery.svg', 'Marketing': '/university/loop-marketing.svg'};
     const loops = ['Injector', 'Marketing', 'Surgery', 'Manager', 'Body', 'Esthie'].map((l) => ({ c: l + ' Loop', logo: LG[l] || '', noLogo: !LG[l], n: (D.members || {})[l.toLowerCase()] || '' }));
@@ -30,8 +30,8 @@ export class UniversityEngine extends DCLogic {
     const progs = Object.keys(P).map((k) => ({ name: P[k].name, ic: P[k].ic, w: P[k].w, line: P[k].line, cls: k === pk ? 'is-on' : '', sel: k === pk ? 'true' : 'false', go: () => set({ prog: k }) }));
     const prog = Object.assign({}, P[pk], { isLoops: pk === 'loops', isLabs: pk === 'labs', isLearn: pk === 'learn' });
     const LABS = D.labs;
-    const li = s.lab || 0, L0 = LABS[li];
-    const lab = { track: L0.track, city: L0.city, date: L0.date, tiles: L0.tiles.map((l, i) => ({ l: '[Photo] ' + l, cls: 'tile ' + (L0.layout[i] || '') })) };
+    const li = s.lab || 0, L0 = LABS[li] || { track: 'Lab', city: '', date: '', layout: [], tiles: [] };
+    const lab = { track: L0.track, city: L0.city, date: L0.date, tiles: L0.tiles.map((t, i) => ({ l: t.l, src: t.src, cls: 'tile ' + (L0.layout[i] || '') + (t.src ? ' has-img' : '') })) };
     const labsw = LABS.map((x, i) => ({ l: x.track.split(' ')[0] + ' / ' + (i + 1), cls: i === li ? 'is-on' : '', sel: i === li ? 'true' : 'false', go: () => set({ lab: i }) }));
     return { d: D, seasons, sessions, pins, loops, roles, role: Object.assign({}, R[rk], { members: (D.members || {})[rk] || '', noMembers: !(D.members || {})[rk] }), progs, prog, lab, labsw };
   }

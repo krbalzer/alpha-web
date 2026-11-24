@@ -1,55 +1,13 @@
 import 'server-only'
 import { cache } from 'react'
-import { db } from './data'
+import { db, url } from './data'
 
 /**
- * Alpha University (/training). Source: Liz's training master list (Alpha_Training_Master_List, Layer column).
- * Only rows marked Public-worthy "Yes" feed this page. Update the arrays below when the log changes;
- * every count on the page is derived from them.
+ * Alpha University (/training). Everything comes from the CMS:
+ *   Training events  AIM sessions and Labs (Katie logs them; Lauren sets AIM covers)
+ *   University       Loop member counts, the Slack support standard, vendor sessions, the Clinical Director switch
+ * Counts, seasons, map pins and "next / latest" are derived here. Only public, non-cancelled events count.
  */
-
-// AIM: [date, speaker, topic, cover]. Held sessions only (Batniji 12/2/25 was cancelled).
-const AIM: Record<number, [string, string, string, string, string][]> = {
-  1: [
-    ['2024-11-05', 'Julie Horne', 'Advanced lip techniques', '/university/aim-horne.jpg', 'Julie Horne'],
-    ['2025-01-07', 'Dr. Tom van Eijk', 'The fern pattern technique', '/university/aim-vaneijk.jpg', 'Tom van Eijk'],
-    ['2025-03-12', 'Julie Horne', 'Lips, with in-person sessions at HTB', '', 'Julie Horne'],
-    ['2025-04-01', 'Leslie Fletcher', 'Advanced injectables', '/university/aim-fletcher.jpg', 'Leslie Fletcher'],
-    ['2025-05-13', 'Dr. Steve Weiner', 'Live Q&A', '/university/aim-weiner.jpg', 'Steve Weiner'],
-    ['2025-06-24', 'Lori Robertson', 'Live Q&A, part one', '/university/aim-robertson.jpg', 'Lori Robertson'],
-  ],
-  2: [
-    ['2025-08-05', 'Dr. Steve Yoelin', 'Advanced injectables, moderated by Sarah Safa', '/university/aim-yoelin.jpg', 'Steve Yoelin'],
-    ['2025-09-24', 'Dr. Kian Karimi', 'Live Q&A', '/university/aim-karimi.jpg', 'Kian Karimi'],
-    ['2026-01-27', 'Lori Robertson', 'Live Q&A, part two', '', 'Lori Robertson'],
-  ],
-  3: [
-    ['2026-08-25', 'Prof. Sebastian Cotofana, MD', 'Live session, not recorded', '', 'Sebastian Cotofana'],
-  ],
-}
-const RANGE: Record<number, string> = { 1: ' / Nov 24 to Jun 25', 2: ' / Aug 25 to Jan 26', 3: ' / Aug 26 on' }
-
-// Alpha Labs held in person: [date, title, host, city]
-const LABS_LOG: [string, string, string, string][] = [
-  ['2024-10-10', 'Filler training, new temple indication', 'The Laser Center of Marin', 'Corte Madera, CA'],
-  ['2025-01-20', 'First East Coast regional Lab', 'The Williams Center', 'Albany, NY'],
-  ['2025-03-14', 'Julie Horne lip training', 'Holden Timeless Beauty', 'San Diego, CA'],
-  ['2025-03-31', 'Alpha Labs training day', 'The Laser Center of Marin', 'Corte Madera, CA'],
-  ['2025-06-04', 'Esthetician training', 'The Laser Center of Marin', 'Corte Madera, CA'],
-  ['2025-09-10', 'Injectables and BBL', 'Cami Aesthetics', 'Greensboro, NC'],
-  ['2025-10-18', 'First Alpha Cadaver Lab, powered by AMI', 'Allergan Medical Institute', 'Irvine, CA'],
-  ['2026-06-10', 'Plated training', 'Rejuva Center', ''],
-  ['2026-08-05', 'Radiesse, two days', 'Esthetics Center', 'Sacramento, CA'],
-  ['2026-08-07', 'Cutter training for the OR launch', 'The Williams Center', 'Albany, NY'],
-  ['2026-08-08', 'Second annual AMI Cadaver Lab', 'Allergan Medical Institute', 'Irvine, CA'],
-  ['2026-10-03', 'Filler and neurotoxin training', 'Mint + Needle', 'Lewes, DE'],
-]
-
-// Lab cities (lat, lng)
-const LL: Record<string, [number, number]> = {
-  'Corte Madera, CA': [37.925, -122.527], 'Sacramento, CA': [38.582, -121.494], 'San Diego, CA': [32.716, -117.161], 'Irvine, CA': [33.684, -117.826],
-  'Albany, NY': [42.653, -73.756], 'Lewes, DE': [38.775, -75.139], 'Greensboro, NC': [36.073, -79.792],
-}
 
 /** lat/lng -> % of the USA artwork (Albers conic, fitted to the outline's extreme points; within ~1%). */
 const project = (lat: number, lng: number): [number, number] => {
@@ -59,47 +17,83 @@ const project = (lat: number, lng: number): [number, number] => {
   return [(2756.17 * x + 1009.14) / 20, (-2743.22 * y + 678.29) / 12.29]
 }
 const r1 = (n: number) => Math.round(n * 10) / 10
+const fmt = (d: string, o: Intl.DateTimeFormatOptions) => new Date(d).toLocaleDateString('en-US', { ...o, timeZone: 'UTC' })
+const mon = (d: string) => fmt(d, { month: 'short', year: 'numeric' })
+const md = (d: string) => fmt(d, { month: 'short', day: 'numeric' })
+const my = (d: string) => fmt(d, { month: 'short', year: '2-digit' })
+/** "Dr. Steve Yoelin" and "Steve Yoelin" are the same master */
+const person = (s: string) => s.replace(/^(dr|prof)\.?\s+/i, '').replace(/,\s*(md|phd|np|rn|pa-c)\.?$/i, '').trim().toLowerCase()
 
-// Vendor education built or negotiated for Alpha (Layer = Vendor: Alpha-exclusive, Public-worthy = Yes)
-const VENDOR_EXCLUSIVE = 18
-
-/** Loop member counts (Slack), keyed like the Loops: injector, esthie, manager, marketing, surgery, body. Add as we get them. */
-const MEMBERS: Record<string, string> = { injector: '133' }
-/** Slack-wide support standard */
-const SUPPORT = { reply: '< 1 min', solved: '3 days' }
-
-/** Hold the Clinical Director section until the agreement is signed. */
-const SHOW_CD = false
-
-const mon = (d: string) => new Date(d + 'T12:00:00Z').toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' })
-const md = (d: string) => new Date(d + 'T12:00:00Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })
+type Loc = { name?: string | null; city?: string | null; state?: string | null; lat?: number | string | null; lng?: number | string | null; brand?: { name?: string } | number | null }
+type Ev = {
+  id: number; kind: 'aim' | 'lab'; date: string; status: 'upcoming' | 'held' | 'cancelled'; speaker?: string | null; season?: number | null; topic?: string | null
+  track?: string | null; location?: Loc | number | null; venue?: string | null; city?: string | null; lat?: number | null; lng?: number | null; cover?: unknown; photos?: unknown[] | null
+}
+const TRACK: Record<string, string> = { injector: 'Injector Lab', skincare: 'Skincare Lab', cadaver: 'Cadaver Lab', regional: 'Regional Lab', surgical: 'Surgical Lab' }
+const LAYOUTS = [['big', '', '', 'wide'], ['big', '', '', '', ''], ['wide', '', '', 'wide'], ['big', 'wide', '', '']]
+const TILES: Record<string, string[]> = {
+  injector: ['Live model', 'Mapping', 'Hands on', 'Q and A', 'Team'], skincare: ['Treatment', 'Protocol', 'Detail', 'Host clinic', 'Team'],
+  cadaver: ['Anatomy', 'Table leads', 'Group', 'Cases', 'Team'], regional: ['Injectors', 'Estheticians', 'Hands on', 'Group', 'Team'], surgical: ['The OR', 'Hands on', 'Team', 'Detail', 'Group'],
+}
 
 export const getTraining = cache(async () => {
   const p = await db()
-  const [shows, eps, locs] = await Promise.all([
+  const [shows, eps, locs, evr, u] = await Promise.all([
     p.count({ collection: 'shows', where: { live: { equals: true } } }),
     p.count({ collection: 'episodes', where: { live: { equals: true } } }),
     p.find({ collection: 'locations', where: { live: { equals: true } }, limit: 1000, depth: 0, select: { city: true, state: true, lat: true, lng: true } }),
+    p.find({ collection: 'training-events', where: { and: [{ public: { equals: true } }, { status: { not_equals: 'cancelled' } }] }, sort: 'date', limit: 500, depth: 2 }),
+    p.findGlobal({ slug: 'university', depth: 0 }),
   ])
-  const seasons = Object.keys(AIM).map(Number)
-  const all = seasons.flatMap((n) => AIM[n])
-  const masters = new Set(all.map((r) => r[4])).size
-  const last = all[all.length - 1]
-  const season = Math.max(...seasons.filter((n) => AIM[n].length))
-  const lastLab = LABS_LOG[LABS_LOG.length - 1]
+  const ev = evr.docs as unknown as Ev[]
+  const U = u as unknown as { members?: Record<string, number | null>; support?: { reply?: string; solved?: string }; vendorSessions?: number; practiceFaculty?: number; showClinicalDirector?: boolean }
+  const held = ev.filter((e) => e.status === 'held'), soon = ev.filter((e) => e.status === 'upcoming')
+
+  // AIM
+  const aimHeld = held.filter((e) => e.kind === 'aim'), aimAll = ev.filter((e) => e.kind === 'aim')
+  const seasons = [...new Set(aimAll.map((e) => e.season || 1))].sort((a, b) => a - b)
+  const latestSeason = seasons[seasons.length - 1] || 1
+  const aim: Record<number, [string, string, string, string][]> = { 1: [] }, range: Record<number, string> = { 1: '' }
+  for (const n of seasons) {
+    const s = aimAll.filter((e) => (e.season || 1) === n)
+    aim[n] = s.map((e) => [md(e.date), e.speaker || '', e.topic || 'Live Q&A', url(e.cover, 'card') || ''])
+    range[n] = ' / ' + my(s[0].date) + (n === latestSeason ? ' on' : ' to ' + my(s[s.length - 1].date))
+  }
+  const masters = new Set(aimHeld.map((e) => person(e.speaker || ''))).size
+  const nextAim = soon.find((e) => e.kind === 'aim'), lastAim = aimHeld[aimHeld.length - 1]
+  const showAim = nextAim || lastAim
+
+  // Labs
+  const loc = (e: Ev) => (e.location && typeof e.location === 'object' ? e.location : null)
+  const where = (e: Ev) => {
+    const l = loc(e)
+    const brand = l?.brand && typeof l.brand === 'object' ? l.brand.name : ''
+    return {
+      host: e.venue || brand || l?.name || '',
+      city: e.city || (l?.city ? `${l.city}, ${l.state}` : ''),
+      ll: e.lat != null && e.lng != null ? [Number(e.lat), Number(e.lng)] : l?.lat != null && l?.lng != null ? [Number(l.lat), Number(l.lng)] : null,
+    }
+  }
+  const labsHeld = held.filter((e) => e.kind === 'lab')
+  const nextLab = soon.find((e) => e.kind === 'lab'), lastLab = labsHeld[labsHeld.length - 1]
+  const showLab = nextLab || lastLab
   const year = new Date().getUTCFullYear()
-  const thisYear = LABS_LOG.filter((l) => l[0].startsWith(String(year))).length
-  const hosts = new Set(LABS_LOG.map((l) => l[2])).size
-  const perCity = new Map<string, number>()
-  LABS_LOG.forEach((l) => l[3] && perCity.set(l[3], (perCity.get(l[3]) || 0) + 1))
-  // partner clinics: quiet dots. Labs: rippling pins sized by how many each city has hosted.
+  const thisYear = labsHeld.filter((e) => new Date(e.date).getUTCFullYear() === year).length
+  const hosts = new Set(labsHeld.map((e) => where(e).host).filter(Boolean)).size
+  const tracks = new Set(labsHeld.map((e) => e.track || 'injector'))
+
+  // map: partner clinics as quiet dots; Labs as rippling pins sized by how many each city has hosted
   const clinics = locs.docs.filter((l) => l.lat != null && l.lng != null).map((l) => ({ name: `${l.city}, ${l.state}`, xy: project(Number(l.lat), Number(l.lng)) }))
-  const net = clinics.map((l, i) => ({ c: l.name, x: r1(l.xy[0]) + '%', y: r1(l.xy[1]) + '%', s: '5px', d: '0s', cls: 'pin net', k: i }))
-  const labPins = [...perCity].filter(([c]) => LL[c]).map(([c, n], i) => {
-    const [x, y] = project(...LL[c])
-    return { c, x: r1(x) + '%', y: r1(y) + '%', s: 6 + n * 3 + 'px', d: (i * 0.37).toFixed(2) + 's', cls: 'pin' + (x > 50 ? ' r' : '') }
-  })
-  const pins = [...net, ...labPins]
+  const net = clinics.map((l) => ({ c: l.name, x: r1(l.xy[0]) + '%', y: r1(l.xy[1]) + '%', s: '5px', d: '0s', cls: 'pin net' }))
+  const perCity = new Map<string, { n: number; xy: [number, number] }>()
+  for (const e of labsHeld) {
+    const w = where(e)
+    if (!w.ll) continue
+    const k = w.city || w.host
+    const cur = perCity.get(k)
+    perCity.set(k, { n: (cur?.n || 0) + 1, xy: cur?.xy || project(w.ll[0], w.ll[1]) })
+  }
+  const labPins = [...perCity].map(([c, v], i) => ({ c, x: r1(v.xy[0]) + '%', y: r1(v.xy[1]) + '%', s: 6 + v.n * 3 + 'px', d: (i * 0.37).toFixed(2) + 's', cls: 'pin' + (v.xy[0] > 50 ? ' r' : '') }))
   // Loop arcs between partner cities, mixing long and regional hops (svg viewBox is 100 x 61.45, same ratio as the artwork)
   const city = (n: string) => clinics.find((c) => c.name.startsWith(n + ','))
   const ROUTES = [['Charlestown', 'San Diego'], ['Gahanna', 'Sacramento'], ['Cape Coral', 'Saratoga Springs'], ['Denver', 'Lexington'], ['West Albuquerque', 'Leesburg'], ['Greensboro', 'Corte Madera']]
@@ -112,42 +106,54 @@ export const getTraining = cache(async () => {
   })
   const LOOPS = ['Injector Loop', 'Manager Loop', 'Esthie Loop']
   const ticks = arcs.slice(0, 3).map((a, i) => ({ loop: LOOPS[i], route: `${a.from.split(',')[0]} to ${a.to.split(',')[0]}` }))
-  const prev = AIM[season - 1] || []
-  const lab = (i: number, track: string, layout: string[], tiles: string[]) => {
-    const l = LABS_LOG[i]
-    return { track, city: l[3] || l[2], date: mon(l[0]), layout, tiles }
-  }
+
+  // Labs photo sets: the four most recent held Labs, one per track where possible; real photos when uploaded
+  const pick: Ev[] = []
+  for (const e of [...labsHeld].reverse()) if (pick.length < 4 && !pick.some((x) => x.track === e.track)) pick.push(e)
+  for (const e of [...labsHeld].reverse()) if (pick.length < 4 && !pick.includes(e)) pick.push(e)
+  const labs = pick.map((e, i) => {
+    const w = where(e), photos = (e.photos || []).map((x) => url(x, 'wide')).filter(Boolean) as string[]
+    const layout = LAYOUTS[i % LAYOUTS.length], names = TILES[e.track || 'injector'] || TILES.injector
+    return { track: TRACK[e.track || 'injector'] || 'Lab', city: w.city || w.host, date: mon(e.date), layout, tiles: layout.map((_, k) => ({ l: photos[k] ? names[k] : '[Photo] ' + names[k], src: photos[k] || '' })) }
+  })
+
+  // University settings
+  const members = Object.fromEntries(Object.entries(U.members || {}).filter(([, v]) => v != null && v !== 0).map(([k, v]) => [k, String(v)]))
+  const support = { reply: U.support?.reply || '< 1 min', solved: U.support?.solved || '3 days' }
+  const prev = aim[latestSeason - 1] || []
+  const now = aimAll.filter((e) => (e.season || 1) === latestSeason)
+
   return {
-    aim: Object.fromEntries(seasons.map((n) => [n, AIM[n].map((r) => [md(r[0]), r[1], r[2], r[3]])])),
-    range: RANGE,
-    season,
+    aim, range,
+    season: latestSeason,
     seasonN: seasons.length,
-    aimN: all.length,
+    aimN: aimHeld.length,
     masters,
-    labsN: LABS_LOG.length,
+    labsN: labsHeld.length,
     eps: eps.totalDocs,
-    vendorN: VENDOR_EXCLUSIVE,
-    showCD: SHOW_CD,
-    members: MEMBERS,
-    support: SUPPORT,
+    vendorN: U.vendorSessions ?? 0,
+    practiceFaculty: U.practiceFaculty ? String(U.practiceFaculty) : '',
+    showCD: !!U.showClinicalDirector,
+    members, support,
     loopStats: [
       { n: '6', l: 'Loops, by role' },
-      { n: MEMBERS.injector, l: 'In the Injector Loop' },
-      { n: SUPPORT.reply, l: 'First reply, Slack-wide' },
-      { n: '≤ 3 days', l: 'Every ticket solved' },
+      ...(members.injector ? [{ n: members.injector, l: 'In the Injector Loop' }] : []),
+      { n: support.reply, l: 'First reply, Slack-wide' },
+      { n: '≤ ' + support.solved, l: 'Every ticket solved' },
     ],
-    learnNow: `Season ${season}: ${AIM[season].map((r) => r[1]).join(', ')}`,
-    learnPrev: prev.length ? `Season ${season - 1}: ${[...new Set(prev.map((r) => r[1]))].join(', ')}` : '',
-    lastLab: { t: lastLab[1], s: `${lastLab[2]} / ${mon(lastLab[0])}` },
-    lastAim: { t: last[1], s: `${mon(last[0])} / Season ${season} / Closed door`, d: mon(last[0]) },
-    pins,
-    arcs,
-    ticks,
+    learnNow: now.length ? `Season ${latestSeason}: ${[...new Set(now.map((e) => e.speaker))].join(', ')}` : '',
+    learnPrev: prev.length ? `Season ${latestSeason - 1}: ${[...new Set(prev.map((r) => r[1]))].join(', ')}` : '',
+    labLabel: nextLab ? 'Next Lab' : 'Latest Lab',
+    aimLabel: nextAim ? 'Next AIM' : 'Latest AIM',
+    lastLab: showLab ? { t: showLab.topic || 'Alpha Lab', s: `${where(showLab).host} / ${mon(showLab.date)}` } : { t: '', s: '' },
+    lastAim: showAim ? { t: showAim.speaker || '', s: `${mon(showAim.date)} / Season ${showAim.season || latestSeason} / Closed door`, d: mon(showAim.date) } : { t: '', s: '', d: '' },
+    pins: [...net, ...labPins],
+    arcs, ticks,
     labStats: [
-      { n: String(LABS_LOG.length), l: 'Labs since 2024' },
+      { n: String(labsHeld.length), l: 'Labs held' },
       { n: String(thisYear), l: `Labs in ${year}` },
       { n: String(hosts), l: 'Host sites' },
-      { n: '2', l: 'Tracks: Skincare and Injector' },
+      { n: String(tracks.size), l: 'Tracks' },
     ],
     learnStats: [
       { n: String(seasons.length), l: 'AIM seasons' },
@@ -155,11 +161,6 @@ export const getTraining = cache(async () => {
       { n: String(shows.totalDocs), l: 'Podcast shows' },
       { n: String(eps.totalDocs), l: 'Episodes' },
     ],
-    labs: [
-      lab(10, 'Cadaver Lab', ['big', '', '', 'wide'], ['Anatomy', 'Table leads', 'Group', 'Cases']),
-      lab(11, 'Injector Lab', ['big', '', '', '', ''], ['Live model', 'Mapping', 'Hands on', 'Q and A', 'Team']),
-      lab(1, 'Regional Lab', ['wide', '', '', 'wide'], ['Injectors', 'Estheticians', 'Hands on', 'Group']),
-      lab(4, 'Skincare Lab', ['big', 'wide', '', ''], ['Treatment', 'Protocol', 'Detail', 'Host clinic']),
-    ],
+    labs,
   }
 })

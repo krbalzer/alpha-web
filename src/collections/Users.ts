@@ -17,7 +17,7 @@ export const Users: CollectionConfig = {
       name: 'roles', type: 'select', hasMany: true, saveToJWT: true,
       options: ROLES.map((r) => ({ label: r[0].toUpperCase() + r.slice(1), value: r })),
       access: { create: adminField, update: adminField },
-      admin: { description: 'Admin: everything. Partnerships: leads. Contributor: uploads only (photos, rebrand assets).' },
+      admin: { description: 'Admin: everything. Partnerships: leads. Contributor: uploads only (photos, rebrand assets), plus AIM covers. University: training events and settings.' },
     },
   ],
 }

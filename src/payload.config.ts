@@ -16,12 +16,14 @@ import { Users } from './collections/Users'
 import { Jobs } from './collections/jobs'
 import { visibleTo, type Role } from './access'
 import { Treatments } from './collections/treatments'
+import { TrainingEvents, University } from './collections/training'
 import { migrations } from './migrations'
 
 /** Who sees which collection in the admin nav. Admin sees everything; unlisted collections are admin-only. */
 const NAV: Record<string, Role[]> = {
   leads: ['partnerships'],
-  media: ['contributor'],
+  media: ['contributor', 'university'],
+  'training-events': ['university', 'contributor'],
 }
 const nav = (c: CollectionConfig): CollectionConfig => ({ ...c, admin: { ...c.admin, hidden: c.admin?.hidden ?? visibleTo(...(NAV[c.slug] || [])) } })
 
@@ -51,12 +53,14 @@ export default buildConfig({
     Articles, Resources, Legal,
     // people
     Jobs,
+    // alpha university
+    TrainingEvents,
     // inbox
     Leads,
     // system
     Media, Users,
   ].map(nav),
-  globals: [{ ...Network, admin: { ...Network.admin, hidden: visibleTo() } }],
+  globals: [{ ...Network, admin: { ...Network.admin, hidden: visibleTo() } }, { ...University, admin: { ...University.admin, hidden: visibleTo('university') } }],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },

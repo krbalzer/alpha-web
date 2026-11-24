@@ -10,10 +10,10 @@ export const Media: CollectionConfig = {
   slug: 'media',
   access: {
     read: () => true,
-    create: allow('contributor'),
+    create: allow('contributor', 'university'),
     // contributors manage their own uploads; placing them on pages stays with admin
-    update: scoped('contributor', (req) => ({ createdBy: { equals: req.user!.id } })),
-    delete: scoped('contributor', (req) => ({ createdBy: { equals: req.user!.id } })),
+    update: scoped(['contributor', 'university'], (req) => ({ createdBy: { equals: req.user!.id } })),
+    delete: scoped(['contributor', 'university'], (req) => ({ createdBy: { equals: req.user!.id } })),
   },
   admin: { defaultColumns: ['filename', 'alt', 'mimeType'] },
   hooks: { beforeValidate: [guard] },
