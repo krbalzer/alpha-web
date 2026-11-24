@@ -11,8 +11,7 @@ export class UniversityEngine extends DCLogic {
     const RANGE = D.range;
     const seasons = [1, 2, 3].map((n) => ({ label: 'Season ' + n + RANGE[n], cls: 'tab' + (n === season ? ' is-on' : ''), sel: n === season ? 'true' : 'false', go: () => set({ season: n }) }));
     const sessions = S[season].map((r) => ({ d: r[0], n: r[1], t: r[2], c: r[3], hasC: !!r[3], noC: !r[3], s: 'Closed door' }));
-    const C = D.pins;
-    const pins = C.map((c, i) => ({ c: c[0], x: c[1] + '%', y: c[2] + '%', s: (6 + c[3] * 3) + 'px', d: (i * 0.37).toFixed(2) + 's', cls: 'pin' + (c[4] ? ' r' : '') }));
+    const pins = D.pins;
     const LG = {'Injector': '/university/loop-injector.svg', 'Esthie': '/university/loop-esthie.svg', 'Manager': '/university/loop-manager.svg', 'Surgery': '/university/loop-surgery.svg', 'Marketing': '/university/loop-marketing.svg'};
     const loops = ['Injector', 'Marketing', 'Surgery', 'Manager', 'Body', 'Esthie'].map((l) => ({ c: l + ' Loop', logo: LG[l] || '', noLogo: !LG[l] }));
     const R = {

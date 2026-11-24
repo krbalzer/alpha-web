@@ -45,11 +45,20 @@ const LABS_LOG: [string, string, string, string][] = [
   ['2026-10-03', 'Filler and neurotoxin training', 'Mint + Needle', 'Lewes, DE'],
 ]
 
-// Map position (% of the USA artwork) per Lab city
-const XY: Record<string, [number, number]> = {
-  'Corte Madera, CA': [2.8, 42.1], 'Sacramento, CA': [4.0, 40.6], 'San Diego, CA': [9.6, 65.1], 'Irvine, CA': [8.4, 61.2],
-  'Albany, NY': [89.3, 27.2], 'Lewes, DE': [88.9, 43.0], 'Greensboro, NC': [78.6, 53.0],
+// Lab cities (lat, lng)
+const LL: Record<string, [number, number]> = {
+  'Corte Madera, CA': [37.925, -122.527], 'Sacramento, CA': [38.582, -121.494], 'San Diego, CA': [32.716, -117.161], 'Irvine, CA': [33.684, -117.826],
+  'Albany, NY': [42.653, -73.756], 'Lewes, DE': [38.775, -75.139], 'Greensboro, NC': [36.073, -79.792],
 }
+
+/** lat/lng -> % of the USA artwork (Albers conic, fitted to the outline's extreme points; within ~1%). */
+const project = (lat: number, lng: number): [number, number] => {
+  const r = Math.PI / 180, p1 = 29.5 * r, p2 = 45.5 * r, n = (Math.sin(p1) + Math.sin(p2)) / 2, C = Math.cos(p1) ** 2 + 2 * n * Math.sin(p1)
+  const rho = (la: number) => Math.sqrt(C - 2 * n * Math.sin(la * r)) / n
+  const th = n * (lng + 96.5) * r, x = rho(lat) * Math.sin(th), y = rho(37.5) - rho(lat) * Math.cos(th)
+  return [(2756.17 * x + 1009.14) / 20, (-2743.22 * y + 678.29) / 12.29]
+}
+const r1 = (n: number) => Math.round(n * 10) / 10
 
 // Vendor education built or negotiated for Alpha (Layer = Vendor: Alpha-exclusive, Public-worthy = Yes)
 const VENDOR_EXCLUSIVE = 18
@@ -62,9 +71,10 @@ const md = (d: string) => new Date(d + 'T12:00:00Z').toLocaleDateString('en-US',
 
 export const getTraining = cache(async () => {
   const p = await db()
-  const [shows, eps] = await Promise.all([
+  const [shows, eps, locs] = await Promise.all([
     p.count({ collection: 'shows', where: { live: { equals: true } } }),
     p.count({ collection: 'episodes', where: { live: { equals: true } } }),
+    p.find({ collection: 'locations', where: { live: { equals: true } }, limit: 1000, depth: 0, select: { city: true, state: true, lat: true, lng: true } }),
   ])
   const seasons = Object.keys(AIM).map(Number)
   const all = seasons.flatMap((n) => AIM[n])
@@ -77,7 +87,26 @@ export const getTraining = cache(async () => {
   const hosts = new Set(LABS_LOG.map((l) => l[2])).size
   const perCity = new Map<string, number>()
   LABS_LOG.forEach((l) => l[3] && perCity.set(l[3], (perCity.get(l[3]) || 0) + 1))
-  const pins = [...perCity].filter(([c]) => XY[c]).map(([c, n]) => [c, XY[c][0], XY[c][1], n, XY[c][0] > 50 ? 1 : 0])
+  // partner clinics: quiet dots. Labs: rippling pins sized by how many each city has hosted.
+  const clinics = locs.docs.filter((l) => l.lat != null && l.lng != null).map((l) => ({ name: `${l.city}, ${l.state}`, xy: project(Number(l.lat), Number(l.lng)) }))
+  const net = clinics.map((l, i) => ({ c: l.name, x: r1(l.xy[0]) + '%', y: r1(l.xy[1]) + '%', s: '5px', d: '0s', cls: 'pin net', k: i }))
+  const labPins = [...perCity].filter(([c]) => LL[c]).map(([c, n], i) => {
+    const [x, y] = project(...LL[c])
+    return { c, x: r1(x) + '%', y: r1(y) + '%', s: 6 + n * 3 + 'px', d: (i * 0.37).toFixed(2) + 's', cls: 'pin' + (x > 50 ? ' r' : '') }
+  })
+  const pins = [...net, ...labPins]
+  // Loop arcs between partner cities, mixing long and regional hops (svg viewBox is 100 x 61.45, same ratio as the artwork)
+  const city = (n: string) => clinics.find((c) => c.name.startsWith(n + ','))
+  const ROUTES = [['Charlestown', 'San Diego'], ['Gahanna', 'Sacramento'], ['Cape Coral', 'Saratoga Springs'], ['Denver', 'Lexington'], ['West Albuquerque', 'Leesburg'], ['Greensboro', 'Corte Madera']]
+  const legs = ROUTES.map(([a, b]) => [city(a), city(b)]).filter((x): x is [typeof clinics[0], typeof clinics[0]] => !!x[0] && !!x[1])
+  const arcs = legs.map(([a, b], k) => {
+    const Y = 0.6145
+    const [x1, y1, x2, y2] = [a.xy[0], a.xy[1] * Y, b.xy[0], b.xy[1] * Y]
+    const lift = Math.hypot(x2 - x1, y2 - y1) * 0.28
+    return { cls: 'arc a' + (k + 1), d: `M${r1(x1)} ${r1(y1)} Q${r1((x1 + x2) / 2)} ${r1(Math.min(y1, y2) - lift)} ${r1(x2)} ${r1(y2)}`, from: a.name, to: b.name }
+  })
+  const LOOPS = ['Injector Loop', 'Manager Loop', 'Esthie Loop']
+  const ticks = arcs.slice(0, 3).map((a, i) => ({ loop: LOOPS[i], route: `${a.from.split(',')[0]} to ${a.to.split(',')[0]}` }))
   const prev = AIM[season - 1] || []
   const lab = (i: number, track: string, layout: string[], tiles: string[]) => {
     const l = LABS_LOG[i]
@@ -99,6 +128,8 @@ export const getTraining = cache(async () => {
     lastLab: { t: lastLab[1], s: `${lastLab[2]} / ${mon(lastLab[0])}` },
     lastAim: { t: last[1], s: `${mon(last[0])} / Season ${season} / Closed door`, d: mon(last[0]) },
     pins,
+    arcs,
+    ticks,
     labStats: [
       { n: String(LABS_LOG.length), l: 'Labs since 2024' },
       { n: String(thisYear), l: `Labs in ${year}` },

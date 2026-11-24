@@ -923,6 +923,15 @@ def episode_engine(e):
 """ + e[j:]
 
 
+UNI_CSS = '''
+/* map: partner clinics as quiet dots under the Lab pins; arcs drawn in viewBox units (the box keeps the viewBox ratio) */
+.campus .pin.net i{background:#EDE3C8;opacity:.6;box-shadow:none}
+.campus .pin.net i::after{display:none}
+.campus .arc{vector-effect:none;stroke-width:.16}
+.k_net{width:5px;height:5px;border-radius:50%;background:#EDE3C8;opacity:.5}
+'''
+
+
 # ---------- University (/training): numbers and lineup come from src/lib/training.ts (Liz's training log) ----------
 def university_markup(b):
     i = b.index('<div class="band_t">'); j = b.index('</div>', i) + 6
@@ -952,6 +961,11 @@ def university_markup(b):
     b = rep(b, '<p class="aim_note">Dates and topics from the session covers. Years and the Weiner, Karimi, Robertson and Batniji topics: to confirm.</p>', '')
     b = rep(b, '<section class="pracx neutral">', '<section class="pracx neutral" id="practice">')
     b = gate(b, 'CLINICAL DIRECTOR', 'd.showCD')
+    i = b.index('<path class="arc a1"'); j = b.index('</svg>', i)
+    b = b[:i] + '<sc-for list="{{ d.arcs }}" as="a"><path class="{{ a.cls }}" d="{{ a.d }}" pathLength="100"></path></sc-for>\n' + b[j:]
+    i = b.index('<span class="tk">'); j = b.index('</div>', i)
+    b = b[:i] + '<sc-for list="{{ d.ticks }}" as="t"><span class="tk">{{ t.loop }} <b>/ {{ t.route }}</b></span></sc-for>\n' + b[j:]
+    b = rep(b, '<div class="map_key"><span><i class="k_dot"></i>Lab</span>', '<div class="map_key"><span><i class="k_net"></i>Partner clinic</span><span><i class="k_dot"></i>Lab</span>')
     b = rep(b, 'autoplay="" muted="" loop="" playsinline=""', 'autoplay muted loop playsinline')
     return b
 
@@ -961,7 +975,7 @@ def university_engine(e):
     e = sub(r'const S = \{.*?\n    \};', 'const S = D.aim;', e)
     e = sub(r'const RANGE = \{[^}]*\};', 'const RANGE = D.range;', e)
     e = rep(e, "s: season === 3 ? 'Upcoming' : 'Recap'", "s: 'Closed door'")
-    e = sub(r'const C = \[.*?\];', 'const C = D.pins;', e)
+    e = sub(r'const C = \[.*?\];\n    const pins = C\.map\(.*?\);', 'const pins = D.pins;', e)
     e = sub(r"(labs: \{[^\n]*?stats: )\[.*?\] \}", r'\1D.labStats }', e)
     e = sub(r"(learn: \{[^\n]*?stats: )\[.*?\] \}", r'\1D.learnStats }', e)
     e = sub(r'const LABS = \[.*?\n    \];', 'const LABS = D.labs;', e)
@@ -994,7 +1008,7 @@ PAGES = {
     'Show': dict(dir='podcasts/[show]', board='Show', markup=show_markup, engine=show_engine, imports=QUEUE_IMPORT, css=SHOW_CSS + QUEUE_ROW_CSS + IMG_CSS + '.spk,.person_av{position:relative;overflow:hidden}\n.spk img,.person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}\n'),
     'Episode': dict(dir='podcasts/[show]/[episode]', board='Episode', markup=episode_markup, engine=episode_engine, imports=QUEUE_IMPORT + "import { EpisodeBar } from '@/components/site/EpisodeBar'\n", css=EPBAR_CSS + '.qb_lg{height:44px;padding:0 18px}\n.btn.qb.is-q{background:var(--ink);border-color:var(--ink);color:var(--bone)}\n.btn.qb.is-now{opacity:.55;cursor:default}\n' + IMG_CSS + '.vid_poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.82)}\n.vid .vid_btn{position:relative;z-index:1;border:0;cursor:pointer}\n.vid.is-on{aspect-ratio:16/9;background:#000}\n.vid_ifr{position:absolute;inset:0;width:100%;height:100%;border:0}\n' + '.tv_play{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 22px 0 18px;border-radius:999px;border:0;background:var(--ink);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:transform .3s var(--ease)}\n.tv_play:hover{transform:scale(1.04)}\n' + '.spk,.person_av{position:relative;overflow:hidden}\n.spk img,.person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}\n'),
     # 'Speaker': ported when the Speakers collection has people in it
-    'University': dict(dir='training', board='University', data=False, markup=university_markup, engine=university_engine, css=IMG_CSS),
+    'University': dict(dir='training', board='University', data=False, markup=university_markup, engine=university_engine, css=IMG_CSS + UNI_CSS),
     'Main': dict(dir='_home', board='Main', markup=main_markup, engine=main_engine, css=MAIN_CSS + REEL_CSS, imports=QUEUE_IMPORT + "import { HomeReel } from '@/components/site/HomeReel'\n"),
 }
 

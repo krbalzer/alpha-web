@@ -404,4 +404,8 @@
 @media (prefers-reduced-motion:reduce){.pg-university .cd_plate path{animation:none}}
 .pg-university .ph_img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .pg-university .tp_i,.pg-university .tm_img,.pg-university .o2_img,.pg-university .face,.pg-university .ph_cut{position:relative;overflow:hidden}
+.pg-university .campus .pin.net i{background:#EDE3C8;opacity:.6;box-shadow:none}
+.pg-university .campus .pin.net i::after{display:none}
+.pg-university .campus .arc{vector-effect:none;stroke-width:.16}
+.pg-university .k_net{width:5px;height:5px;border-radius:50%;background:#EDE3C8;opacity:.5}
 

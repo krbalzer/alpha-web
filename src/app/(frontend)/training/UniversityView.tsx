@@ -125,23 +125,16 @@ export default function UniversityView(props: any) {
 <div className="map_in">
 <img className="usa_img" src="/university/usa.svg" alt="" />
 <svg viewBox="0 0 100 61.45" preserveAspectRatio="none" aria-hidden="true">
-<path className="arc a1" d="M93.8 16.2 Q51.7 -0.6 9.6 40.0" pathLength="100"></path>
-<path className="arc a2" d="M74.4 26.1 Q39.2 10.9 4.0 24.9" pathLength="100"></path>
-<path className="arc a3" d="M81.5 57.7 Q85.4 11.7 89.3 16.7" pathLength="100"></path>
-<path className="arc a4" d="M84.6 26.5 Q59.5 16.5 34.5 27.6" pathLength="100"></path>
-<path className="arc a5" d="M30.3 38.5 Q51.3 22.7 72.3 31.1" pathLength="100"></path>
-<path className="arc a6" d="M88.9 26.4 Q49.2 10.5 9.6 40.0" pathLength="100"></path>
+{(v.d.arcs || []).map((a: any, a_i: number) => (<React.Fragment key={a_i}><path className={a.cls} d={a.d} pathLength="100"></path></React.Fragment>))}
 </svg>
 {(v.pins || []).map((p: any, p_i: number) => (<React.Fragment key={p_i}>
 <div className={p.cls} style={{"left": `${p.x}`, "top": `${p.y}`} as React.CSSProperties}><i style={{"width": `${p.s}`, "height": `${p.s}`, "--d": `${p.d}`} as React.CSSProperties} title={p.c}></i></div>
 </React.Fragment>))}
 </div>
 <div className="ticker" aria-hidden="true">
-<span className="tk">Injector Loop <b>/ Boston to San Diego</b></span>
-<span className="tk">Manager Loop <b>/ Columbus to Sacramento</b></span>
-<span className="tk">Esthie Loop <b>/ Cape Coral to Albany</b></span>
+{(v.d.ticks || []).map((t: any, t_i: number) => (<React.Fragment key={t_i}><span className="tk">{t.loop} <b>/ {t.route}</b></span></React.Fragment>))}
 </div>
-<div className="map_key"><span><i className="k_dot"></i>Lab</span><span><i className="k_arc"></i>Loop conversation</span></div>
+<div className="map_key"><span><i className="k_net"></i>Partner clinic</span><span><i className="k_dot"></i>Lab</span><span><i className="k_arc"></i>Loop conversation</span></div>
 </div>
 
 <div className="term"><a href="#aim"><span className="term_k"><i className="live" aria-hidden="true"></i>Vendor education</span><span className="term_t">{v.d.vendorN} Alpha-exclusive sessions</span><span className="term_s">AMI x Alpha, launches, Train the Trainer</span></a><a href="#roles"><span className="term_k">Latest Lab</span><span className="term_t">{v.d.lastLab.t}</span><span className="term_s">{v.d.lastLab.s}</span></a><a href="#aim"><span className="term_k">Latest AIM</span><span className="term_t">{v.d.lastAim.t}</span><span className="term_s">{v.d.lastAim.s}</span></a></div>
