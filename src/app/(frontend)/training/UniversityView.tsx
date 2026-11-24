@@ -27,7 +27,7 @@ export default function UniversityView(props: any) {
 
 {/* SCOREBOARD: slow ticker, live numbers from the Loops sync and Labs log */}
 <div className="band" aria-label="Alpha University this week">
-<div className="band_t"><span>AIM sessions <b>{v.d.aimN}</b></span><i>★</i><span>Labs since 2024 <b>{v.d.labsN}</b></span><i>★</i><span>AIM Season <b>{v.d.seasonN}</b></span><i>★</i><span>Podcast episodes <b>{v.d.eps}</b></span><i>★</i><span>Masters <b>{v.d.masters}</b></span><i>★</i><span>Est. <b>2023</b></span><i>★</i><span>Simul fortes</span><i>★</i><span>AIM sessions <b>{v.d.aimN}</b></span><i>★</i><span>Labs since 2024 <b>{v.d.labsN}</b></span><i>★</i><span>AIM Season <b>{v.d.seasonN}</b></span><i>★</i><span>Podcast episodes <b>{v.d.eps}</b></span><i>★</i><span>Masters <b>{v.d.masters}</b></span><i>★</i><span>Est. <b>2023</b></span><i>★</i><span>Simul fortes</span><i>★</i></div>
+<div className="band_t"><span>AIM sessions <b>{v.d.aimN}</b></span><i>★</i><span>Labs since 2024 <b>{v.d.labsN}</b></span><i>★</i><span>Injector Loop <b>{v.d.members.injector}</b></span><i>★</i><span>First reply <b>{v.d.support.reply}</b></span><i>★</i><span>AIM Season <b>{v.d.seasonN}</b></span><i>★</i><span>Podcast episodes <b>{v.d.eps}</b></span><i>★</i><span>Masters <b>{v.d.masters}</b></span><i>★</i><span>Est. <b>2023</b></span><i>★</i><span>Simul fortes</span><i>★</i><span>AIM sessions <b>{v.d.aimN}</b></span><i>★</i><span>Labs since 2024 <b>{v.d.labsN}</b></span><i>★</i><span>Injector Loop <b>{v.d.members.injector}</b></span><i>★</i><span>First reply <b>{v.d.support.reply}</b></span><i>★</i><span>AIM Season <b>{v.d.seasonN}</b></span><i>★</i><span>Podcast episodes <b>{v.d.eps}</b></span><i>★</i><span>Masters <b>{v.d.masters}</b></span><i>★</i><span>Est. <b>2023</b></span><i>★</i><span>Simul fortes</span><i>★</i></div>
 </div>
 
 {/* ============ 2 / H2 + BODY ============ */}
@@ -63,10 +63,10 @@ export default function UniversityView(props: any) {
 <div className="sim">
 <div className="sim_h"><span># injector-loop</span><span>Illustration, not a real conversation</span></div>
 <div className="msg m1"><span className="who">NP <b>/ Columbus, OH</b></span><p>Patient 2 weeks post filler, small firm nodule at the injection site. Anyone seen this with this product? What would you do first?</p><span className="t">9:12 AM</span></div>
-<div className="msg m2"><span className="who">RN <b>/ San Diego, CA</b></span><p>Seen it twice. Massage protocol first, recheck in a week. Happy to share our follow-up sheet.</p><span className="t">9:19 AM</span></div>
+<div className="msg m2"><span className="who">RN <b>/ San Diego, CA</b></span><p>Seen it twice. Massage protocol first, recheck in a week. Happy to share our follow-up sheet.</p><span className="t">9:12 AM</span></div>
 <div className="msg m3"><span className="who">Medical director <b>/ Leesburg, VA</b></span><p>Agree. Photo it today so you can compare. Flag me if it changes before then.</p><span className="t">9:24 AM</span></div>
 <div className="msg m4 mine"><span className="who">NP <b>/ Columbus, OH</b></span><p>Perfect, thank you. Booking the recheck now.</p><span className="t">9:26 AM</span></div>
-<div className="sim_f"><span className="typing"><i></i><i></i><i></i></span><span>Answered in 7 min by 2 clinics, 2 states</span></div>
+<div className="sim_f"><span className="typing"><i></i><i></i><i></i></span><span>First reply in under a minute / 2 clinics, 2 states</span></div>
 </div>
 </>) : null}
 
@@ -153,7 +153,7 @@ export default function UniversityView(props: any) {
 <div className="rp_row rp_main">
 <span className="rp_k"><img src="/university/icon-loops.png" alt="" className="rp_ic" />Every day</span>
 <div><img className="rp_logo" src={v.role.logo} alt={v.role.loop} /><p className="rp_p">{v.role.loopFor} <span className="draft">Draft</span></p></div>
-<div className="rp_stat"><span className="rp_n"><span className="ph">[N]</span></span><span className="rp_l">members / live from Slack</span></div>
+<div className="rp_stat">{v.role.members ? (<><span className="rp_n">{v.role.members}</span><span className="rp_l">members</span></>) : null}{v.role.noMembers ? (<><span className="rp_l">First reply</span><span className="rp_l2">{v.d.support.reply}</span></>) : null}</div>
 </div>
 <div className="rp_row">
 <span className="rp_k"><img src="/university/icon-labs.png" alt="" className="rp_ic" />In person</span>
@@ -217,11 +217,11 @@ export default function UniversityView(props: any) {
 <p className="eyebrow">Alpha Loops</p>
 <h2 className="h3">Six Loops,<br />one network.</h2>
 </div>
-<p className="body">Member counts update nightly from Slack.</p>
+<p className="body">Every support question in Slack gets a first reply in under a minute, and is solved in {v.d.support.solved} or less.</p>
 </div>
 <div className="loops">
 {(v.loops || []).map((l: any, l_i: number) => (<React.Fragment key={l_i}>
-<div className="loop">{l.logo ? (<><img className="loop_logo" src={l.logo} alt={l.c} /></>) : null}{l.noLogo ? (<><span className="loop_c">{l.c}</span></>) : null}<span className="loop_n"><span className="ph">[N]</span></span><span className="loop_l">Members</span></div>
+<div className="loop">{l.logo ? (<><img className="loop_logo" src={l.logo} alt={l.c} /></>) : null}{l.noLogo ? (<><span className="loop_c">{l.c}</span></>) : null}{l.n ? (<><span className="loop_n">{l.n}</span><span className="loop_l">Members</span></>) : null}</div>
 </React.Fragment>))}
 </div>
 </div>

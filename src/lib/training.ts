@@ -63,6 +63,11 @@ const r1 = (n: number) => Math.round(n * 10) / 10
 // Vendor education built or negotiated for Alpha (Layer = Vendor: Alpha-exclusive, Public-worthy = Yes)
 const VENDOR_EXCLUSIVE = 18
 
+/** Loop member counts (Slack), keyed like the Loops: injector, esthie, manager, marketing, surgery, body. Add as we get them. */
+const MEMBERS: Record<string, string> = { injector: '133' }
+/** Slack-wide support standard */
+const SUPPORT = { reply: '< 1 min', solved: '3 days' }
+
 /** Hold the Clinical Director section until the agreement is signed. */
 const SHOW_CD = false
 
@@ -123,6 +128,14 @@ export const getTraining = cache(async () => {
     eps: eps.totalDocs,
     vendorN: VENDOR_EXCLUSIVE,
     showCD: SHOW_CD,
+    members: MEMBERS,
+    support: SUPPORT,
+    loopStats: [
+      { n: '6', l: 'Loops, by role' },
+      { n: MEMBERS.injector, l: 'In the Injector Loop' },
+      { n: SUPPORT.reply, l: 'First reply, Slack-wide' },
+      { n: '≤ 3 days', l: 'Every ticket solved' },
+    ],
     learnNow: `Season ${season}: ${AIM[season].map((r) => r[1]).join(', ')}`,
     learnPrev: prev.length ? `Season ${season - 1}: ${[...new Set(prev.map((r) => r[1]))].join(', ')}` : '',
     lastLab: { t: lastLab[1], s: `${lastLab[2]} / ${mon(lastLab[0])}` },

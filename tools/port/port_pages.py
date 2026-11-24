@@ -936,6 +936,7 @@ UNI_CSS = '''
 def university_markup(b):
     i = b.index('<div class="band_t">'); j = b.index('</div>', i) + 6
     one = ('<span>AIM sessions <b>{{ d.aimN }}</b></span><i>★</i><span>Labs since 2024 <b>{{ d.labsN }}</b></span><i>★</i>'
+           '<span>Injector Loop <b>{{ d.members.injector }}</b></span><i>★</i><span>First reply <b>{{ d.support.reply }}</b></span><i>★</i>'
            '<span>AIM Season <b>{{ d.seasonN }}</b></span><i>★</i><span>Podcast episodes <b>{{ d.eps }}</b></span><i>★</i>'
            '<span>Masters <b>{{ d.masters }}</b></span><i>★</i><span>Est. <b>2023</b></span><i>★</i><span>Simul fortes</span><i>★</i>')
     b = b[:i] + '<div class="band_t">' + one + one + '</div>' + b[j:]
@@ -961,6 +962,15 @@ def university_markup(b):
     b = rep(b, '<p class="aim_note">Dates and topics from the session covers. Years and the Weiner, Karimi, Robertson and Batniji topics: to confirm.</p>', '')
     b = rep(b, '<section class="pracx neutral">', '<section class="pracx neutral" id="practice">')
     b = gate(b, 'CLINICAL DIRECTOR', 'd.showCD')
+    # Loops: Slack support standard + member counts we have (the rest stay hidden until we do)
+    b = rep(b, '<span class="t">9:19 AM</span>', '<span class="t">9:12 AM</span>')
+    b = rep(b, '<span>Answered in 7 min by 2 clinics, 2 states</span>', '<span>First reply in under a minute / 2 clinics, 2 states</span>')
+    b = rep(b, '<div class="rp_stat"><span class="rp_n"><span class="ph">[N]</span></span><span class="rp_l">members / live from Slack</span></div>',
+            '<div class="rp_stat"><sc-if value="{{ role.members }}"><span class="rp_n">{{ role.members }}</span><span class="rp_l">members</span></sc-if><sc-if value="{{ role.noMembers }}"><span class="rp_l">First reply</span><span class="rp_l2">{{ d.support.reply }}</span></sc-if></div>')
+    b = rep(b, '<p class="body">Member counts update nightly from Slack.</p>',
+            '<p class="body">Every support question in Slack gets a first reply in under a minute, and is solved in {{ d.support.solved }} or less.</p>')
+    b = rep(b, '<span class="loop_n"><span class="ph">[N]</span></span><span class="loop_l">Members</span>',
+            '<sc-if value="{{ l.n }}"><span class="loop_n">{{ l.n }}</span><span class="loop_l">Members</span></sc-if>')
     i = b.index('<path class="arc a1"'); j = b.index('</svg>', i)
     b = b[:i] + '<sc-for list="{{ d.arcs }}" as="a"><path class="{{ a.cls }}" d="{{ a.d }}" pathLength="100"></path></sc-for>\n' + b[j:]
     i = b.index('<span class="tk">'); j = b.index('</div>', i)
@@ -982,6 +992,9 @@ def university_engine(e):
     e = rep(e, "{ s: 'HTB', t: '[Show name]' }", "{ s: 'HTB', t: 'Holding Time Back' }")
     e = rep(e, "{ s: 'MSM', t: '[Show name]' }", "{ s: 'MSM', t: 'Med Spa Marketing Group Chat' }")
     e = rep(e, "{ s: '[Show]', t: '[Episodes tagged Esthetician]' }", "{ s: 'BF', t: 'The Beauty Filter' }")
+    e = rep(e, "logo: LG[l] || '', noLogo: !LG[l] }))", "logo: LG[l] || '', noLogo: !LG[l], n: (D.members || {})[l.toLowerCase()] || '' }))")
+    e = sub(r"(loops: \{[^\n]*?stats: )\[.*?\] \}", r'\1D.loopStats }', e)
+    e = rep(e, 'role: R[rk],', "role: Object.assign({}, R[rk], { members: (D.members || {})[rk] || '', noMembers: !(D.members || {})[rk] }),")
     e = rep(e, 'return { seasons, sessions,', 'return { d: D, seasons, sessions,')
     return e
 
