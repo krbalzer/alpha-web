@@ -46,3 +46,18 @@
 
 /* the partner portal and the partnerships admin bring their own footers */
 body:has(.pg-portal) footer.foot, body:has(.pg-portaladmin) footer.foot { display: none; }
+
+/* carousel arrows (:root body outranks the page-scoped rules): one larger, higher-contrast size site-wide (was 28 to 44px with faint rings) */
+:root body .arrow, :root body .in_ar, :root body .sa_arr { width: 52px; height: 52px; border-width: 1.5px; }
+:root body .arrow, :root body .in_ar { border-color: rgba(14, 14, 13, .42); color: var(--ink, #0E0E0D); }
+:root body .sa_arr { border-color: rgba(232, 228, 218, .5); font-size: 20px; }
+:root body .arrow svg, :root body .in_ar svg { width: 13px; height: 16px; }
+:root body .arrow svg path, :root body .in_ar svg path { stroke-width: 1.6; }
+:root body .arw_d { width: 60px; height: 44px; border-width: 1.5px; }
+:root body .arw_d svg { width: 17px; height: 14px; }
+:root body .arrow:disabled, :root body .in_ar:disabled { opacity: .28; }
+:root body .arrows { gap: 10px; }
+@media (min-width: 821px) {
+  :root body .pg-main .th_arrow { width: 60px; height: 60px; border-width: 1.5px; border-color: rgba(243, 240, 233, .5); }
+  :root body .pg-main .th_arrow svg { width: 18px; height: 15px; }
+}
