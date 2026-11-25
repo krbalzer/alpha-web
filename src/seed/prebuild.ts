@@ -64,6 +64,9 @@ const blobOk = await checkBlob((m) => console.log(m))
   const { placeMedia } = await import('./place-media')
   if (blobOk) await placeMedia(p)
   else console.warn('media: placements skipped, Blob token cannot write')
+  // partner portal test leads (made-up, never synced); TEST_LEADS=clear removes them
+  const { seedTestLeads } = await import('./test-leads')
+  await seedTestLeads(p, { files: blobOk }).catch((e) => console.warn('test leads: skipped', e))
 }
 if (mode === 'webflow') {
   const p = await getPayload({ config: await config })

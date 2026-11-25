@@ -85,6 +85,7 @@ export interface Config {
     jobs: Job;
     'training-events': TrainingEvent;
     leads: Lead;
+    'lead-files': LeadFile;
     media: Media;
     users: User;
     'payload-kv': PayloadKv;
@@ -103,6 +104,9 @@ export interface Config {
     };
     departments: {
       members: 'team';
+    };
+    leads: {
+      files: 'lead-files';
     };
   };
   collectionsSelect: {
@@ -124,6 +128,7 @@ export interface Config {
     jobs: JobsSelect<false> | JobsSelect<true>;
     'training-events': TrainingEventsSelect<false> | TrainingEventsSelect<true>;
     leads: LeadsSelect<false> | LeadsSelect<true>;
+    'lead-files': LeadFilesSelect<false> | LeadFilesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -1485,8 +1490,62 @@ export interface Lead {
     | boolean
     | null;
   page?: string | null;
+  /**
+   * Where they are on the path. Changing it moves their tracker.
+   */
+  stage?: ('intro' | 'nda' | 'visit' | 'loi' | 'close') | null;
+  /**
+   * First name shown as their guide.
+   */
+  guide?: string | null;
+  /**
+   * Shown to the prospect on their portal, under the current stage. Optional.
+   */
+  stageNote?: string | null;
+  /**
+   * Private link: /portal/<this>. Anyone with it can see this portal, so send it only to the owner.
+   */
+  portalToken?: string | null;
+  files?: {
+    docs?: (number | LeadFile)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  /**
+   * Made-up data. Never synced to Smartsheet, Dropbox or notifications.
+   */
+  test?: boolean | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * Review each file. "Needs changes" sends your note back to the prospect.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "lead-files".
+ */
+export interface LeadFile {
+  id: number;
+  lead: number | Lead;
+  report: 'pl' | 'prov' | 'svc' | 'payroll' | 'dist' | 'bs';
+  status: 'review' | 'ok' | 'fix';
+  /**
+   * What to change. The prospect sees this.
+   */
+  feedback?: string | null;
+  prefix?: string | null;
+  _objectKey?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1583,6 +1642,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'leads';
         value: number | Lead;
+      } | null)
+    | ({
+        relationTo: 'lead-files';
+        value: number | LeadFile;
       } | null)
     | ({
         relationTo: 'media';
@@ -2282,8 +2345,37 @@ export interface LeadsSelect<T extends boolean = true> {
   message?: T;
   answers?: T;
   page?: T;
+  stage?: T;
+  guide?: T;
+  stageNote?: T;
+  portalToken?: T;
+  files?: T;
+  test?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "lead-files_select".
+ */
+export interface LeadFilesSelect<T extends boolean = true> {
+  lead?: T;
+  report?: T;
+  status?: T;
+  feedback?: T;
+  prefix?: T;
+  _objectKey?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

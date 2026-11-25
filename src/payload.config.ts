@@ -7,7 +7,7 @@ import { buildConfig, type CollectionConfig } from 'payload'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
-import { Articles, Leads, Legal, Network, Resources } from './collections/content'
+import { Articles, Leads, LeadFiles, Legal, Network, Resources } from './collections/content'
 import { Media } from './collections/Media'
 import { Brands, CtaImages, Founders, Locations, TuckIns } from './collections/network'
 import { Episodes, Shows, Speakers, Tags } from './collections/podcast'
@@ -24,6 +24,7 @@ const NAV: Record<string, Role[]> = {
   leads: ['partnerships'],
   media: ['contributor', 'university'],
   'training-events': ['university', 'contributor'],
+  'lead-files': ['partnerships'],
   articles: ['contributor'],
 }
 const nav = (c: CollectionConfig): CollectionConfig => ({ ...c, admin: { ...c.admin, hidden: c.admin?.hidden ?? visibleTo(...(NAV[c.slug] || [])) } })
@@ -57,7 +58,7 @@ export default buildConfig({
     // alpha university
     TrainingEvents,
     // inbox
-    Leads,
+    Leads, LeadFiles,
     // system
     Media, Users,
   ].map(nav),
@@ -72,7 +73,8 @@ export default buildConfig({
   plugins: [
     vercelBlobStorage({
       enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
-      collections: { media: { disablePayloadAccessControl: true } }, // files served straight from the Blob CDN, not proxied through a function
+      // media: straight from the Blob CDN. lead-files: proxied through Payload so its access control applies.
+      collections: { media: { disablePayloadAccessControl: true }, 'lead-files': { prefix: 'lead-files' } },
       alwaysInsertFields: true, // same schema with or without the token, so migrations never drift
       clientUploads: true, // browser uploads straight to Blob; full-res photos would hit Vercel's 4.5 MB function body limit
       token: process.env.BLOB_READ_WRITE_TOKEN || '',

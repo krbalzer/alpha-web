@@ -1,3 +1,5 @@
+import { randomBytes } from 'node:crypto'
+import { REPORTS, STAGES } from '../lib/portal'
 import { admin, adminField, allow } from '../access'
 import { guard } from './guard'
 import type { CollectionConfig, GlobalConfig } from 'payload'
@@ -90,7 +92,7 @@ export const Legal: CollectionConfig = {
 export const Leads: CollectionConfig = {
   slug: 'leads',
   access: { read: allow('partnerships'), create: () => false, update: allow('partnerships'), delete: admin },
-  admin: { useAsTitle: 'email', defaultColumns: ['createdAt', 'kind', 'name', 'practice', 'email', 'status'] },
+  admin: { useAsTitle: 'email', defaultColumns: ['createdAt', 'practice', 'name', 'stage', 'status', 'test'], description: 'Every Let\'s talk submission. Partner inquiries get a private portal link; move the stage here to move their tracker.' },
   defaultSort: '-createdAt',
   fields: [
     { type: 'row', fields: [
@@ -103,5 +105,40 @@ export const Leads: CollectionConfig = {
     { name: 'message', type: 'textarea' },
     { name: 'answers', type: 'json', admin: { description: 'Qualifier answers.' } },
     { name: 'page', type: 'text' },
+    { type: 'collapsible', label: 'Partner portal', admin: { initCollapsed: false }, fields: [
+      { type: 'row', fields: [
+        { name: 'stage', type: 'select', defaultValue: 'intro', options: STAGES.map((s) => ({ label: s.t, value: s.key })), admin: { description: 'Where they are on the path. Changing it moves their tracker.' } },
+        { name: 'guide', type: 'text', defaultValue: 'Tyler', admin: { description: 'First name shown as their guide.' } },
+      ] },
+      { name: 'stageNote', label: 'Note for this stage', type: 'textarea', admin: { description: 'Shown to the prospect on their portal, under the current stage. Optional.' } },
+      { name: 'portalToken', type: 'text', unique: true, index: true, admin: { readOnly: true, description: 'Private link: /portal/<this>. Anyone with it can see this portal, so send it only to the owner.' } },
+      { name: 'files', type: 'join', collection: 'lead-files', on: 'lead' },
+    ] },
+    { name: 'test', label: 'Test lead', type: 'checkbox', defaultValue: false, admin: { position: 'sidebar', description: 'Made-up data. Never synced to Smartsheet, Dropbox or notifications.' } },
+  ],
+  hooks: {
+    beforeChange: [({ data, originalDoc }) => {
+      // every lead gets a private portal link; older leads get one the next time they're saved
+      if (data && !data.portalToken && !originalDoc?.portalToken) data.portalToken = randomBytes(24).toString('base64url')
+      return data
+    }],
+  },
+}
+
+/** Files a prospect uploads through the portal. Read by New Partnerships only; served through Payload, never public. */
+export const LeadFiles: CollectionConfig = {
+  slug: 'lead-files',
+  labels: { singular: 'Lead file', plural: 'Lead files' },
+  access: { read: allow('partnerships'), create: allow('partnerships'), update: allow('partnerships'), delete: allow('partnerships') },
+  admin: { useAsTitle: 'filename', defaultColumns: ['filename', 'lead', 'report', 'status', 'createdAt'], description: 'Review each file. "Needs changes" sends your note back to the prospect.' },
+  defaultSort: '-createdAt',
+  upload: { mimeTypes: ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel', 'text/csv', 'application/pdf'] },
+  fields: [
+    { type: 'row', fields: [
+      { name: 'lead', type: 'relationship', relationTo: 'leads', required: true },
+      { name: 'report', type: 'select', required: true, options: REPORTS.map((r) => ({ label: r.t, value: r.key })) },
+    ] },
+    { name: 'status', type: 'select', defaultValue: 'review', required: true, options: [{ label: 'In review', value: 'review' }, { label: 'Approved', value: 'ok' }, { label: 'Needs changes', value: 'fix' }] },
+    { name: 'feedback', type: 'textarea', admin: { condition: (_, s) => s?.status === 'fix', description: 'What to change. The prospect sees this.' } },
   ],
 }
