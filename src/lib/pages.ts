@@ -438,14 +438,14 @@ export const getEpisodes = cache(async () => {
 
 /** Show logos (white SVG, used as a mask so they take each surface's color) and hero photography.
  *  Files live in /public/podcasts. Static until Shows gets logo + hero upload fields in the CMS. */
-const SHOW_MEDIA: Record<string, { logo?: string; ar?: number; hero?: string; heroSide?: 'right' }> = {
+/* light: a pale studio photo. Cards drop the dark scrim and take the logo in the show color; name the file *-light.jpg (tune.css keys off it). */
+const SHOW_MEDIA: Record<string, { logo?: string; ar?: number; hero?: string; heroSide?: 'right'; light?: boolean }> = {
   'dear-tiffany': { logo: '/podcasts/dear-tiffany-logo.svg', ar: 252.38 / 196.71, hero: '/podcasts/dear-tiffany-hero.jpg' },
   'holding-time-back': { logo: '/podcasts/holding-time-back-logo.svg', ar: 728.02 / 211.03, hero: '/podcasts/holding-time-back-hero.jpg' },
   'the-beauty-filter': { logo: '/podcasts/the-beauty-filter-logo.svg', ar: 480.75 / 91.36, hero: '/podcasts/the-beauty-filter-hero.jpg', heroSide: 'right' },
   'operation-med-spa': { logo: '/podcasts/operation-med-spa-logo.svg', ar: 1051.91 / 437.82 },
   'med-spa-marketing-group-chat': { logo: '/podcasts/med-spa-marketing-group-chat-logo.svg', ar: 702.75 / 469.9 },
-  /* ready for when the show lands in the CMS (slug assumed) */
-  'white-coat-entrepreneur': { logo: '/podcasts/white-coat-entrepreneur-logo.svg', ar: 957.56 / 562.74 },
+  'white-coat-entrepreneur': { logo: '/podcasts/white-coat-entrepreneur-logo.svg', ar: 957.56 / 562.74, hero: '/podcasts/white-coat-entrepreneur-hero-light.jpg', heroSide: 'right', light: true },
 }
 
 const AUD: Record<string, string> = { owners: 'Practice owners', directors: 'Directors', providers: 'Providers', 'front-desk': 'Front desk', marketers: 'Marketers', patients: 'Patients' }
@@ -499,7 +499,7 @@ const shuffle6 = <T,>(xs: T[]) => xs.map((x) => [Math.random(), x] as const).sor
 const showCard = (s: Awaited<ReturnType<typeof getShows>>[number], n: number) => {
   const m = SHOW_MEDIA[s.slug] || {}
   // hero photo + white logo bottom-left; no hero falls back to the show color + logo, no logo falls back to the cover art
-  return { name: s.name, href: s.href, bg: s.bg, fg: m.hero ? '#fff' : s.fg, art: m.logo ? '' : s.art, noArt: !s.art, hero: m.hero || '', heroPos: m.heroSide === 'right' ? '70% 50%' : '50% 50%', logo: m.logo ? `url(${m.logo})` : '', ar: m.ar || 2, count: `${n} episodes` }
+  return { name: s.name, href: s.href, bg: s.bg, fg: m.hero ? (m.light ? s.bg : '#fff') : s.fg, art: m.logo ? '' : s.art, noArt: !s.art, hero: m.hero || '', heroPos: m.heroSide === 'right' ? '70% 50%' : '50% 50%', logo: m.logo ? `url(${m.logo})` : '', ar: m.ar || 2, count: `${n} episodes` }
 }
 const epRow = (e: Episode, sh: Show, SP?: Map<number, PersonCard>) => ({
   title: e.title, n: e.number ? String(e.number).padStart(3, '0') : '', date: fmtLong(e.published), len: lenOf(e.duration), href: `/podcasts/${sh.slug}/${e.slug}`, ep: toEp(e, SP, url(sh.artwork, 'card')),

@@ -74,3 +74,6 @@ body:has(.pg-portal) footer.foot, body:has(.pg-portaladmin) footer.foot { displa
 .pchip:hover .pchip_av { transform: scale(1.08); }
 .pchip:hover .pchip_t b { text-decoration: underline; }
 @media (max-width: 820px) { .pchip_t { display: none; } .pchip_av, .pchip.nav_chip .pchip_av { width: 32px; height: 32px; font-size: 10px; } }
+
+/* show cards on a pale hero photo (*-light.jpg): no dark scrim, logo takes the show color (set inline) */
+:root body :is(.cover_art, .nw_art, .tile):has(img[src$="-light.jpg"])::after { display: none; }
