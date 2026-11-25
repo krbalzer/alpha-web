@@ -310,3 +310,6 @@
 
 /* mobile locations index: tighter number column, smaller titles so long names fit */
 @media (max-width:720px){html body .pg-brand .lx{grid-template-columns:24px minmax(0,1fr) 22px;gap:10px}html body .pg-brand .lx_c{font-size:26px;line-height:.95}html body .pg-brand .lx_n{font-size:10px;padding-top:.35em}}
+
+/* Why Alpha credit (replaces the old transcript-code line) */
+.pg-brand .why_by{font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;opacity:.6;margin-top:20px}

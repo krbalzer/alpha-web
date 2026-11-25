@@ -47,7 +47,7 @@ export function SinceAlpha({ d }: { d: SinceAlphaData }) {
           <div className="sa_head">
             <div>
               <p className="eyebrow">Since Partnering{d.since ? ' / ' + d.since : ''}</p>
-              <h2 className="sa_h">{years ? <><span className="sa_nw">{yearsWord} {years === 1 ? 'year' : 'years'}</span><br />in.</> : <>Since<br />Alpha.</>}</h2>
+              <h2 className="sa_h">{years ? <><span className="sa_nw">{yearsWord} {years === 1 ? 'year' : 'years'}</span><br />with Alpha</> : <>New to<br />Alpha</>}</h2>
             </div>
             {d.quote ? (
               <figure className="sa_q">

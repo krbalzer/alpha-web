@@ -111,6 +111,36 @@ export function treatmentsFor(all: Awaited<ReturnType<typeof getTreatments>>, br
   return TREATMENT_CATEGORIES.filter((c) => out[c]).map((c) => ({ cat: c, items: out[c] }))
 }
 
+/** "The Experience" headline when the brand has none: the practice and the towns it's in (the strip shows both). */
+const insideDefault = (name: string, cities: string[]) => {
+  const c = [...new Set(cities.filter(Boolean))]
+  return c.length && c.length <= 3 ? `${name}, in ${c.length > 1 ? `${c.slice(0, -1).join(', ')} and ${c[c.length - 1]}` : c[0]}` : `In and around ${name}`
+}
+
+/** Older seeded Why Alpha bodies end in an italic line of transcript codes ("founder interview (ra3) 00:02:12"). Readers get the founder's name instead. */
+const SRC_LINE = /founder interview|\(\w+\d*\)\s*\d{1,2}:\d{2}/i
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function whyBody(body: any, by: string) {
+  const kids = body?.root?.children
+  if (!Array.isArray(kids) || !kids.length) return html(body)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const t = ((kids[kids.length - 1]?.children || []) as any[]).map((c) => c?.text || '').join('')
+  if (!SRC_LINE.test(t)) return html(body)
+  const esc = (x: string) => x.replace(/&/g, '&amp;').replace(/</g, '&lt;')
+  return html({ ...body, root: { ...body.root, children: kids.slice(0, -1) } }) + (by ? `<p class="why_by">${esc(by)}</p>` : '')
+}
+
+/** The brand's Google rating, added up from every location's daily sync (weighted by review count), in the second stats column. Never typed by hand. */
+type StatCol = { k: string; n: string; l: string; rows: { k: string; v: string }[] }
+function withGoogle(stats: StatCol[], locs: { google?: { rating?: number | null; count?: number | null } | null }[]) {
+  if (!stats.length) return stats
+  let sum = 0, n = 0
+  for (const l of locs) { const r = l.google?.rating, c = l.google?.count; if (r && c) { sum += r * c; n += c } }
+  const out = stats.map((s) => ({ ...s, rows: s.rows.filter((r) => !/google|rating|review/i.test(r.k)) }))
+  if (n) out[Math.min(1, out.length - 1)].rows.unshift({ k: 'Google rating', v: `${(sum / n).toFixed(1)} (${n.toLocaleString('en-US')} reviews)` })
+  return out
+}
+
 /** Shape the Brand template reads. Mirrors the design board's data object so the board logic ports unchanged. */
 export const getBrand = cache(async (slug: string) => {
   const p = await db()
@@ -142,7 +172,7 @@ export const getBrand = cache(async (slug: string) => {
     practiceHeadline: b.practice?.headline || '',
     practiceHtml: html(b.practice?.body),
     practiceImg: url(b.practice?.image, 'wide') || '',
-    insideTitle: `A Glimpse Into Life at ${b.short || b.name}`,
+    insideTitle: b.insideTitle || insideDefault(b.short || b.name, locs.docs.map((l) => l.city)),
     insideWhere: `Inside ${b.short || b.name} / ` + (locs.docs.length === 1 ? `${locs.docs[0].city}, ${locs.docs[0].state}` : `${locs.docs.length} locations`),
     inside: (b.inside || []).map((x) => { const me = m(x.image); return { src: url(me, 'wide') || '', w: Number(me?.width) || 4, h: Number(me?.height) || 3, caption: x.caption || '' } }).filter((x) => x.src),
     filmPoster: posterUrl(b.film?.poster),
@@ -151,10 +181,10 @@ export const getBrand = cache(async (slug: string) => {
     filmCaption: b.film?.caption || '',
     /** no film yet (e.g. CAMI): the whole section stays off the page instead of a poster that plays nothing */
     hasFilm: !!(b.film?.video || b.film?.url),
-    stats: (b.stats || []).map((s) => ({ k: s.kicker || '', n: s.value || '', l: s.label || '', rows: (s.rows || []).map((r) => ({ k: r.k || '', v: r.v || '' })) })),
+    stats: withGoogle((b.stats || []).map((s) => ({ k: s.kicker || '', n: s.value || '', l: s.label || '', rows: (s.rows || []).map((r) => ({ k: r.k || '', v: r.v || '' })) })), locs.docs),
     quote: b.quote?.text || '',
     whyHeadline: b.why?.headline ? `\u201C${b.why.headline.replace(/^["\u201C]|["\u201D]$/g, '')}\u201D` : '', // verbatim, so always in quote marks
-    whyHtml: html(b.why?.body),
+    whyHtml: whyBody(b.why?.body, fs.length > 1 ? `${fs.map((x) => x.name).join(' and ')}, founders` : f ? `${f.name}, founder` : ''),
     whyImg: url(b.why?.image, 'wide') || '',
     heroVideo: url(b.heroVideo) || '',
     hero: video(b.heroVideo),

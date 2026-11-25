@@ -2,7 +2,7 @@
   "_note": "Rebrand case studies at /work/[slug], keyed by brand slug. Alpha styling; the brand only shows up inside the board tiles and the media. Media paths are relative to the Blob root (since-alpha/ and work/). Board layout is a preset (square | wide) with six tiles in order. Quote tiles are verbatim site copy. Ledger counts come from each live sitemap (Nov 2026) unless noted. Headlines and paragraphs are drafted. The MSM pull quote and chapters come from the episode record.",
   "refined-aesthetics": {
     "date": "Jul 2026",
-    "headline": "Same practice.\nQuieter voice.",
+    "headline": "A rebrand that kept the name",
     "intro": "Refined Aesthetics kept its name, its founder and its Leesburg address, then grew into Winchester. Everything a patient sees was rebuilt in-house: the mark, the palette, the type, the photography and the botanical drawings.",
     "kept": ["Name", "Team", "Locations"],
     "changed": ["Mark", "Palette", "Type", "Photography", "Illustration", "Website"],

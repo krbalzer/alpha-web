@@ -2,28 +2,28 @@
   "_note": "Brand page 'Since Alpha' chapter: the partnership timeline, then the rebrand carousel. Keyed by brand slug. Media lives in Blob under since-alpha/. Quotes are verbatim; marker and headline copy is drafted. A brand without an entry renders nothing.",
   "refined-aesthetics": {
     "quote": {
-      "text": "It's all a big ecosystem. Everybody leveling up together, and that's what we hope this brand ultimately represents.",
-      "source": "Med Spa Marketing Group Chat / MSM 081 / 23:58"
+      "text": "So we call our new floor, our new build out, the penthouse because it's sassy.",
+      "source": "Sarah Safa / Refined Aesthetics founder"
     },
     "gap": {
       "after": 1,
-      "label": "18 months, building"
+      "label": "18 months later"
     },
     "milestones": [
       {
         "date": "Jul 2023",
         "title": "Joins Alpha as PTR 003",
-        "detail": "Refined keeps its name, its founder and its Leesburg address. Alpha takes the back office so Sarah can stay in the chair."
+        "detail": "Refined keeps its name, its founder and its Leesburg address. We take the back office so Sarah can stay in the chair."
       },
       {
         "date": "Apr 2024",
-        "title": "Two more treatment rooms",
-        "detail": "Leesburg grows from the inside: two new treatment rooms on Church Street to keep up with demand."
+        "title": "The second floor opens",
+        "detail": "Two more treatment rooms upstairs on Church Street. The team calls it the penthouse."
       },
       {
         "date": "Oct 2025",
         "title": "The brand shoot",
-        "detail": "Model photography and video shot in-house across Virginia, for the new system."
+        "detail": "We shoot new photography and video in-house across Virginia for the rebrand."
       },
       {
         "date": "Jul 2026",
@@ -34,17 +34,17 @@
       {
         "date": "Jul 28, 2026",
         "title": "Blossom joins",
-        "detail": "Blossom Medical in Winchester becomes Refined at Blossom, announced in a five-video rollout."
+        "detail": "Blossom Medical in Winchester becomes Refined at Blossom. Sarah had trained both of its providers years before."
       },
       {
         "date": "Sep 23, 2026",
-        "title": "Refined at Blossom opens its doors",
-        "detail": "The launch event in Winchester."
+        "title": "Refined at Blossom opens",
+        "detail": "Launch night in Winchester."
       },
       {
         "date": "Now",
         "title": "7 providers, 2 locations",
-        "detail": "Leesburg and Winchester, one standard of care."
+        "detail": "Leesburg and Winchester."
       }
     ],
     "thenNow": {
@@ -69,8 +69,8 @@
     },
     "rebrand": {
       "eyebrow": "Rebrand + website / Alpha Marketing / Jul 2026",
-      "headline": "Same practice.\nQuieter voice.",
-      "body": "New mark, palette, type and photography, all made in-house. The name, the team and the addresses stayed.",
+      "headline": "A rebrand that kept the name",
+      "body": "We made the new mark, palette, type and photography in-house. The name, the team and both addresses stayed.",
       "msm": {
         "show": "msm",
         "n": 79
@@ -179,7 +179,7 @@
     },
     "gap": {
       "after": 2,
-      "label": "12 months, building"
+      "label": "12 months later"
     },
     "milestones": [
       {
@@ -384,7 +384,7 @@
     },
     "gap": {
       "after": 0,
-      "label": "19 months, building"
+      "label": "19 months later"
     },
     "milestones": [
       {
@@ -543,7 +543,7 @@
     },
     "gap": {
       "after": 1,
-      "label": "11 months, building"
+      "label": "11 months later"
     },
     "milestones": [
       {
@@ -731,7 +731,7 @@
     },
     "gap": {
       "after": 1,
-      "label": "13 months, building"
+      "label": "13 months later"
     },
     "milestones": [
       {
@@ -944,7 +944,7 @@
     },
     "gap": {
       "after": 3,
-      "label": "18 months, building"
+      "label": "18 months later"
     },
     "milestones": [
       {
