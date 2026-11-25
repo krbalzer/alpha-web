@@ -43,3 +43,6 @@
 /* surfaces that are already dark, and the light top bar + brand dock, keep their own palette */
 .pg-brand.lights-down .dark, .pg-brand.lights-down .b_top, .pg-brand.lights-down .crumb { --ink: #0E0E0D; --bone: #DEDAD1; --line: rgba(14, 14, 13, .16); --muted: #5C5952; --copy: #2E2C28; }
 @media (prefers-reduced-motion: reduce) { .pg-brand { transition: none; } }
+
+/* the partner portal and the partnerships admin bring their own footers */
+body:has(.pg-portal) footer.foot, body:has(.pg-portaladmin) footer.foot { display: none; }

@@ -741,6 +741,5 @@
 .pg-portal .drop{aspect-ratio:3/2}}
 @media (prefers-reduced-motion:reduce){.pg-portal .dot.is-up,.pg-portal .cl_prog i{animation:none}}
 .pg-portal .dsec.flush{border-top:0;padding-top:0}
-.pg-portal:has(.pg-portal) footer.foot{display:none}
 .pg-portal .pfoot_in a{color:inherit}
 
