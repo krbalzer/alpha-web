@@ -303,63 +303,33 @@
   },
   "5": {
     "brand": {
-      "intro": "The Laser Center of Marin has been a Corte Madera fixture since 2003: a family-built practice known for the NorCal natural look.",
+      "intro": "The Laser Center of Marin in Corte Madera, California: lasers, injectables and skin care at the same Tamalpais Drive address since 2003.",
       "practice": {
-        "headline": "The NorCal natural look, for twenty years.",
+        "headline": "Tender loving care, at the same address since 2003",
         "body": [
-          "Kevin and Denise Jones opened the Laser Center of Marin in 2003, after Kevin's twenty years in Silicon Valley tech and Denise's thirty years as a hospital nurse practitioner. Kevin and their son built out the treatment rooms themselves, their daughter ran the front desk, and Denise's siblings answered phones and stocked shelves.",
-          "It started with laser hair removal and IPL. Injectables came a couple of years later and are now the bigger part of the business. Some of the team have been here more than fifteen years, and some patients have seen the same provider for just as long."
+          "The Laser Center of Marin opened in Corte Madera in 2003 and has never moved. The Jones family built it by hand: family built the treatment rooms, ran the front desk, answered phones and stocked the shelves. Denise Jones, a Marin native and nurse practitioner, named it: The Laser Center, TLC, tender loving care.",
+          "Marin patients sail, hike and bike most of the year, and Denise says they're very aware of protecting their skin. The practice started with laser hair removal and IPL; injectables followed and are now the bigger part of the work. Some of the team have been here more than fifteen years, and some patients have seen the same provider for just as long."
         ]
       },
       "why": {
         "headline": {
-          "text": "They basically said, you do what you do well.",
-          "source": "Kevin Jones, founder interview (lasercenter-kevin1) 00:19:50"
+          "text": "Before we ever met John, we listened to a lot of his podcast.",
+          "source": "Denise Jones, founder interview (lasercenter-denise1) 00:12:32"
         },
         "body": [
           {
-            "text": "That meant keeping our name, keeping our culture, keeping our personnel in place",
-            "source": "Kevin Jones, founder interview (lasercenter-kevin1) 00:19:50",
+            "text": "In order to be competitive, we knew we needed to find a partner that would be able to provide us with the resources to continue to grow and support the culture and environment that we've created with our current staff.",
+            "source": "Denise Jones, founder interview (lasercenter-denise1) 00:11:24",
             "trimmed": true
-          },
-          {
-            "text": "They really came from the same background we did, almost about the same timeframe with their original locations, and we saw that family environment, we saw that very similar culture to ours",
-            "source": "Kevin Jones, founder interview (lasercenter-kevin1) 00:19:07"
           }
         ]
       },
       "quote": {
-        "text": "The culture of Marin County is about healthy, what we call the NorCal natural look.",
-        "source": "Kevin Jones, founder interview (lasercenter-kevin2) 00:05:53"
+        "text": "The people that live here in Marin are very well educated, and they're very aware of protecting their skin.",
+        "source": "Denise Jones, founder interview (lasercenter-denise1) 00:09:26"
       }
     },
     "founders": [
-      {
-        "name": "Kevin Jones",
-        "kind": "business",
-        "status": "former",
-        "headline": "Co-founder",
-        "bio": [
-          "Kevin spent twenty years in Silicon Valley telecom before an IPL treatment of his own sent him looking at aesthetic technology. He studied the franchise models, decided he could do it better on his own, and built a higher-end practice in a class A building in Corte Madera."
-        ],
-        "quotes": [
-          {
-            "text": "It was more than just employee relationship, it was a family relationship.",
-            "source": "Kevin Jones, founder interview (lasercenter-kevin1) 00:11:34"
-          },
-          {
-            "text": "I think the biggest difference is it's a people business versus a machine business",
-            "source": "Kevin Jones, founder interview (lasercenter-kevin1) 00:08:40",
-            "trimmed": true
-          }
-        ],
-        "milestones": [
-          [
-            2003,
-            "Co-founds the Laser Center of Marin."
-          ]
-        ]
-      },
       {
         "name": "Denise Jones",
         "kind": "provider",
@@ -367,7 +337,7 @@
         "headline": "Co-founder",
         "credentials": "NP",
         "bio": [
-          "A Marin native and nurse practitioner who spent thirty years at a large hospital, Denise brought the medicine to the practice while Kevin ran the business. She named it, too: The Laser Center, TLC, tender loving care."
+          "A Marin native, Denise spent thirty years as a nurse practitioner at a large hospital before opening the practice with her family in 2003. She's never moved away: she grew up in Marin and still calls it the most beautiful place in all the world."
         ],
         "quotes": [
           {

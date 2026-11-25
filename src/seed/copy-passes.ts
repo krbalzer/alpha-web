@@ -110,6 +110,48 @@ const PASSES: Pass[] = [
       ],
     },
   },
+  {
+    ptr: 5, // the Laser Center of Marin; reviewed Nov 25 2026. No Kevin Jones anywhere (off the site); no medicine-first framing; nothing about who runs it now.
+    was: 'The NorCal natural look, for twenty years.',
+    brand: {
+      intro: 'The Laser Center of Marin in Corte Madera, California: lasers, injectables and skin care at the same Tamalpais Drive address since 2003.',
+      insideTitle: 'From Tamalpais Drive to the bay',
+      practice: {
+        headline: 'Tender loving care, at the same address since 2003',
+        body: prose([
+          // lasercenter-denise1 02:22, 04:17, 08:19
+          'The Laser Center of Marin opened in Corte Madera in 2003 and has never moved. The Jones family built it by hand: family built the treatment rooms, ran the front desk, answered phones and stocked the shelves. Denise Jones, a Marin native and nurse practitioner, named it: The Laser Center, TLC, tender loving care.',
+          // lasercenter-denise1 08:36, 09:26
+          "Marin patients sail, hike and bike most of the year, and Denise says they're very aware of protecting their skin. The practice started with laser hair removal and IPL; injectables followed and are now the bigger part of the work. Some of the team have been here more than fifteen years, and some patients have seen the same provider for just as long.",
+        ]),
+      },
+      quote: {
+        text: "The people that live here in Marin are very well educated, and they're very aware of protecting their skin.",
+        source: 'Denise Jones, founder interview (lasercenter-denise1) 00:09:26',
+      },
+      why: {
+        headline: 'Before we ever met John, we listened to a lot of his podcast.', // lasercenter-denise1 12:32
+        body: prose([
+          // lasercenter-denise1 11:24
+          "Over twenty years Denise watched a lot of places open in Marin. To stay competitive, she and her family wanted “a partner that would be able to provide us with the resources to continue to grow and support the culture and environment that we’ve created with our current staff.” The name, the team and the building stayed. In 2025 we rebuilt the brand around what was already there: patients who've been coming for years, and a practice a few minutes from the bay.",
+        ]),
+      },
+      // weekly patients, treatment rooms and Botox volume wait on ops (the old 223k a week was broken)
+      stats: [
+        { kicker: 'Capacity', value: '6', label: 'Providers', rows: [{ k: 'Locations', v: '1' }] },
+        { kicker: 'Demand', value: '652', label: 'Social followers', rows: [{ k: 'At the same address since', v: '2003' }] },
+        { kicker: 'Depth', value: '1.3k', label: 'Filler syringes a year', rows: [{ k: 'Skincare items a year', v: '2.8k' }] },
+      ],
+    },
+    founder: {
+      name: 'Denise Jones',
+      wasIncludes: 'while Kevin ran the business',
+      bio: [
+        // lasercenter-denise1 02:22, 08:19 to 08:36
+        "A Marin native, Denise spent thirty years as a nurse practitioner at a large hospital before opening the practice with her family in 2003. She's never moved away: she grew up in Marin and still calls it the most beautiful place in all the world.",
+      ],
+    },
+  },
 ]
 
 /** Refined, Nov 25 follow-up: "Years in Leesburg" under Demand, for a database that already took the pass above. Skips once a person edits the stats. */
