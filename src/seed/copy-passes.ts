@@ -63,6 +63,53 @@ const PASSES: Pass[] = [
       ],
     },
   },
+  {
+    ptr: 2, // Holden Timeless Beauty, now HTB Aesthetics; reviewed Nov 25 2026
+    was: 'Built for San Diegans, by one.',
+    brand: {
+      name: 'HTB Aesthetics',
+      short: 'HTB Aesthetics',
+      intro: 'HTB Aesthetics, formerly Holden Timeless Beauty: Dr. Amanda Holden’s practice in Carlsbad, Fallbrook, San Diego and San Marcos, California.',
+      insideTitle: 'North County to Mission Valley',
+      practice: {
+        headline: 'An ER doctor’s precision, in rooms built like a San Diego getaway',
+        body: prose([
+          // AmandaHTBExperience 06:50, 08:18 to 09:32; AmandaHTBExperince2 01:00 to 01:52, 02:32 to 03:04
+          "HTB Aesthetics is built around the five senses. Walk into any of the four locations and there's Miami Beach chill on the speakers, a signature scent, bubble blue treatment rooms with chandeliers to look up at during a treatment, a Coronado Bridge painting and a bathroom styled like a nightclub. Dr. Amanda Holden designed it after the places San Diegans already love, from a trendy coffee shop to their favorite stylist, so it feels like their place at every address. She'll also tell you HTB stands for have the best, and hold time back.",
+          // AmandaStory1 02:02; AmandaHTBExperience 09:32 to 10:18; Amanda Conclude 01:27, 01:50
+          "Behind the fun is emergency medicine. Dr. Holden trained the emergency providers she'd worked beside into the HTB team, and consultations are custom: a menu of options, no pressure, whether a patient wants one thing or all of them. HTB is also a teaching practice, with a level one to three injector academy and a Sculptra Center of Excellence.",
+        ]),
+      },
+      quote: {
+        text: 'When you have partners that you can lean on when you have ups and downs, it makes it not feel so bad.',
+        source: 'Dr. Amanda Holden, Great Friends E065 00:26:46',
+      },
+      why: {
+        headline: "It's a love for aesthetics, a love for making the field absolutely phenomenal, and that's what I wanna be a part of.", // AmandaAlpha1 01:59
+        body: prose([
+          // AmandaAlpha1 01:45, 03:34, 04:59
+          "Dr. Holden took her mentor's advice to explore every possibility and take every negotiation to the very end, and she took a lot of them there before choosing us. She met John when they both taught business at The Aesthetics Show, and her first question was about her team: whether they'd be allowed to grow the way she saw them growing. The team, the locations and the San Diego feel stayed. The rebrand to HTB Aesthetics came later, built with our in-house marketing team.",
+          // AmandaAlpha1 06:33
+          'What she wanted from the rest of the network, she explains with pie: “if you think of a business like a pie, we might be great at one piece of the pie but not great at the other. And now if we’re putting all of our slices together in one joint pie of business, that’s when you really see true acceleration to the moon.”',
+        ]),
+      },
+      stats: [
+        { kicker: 'Capacity', value: '220', label: 'Patients a week', rows: [{ k: 'Providers', v: '13' }, { k: 'Locations', v: '4' }, { k: 'Treatment rooms', v: '18' }] },
+        { kicker: 'Demand', value: '103k', label: 'Social followers', rows: [{ k: 'In San Diego County since', v: '2017' }] },
+        { kicker: 'Depth', value: '17', label: 'Treatments', rows: [{ k: 'Skincare items a year', v: '2.1k' }, { k: 'Botox units a year', v: '47.1k' }, { k: 'Filler syringes a year', v: '2.7k' }] },
+      ],
+    },
+    founder: {
+      name: 'Amanda Holden',
+      wasIncludes: 'learned the business of aesthetics from a physician who ran fifteen clinics',
+      bio: [
+        // AmandaHTBExperience 00:02, 01:07; AmandaHTBExperince2 00:47; AmandaStory1 02:02
+        'A board certified emergency physician who has lived in San Diego since she was nine, Dr. Holden was a single mom in medical school and chose emergency medicine over a surgical residency to stay close to her kids. She learned the business of aesthetics from a physician who ran fifteen clinics across Southern California, opened a single room in 2017 injecting friends and family, and trained with injectors across the country.',
+        // AmandaHTBExperience 04:19, 05:18; Amanda Conclude 00:48; GF E065
+        'She has studied every side of the business since, from people and finance to marketing, and leads HTB as its visionary alongside an integrator who runs clinical operations. Her goal is to reach 33 million people through the practice, the stage and the teams she trains. She also hosts Holding Time Back, one of the shows in the Alpha podcast network.',
+      ],
+    },
+  },
 ]
 
 /** Refined, Nov 25 follow-up: "Years in Leesburg" under Demand, for a database that already took the pass above. Skips once a person edits the stats. */

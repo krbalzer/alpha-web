@@ -19,7 +19,7 @@ export class MainEngine extends DCLogic {
     if (this.D) return this.D;
     const NODES = [
       ['Esthetics Center','Sacramento',81.6,314.8,3],['Laser Center of Marin','Corte Madera',60.4,331.5,2],
-      ['Holden Timeless Beauty','San Diego',169.6,466,4],['Preva Aesthetics','Encinitas',167,457.7,2],
+      ['HTB Aesthetics','San Diego',169.6,466,4],['Preva Aesthetics','Encinitas',167,457.7,2],
       ['Flawless','Albuquerque',383.4,405.1,2],['Preva Aesthetics','Denver',417.2,284.8,3],
       ['Privé Med Spa','Lexington',833.9,328.7,2],['Anne Therese Aesthetics','Columbus',864.6,279.1,2],
       ['CAMI Aesthetics','Huntersville',908.3,396.6,3],['Refined Aesthetics','Leesburg',975.1,300.8,4],
@@ -36,7 +36,7 @@ export class MainEngine extends DCLogic {
     const ADJ = NODES.map(() => []); E.forEach(([i, j]) => { ADJ[i].push(j); ADJ[j].push(i); });
     const P = (this.props.data || {}).P || [
       { n: '001', name: 'Esthetics Center', city: 'Sacramento, CA', locs: 4, area: 'Sacramento', founder: '[Founder]', tone: '#3B3A35' },
-      { n: '002', name: 'Holden Timeless Beauty', city: 'San Diego, CA', locs: 3, area: 'North County San Diego', founder: 'Amanda Holden, MD', tone: '#61788A' },
+      { n: '002', name: 'HTB Aesthetics', city: 'San Diego, CA', locs: 3, area: 'North County San Diego', founder: 'Amanda Holden, MD', tone: '#61788A' },
       { n: '003', name: 'Refined Aesthetics', city: 'Leesburg, VA', locs: 2, area: 'Northern Virginia', founder: 'Sarah Safa', tone: '#4C5949' },
       { n: '005', name: 'Laser Center of Marin', city: 'Corte Madera, CA', locs: 1, area: 'Marin County', founder: '[Founder]', tone: '#2F4550' },
       { n: '006', name: 'Williams Center', city: 'Latham, NY', locs: 2, area: 'Capital Region', founder: '[Founder]', tone: '#4B4038' },

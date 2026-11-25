@@ -185,12 +185,12 @@
       {
         "date": "Jun 6, 2023",
         "title": "Joins Alpha as PTR 002",
-        "detail": "Dr. Amanda Holden keeps her team and her clinics. Alpha takes on the back office, training and marketing."
+        "detail": "Dr. Amanda Holden keeps her team and her clinics. We take on the back office, training and marketing."
       },
       {
         "date": "Jul 1, 2024",
         "title": "HTB San Diego opens",
-        "detail": "The fifth Southern California location, in Mission Valley. “It’s always been my dream to serve this area that I grew up in.” Dr. Amanda Holden, Newswire.",
+        "detail": "A new location in Mission Valley, with four treatment rooms. “It’s always been my dream to serve this area that I grew up in.” Dr. Amanda Holden, Newswire.",
         "img": "/since-alpha/htb-san-diego-opening.webp",
         "alt": "Cutting the ribbon at the HTB San Diego grand opening"
       },
@@ -202,18 +202,18 @@
       {
         "date": "Oct 2025",
         "title": "The brand shoot",
-        "detail": "Model photography and video shot in-house on the San Diego coast, for the new system."
+        "detail": "We shoot new photography and video in-house on the San Diego coast for the rebrand."
+      },
+      {
+        "date": "Jan 2026",
+        "title": "Fallbrook grows",
+        "detail": "A new treatment room."
       },
       {
         "date": "Feb 2026",
         "title": "HTB Aesthetics launches",
         "detail": "Holden Timeless Beauty becomes HTB Aesthetics: new name, mark, palette, type and illustrations, and a new site with provider portfolios, a filtered results collection and a branded location map.",
         "rebrand": true
-      },
-      {
-        "date": "Jan 2026",
-        "title": "Fallbrook grows",
-        "detail": "A new treatment room."
       },
       {
         "date": "Now",
@@ -224,7 +224,7 @@
     "rebrand": {
       "eyebrow": "Rebrand + website / Alpha Marketing / Feb 2026",
       "headline": "Holden Timeless Beauty,\nnow HTB Aesthetics.",
-      "body": "A new name, mark, palette, type, photography and a library of illustrations, all made in-house. The providers and the four addresses stayed.",
+      "body": "We made the new name, mark, palette, type, photography and a library of illustrations in-house. The providers and the four addresses stayed.",
       "msm": {
         "show": "msm",
         "n": 68

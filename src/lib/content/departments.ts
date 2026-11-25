@@ -39,6 +39,6 @@ export const DEPT_EXTRA: Record<string, DeptExtra> = {
       { q: 'Do I keep my brand?', a: 'Yes. Some partners relaunch, some refine, some keep everything as it is. The grid above shows where each one landed.' },
       { q: 'How fast do website changes happen?', a: 'Site changes go out the same week.' },
     ],
-    partners: [['001', 'Esthetics Center', 'r'], ['002', 'Holden Timeless Beauty', 'r'], ['003', 'Refined Aesthetics', 'p'], ['005', 'Laser Center of Marin', 'r'], ['006', 'Williams Center', 'p'], ['007', 'Anne Therese Aesthetics', 'k'], ['008', 'RN Esthetics', 'r'], ['009', 'Dontage', 'p'], ['010', 'CAMI Aesthetics', 'r'], ['011', 'InBloom', 'p', '/img/p-inbloom.webp'], ['012', 'Flawless', 'p', '/img/p-flawless.webp'], ['013', 'Mint + Needle', 'r', '/img/p-mint.webp'], ['014', 'Privé Med Spa', 'r', '/img/p-prive.webp'], ['015', 'LexRx', 'r', '/img/p-lexrx.webp'], ['016', 'Preva Aesthetics', 'k', '/img/p-preva.webp']],
+    partners: [['001', 'Esthetics Center', 'r'], ['002', 'HTB Aesthetics', 'r'], ['003', 'Refined Aesthetics', 'p'], ['005', 'Laser Center of Marin', 'r'], ['006', 'Williams Center', 'p'], ['007', 'Anne Therese Aesthetics', 'k'], ['008', 'RN Esthetics', 'r'], ['009', 'Dontage', 'p'], ['010', 'CAMI Aesthetics', 'r'], ['011', 'InBloom', 'p', '/img/p-inbloom.webp'], ['012', 'Flawless', 'p', '/img/p-flawless.webp'], ['013', 'Mint + Needle', 'r', '/img/p-mint.webp'], ['014', 'Privé Med Spa', 'r', '/img/p-prive.webp'], ['015', 'LexRx', 'r', '/img/p-lexrx.webp'], ['016', 'Preva Aesthetics', 'k', '/img/p-preva.webp']],
   },
 }
