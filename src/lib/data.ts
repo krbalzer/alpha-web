@@ -137,7 +137,7 @@ function withGoogle(stats: StatCol[], locs: { google?: { rating?: number | null;
   let sum = 0, n = 0
   for (const l of locs) { const r = l.google?.rating, c = l.google?.count; if (r && c) { sum += r * c; n += c } }
   const out = stats.map((s) => ({ ...s, rows: s.rows.filter((r) => !/google|rating|review/i.test(r.k)) }))
-  if (n) out[Math.min(1, out.length - 1)].rows.unshift({ k: 'Google rating', v: `${(sum / n).toFixed(1)} (${n.toLocaleString('en-US')} reviews)` })
+  if (n) out[Math.min(1, out.length - 1)].rows.unshift({ k: 'Google rating', v: (sum / n).toFixed(1) }, { k: 'Google reviews', v: n.toLocaleString('en-US') })
   return out
 }
 

@@ -50,7 +50,7 @@ const PASSES: Pass[] = [
       // Capacity / Demand / Depth. Google rating is added live from the location syncs. Botox units and treatment rooms wait on ops numbers.
       stats: [
         { kicker: 'Capacity', value: '150', label: 'Patients a week', rows: [{ k: 'Providers', v: '7' }, { k: 'Locations', v: '2' }] },
-        { kicker: 'Demand', value: '6.5k', label: 'Social followers', rows: [] },
+        { kicker: 'Demand', value: '6.5k', label: 'Social followers', rows: [{ k: 'Years in Leesburg', v: '10+' }] },
         { kicker: 'Depth', value: '37', label: 'Treatments', rows: [{ k: 'Skincare items a year', v: '1.5k' }, { k: 'Filler syringes a year', v: '2.1k' }] },
       ],
     },
@@ -65,7 +65,17 @@ const PASSES: Pass[] = [
   },
 ]
 
+/** Refined, Nov 25 follow-up: "Years in Leesburg" under Demand, for a database that already took the pass above. Skips once a person edits the stats. */
+async function refinedYears(p: Payload) {
+  const b = (await p.find({ collection: 'brands', where: { ptr: { equals: 3 } }, limit: 1, depth: 0, overrideAccess: true })).docs[0] as unknown as Record<string, any> | undefined
+  const st = b?.stats as { kicker?: string; value?: string; label?: string; rows?: { k?: string; v?: string }[] }[] | undefined
+  if (!b || !st || st.length !== 3 || st[0]?.label !== 'Patients a week' || (st[1]?.rows || []).length) return
+  st[1].rows = [{ k: 'Years in Leesburg', v: '10+' }]
+  await p.update({ collection: 'brands', id: b.id, overrideAccess: true, data: { stats: st } as never })
+}
+
 export async function applyCopyPasses(p: Payload) {
+  await refinedYears(p)
   for (const pass of PASSES) {
     const b = (await p.find({ collection: 'brands', where: { ptr: { equals: pass.ptr } }, limit: 1, depth: 0, overrideAccess: true })).docs[0] as unknown as Record<string, any> | undefined
     if (!b || b.practice?.headline !== pass.was) continue
