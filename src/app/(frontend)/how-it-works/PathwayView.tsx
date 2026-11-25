@@ -8,10 +8,10 @@ import './page.css'
 
 const STAGES: { n: string; t: string; d: string; q?: string; who?: string; cta?: string }[] = [
   { n: '01 / Week 1', t: 'Intro call', d: "Thirty minutes with our New Partnerships team about what you've built and what you want next.", cta: '/talk', q: 'When they first came here to talk to me, they did a lot more listening than they did talking', who: 'Dr. Edwin Williams / Williams Center' },
-  { n: '02', t: 'NDA and numbers', d: 'We both sign an NDA. Then you share three years of financials and how the practice runs. This is the longest step, and every file is reviewed by a person.', q: "I like it that they're straight shooters.", who: 'Becky McDonald / Preva Aesthetics' },
-  { n: '03', t: 'Visit', d: "We come to you, and you spend time with the people you'd work with." },
+  { n: '02', t: 'NDA and numbers', d: 'We both sign an NDA. Then you share three years of financials and how the practice runs. This is the longest step, and every file is reviewed by a person.', q: "I like it that they're straight shooters.", who: 'Becky McDonald / Privé Med Spa' },
+  { n: '03', t: 'Visit', d: "We come to you, and you spend time with the people you'd work with.", q: 'We were just blown away because we pictured, you know, guys in suits walking in and very corporate', who: 'Ali Oxton, NP / RN Esthetics' },
   { n: '04', t: 'Letter of intent', d: 'Terms in writing, walked through line by line.' },
-  { n: '05 / Week 8', t: 'Diligence and close', d: 'Our advisors confirm the details, then we sign and your integration plan starts.', q: 'When I talked to John, I felt immediately I can trust this guy, and that that was more important than the numbers or anything.', who: 'Dr. Dean Bair' },
+  { n: '05 / Week 15', t: 'Diligence and close', d: 'Our advisors confirm the details, then we sign and your integration plan starts.', q: 'When I talked to John, I felt immediately I can trust this guy, and that that was more important than the numbers or anything.', who: 'Dr. Dean Bair' },
 ]
 const POINTS = [
   "Every step, where you are, and what's next.",
@@ -28,13 +28,13 @@ export default function PathwayView() {
       <section className="pw_hero dark">
         <div className="wrap pw_hg">
           <div><p className="eyebrow">How it works</p><h1 className="display">The path to<br />partnership</h1></div>
-          <div><p className="pw_copy">Five steps and about eight weeks from a first call to closing. Most of the work is getting to know each other. You&#39;ll see where you are the whole way, and nothing is final until you sign.</p><div className="pw_ctas"><a className="btn btn-fill" href="/talk">Book an intro call</a><a className="btn" href="#steps">See the steps</a></div></div>
+          <div><p className="pw_copy">Five steps and about fifteen weeks from a first call to closing. Most of the work is getting to know each other. You&#39;ll see where you are the whole way, and nothing is final until you sign.</p><div className="pw_ctas"><a className="btn btn-fill" href="/talk">Book an intro call</a><a className="btn" href="#steps">See the steps</a></div></div>
         </div>
       </section>
 
       <section className="sec" id="steps">
         <div className="wrap">
-          <div className="split_head"><div><p className="eyebrow">The steps</p><h2 className="display h2">From first call<br />to close</h2></div><span className="mono pw_len">About 8 weeks, start to close</span></div>
+          <div className="split_head"><div><p className="eyebrow">The steps</p><h2 className="display h2">From first call<br />to close</h2></div><span className="mono pw_len">About 15 weeks, start to close</span></div>
           <ol className="pw_track">
             {STAGES.map((s) => (
               <li key={s.t} className="pw_st"><i aria-hidden="true"></i><span className="mono">{s.n}</span><b>{s.t}</b><p>{s.d}</p>{s.cta ? (<a className="pw_go" href={s.cta}>Book an intro call &rarr;</a>) : null}
