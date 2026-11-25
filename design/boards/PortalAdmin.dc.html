@@ -9,9 +9,9 @@
 <x-dc>
 <helmet>
 <style>
-@font-face{font-family:"NHD";src:url(/_blob/bf901fbfee077add5b8fbd5af7b4b4a7) format("woff2");font-weight:900;font-display:swap;ascent-override:85.7%;descent-override:14.3%;line-gap-override:0%}@font-face{font-family:"NHD";src:url(/_blob/630fc1e4ee22b0eecfe2535aceaaad9c) format("woff2");font-weight:700;font-display:swap;ascent-override:85.7%;descent-override:14.3%;line-gap-override:0%}
-@font-face{font-family:"Diatype Mono";src:url(/_blob/bad569f2d2757d8e40320972d9f13e4b) format("opentype");font-weight:400;font-display:swap}
-@font-face{font-family:"Diatype Mono";src:url(/_blob/888f2a0a7a1517cff04dd7bb1810c18d) format("opentype");font-weight:700;font-display:swap}
+@font-face{font-family:"NHD";src:url(/_blob/f9a603aa0f56c324ac6fe8ab98d20b8a) format("woff2");font-weight:900;font-display:swap;ascent-override:85.7%;descent-override:14.3%;line-gap-override:0%}@font-face{font-family:"NHD";src:url(/_blob/a3e75b9ccbe1b69a9caf422722a630fa) format("woff2");font-weight:700;font-display:swap;ascent-override:85.7%;descent-override:14.3%;line-gap-override:0%}
+@font-face{font-family:"Diatype Mono";src:url(/_blob/f4611c53e1d6fb1d792562be0d2f3e40) format("opentype");font-weight:400;font-display:swap}
+@font-face{font-family:"Diatype Mono";src:url(/_blob/7cff80bab0e6342f596eb7ef5d78500f) format("opentype");font-weight:700;font-display:swap}
 :root{--bone:#DEDAD1;--bone-2:#D3CFC5;--ink:#0E0E0D;--paper:#E8E4DA;--muted:#5C5952;--muted-d:#9B978E;--line:rgba(14,14,13,.16);--line-d:rgba(232,228,218,.14);--map:#151513;--sf:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue",Arial,sans-serif;--mono:"Diatype Mono",ui-monospace,Menlo,monospace;--disp:"NHD","Helvetica Neue",Arial,sans-serif;--h3:"NHD","Helvetica Neue","HelveticaNeue",Helvetica,Arial,sans-serif;--ease:cubic-bezier(.22,.66,.16,1);--cw:clamp(280px,27vw,400px)}
 body{margin:0;background:var(--bone);color:var(--ink);font-family:var(--sf);-webkit-font-smoothing:antialiased}
 *{box-sizing:border-box}
@@ -650,6 +650,24 @@ button{font:inherit;color:inherit}
 .ld_act ul{list-style:none;margin:10px 0 0;padding:0}
 .ld_act li{display:grid;grid-template-columns:72px 1fr;gap:10px;padding:7px 0;border-top:1px solid var(--hair);font-size:12px;line-height:1.4}
 .ld_act li span{font-family:var(--mono);font-size:9.5px;text-transform:uppercase;color:var(--soft)}
+/* lead panels: follow-ups, Claude, gates, diligence */
+.apan{margin-top:40px}
+.apan_h{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding-bottom:10px;border-bottom:1px solid var(--ink)}
+.apan_h b{font-family:var(--h3);font-weight:700;font-size:18px}
+.apan_h .k{color:var(--soft);text-align:right}
+.ar{display:grid;grid-template-columns:minmax(0,1fr) 150px 170px;gap:16px;align-items:center;padding:13px 0;border-bottom:1px solid var(--hair)}
+.ar b{display:block;font-size:13.5px;font-weight:600}
+.ar_d{display:block;font-size:12px;line-height:1.4;color:var(--soft);margin-top:2px}
+.ar_s{font-family:var(--mono);font-size:9.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--soft)}
+.ar.is-ok .ar_s{color:var(--ok)}.ar.is-on .ar_s{color:var(--rev)}.ar.is-no .ar_s{color:var(--fix)}
+.ar_a{display:flex;gap:5px;justify-content:flex-end;align-items:center}
+.thumb{width:36px;height:28px;border:1px solid var(--hair);border-radius:999px;background:#F8F6F2;cursor:pointer;font-size:13px;line-height:1;filter:grayscale(1);opacity:.6;transition:opacity .2s,background .2s}
+.thumb:hover{opacity:1}
+.thumb.is-on{background:var(--ink);border-color:var(--ink);filter:none;opacity:1}
+.dl_bar{display:block;height:3px;background:var(--hair);border-radius:2px;overflow:hidden;margin-top:8px;max-width:280px}
+.dl_bar i{display:block;height:100%;background:var(--ink);transition:width .5s var(--mo-e,ease)}
+.ar.is-ok .dl_bar i{background:var(--ok)}
+@media (max-width:900px){.ar{grid-template-columns:minmax(0,1fr) auto}.ar_s{display:none}}
 
 /* motion (shared system, see motion_inject.py). Reveal once, fast, no bounce. */
 :root{--mo-e:cubic-bezier(.16,1,.3,1)}
@@ -680,12 +698,12 @@ a:hover .img img,a:hover .card_img img{transform:scale(1.025)}
 <div class="pdemo"><div class="wrap">
 <span class="k" style="color: #9B978E">Partner portal / admin view (New Partnerships)</span>
 <div class="pdemo_tabs"><sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3"><button class="{{ t.cls }}" onClick="{{ t.go }}">{{ t.label }}</button></sc-for></div>
-<span class="pdemo_r"><button class="chipb" onClick="{{ resetAll }}">Reset</button><i class="pdraft">Stand-in leads, stages + copy</i></span>
+<span class="pdemo_r"><button class="chipb" onClick="{{ resetAll }}">Reset</button><i class="pdraft">Stand-in leads + dates / stages from the SOP</i></span>
 </div></div>
 
 <!-- ============ ADMIN NAV ============ -->
 <header class="anav"><div class="anav_in">
-<div class="anav_l"><img src="/_blob/a3ba6a28a9b8a219f7b522ca46d6dd70" alt="Alpha"><span>New Partnerships</span></div>
+<div class="anav_l"><img src="/_blob/2e70c694b2b7794cf38d4d5eaf1db686" alt="Alpha"><span>New Partnerships</span></div>
 <nav class="anav_m" aria-label="Admin"><sc-for list="{{ navItems }}" as="n" hint-placeholder-count="3"><button class="{{ n.cls }}" onClick="{{ n.go }}">{{ n.label }}<sc-if value="{{ n.badge }}" hint-placeholder-val="{{ false }}"><em>{{ n.badge }}</em></sc-if></button></sc-for></nav>
 <div class="anav_r"><span class="av">TR</span><span><b>Tyler [Last name]</b><em>Signed in with Microsoft</em></span></div>
 </div></header>
@@ -748,7 +766,7 @@ a:hover .img img,a:hover .card_img img{transform:scale(1.025)}
 <div class="ld_gate">
 <div><p class="k">Stage {{ curNum }} / {{ curName }}</p><p class="ld_gate_t">{{ gateT }}</p><p class="ld_gate_s">{{ gateS }}</p></div>
 <sc-if value="{{ canAdvance }}" hint-placeholder-val="{{ false }}"><button class="btn btn-ink ld_adv" onClick="{{ advance }}">Approve stage {{ curNum }} and unlock {{ nextNum }}</button></sc-if>
-<sc-if value="{{ approveAllShow }}" hint-placeholder-val="{{ false }}"><button class="btn btn-ink ld_adv" onClick="{{ approveAll }}">Approve all {{ nRevTxt }} in review</button></sc-if><sc-if value="{{ cantAdvance }}" hint-placeholder-val="{{ true }}"><button class="btn ld_adv is-off" disabled>Approve stage {{ curNum }}</button></sc-if>
+<sc-if value="{{ approveAllShow }}" hint-placeholder-val="{{ false }}"><button class="btn btn-ink ld_adv" onClick="{{ approveAll }}">Approve all {{ nRevTxt }} in review</button></sc-if><sc-if value="{{ cantAdvance }}" hint-placeholder-val="{{ true }}"><button class="btn ld_adv is-off" disabled="">Approve stage {{ curNum }}</button></sc-if>
 </div>
 <sc-for list="{{ groups }}" as="g" hint-placeholder-count="5">
 <div class="cl_g">
@@ -759,6 +777,18 @@ a:hover .img img,a:hover .card_img img{transform:scale(1.025)}
 <div class="cl_t"><b>{{ it.t }}</b><span>{{ it.sub }}</span><sc-if value="{{ it.ai }}" hint-placeholder-val="{{ false }}"><p class="{{ it.aiCls }}"><em>First pass</em>{{ it.ai }}</p></sc-if><sc-if value="{{ it.note }}" hint-placeholder-val="{{ false }}"><p class="cl_note"><em>Sent to lead</em>{{ it.note }}</p></sc-if></div>
 <span class="cl_s">{{ it.label }}</span>
 <span class="cl_acts"><sc-if value="{{ it.canReview }}" hint-placeholder-val="{{ false }}"><button class="btn btn-ink cl_b" onClick="{{ it.ok }}">Approve</button><button class="btn cl_b" onClick="{{ it.fix }}">Changes</button></sc-if><sc-if value="{{ it.canNudge }}" hint-placeholder-val="{{ false }}"><button class="btn cl_b" onClick="{{ it.nudge }}">{{ it.nudgeLabel }}</button></sc-if></span>
+</div>
+</sc-for>
+</div>
+</sc-for>
+<sc-for list="{{ panels }}" as="p" hint-placeholder-count="4">
+<div class="apan">
+<div class="apan_h"><b>{{ p.t }}</b><span class="k">{{ p.k }}</span></div>
+<sc-for list="{{ p.rows }}" as="r" hint-placeholder-count="4">
+<div class="{{ r.cls }}">
+<div><b>{{ r.t }}</b><span class="ar_d">{{ r.d }}</span><sc-if value="{{ r.bar }}" hint-placeholder-val="{{ false }}"><span class="dl_bar"><i style="width: {{ r.pct }}"></i></span></sc-if></div>
+<span class="ar_s">{{ r.s }}</span>
+<span class="ar_a"><sc-if value="{{ r.vote }}" hint-placeholder-val="{{ false }}"><button class="{{ r.upCls }}" onClick="{{ r.up }}" aria-label="Thumbs up">👍</button><button class="{{ r.dnCls }}" onClick="{{ r.dn }}" aria-label="Thumbs down">👎</button></sc-if><sc-if value="{{ r.act }}" hint-placeholder-val="{{ false }}"><button class="btn cl_b" onClick="{{ r.go }}">{{ r.act }}</button></sc-if></span>
 </div>
 </sc-for>
 </div>
@@ -785,8 +815,8 @@ a:hover .img img,a:hover .card_img img{transform:scale(1.025)}
 <div class="{{ mnCls }}" id="site-menu" role="dialog" aria-modal="true" aria-label="Site menu">
 <div class="wrap mn_top">
 <button class="mn_x" onClick="{{ mnClose }}" aria-label="Close menu"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.4"></path></svg>Close<em>Esc</em></button>
-<a class="nav_logo" href="#home" onClick="{{ mnClose }}"><img src="/_blob/8c6e58a26569a1b0aff6a21dd2464ff0" alt="Alpha"></a>
-<a class="btn" href="#talk" onClick="{{ mnClose }}">Let&#39;s talk</a>
+<a class="nav_logo" href="#home" onClick="{{ mnClose }}"><img src="/_blob/e7a3ffbae3a341015cd7c397d3a9c185" alt="Alpha"></a>
+<a class="btn" href="#talk" onClick="{{ mnClose }}">Let's talk</a>
 </div>
 <div class="wrap mn_body">
 <nav class="mn_list" aria-label="Main">
@@ -795,7 +825,7 @@ a:hover .img img,a:hover .card_img img{transform:scale(1.025)}
 <aside class="mn_side">
 <div class="mn_live">
 <p class="mn_k"><span>{{ mnLiveK }}</span><sc-if value="{{ mnPlaying }}" hint-placeholder-val="{{ false }}"><i>Live</i></sc-if></p>
-<div class="mn_ep"><span class="mn_art" style="background: #1D1B1A; color: #fff; border: 1px solid rgba(232,228,218,.14)">Dear<br>Tiffany</span><div><b>You don&#39;t have a spending problem</b><span>Dear Tiffany // EP 018</span></div></div>
+<div class="mn_ep"><span class="mn_art" style="background: #1D1B1A; color: #fff; border: 1px solid rgba(232,228,218,.14)">Dear<br>Tiffany</span><div><b>You don't have a spending problem</b><span>Dear Tiffany // EP 018</span></div></div>
 <div class="mn_pl"><button class="mn_pb" onClick="{{ mnToggle }}" aria-label="{{ mnPlayLabel }}"><sc-if value="{{ mnPlaying }}" hint-placeholder-val="{{ false }}"><svg width="9" height="11" viewBox="0 0 10 12" aria-hidden="true"><path d="M1 0h3v12H1zM6 0h3v12H6z" fill="currentColor"></path></svg></sc-if><sc-if value="{{ mnPaused }}" hint-placeholder-val="{{ true }}"><svg width="10" height="12" viewBox="0 0 10 12" aria-hidden="true"><path d="M0 0l10 6-10 6z" fill="currentColor"></path></svg></sc-if></button><div class="mn_tr"><i style="width: 33%"></i></div><span class="mn_t">17:12 / 52:00</span></div>
 <div class="mn_net"><div><b>15</b>Brands</div><div><b>36</b>Locations</div><div><b>12</b>States</div></div>
 </div>
@@ -870,25 +900,16 @@ class Component extends DCLogic {
   _rv() {
     const s = this.state || {}, set = (o) => this.setState(o);
     const view = s.view || 'pipe';
-    /* Stand-in stages until New Partnerships confirms the real list */
-    const ST = [['Intro call', 1], ['NDA', 1], ['Financials', 16], ['Operations', 12], ['Meet the team', 4], ['Letter of intent', 3], ['Diligence', 20], ['Close', 6]];
+    /* Stages from the Pre-LOI SOP + call notes. [name, items tracked in stage] */
+    const ST = [['Intro call', 1], ['NDA', 1], ['Financials', 6], ['Pro forma call', 3], ['Valuation', 2], ['Offer', 3], ['Diligence', 3], ['Close', 2]];
+    /* [group, item, what, demo status, Claude first pass, change request] */
     const I0 = [
-      ['Statements', 'P&L 2023', 'Monthly, by location', 'ok'],
-      ['Statements', 'P&L 2024', 'Monthly, by location', 'fix', '', 'This one is annual. Can you export it monthly, by location?'],
-      ['Statements', 'P&L 2025 year to date', 'Through last month', 'rev', 'Monthly, by location. Matches the request.'],
-      ['Statements', 'Balance sheet 2024', 'Year end', 'ok'],
-      ['Statements', 'Balance sheet year to date', 'Through last month', 'todo'],
-      ['Tax', 'Business tax return 2022', 'All schedules', 'ok'],
-      ['Tax', 'Business tax return 2023', 'All schedules', 'ok'],
-      ['Tax', 'Business tax return 2024', 'All schedules', 'rev', 'All schedules present.'],
-      ['Payroll', 'Payroll register 2025', 'Year to date, all staff', 'ok'],
-      ['Payroll', 'Provider compensation plans', 'Commission, hourly or salary, per provider', 'todo'],
-      ['Revenue', 'Revenue by service 2024', 'From EMR or POS', 'todo'],
-      ['Revenue', 'Revenue by provider 2024', 'From EMR or POS', 'todo'],
-      ['Revenue', 'Membership roster and monthly recurring revenue', 'Current', 'todo'],
-      ['Obligations', 'Leases, all locations', 'Including amendments', 'rev', 'Laguna Niguel amendment 2 looks missing.'],
-      ['Obligations', 'Equipment loans and financing', 'Lender, balance, term', 'todo'],
-      ['Obligations', 'Accounts receivable and payable aging', 'Current', 'todo']
+      ['Top priority', 'P&L by month', 'Jan 2023 to YTD 2026, one file, a column per month, straight from QuickBooks / Excel', 'ok'],
+      ['Top priority', 'Collections by service line', 'Annual, 2023 to YTD 2026 / Excel if possible', 'rev', '4 years, 9 service lines. Totals tie to the P&L within 1%.'],
+      ['Secondary', 'Collections by provider by month', '2023 to YTD 2026, one file, a column per month / Excel', 'fix', '', 'This one ends Dec 2025. Can you extend it through last month?'],
+      ['Secondary', 'Payroll by employee by month', 'W-2 and 1099, 2023 to YTD 2026 / Excel, PDF allowed', 'todo'],
+      ['Secondary', 'Owner distributions by month', 'In addition to payroll compensation, 2023 to YTD 2026 / Excel', 'todo'],
+      ['Secondary', 'Balance sheet', 'Most recent month end / Excel, PDF allowed', 'ok']
     ];
     const st = s.items || I0.map((x) => x[3]);
     const notes = s.notes || {};
@@ -901,30 +922,28 @@ class Component extends DCLogic {
       ['Juniper Aesthetics', 'Boise, ID', 1, 0, 0, 3, 'AN'], ['Linden & Lane', 'Charleston, SC', 2, 0, 0, 9, 'TR'],
       ['Saltwater Skin', 'Wilmington, NC', 1, 1, 0, 6, 'AN'],
       ['Harbor Skin Co.', 'Newport Beach, CA', 2, -1, -1, 21, 'TR'],
-      ['Oak Hollow Aesthetics', 'Franklin, TN', 1, 2, 15, 12, 'TR', 'rev'], ['Meridian Face Studio', 'Scottsdale, AZ', 3, 2, 4, 34, 'AN', 'stall'],
-      ['Northline Med Spa', 'Minneapolis, MN', 2, 2, 2, 41, 'TR', 'stall'],
-      ['Kindred Aesthetics', 'Madison, WI', 2, 3, 5, 8, 'TR'], ['Bluff Point Aesthetics', 'Traverse City, MI', 1, 3, 12, 4, 'AN', 'rev'],
-      ['Atelier Skin', 'Santa Fe, NM', 1, 4, 2, 10, 'TR'], ['Clearwater Skin Bar', 'Sarasota, FL', 2, 5, 1, 15, 'AN'],
-      ['Fern & Field', 'Bend, OR', 1, 6, 14, 19, 'TR'], ['Quarry Hill MedSpa', 'Asheville, NC', 2, 6, 18, 6, 'AN'],
-      ['Hollis Medical Aesthetics', 'Richmond, VA', 3, 7, 4, 5, 'TR']
+      ['Oak Hollow Aesthetics', 'Franklin, TN', 1, 2, 6, 12, 'TR', 'rev'], ['Meridian Face Studio', 'Scottsdale, AZ', 3, 2, 2, 34, 'AN', 'stall'],
+      ['Northline Med Spa', 'Minneapolis, MN', 2, 2, 1, 41, 'TR', 'stall'],
+      ['Kindred Aesthetics', 'Madison, WI', 2, 3, 1, 8, 'TR'], ['Bluff Point Aesthetics', 'Traverse City, MI', 1, 3, 2, 4, 'AN'],
+      ['Atelier Skin', 'Santa Fe, NM', 1, 4, 1, 10, 'TR', 'hold'], ['Clearwater Skin Bar', 'Sarasota, FL', 2, 5, 1, 15, 'AN', 'neg'],
+      ['Fern & Field', 'Bend, OR', 1, 6, 2, 19, 'TR'], ['Quarry Hill MedSpa', 'Asheville, NC', 2, 6, 1, 6, 'AN'],
+      ['Hollis Medical Aesthetics', 'Richmond, VA', 3, 7, 1, 5, 'TR']
     ].map((x) => {
       if (x[3] === -1) return { name: x[0], city: x[1], locs: x[2], stage: hsStage, got: adv ? 0 : recv, days: adv ? 0 : x[5], owner: x[6], flag: adv ? '' : nRev ? 'rev' : nFix ? 'fix' : '', hs: true };
       return { name: x[0], city: x[1], locs: x[2], stage: x[3], got: x[4], days: x[5], owner: x[6], flag: x[7] || '' };
     });
     const ownerF = s.owner || 'all', focus = s.focus || '';
     const match = (d) => (ownerF === 'all' || d.owner === ownerF) && (!focus || (focus === 'rev' && (d.flag === 'rev')) || (focus === 'stall' && d.flag === 'stall') || (focus === 'late' && d.stage >= 5) || (focus === 'lead' && !d.flag && d.stage >= 2));
-    const FL = { rev: ['Ready for review', 'flag is-rev'], stall: ['Stalled', 'flag is-stall'], fix: ['Changes requested', 'flag is-fix'] };
+    const FL = { rev: ['Ready for review', 'flag is-rev'], stall: ['Stalled', 'flag is-stall'], fix: ['Changes requested', 'flag is-fix'], hold: ['Holding / exec Fri', 'flag is-rev'], neg: ['👎 Negotiating', 'flag is-fix'] };
     const go = (v) => () => set({ view: v });
     const nReady = L.filter((d) => d.flag === 'rev').length, nStall = L.filter((d) => d.flag === 'stall').length;
     /* queue */
     const qs = s.q || {};
     const Q = [
-      { id: 'q1', lead: 'Harbor Skin Co.', owner: 'Tyler', stage: 'Stage 3', item: 'P&L 2025 year to date', when: '2h ago', ai: 'Monthly, by location. Matches the request.', warn: false, idx: 2 },
-      { id: 'q2', lead: 'Harbor Skin Co.', owner: 'Tyler', stage: 'Stage 3', item: 'Business tax return 2024', when: 'Today', ai: 'All schedules present.', warn: false, idx: 7 },
-      { id: 'q3', lead: 'Harbor Skin Co.', owner: 'Tyler', stage: 'Stage 3', item: 'Leases, all locations', when: 'Yesterday', ai: 'Laguna Niguel amendment 2 looks missing.', warn: true, idx: 13 },
-      { id: 'q4', lead: 'Oak Hollow Aesthetics', owner: 'Tyler', stage: 'Stage 3', item: 'Whole stage sent for review', when: 'Yesterday', ai: '15 of 16 approved. Lead marked membership roster as not applicable.', warn: false, gate: true },
-      { id: 'q5', lead: 'Bluff Point Aesthetics', owner: 'Andrew', stage: 'Stage 4', item: 'Whole stage sent for review', when: '2 days ago', ai: 'All 12 received. Vendor list and org chart look complete.', warn: false, gate: true },
-      { id: 'q6', lead: 'Meridian Face Studio', owner: 'Andrew', stage: 'Stage 3', item: 'P&L 2024', when: '3 days ago', ai: 'Annual totals only. The request was monthly.', warn: true }
+      { id: 'q1', lead: 'Harbor Skin Co.', owner: 'Tyler', stage: 'Financials', item: 'Collections by service line', when: '2h ago', ai: '4 years, 9 service lines. Totals tie to the P&L within 1%.', warn: false, idx: 1 },
+      { id: 'q4', lead: 'Oak Hollow Aesthetics', owner: 'Tyler', stage: 'Financials', item: 'All six sent', when: 'Yesterday', ai: 'All six cover Jan 2023 to Sep 2026. Approving fires Milestone 1 and drafts the model.', warn: false, gate: true },
+      { id: 'q6', lead: 'Meridian Face Studio', owner: 'Andrew', stage: 'Financials', item: 'P&L by month', when: '3 days ago', ai: 'Annual totals only. The request was a column per month.', warn: true },
+      { id: 'q7', lead: 'Meridian Face Studio', owner: 'Andrew', stage: 'Financials', item: 'Payroll by employee by month', when: '3 days ago', ai: 'PDF, 2025 only. 2023 and 2024 missing.', warn: true }
     ];
     const qState = (q) => q.idx != null ? (st[q.idx] === 'ok' ? 'ok' : st[q.idx] === 'fix' ? 'fix' : 'open') : (qs[q.id] || 'open');
     const queue = Q.map((q) => {
@@ -947,7 +966,7 @@ class Component extends DCLogic {
       const v = st[i]; if (v === 'ok') g.ok++;
       g.items.push({
         t: x[1], sub: x[2], label: LAB[v], cls: 'cl_i is-' + v, dot: 'dot' + ({ ok: ' is-ok', rev: ' is-rev', fix: ' is-fix' }[v] || ''),
-        ai: v === 'rev' ? (x[4] || '') : '', aiCls: 'cl_ai' + (i === 13 ? ' is-warn' : ''), note: v === 'fix' ? (notes[i] || x[5] || '') : '',
+        ai: v === 'rev' ? (x[4] || '') : '', aiCls: 'cl_ai', note: v === 'fix' ? (notes[i] || x[5] || '') : '',
         canReview: v === 'rev', canNudge: v === 'todo' || v === 'fix', nudgeLabel: nudged[i] ? 'Nudged' : 'Nudge',
         ok: () => setItem(i, 'ok'), fix: () => setItem(i, 'fix', x[4] || 'Please re-upload.'), nudge: () => set({ nudged: Object.assign({}, nudged, { [i]: true }) })
       });
@@ -955,25 +974,61 @@ class Component extends DCLogic {
     groups.forEach((g) => { g.c = g.ok + ' / ' + g.items.length + ' approved'; });
     const allOk = nOk === total, canAdvance = allOk && !adv;
     const gateT = adv ? 'Stage 4 unlocked' : allOk ? 'Everything approved' : nTodo + nFix ? 'Waiting on Harbor Skin Co.' : 'Ready for your review';
-    const gateS = adv ? 'Jordan was notified by email. Operations checklist is live in their portal.' : allOk ? 'Approving moves them to Operations and notifies Jordan.' : nTodo + nFix ? (nTodo + ' to upload, ' + nFix + ' with changes requested, ' + nRev + ' waiting on you.') : (nRev + ' items waiting on you.');
+    const gateS = adv ? 'Milestone 1 fired in Jordan\'s portal. Claude drafted the model in Preston\'s template. Pro forma call invite sent.' : allOk ? 'Approving fires Milestone 1 for Jordan, runs the model draft and books the pro forma call with Preston.' : nTodo + nFix ? (nTodo + ' to upload, ' + nFix + ' with changes requested, ' + nRev + ' waiting on you.') : (nRev + ' items waiting on you.');
     const MSG = [
-      ['Tyler', 'Oct 21', 'Welcome to stage 3. Financials take a couple of passes for everyone, so upload as you go and I will review as they land.', 'team'],
-      ['Jordan Ellis', 'Yesterday', 'Leases are up. Laguna Niguel has a second amendment, I am tracking it down from the landlord.', 'lead'],
-      ['Tyler', 'Today', 'Thanks. One ask on the 2024 P&L: monthly, by location, same as 2023.', 'team']
+      ['Tyler', 'Oct 21', 'Welcome in. Six reports to start. Every one has steps in the portal if you have never pulled it. The P&L unlocks everything else.', 'team'],
+      ['Jordan Ellis', 'Yesterday', 'P&L and balance sheet are up. Payroll is coming out of Gusto, our bookkeeper is pulling it this week.', 'lead'],
+      ['Tyler', 'Today', 'Thanks. One ask on collections by provider: it ends Dec 2025. Can you extend it through last month?', 'team']
     ];
     const INT = [
-      ['Andrew', 'Today', 'Payroll register looks clean. Flag provider comp plans before LOI, they run commission at Laguna.', 'int'],
-      ['Tyler', 'Today', 'Agreed. Booking a call with Jordan this week to walk the leases.', 'int']
+      ['Andrew', 'Today', 'P&L ties out. Expect add-backs in owner distributions. Preston should see that file before the model runs.', 'int'],
+      ['Tyler', 'Today', 'Agreed. Holding the model run until distributions land.', 'int']
     ];
     const thr = s.thr || 'all';
-    const feed = (adv ? [['Now', 'You approved stage 3. Stage 4 unlocked.']] : []).concat([['2h ago', 'Jordan uploaded P&L 2025 year to date'], ['Today', 'Tyler requested changes on P&L 2024'], ['Yesterday', 'Jordan uploaded Leases, all locations'], ['Oct 21', 'Stage 2, NDA, approved by Tyler'], ['Oct 14', 'Portal invite sent from Smartsheet row']]).map((f) => ({ w: f[0], t: f[1] }));
+    const feed = (adv ? [['Now', 'You approved financials. Milestone 1 fired. Model drafted.']] : []).concat([['2h ago', 'Jordan uploaded Collections by service line'], ['Today', 'Tyler requested changes on Collections by provider'], ['Today', 'Auto-reminder sent: payroll, owner distributions'], ['Oct 21', 'NDA signed via e-sign. Portal opened'], ['Oct 14', 'Intro call. Smartsheet row created']]).map((f) => ({ w: f[0], t: f[1] }));
+    /* lead panels */
+    const gv = s.gv || {}, vote = (k, v) => set({ gv: Object.assign({}, gv, { [k]: gv[k] === v ? '' : v }) });
+    const model = !!s.model || adv, fupOff = !!s.fupOff, dil = s.dil || { q: 0, l: 0, i: 0 };
+    const A = (t, d, sv, k, extra) => Object.assign({ t, d, s: sv, cls: 'ar' + (k ? ' is-' + k : ''), bar: false, pct: '0%', vote: false, act: '', go: () => {} }, extra || {});
+    const V = (key, t, d, upS, dnS) => { const v = gv[key] || ''; return A(t, d, v === 'up' ? upS : v === 'dn' ? dnS : 'Holding', v === 'up' ? 'ok' : v === 'dn' ? 'no' : 'on', { vote: true, upCls: 'thumb' + (v === 'up' ? ' is-on' : ''), dnCls: 'thumb' + (v === 'dn' ? ' is-on' : ''), up: () => vote(key, 'up'), dn: () => vote(key, 'dn') }); };
+    const valOk = gv.exec === 'up' && gv.thur === 'up';
+    const D = (key, t, d, ms) => { const p = dil[key]; return A(t, d, p >= 100 ? ms + ' fired' : p ? p + '%' : 'Not started', p >= 100 ? 'ok' : p ? 'on' : '', { bar: true, pct: p + '%', act: p >= 100 ? '' : p ? '+25%' : 'Start', go: () => set({ dil: Object.assign({}, dil, { [key]: Math.min(100, p + 25) }) }) }); };
+    const panels = [
+      { t: 'Follow-ups', k: 'Admin only. Jordan never sees this.', rows: [
+        A('Automatic reminders', 'From NewPartnerships@. Every 48 hours while anything is open. Stops the moment Jordan uploads.', fupOff ? 'Paused' : allOk ? 'Done' : 'Next: [Thu 9:00]', fupOff ? '' : 'on', { act: allOk ? '' : fupOff ? 'Resume' : 'Pause', go: () => set({ fupOff: !fupOff }) }),
+        A('Last touch', 'Tyler / call / ' + (s.touch ? 'just now' : '3 days ago') + '. Calls and emails count, portal views do not.', s.touch ? 'Today' : '3 days', s.touch ? 'ok' : '', { act: 'Log touch', go: () => set({ touch: true }) }),
+        A('Daily status email', 'Every lead, stage and open item to New Partnerships at [7:00].', 'On', 'ok'),
+        A('Smartsheet', 'Stage and status sync to the pipeline row on every change.', 'Synced [2m ago]', 'ok', { act: 'Open ↗' })
+      ] },
+      { t: 'Claude', k: 'Preston\'s skill + Excel template. Runs when all six are approved.', rows: [
+        A('Coverage check', 'Reads every upload against the request: months covered, layout, totals tie. Shows as First pass above.', 'Per upload', 'ok'),
+        A('Initial model', 'Pro forma draft in Preston\'s Excel template, built with his skill. Updates live on the pro forma call.', model ? 'Drafted' : allOk ? 'Ready to run' : 'After financials', model ? 'ok' : allOk ? 'on' : '', { act: model ? 'Open in Excel ↗' : allOk ? 'Run now' : '', go: () => set({ model: true }) }),
+        A('SWOT + scorecard', 'Against deal criteria. Goes to the pro forma call and the Friday exec meeting.', model ? 'Drafted' : 'After financials', model ? 'ok' : '', { act: model ? 'Open ↗' : '' }),
+        A('Add-back questions', 'The line-by-line list Preston walks on the pro forma call.', model ? 'Drafted / 11 questions' : 'After financials', model ? 'ok' : '', { act: model ? 'Open ↗' : '' }),
+        A('LOI draft', 'Built from the approved valuation. Sent to Preston to edit, never straight to the lead.', valOk ? 'Sent to Preston' : 'After Thurston 👍', valOk ? 'ok' : '', { act: valOk ? 'Open draft ↗' : '' })
+      ] },
+      { t: 'Gates', k: 'Jordan sees a holding screen until each one clears.', rows: [
+        A('Financials', 'All six approved. Fires Milestone 1 in Jordan\'s portal.', allOk || adv ? 'Approved' : nOk + ' / 6 approved', allOk || adv ? 'ok' : 'on'),
+        V('exec', 'Friday exec meeting', 'Valuation review. 👎 sends the model back to Preston.', 'Approved', 'Back to Preston'),
+        V('thur', 'Monday, Thurston', 'Final sign-off on the valuation. 👍 drafts the LOI.', 'Approved', 'Holding'),
+        A('Offer response', 'Jordan answers in the portal after the offer call. 👎 means negotiate the number, and the deal holds here.', 'Waiting on offer call', ''),
+        A('LOI signed', 'DocuSign. Fires Milestone 2 and opens the Dropbox data room.', 'After offer', '')
+      ] },
+      { t: 'Diligence', k: 'Each update shows in Jordan\'s tracker.', rows: [
+        D('q', 'Quality of earnings', 'Cherry Bekaert with Jordan\'s accountant.', 'Milestone 3a'),
+        D('l', 'Legal', 'Alston & Bird with Jordan\'s attorney.', 'Milestone 3b'),
+        D('i', 'Insurance', 'Gallagher. Risk and insurance review.', 'Step 3'),
+        A('Data room', 'Dropbox. Jordan, their attorney and accountant, the advisors, Alpha SSO teams.', 'Opens at LOI', '', { act: 'Open ↗' })
+      ] }
+    ];
     const curIdx = hsStage;
     return {
       tabs: [['pipe', 'Pipeline'], ['queue', 'Review queue'], ['lead', 'Lead: Harbor Skin Co.']].map((t) => ({ label: t[1], cls: view === t[0] ? 'is-on' : '', go: go(t[0]) })),
-      resetAll: () => set({ items: null, notes: null, adv: false, q: null, nudged: null, owner: 'all', focus: '' }),
+      resetAll: () => set({ items: null, notes: null, adv: false, q: null, nudged: null, owner: 'all', focus: '', gv: null, model: false, fupOff: false, dil: null, touch: false }),
+      panels,
       navItems: [['pipe', 'Pipeline', ''], ['queue', 'Review', openQ ? String(openQ) : ''], ['lead', 'Leads', '']].map((t) => ({ label: t[1], badge: t[2], cls: view === t[0] ? 'is-on' : '', go: go(t[0]) })),
       vPipe: view === 'pipe', vQueue: view === 'queue', vLead: view === 'lead', goPipe: go('pipe'),
-      sums: [['', L.length, 'Active leads', ''], ['rev', nReady, 'Ready for review', ' is-gold'], ['lead', L.filter((d) => !d.flag && d.stage >= 2).length, 'Waiting on lead', ''], ['stall', nStall, 'Stalled 30+ days', ' is-warn'], ['late', L.filter((d) => d.stage >= 5).length, 'LOI and beyond', '']].map((x) => ({ n: x[1], l: x[2], cls: 'sumb' + x[3] + (focus === x[0] && x[0] ? ' is-on' : ''), go: () => set({ focus: focus === x[0] ? '' : x[0] }) })),
+      sums: [['', L.length, 'Active leads', ''], ['rev', nReady, 'Ready for review', ' is-gold'], ['lead', L.filter((d) => !d.flag && d.stage >= 2).length, 'Waiting on lead', ''], ['stall', nStall, 'Stalled 30+ days', ' is-warn'], ['late', L.filter((d) => d.stage >= 5).length, 'Offer and beyond', '']].map((x) => ({ n: x[1], l: x[2], cls: 'sumb' + x[3] + (focus === x[0] && x[0] ? ' is-on' : ''), go: () => set({ focus: focus === x[0] ? '' : x[0] }) })),
       owners: [['all', 'All'], ['TR', 'Tyler'], ['AN', 'Andrew']].map((o) => ({ l: o[1], cls: ownerF === o[0] ? 'is-on' : '', go: () => set({ owner: o[0] }) })),
       cols: ST.map((c, ci) => {
         const ds = L.filter((d) => d.stage === ci);
@@ -989,7 +1044,7 @@ class Component extends DCLogic {
       fillW: ((curIdx + (adv ? 0 : recv / total * .9)) / (ST.length - 1) * 100).toFixed(2) + '%',
       curNum: 3, curName: 'Financials', nextNum: 4, gateT, gateS, canAdvance, cantAdvance: !canAdvance && !adv && !(nTodo + nFix === 0 && nRev > 0),
       approveAllShow: !adv && nTodo + nFix === 0 && nRev > 0,
-      advance: () => set({ adv: true }),
+      advance: () => set({ adv: true, model: true }),
       approveAll: () => set({ items: st.map((x) => (x === 'rev' ? 'ok' : x)) }), nRevTxt: String(nRev),
       groups,
       tabAll: thr === 'all' ? 'is-on' : '', tabInt: thr === 'int' ? 'is-on' : '', showAll: () => set({ thr: 'all' }), showInt: () => set({ thr: 'int' }),

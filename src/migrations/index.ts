@@ -17,6 +17,7 @@ import * as migration_20261113_031223_location_google_snapshot from './20261113_
 import * as migration_20261123_210306_roles_jobs_contributors from './20261123_210306_roles_jobs_contributors';
 import * as migration_20261124_153330_training_university from './20261124_153330_training_university';
 import * as migration_20261125_001721_partner_portal from './20261125_001721_partner_portal';
+import * as migration_20261125_005459_portal_stages from './20261125_005459_portal_stages';
 
 export const migrations = [
   {
@@ -112,6 +113,11 @@ export const migrations = [
   {
     up: migration_20261125_001721_partner_portal.up,
     down: migration_20261125_001721_partner_portal.down,
-    name: '20261125_001721_partner_portal'
+    name: '20261125_001721_partner_portal',
+  },
+  {
+    up: migration_20261125_005459_portal_stages.up,
+    down: migration_20261125_005459_portal_stages.down,
+    name: '20261125_005459_portal_stages'
   },
 ];

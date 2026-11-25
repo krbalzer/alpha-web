@@ -9,9 +9,9 @@
 <x-dc>
 <helmet>
 <style>
-@font-face{font-family:"NHD";src:url(/_blob/bf901fbfee077add5b8fbd5af7b4b4a7) format("woff2");font-weight:900;font-display:swap;ascent-override:85.7%;descent-override:14.3%;line-gap-override:0%}@font-face{font-family:"NHD";src:url(/_blob/630fc1e4ee22b0eecfe2535aceaaad9c) format("woff2");font-weight:700;font-display:swap;ascent-override:85.7%;descent-override:14.3%;line-gap-override:0%}
-@font-face{font-family:"Diatype Mono";src:url(/_blob/bad569f2d2757d8e40320972d9f13e4b) format("opentype");font-weight:400;font-display:swap}
-@font-face{font-family:"Diatype Mono";src:url(/_blob/888f2a0a7a1517cff04dd7bb1810c18d) format("opentype");font-weight:700;font-display:swap}
+@font-face{font-family:"NHD";src:url(/_blob/f9a603aa0f56c324ac6fe8ab98d20b8a) format("woff2");font-weight:900;font-display:swap;ascent-override:85.7%;descent-override:14.3%;line-gap-override:0%}@font-face{font-family:"NHD";src:url(/_blob/a3e75b9ccbe1b69a9caf422722a630fa) format("woff2");font-weight:700;font-display:swap;ascent-override:85.7%;descent-override:14.3%;line-gap-override:0%}
+@font-face{font-family:"Diatype Mono";src:url(/_blob/f4611c53e1d6fb1d792562be0d2f3e40) format("opentype");font-weight:400;font-display:swap}
+@font-face{font-family:"Diatype Mono";src:url(/_blob/7cff80bab0e6342f596eb7ef5d78500f) format("opentype");font-weight:700;font-display:swap}
 :root{--bone:#DEDAD1;--bone-2:#D3CFC5;--ink:#0E0E0D;--paper:#E8E4DA;--muted:#5C5952;--muted-d:#9B978E;--line:rgba(14,14,13,.16);--line-d:rgba(232,228,218,.14);--map:#151513;--sf:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue",Arial,sans-serif;--mono:"Diatype Mono",ui-monospace,Menlo,monospace;--disp:"NHD","Helvetica Neue",Arial,sans-serif;--h3:"NHD","Helvetica Neue","HelveticaNeue",Helvetica,Arial,sans-serif;--ease:cubic-bezier(.22,.66,.16,1);--cw:clamp(280px,27vw,400px)}
 body{margin:0;background:var(--bone);color:var(--ink);font-family:var(--sf);-webkit-font-smoothing:antialiased}
 *{box-sizing:border-box}
@@ -656,6 +656,56 @@ button{font:inherit;color:inherit}
 .cl_i.is-ok .cl_s{color:#8FA98A}
 .cl_i.is-fix .cl_s{color:#D99A6C}
 .cl_i.is-rev .cl_s{color:#C9A26B}
+/* financials: format chip, how-to steps, Claude check */
+.cl_meta{display:flex;gap:12px;align-items:center;margin-top:9px;flex-wrap:wrap}
+.cl_fmt{font-family:var(--mono);font-size:9.5px;letter-spacing:.04em;text-transform:uppercase;border:1px solid var(--line-d);border-radius:999px;padding:3px 8px;color:#B5B1A8}
+.cl_tipb{background:none;border:0;border-bottom:1px solid rgba(232,228,218,.3);padding:0 0 1px;color:var(--paper);font-family:var(--mono);font-size:9.5px;letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
+.cl_tip{margin:12px 0 0;padding:14px 16px 14px 34px;background:#141412;border:1px solid var(--line-d);border-radius:4px;font-size:13px;line-height:1.55;color:#B5B1A8;max-width:34rem}
+.cl_tip li+li{margin-top:5px}
+.cl_tip li::marker{font-family:var(--mono);font-size:10px;color:var(--muted-d)}
+.cl_chk{margin:10px 0 0;font-size:12.5px;line-height:1.45;color:#B5C7B1}
+.cl_chk em{font-style:normal;font-family:var(--mono);font-size:9.5px;text-transform:uppercase;color:#8FA98A;margin-right:8px}
+/* dashboard card for stages without a checklist */
+.dh_card.is-col{grid-template-columns:1fr;gap:18px}
+.cardlist{list-style:none;margin:0;padding:0;border-top:1px solid var(--line-d)}
+.cardlist li{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line-d);font-size:13px}
+.cardlist em{font-style:normal;font-family:var(--mono);font-size:9.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted-d)}
+.cardlist li.is-on em{color:#C9A26B}.cardlist li.is-ok em{color:#8FA98A}
+.card_ctas{display:flex;gap:8px;flex-wrap:wrap}
+.card_ctas .btn{height:40px;padding:0 18px}
+.resp{border-top:1px solid var(--line-d);padding-top:16px}
+.resp p{font-size:13px;line-height:1.5;color:#B5B1A8;margin:0 0 12px}
+/* diligence tracker */
+.dil{margin-top:18px;border-top:1px solid var(--line-d)}
+.dil_r{display:grid;grid-template-columns:44px minmax(0,1.2fr) minmax(0,1fr) 160px 120px;gap:18px;align-items:center;padding:18px 0;border-bottom:1px solid var(--line-d)}
+.dil_r>span:first-child{font-family:var(--mono);font-size:10px;color:var(--muted-d)}
+.dil_r b{display:block;font-size:14px;font-weight:600}
+.dil_who{font-size:12.5px;line-height:1.45;color:var(--muted-d)}
+.dil_r div .dil_who{display:block;margin-top:2px}
+.dil_bar{display:block;height:3px;background:#2A2825;border-radius:2px;overflow:hidden}
+.dil_bar i{display:block;height:100%;background:var(--paper);transform-origin:0 50%;animation:clUp 1.2s var(--mo-e,ease) both}
+.dil_r.is-ok .dil_bar i{background:#8FA98A}
+.dil_s{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted-d);margin-top:8px}
+.dil_r.is-ok .dil_s{color:#8FA98A}.dil_r.is-on .dil_s{color:#C9A26B}
+.dil_ms{justify-self:end;font-family:var(--mono);font-size:9.5px;letter-spacing:.04em;text-transform:uppercase;border:1px solid var(--line-d);border-radius:999px;padding:4px 9px;color:#B5B1A8;white-space:nowrap}
+.dil_r.is-ok .dil_ms{border-color:#8FA98A;color:#8FA98A}
+/* milestone moment */
+.mso{position:fixed;inset:0;z-index:90;background:rgba(10,10,9,.95);display:grid;place-items:center;text-align:center;overflow:hidden;animation:msoIn .5s var(--mo-e,ease) both}
+.mso_rays{position:absolute;left:50%;top:50%;width:0;height:0}
+.mso_rays span{position:absolute;left:-.5px;bottom:0;width:1px;height:48vmax;background:linear-gradient(to top,transparent 6%,rgba(201,162,107,.6) 26%,transparent 92%);transform-origin:50% 100%;transform:rotate(var(--r)) scaleY(0);animation:msoRay 1.8s var(--mo-e,ease) var(--d) both}
+.mso_in{position:relative;max-width:660px;padding:0 24px}
+.mso_n{font-family:var(--disp);font-weight:900;font-size:clamp(140px,20vw,280px);line-height:.85;color:transparent;-webkit-text-stroke:1px rgba(232,228,218,.5);animation:msoUp .9s var(--mo-e,ease) .15s both}
+.mso_k{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#C9A26B;margin:18px 0 0;animation:msoUp .7s var(--mo-e,ease) .35s both}
+.mso_t{font-family:var(--disp);font-weight:900;text-transform:uppercase;font-size:clamp(36px,4.4vw,64px);line-height:.95;margin:14px 0 0;animation:msoUp .8s var(--mo-e,ease) .45s both}
+.mso_s{font-size:15px;line-height:1.5;color:#B5B1A8;margin:16px auto 0;max-width:30rem;animation:msoUp .7s var(--mo-e,ease) .6s both}
+.mso_pips{display:flex;gap:6px;justify-content:center;margin:30px 0 26px;animation:msoUp .7s var(--mo-e,ease) .7s both}
+.mso_pips i{width:28px;height:2px;background:#2A2825}.mso_pips i.is-on{background:#C9A26B}
+.mso .btn{animation:msoUp .7s var(--mo-e,ease) .85s both}
+@keyframes msoIn{from{opacity:0}}
+@keyframes msoRay{0%{transform:rotate(var(--r)) scaleY(0);opacity:1}100%{transform:rotate(var(--r)) scaleY(1);opacity:.16}}
+@keyframes msoUp{from{opacity:0;transform:translateY(16px)}}
+@media (prefers-reduced-motion:reduce){.mso,.mso *{animation:none!important}.mso_rays{display:none}}
+@media (max-width:900px){.dil_r{grid-template-columns:32px minmax(0,1fr) auto}.dil_r>:nth-child(3),.dil_r>:nth-child(4){display:none}}
 .cl_b{justify-self:end;height:30px;padding:0 14px;font-size:10px}
 .cl_i.is-todo .cl_b{background:var(--paper);color:var(--ink);border-color:var(--paper)}
 .cl_prog{display:block;height:2px;background:#2A2825;margin-top:10px;overflow:hidden;max-width:260px}
@@ -717,14 +767,15 @@ a:hover .img img,a:hover .card_img img{transform:scale(1.025)}
 <div class="pdemo"><div class="wrap">
 <span class="k" style="color: #9B978E">Partner portal / post-NDA</span>
 <div class="pdemo_tabs"><sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4"><button class="{{ t.cls }}" onClick="{{ t.go }}">{{ t.label }}</button></sc-for></div>
-<span class="pdemo_r"><button class="chipb" onClick="{{ fillAll }}">Simulate: all received</button><button class="chipb" onClick="{{ resetAll }}">Reset</button><i class="pdraft">Stand-in stages + copy</i></span>
+<div class="pdemo_tabs"><sc-for list="{{ stChips }}" as="t" hint-placeholder-count="6"><button class="{{ t.cls }}" onClick="{{ t.go }}">{{ t.label }}</button></sc-for></div>
+<span class="pdemo_r"><button class="chipb" onClick="{{ fillAll }}">Simulate: all approved</button><button class="chipb" onClick="{{ playMs }}">Play milestone</button><button class="chipb" onClick="{{ resetAll }}">Reset</button><i class="pdraft">Draft copy / brackets = stand-in</i></span>
 </div></div>
 
 <!-- ============ SIGN IN ============ -->
 <sc-if value="{{ vSignin }}" hint-placeholder-val="{{ false }}">
 <section class="si">
 <div class="si_in">
-<img class="si_logo" src="/_blob/8c6e58a26569a1b0aff6a21dd2464ff0" alt="Alpha">
+<img class="si_logo" src="/_blob/e7a3ffbae3a341015cd7c397d3a9c185" alt="Alpha">
 <p class="eyebrow" style="color: #9B978E">Partner portal</p>
 <h1 class="display si_t">Welcome back,<br>Jordan.</h1>
 <sc-if value="{{ siForm }}" hint-placeholder-val="{{ true }}">
@@ -745,7 +796,7 @@ a:hover .img img,a:hover .card_img img{transform:scale(1.025)}
 <!-- ============ PORTAL NAV ============ -->
 <header class="pnav"><div class="wrap pnav_in">
 <button class="pnav_who" onClick="{{ goProfile }}"><span class="pnav_av">HS</span><span><b>Harbor Skin Co.</b><em>Jordan Ellis</em></span></button>
-<a class="nav_logo" href="#home" onClick="{{ goDash }}"><img src="/_blob/8c6e58a26569a1b0aff6a21dd2464ff0" alt="Alpha"></a>
+<a class="nav_logo" href="#home" onClick="{{ goDash }}"><img src="/_blob/e7a3ffbae3a341015cd7c397d3a9c185" alt="Alpha"></a>
 <nav class="pnav_r" aria-label="Portal"><sc-for list="{{ navItems }}" as="n" hint-placeholder-count="3"><button class="{{ n.cls }}" onClick="{{ n.go }}">{{ n.label }}</button></sc-for></nav>
 </div></header>
 
@@ -765,20 +816,41 @@ a:hover .img img,a:hover .card_img img{transform:scale(1.025)}
 <h1 class="display dh_t">Stage {{ cur.num }}</h1>
 <p class="dh_name">{{ cur.t }}</p>
 <p class="lede dh_d">{{ cur.d }}</p>
-<div class="dh_ctas"><button class="btn btn-fill" onClick="{{ goStage }}">{{ ctaLabel }}</button><button class="btn" onClick="{{ goProfile }}">Your Alpha profile</button></div>
+<div class="dh_ctas"><button class="btn btn-fill" onClick="{{ ctaGo }}">{{ ctaLabel }}</button><button class="btn" onClick="{{ goProfile }}">Your Alpha profile</button></div>
 </div>
+<div>
+<sc-if value="{{ vRing }}" hint-placeholder-val="{{ true }}">
 <div class="dh_card">
 <div class="ring" style="--p: {{ pct }}"><b>{{ recv }}</b><span>of {{ total }}</span></div>
 <div class="dh_card_t"><p class="k" style="color: #9B978E">{{ cardK }}</p><p class="dh_card_h">{{ cardH }}</p><p class="dh_card_s">{{ cardS }}</p></div>
 </div>
+</sc-if>
+<sc-if value="{{ vList }}" hint-placeholder-val="{{ false }}">
+<div class="dh_card is-col">
+<div><p class="k" style="color: #9B978E">{{ cardK }}</p><p class="dh_card_h">{{ cardH }}</p><p class="dh_card_s">{{ cardS }}</p></div>
+<ul class="cardlist"><sc-for list="{{ cardRows }}" as="r" hint-placeholder-count="3"><li class="{{ r.cls }}"><span class="{{ r.dot }}"></span><span>{{ r.t }}</span><em>{{ r.s }}</em></li></sc-for></ul>
+<sc-if value="{{ vResp }}" hint-placeholder-val="{{ false }}"><div class="resp"><p>{{ respQ }}</p><div class="card_ctas"><sc-for list="{{ respBtns }}" as="b" hint-placeholder-count="2"><button class="{{ b.cls }}" onClick="{{ b.go }}">{{ b.t }}</button></sc-for></div></div></sc-if>
+<sc-if value="{{ vCardCta }}" hint-placeholder-val="{{ false }}"><div class="card_ctas"><button class="btn btn-fill" onClick="{{ cardGo }}">{{ cardCta }}</button></div></sc-if>
+</div>
+</sc-if>
+</div>
 </div></section>
+
+<!-- diligence tracker (stage 7+) -->
+<sc-if value="{{ vDil }}" hint-placeholder-val="{{ false }}">
+<section class="dsec"><div class="wrap">
+<div class="sec_h"><p class="eyebrow">Diligence tracker</p><a class="btn" href="#dataroom">Open the data room ↗</a></div>
+<p class="prof_line">One shared Dropbox data room for you, your attorney and your accountant. Requests show up here as they come in.</p>
+<div class="dil"><sc-for list="{{ dil }}" as="d" hint-placeholder-count="3"><div class="{{ d.cls }}"><span>{{ d.n }}</span><div><b>{{ d.t }}</b><span class="dil_who">{{ d.who }}</span></div><span class="dil_who">{{ d.what }}</span><div><span class="dil_bar"><i style="width: {{ d.pct }}"></i></span><span class="dil_s">{{ d.s }}</span></div><span class="dil_ms">{{ d.ms }}</span></div></sc-for></div>
+</div></section>
+</sc-if>
 
 <section class="dsec"><div class="wrap dgrid">
 <div class="guide">
 <p class="eyebrow">Your guide</p>
-<div class="guide_who"><span class="guide_img">TR</span><div><b>Tyler [Last name]</b><span>New Partnerships</span></div></div>
-<p class="guide_msg">“[Short note from Tyler for this stage. Recorded or written. What to focus on this week, and that it's normal for financials to take a couple of passes.]”</p>
-<div class="guide_ctas"><a class="btn" href="#book">Book 30 minutes</a><a class="btn" href="#msg">Message Tyler</a></div>
+<div class="guide_who"><span class="guide_img">{{ g.ini }}</span><div><b>{{ g.name }}</b><span>{{ g.role }}</span></div></div>
+<p class="guide_msg">“{{ g.msg }}”</p>
+<div class="guide_ctas"><a class="btn" href="#book">Book 30 minutes</a><a class="btn" href="#msg">Message {{ g.first }}</a></div>
 </div>
 <div class="story">
 <p class="eyebrow">From a partner who did this</p>
@@ -810,12 +882,12 @@ a:hover .img img,a:hover .card_img img{transform:scale(1.025)}
 <!-- ============ STAGE ============ -->
 <sc-if value="{{ vStage }}" hint-placeholder-val="{{ false }}">
 <section class="st_h"><div class="wrap dh_grid">
-<div><h1 class="display dh_t">Stage {{ cur.num }}</h1><p class="dh_name">{{ cur.t }}</p></div>
-<p class="lede dh_d" style="margin-top: 8px">{{ cur.d }}</p>
+<div><h1 class="display dh_t">Stage {{ fin.num }}</h1><p class="dh_name">{{ fin.t }}</p></div>
+<p class="lede dh_d" style="margin-top: 8px">{{ fin.d }}</p>
 </div></section>
 
 <section class="dsec flush"><div class="wrap">
-<div class="st_v"><span class="ph">Stage 3 walkthrough / Tyler, 2 min / Cloudflare Stream</span><button class="play" aria-label="Play stage walkthrough"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z" fill="currentColor"></path></svg></button></div>
+<div class="st_v"><span class="ph">Financials walkthrough / Tyler, 2 min / Cloudflare Stream</span><button class="play" aria-label="Play stage walkthrough"><svg width="12" height="14" viewBox="0 0 12 14" aria-hidden="true"><path d="M0 0l12 7-12 7z" fill="currentColor"></path></svg></button></div>
 </div></section>
 
 <section class="dsec"><div class="wrap st_grid">
@@ -824,10 +896,10 @@ a:hover .img img,a:hover .card_img img{transform:scale(1.025)}
 <div class="st_count"><b>{{ recv }}</b><span>/ {{ total }} received</span></div>
 <div class="pbar"><i style="width: {{ pct100 }}"></i></div>
 <ul class="legend"><li><span class="dot is-ok"></span>Approved <em>{{ nOk }}</em></li><li><span class="dot is-rev"></span>In review <em>{{ nRev }}</em></li><li><span class="dot is-fix"></span>Needs changes <em>{{ nFix }}</em></li><li><span class="dot"></span>To do <em>{{ nTodo }}</em></li></ul>
-<p class="st_note">Files go straight to a private folder only you and the New Partnerships team can open. Each one is reviewed by a person.</p>
-<sc-if value="{{ canSubmit }}" hint-placeholder-val="{{ false }}"><button class="btn btn-fill st_submit" onClick="{{ submit }}">Send stage {{ cur.num }} for review</button></sc-if>
-<sc-if value="{{ cantSubmit }}" hint-placeholder-val="{{ true }}"><button class="btn st_submit is-off" disabled>Send for review</button><p class="st_hint">{{ submitHint }}</p></sc-if>
-<sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}"><p class="st_done"><b>Sent to Tyler.</b> You'll hear back within [2 business days]. Stage 4 unlocks when it's approved.</p></sc-if>
+<p class="st_note">Excel files only, straight from your software, no edits. Payroll and the balance sheet can be PDFs. Everything lands in a private deal folder only you and the New Partnerships team can open, and a person reviews every file.</p>
+<sc-if value="{{ canSubmit }}" hint-placeholder-val="{{ false }}"><button class="btn btn-fill st_submit" onClick="{{ submit }}">Send financials to Tyler</button></sc-if>
+<sc-if value="{{ cantSubmit }}" hint-placeholder-val="{{ true }}"><button class="btn st_submit is-off" disabled>Send financials to Tyler</button><p class="st_hint">{{ submitHint }}</p></sc-if>
+<sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}"><p class="st_done"><b>Sent to Tyler.</b> You'll hear back within [2 business days]. When all six are approved, Preston starts your pro forma.</p></sc-if>
 </aside>
 <div class="cl">
 <sc-for list="{{ groups }}" as="g" hint-placeholder-count="5">
@@ -836,7 +908,7 @@ a:hover .img img,a:hover .card_img img{transform:scale(1.025)}
 <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
 <div class="{{ it.cls }}">
 <span class="{{ it.dot }}"></span>
-<div class="cl_t"><b>{{ it.t }}</b><span>{{ it.sub }}</span><sc-if value="{{ it.note }}" hint-placeholder-val="{{ false }}"><p class="cl_note"><em>Tyler</em>{{ it.note }}</p></sc-if><sc-if value="{{ it.up }}" hint-placeholder-val="{{ false }}"><span class="cl_prog"><i></i></span></sc-if></div>
+<div class="cl_t"><b>{{ it.t }}</b><span>{{ it.sub }}</span><div class="cl_meta"><span class="cl_fmt">{{ it.fmt }}</span><button class="cl_tipb" onClick="{{ it.tipGo }}">{{ it.tipL }}</button></div><sc-if value="{{ it.tipOn }}" hint-placeholder-val="{{ false }}"><ol class="cl_tip"><sc-for list="{{ it.tips }}" as="p" hint-placeholder-count="4"><li>{{ p }}</li></sc-for></ol></sc-if><sc-if value="{{ it.chk }}" hint-placeholder-val="{{ false }}"><p class="cl_chk"><em>Claude check</em>{{ it.chk }}</p></sc-if><sc-if value="{{ it.note }}" hint-placeholder-val="{{ false }}"><p class="cl_note"><em>Tyler</em>{{ it.note }}</p></sc-if><sc-if value="{{ it.up }}" hint-placeholder-val="{{ false }}"><span class="cl_prog"><i></i></span></sc-if></div>
 <span class="cl_s">{{ it.label }}</span>
 <sc-if value="{{ it.act }}" hint-placeholder-val="{{ true }}"><button class="btn cl_b" onClick="{{ it.go }}">{{ it.act }}</button></sc-if>
 </div>
@@ -873,6 +945,14 @@ a:hover .img img,a:hover .card_img img{transform:scale(1.025)}
 
 <footer class="pfoot"><div class="wrap pfoot_in"><span>Confidential. Shared under NDA between Harbor Skin Co. and Alpha Aesthetics Partners.</span><span><a href="#security">How we protect your files</a> · <a href="#privacy">Privacy</a> · <button class="ulink" style="background: none; border-top: 0; border-left: 0; border-right: 0; cursor: pointer; color: inherit; padding: 0 0 2px" onClick="{{ signOut }}">Sign out</button></span></div></footer>
 </sc-if>
+
+<!-- ============ MILESTONE MOMENT ============ -->
+<sc-if value="{{ msOn }}" hint-placeholder-val="{{ false }}">
+<div class="mso" role="dialog" aria-modal="true" aria-label="{{ ms.k }}">
+<div class="mso_rays" aria-hidden="true"><sc-for list="{{ msRays }}" as="r" hint-placeholder-count="24"><span style="--r: {{ r.r }}; --d: {{ r.d }}"></span></sc-for></div>
+<div class="mso_in"><div class="mso_n">{{ ms.n }}</div><p class="mso_k">{{ ms.k }}</p><p class="mso_t">{{ ms.t }}</p><p class="mso_s">{{ ms.s }}</p><div class="mso_pips"><sc-for list="{{ msPips }}" as="p" hint-placeholder-count="5"><i class="{{ p.cls }}"></i></sc-for></div><button class="btn btn-fill" onClick="{{ msClose }}">Continue</button></div>
+</div>
+</sc-if>
 </div>
 
 
@@ -880,7 +960,7 @@ a:hover .img img,a:hover .card_img img{transform:scale(1.025)}
 <div class="{{ mnCls }}" id="site-menu" role="dialog" aria-modal="true" aria-label="Site menu">
 <div class="wrap mn_top">
 <button class="mn_x" onClick="{{ mnClose }}" aria-label="Close menu"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.4"></path></svg>Close<em>Esc</em></button>
-<a class="nav_logo" href="#home" onClick="{{ mnClose }}"><img src="/_blob/8c6e58a26569a1b0aff6a21dd2464ff0" alt="Alpha"></a>
+<a class="nav_logo" href="#home" onClick="{{ mnClose }}"><img src="/_blob/e7a3ffbae3a341015cd7c397d3a9c185" alt="Alpha"></a>
 <a class="btn" href="#talk" onClick="{{ mnClose }}">Let&#39;s talk</a>
 </div>
 <div class="wrap mn_body">
@@ -965,39 +1045,38 @@ class Component extends DCLogic {
   _rv() {
     const s = this.state || {}, set = (o) => this.setState(o);
     const view = s.view || 'dash';
-    /* Stand-in stages until New Partnerships confirms the real list */
+    /* Stages from the Pre-LOI SOP + call notes. Partner-facing copy is drafted. Numbers stay on calls, never in the portal. */
     const ST = [
       ['Intro call', 'A first conversation about your practice and what you want next.'],
-      ['NDA', 'Mutual NDA so we can share real numbers both ways.'],
-      ['Financials', 'Three years of financials, tax returns, payroll and leases. This is how we build an honest picture of your practice, and it is the stage that takes the longest. Upload as you go; Tyler reviews each file.'],
-      ['Operations', 'How the practice runs day to day: team, systems, vendors, schedule.'],
-      ['Meet the team', 'Site visit, and time with the Alpha leaders you would work with.'],
-      ['Letter of intent', 'Terms in writing, walked through line by line.'],
-      ['Diligence', 'Final confirmation of everything above, with our advisors.'],
-      ['Close', 'Signing, then your integration plan starts.']
+      ['NDA', 'Mutual NDA, signed electronically. The portal opens the moment it is signed.'],
+      ['Financials', 'Six reports, January 2023 to last month. Most come straight out of QuickBooks or your EMR, and every one has steps if you have never pulled it. Tyler reviews each file. When all six are approved, Preston starts your pro forma.'],
+      ['Pro forma call', 'Preston walks you through the model line by line: your P&L, the adjustments, and what the practice looks like inside Alpha. Changes happen live, on the call.'],
+      ['Valuation', 'Alpha leadership reviews the model. Nothing for you to do here. We will call you the moment there is news.'],
+      ['Offer', 'We walk you through the offer together on a call. If it works for you, the letter of intent comes here to sign. If it does not, we talk about the number.'],
+      ['Diligence', 'Quality of earnings, legal and insurance, with our advisors and yours. Every workstream is tracked here.'],
+      ['Close', 'Signing day. Your integration plan starts the week after.']
     ];
-    const CUR = 2;
+    const CUR = s.cur == null ? 2 : s.cur;
+    /* [group, item, what, format, demo status, Tyler note, Claude check] */
     const I0 = [
-      ['Statements', 'P&L 2023', 'Monthly, by location', 'ok'],
-      ['Statements', 'P&L 2024', 'Monthly, by location', 'fix', 'This one is annual. Can you export it monthly, by location?'],
-      ['Statements', 'P&L 2025 year to date', 'Through last month', 'rev'],
-      ['Statements', 'Balance sheet 2024', 'Year end', 'ok'],
-      ['Statements', 'Balance sheet year to date', 'Through last month', 'todo'],
-      ['Tax', 'Business tax return 2022', 'All schedules', 'ok'],
-      ['Tax', 'Business tax return 2023', 'All schedules', 'ok'],
-      ['Tax', 'Business tax return 2024', 'All schedules', 'rev'],
-      ['Payroll', 'Payroll register 2025', 'Year to date, all staff', 'ok'],
-      ['Payroll', 'Provider compensation plans', 'Commission, hourly or salary, per provider', 'todo'],
-      ['Revenue', 'Revenue by service 2024', 'From your EMR or POS', 'todo'],
-      ['Revenue', 'Revenue by provider 2024', 'From your EMR or POS', 'todo'],
-      ['Revenue', 'Membership roster and monthly recurring revenue', 'Current', 'todo'],
-      ['Obligations', 'Leases, all locations', 'Including amendments', 'rev'],
-      ['Obligations', 'Equipment loans and financing', 'Lender, balance, term', 'todo'],
-      ['Obligations', 'Accounts receivable and payable aging', 'Current', 'todo']
+      ['Top priority', 'P&L by month', 'Jan 2023 to last month. One file, a column per month, exported straight from QuickBooks.', 'Excel', 'ok', '', 'Covers Jan 2023 to Sep 2026, 45 monthly columns. QuickBooks layout, untouched.'],
+      ['Top priority', 'Collections by service line', 'Annual totals, 2023 to year to date. From your EMR or POS.', 'Excel', 'rev', '', '4 years, 9 service lines. Totals tie to the P&L within 1%.'],
+      ['Secondary', 'Collections by provider by month', 'Every provider, one file, a column per month.', 'Excel', 'fix', 'This one ends Dec 2025. Can you extend it through last month?', 'Ends Dec 2025. Nine months short.'],
+      ['Secondary', 'Payroll by employee by month', 'W-2 and 1099, Jan 2023 to last month. A PDF is fine.', 'Excel or PDF', 'todo', '', ''],
+      ['Secondary', 'Owner distributions by month', 'Anything paid to owners outside payroll, Jan 2023 to last month.', 'Excel', 'todo', '', ''],
+      ['Secondary', 'Balance sheet', 'Most recent month end. A PDF is fine.', 'Excel or PDF', 'ok', '', 'As of Sep 30, 2026. Assets equal liabilities plus equity.']
     ];
-    const st = s.items || I0.map((x) => x[3]);
-    const items = I0.map((x, i) => ({ g: x[0], t: x[1], sub: x[2], st: st[i], note: st[i] === 'fix' ? (x[4] || '') : '' }));
-    const setItem = (i, v) => { const n = (this.state.items || I0.map((x) => x[3])).slice(); n[i] = v; set({ items: n }); };
+    const TIPS = [
+      ['In QuickBooks Online, open Reports and search Profit and Loss.', 'Set the period to Jan 1, 2023 through the last day of last month.', 'Set Display columns by to Months, then Run report.', 'Export to Excel. Upload it as is, no edits.'],
+      ['In your EMR or POS, open the sales or collections report.', 'Group by category or service line, one column per year.', 'Date range Jan 1, 2023 to today. Export to Excel.'],
+      ['Same report, grouped by provider instead of service.', 'Columns by month, Jan 2023 to last month.', 'Export to Excel. One file for all providers.'],
+      ['In Gusto, ADP or Paychex, run the payroll journal or register.', 'Group by employee and by month. Include 1099 contractors and benefits.', 'Export to Excel. A PDF works if that is all your system gives you.'],
+      ['In QuickBooks, run Transaction Detail by Account.', 'Filter to Owner\'s Draw or Distributions, grouped by month.', 'Jan 2023 to last month. Export to Excel.'],
+      ['In QuickBooks, open Reports and run Balance Sheet.', 'Set the date to the last day of last month.', 'Export to Excel or save as PDF.']
+    ];
+    const st = s.items || I0.map((x) => x[4]);
+    const items = I0.map((x, i) => ({ g: x[0], t: x[1], sub: x[2], fmt: x[3], st: st[i], note: st[i] === 'fix' ? x[5] : '', chk: st[i] === 'fix' ? x[6] : (st[i] === 'ok' || st[i] === 'rev') ? (x[6] && x[4] !== 'fix' ? x[6] : 'Covers Jan 2023 to Sep 2026. Format looks right. With Tyler.') : '' }));
+    const setItem = (i, v) => { const n = (this.state.items || I0.map((x) => x[4])).slice(); n[i] = v; set({ items: n }); };
     const upload = (i) => { setItem(i, 'up'); setTimeout(() => setItem(i, 'rev'), 1300); };
     const n = (k) => items.filter((x) => x.st === k).length;
     const nOk = n('ok'), nRev = n('rev') + n('up'), nFix = n('fix'), nTodo = n('todo'), total = items.length, recv = total - nTodo - nFix;
@@ -1008,7 +1087,7 @@ class Component extends DCLogic {
     items.forEach((it, i) => {
       let g = groups.find((x) => x.t === it.g);
       if (!g) { g = { t: it.g, items: [] }; groups.push(g); }
-      g.items.push({ t: it.t, sub: it.sub, note: it.note, up: it.st === 'up', cls: 'cl_i is-' + it.st, dot: 'dot' + ({ ok: ' is-ok', rev: ' is-rev', fix: ' is-fix', up: ' is-up' }[it.st] || ''), label: LAB[it.st], act: ACT[it.st], go: () => { if (it.st === 'todo' || it.st === 'fix') upload(i); } });
+      g.items.push({ t: it.t, sub: it.sub, note: it.note, fmt: it.fmt, chk: it.chk, tips: TIPS[i], tipOn: s.tip === i, tipL: s.tip === i ? 'Hide steps' : 'How do I pull this?', tipGo: () => set({ tip: s.tip === i ? null : i }), up: it.st === 'up', cls: 'cl_i is-' + it.st, dot: 'dot' + ({ ok: ' is-ok', rev: ' is-rev', fix: ' is-fix', up: ' is-up' }[it.st] || ''), label: LAB[it.st], act: ACT[it.st], go: () => { if (it.st === 'todo' || it.st === 'fix') upload(i); } });
     });
     groups.forEach((g) => { const done = g.items.filter((x) => x.cls.indexOf('is-ok') > -1).length; g.c = done + ' / ' + g.items.length + ' approved'; });
     const pct = Math.round(recv / total * 100);
@@ -1016,25 +1095,90 @@ class Component extends DCLogic {
     const SVC = ['Injectables', 'Lasers', 'Facials', 'Skincare', 'Wellness', 'Weight loss', 'Hormone therapy', 'Body'];
     const svcOn = s.svc || ['Injectables', 'Lasers', 'Skincare'];
     const go = (v) => () => { set({ view: v }); if (typeof window !== 'undefined') window.scrollTo && window.scrollTo(0, 0); };
+    const noop = () => {};
+    /* per-stage dashboard card (stages 4 to 8) */
+    const resp = s.resp || '';
+    const R = (t, v, k) => ({ t, s: v, cls: k ? 'is-' + k : '', dot: 'dot' + (k === 'ok' ? ' is-ok' : k === 'on' ? ' is-rev' : '') });
+    const CARDS = {
+      3: { k: 'Next', h: 'Pro forma call with Preston', s: '[Thu, Nov 19 / 10:00 PT] / 60 min / Zoom. Bring whoever knows your books.', rows: [R('Financials', 'Approved', 'ok'), R('Pro forma drafted', 'Ready', 'ok'), R('Walkthrough call', '[Nov 19]', 'on')], cta: 'Add to calendar', go: noop },
+      4: { k: 'With Alpha leadership', h: 'Your valuation is in review', s: 'Nothing to do on your side. This usually takes [about a week]. We will call you as soon as there is news.', rows: [R('Pro forma call', 'Done', 'ok'), R('Leadership review', 'This week', 'on'), R('Offer call', 'Next', '')], cta: '', go: noop },
+      5: resp === 'yes'
+        ? { k: 'Letter of intent', h: 'Ready to sign', s: 'The letter of intent from your offer call, signed through DocuSign.', rows: [R('Offer call', 'Done', 'ok'), R('Your response', 'Ready', 'ok'), R('Letter of intent', 'To sign', 'on')], cta: 'Sign the LOI (demo)', go: () => set({ cur: 6, resp: '', ms: 'm2' }) }
+        : resp === 'talk'
+          ? { k: 'Offer', h: 'Let\'s talk it through', s: 'Tyler will set up a call this week. Take the time you need.', rows: [R('Offer call', 'Done', 'ok'), R('Your response', 'Let\'s talk', 'on'), R('Follow-up call', '[This week]', '')], cta: '', go: noop }
+          : { k: 'Offer', h: 'Your offer call', s: '[Tue, Dec 8 / 11:00 PT] with Tyler and Preston. We walk through the offer together, on the call.', rows: [R('Valuation', 'Done', 'ok'), R('Offer call', '[Dec 8]', 'on'), R('Your response', 'After the call', '')], cta: '', go: noop },
+      6: { k: 'Diligence', h: 'Three workstreams, one tracker', s: 'Quality of earnings first, then legal, then insurance. Details below.', rows: [R('Quality of earnings', 'Complete', 'ok'), R('Legal', 'In progress', 'on'), R('Insurance', 'Next', '')], cta: 'Open the data room', go: noop },
+      7: { k: 'Close', h: 'Signing day', s: '[Date]. Closing documents through DocuSign. Your integration plan starts the week after.', rows: [R('Diligence', 'Complete', 'ok'), R('Closing documents', 'To sign', 'on'), R('Integration kickoff', '[Week after]', '')], cta: 'Sign (demo)', go: () => set({ ms: 'm4' }) }
+    };
+    const card = CARDS[CUR] || null;
+    const ATTN = {
+      3: [{ t: 'Confirm the pro forma call', n: 'Preston / 60 min / [Nov 19]', dot: 'dot' }],
+      4: [{ t: 'Nothing needs you right now', n: 'We will reach out when leadership is done.', dot: 'dot is-ok' }],
+      5: [resp === 'yes' ? { t: 'Sign the letter of intent', n: 'DocuSign / from your offer call', dot: 'dot is-rev' } : { t: 'Offer call', n: '[Tue, Dec 8 / 11:00 PT]', dot: 'dot' }],
+      6: [{ t: 'Legal: 4 requests open', n: 'From Alston & Bird, in the data room', dot: 'dot is-rev' }, { t: 'Insurance policies', n: 'Gallagher asks once legal wraps', dot: 'dot' }],
+      7: [{ t: 'Closing documents', n: 'DocuSign / [date]', dot: 'dot is-rev' }]
+    };
+    const EV = [[3, 'Nov 6', 'Milestone 1. All six financials approved'], [4, 'Nov 19', 'Pro forma call with Preston'], [5, 'Dec 1', 'Leadership review complete'], [6, 'Dec 8', 'Milestone 2. Letter of intent signed'], [6, 'Dec 9', 'Data room opened'], [6, 'Jan 22', 'Milestone 3a. Quality of earnings complete'], [7, 'Feb 10', 'Milestone 3b. Legal diligence complete']];
+    const BASE = [['Today', 'Tyler approved P&L by month'], ['Today', 'Tyler asked for changes on Collections by provider'], ['Yesterday', 'You uploaded Collections by service line'], ['Oct 21', 'NDA signed. Portal opened'], ['Oct 14', 'Intro call with Tyler']];
+    const feedL = EV.filter((e) => e[0] <= CUR).reverse().map((e) => [e[1], e[2]]).concat(BASE).slice(0, 5);
+    const TY = ['TR', 'Tyler [Last name]', 'New Partnerships', 'Tyler'];
+    const GD = {
+      2: TY.concat(['[Short note from Tyler. Most practices take two passes on financials, and that is normal. Start with the P&L. It unlocks everything else.]']),
+      3: ['PR', 'Preston [Last name]', 'Finance', 'Preston', '[Note from Preston. What a pro forma is, what an adjustment is, and that nothing on the call is final.]'],
+      4: TY.concat(['[Note from Tyler. Leadership meets on Fridays. A quiet week is normal.]']),
+      5: TY.concat(['[Note from Tyler. The offer is a starting point. Tell us how it really lands.]']),
+      6: TY.concat(['[Note from Tyler. Diligence is the longest stretch. Your attorney and accountant can work straight in the data room.]']),
+      7: TY.concat(['[Note from Tyler. What signing day looks like.]'])
+    }[CUR];
+    const DIL = [
+      ['3A', 'Quality of earnings', 'Cherry Bekaert / your accountant', 'Trailing earnings, add-backs, working capital', 100, 'Complete', 'Milestone 3a'],
+      ['3B', 'Legal', 'Alston & Bird / your attorney', 'Entity, contracts, leases, licensure', CUR > 6 ? 100 : 60, CUR > 6 ? 'Complete' : '4 requests open', 'Milestone 3b'],
+      ['03', 'Insurance', 'Gallagher', 'Coverage, malpractice, tail', CUR > 6 ? 100 : 0, CUR > 6 ? 'Complete' : 'Starts after legal', 'Before close']
+    ];
+    /* milestone moments */
+    const MS = {
+      m1: { n: '01', k: 'Milestone 1', t: 'Your financials are in.', s: 'All six approved. Preston starts your pro forma next.' },
+      m2: { n: '02', k: 'Milestone 2', t: 'Letter of intent signed.', s: 'Diligence starts now. Your data room opens today.' },
+      m3a: { n: '3A', k: 'Milestone 3a', t: 'Quality of earnings: done.', s: 'The biggest piece of diligence is behind you.' },
+      m3b: { n: '3B', k: 'Milestone 3b', t: 'Legal diligence: done.', s: 'Insurance is the last workstream before close.' },
+      m4: { n: '04', k: 'Closed', t: 'Welcome to Alpha.', s: 'Signed. Your integration plan starts next week.' }
+    };
+    const MSO = ['m1', 'm2', 'm3a', 'm3b', 'm4'];
+    const msK = s.ms && MS[s.ms] ? s.ms : null;
+    const msAt = (c) => (c <= 4 ? 'm1' : c === 5 ? 'm2' : c === 6 ? 'm3a' : 'm4');
+    const onFin = CUR === 2;
     return {
-      tabs: [['signin', 'Sign in'], ['dash', 'Dashboard'], ['stage', 'Stage 3 checklist'], ['profile', 'Profile']].map((t) => ({ label: t[1], cls: view === t[0] ? 'is-on' : '', go: go(t[0]) })),
-      fillAll: () => set({ items: I0.map((x) => (x[3] === 'ok' ? 'ok' : 'rev')), sent: false, view: view === 'signin' ? 'stage' : view }),
-      resetAll: () => set({ items: null, sent: false, siSent: false }),
+      tabs: [['signin', 'Sign in'], ['dash', 'Dashboard'], ['stage', 'Financials'], ['profile', 'Profile']].map((t) => ({ label: t[1], cls: view === t[0] ? 'is-on' : '', go: go(t[0]) })),
+      stChips: ST.slice(2).map((x, j) => ({ label: (j + 3) + ' ' + x[0], cls: CUR === j + 2 ? 'is-on' : '', go: () => set({ cur: j + 2, view: 'dash', resp: '', ms: null }) })),
+      fillAll: () => set({ items: I0.map(() => 'ok'), sent: true, cur: 3, view: 'dash', ms: 'm1' }),
+      playMs: () => set({ ms: msAt(CUR) }),
+      resetAll: () => set({ items: null, sent: false, siSent: false, cur: null, resp: '', ms: null, tip: null }),
+      msOn: !!msK, ms: msK ? MS[msK] : MS.m1, msClose: () => set({ ms: null }),
+      msRays: Array.from({ length: 24 }, (_, i) => ({ r: (i * 15) + 'deg', d: ((i % 6) * 45) + 'ms' })),
+      msPips: MSO.map((k, i) => ({ cls: msK && i <= MSO.indexOf(msK) ? 'is-on' : '' })),
+      vRing: onFin, vList: !onFin && !!card, vDil: CUR >= 6,
+      cardRows: card ? card.rows : [], vCardCta: !!(card && card.cta), cardCta: card ? card.cta : '', cardGo: card ? card.go : noop,
+      vResp: CUR === 5 && !resp, respQ: 'After the call, tell us where you landed. Either answer is fine.',
+      respBtns: [{ t: 'Ready for the LOI', cls: 'btn btn-fill', go: () => set({ resp: 'yes' }) }, { t: 'Let\'s talk about the number', cls: 'btn', go: () => set({ resp: 'talk' }) }],
+      dil: DIL.map((d) => ({ n: d[0], t: d[1], who: d[2], what: d[3], pct: d[4] + '%', s: d[5], ms: d[6], cls: 'dil_r' + (d[4] === 100 ? ' is-ok' : d[4] > 0 ? ' is-on' : '') })),
+      g: { ini: GD[0], name: GD[1], role: GD[2], first: GD[3], msg: GD[4] },
+      fin: { num: 3, t: ST[2][0], d: ST[2][1] },
       vSignin: view === 'signin', vApp: view !== 'signin', vDash: view === 'dash', vStage: view === 'stage', vProfile: view === 'profile',
       siForm: !s.siSent, siSent: !!s.siSent, siSend: () => set({ siSent: true }), siOpen: () => set({ siSent: false, view: 'dash' }), signOut: () => set({ view: 'signin', siSent: false }),
       goDash: go('dash'), goStage: go('stage'), goProfile: go('profile'),
-      navItems: [['dash', 'Overview'], ['stage', 'Stage 3'], ['profile', 'Profile']].map((t) => ({ label: t[1], cls: view === t[0] ? 'is-on' : '', go: go(t[0]) })),
+      navItems: [['dash', 'Overview'], ['stage', 'Financials'], ['profile', 'Profile']].map((t) => ({ label: t[1], cls: view === t[0] ? 'is-on' : '', go: go(t[0]) })),
       stages: ST.map((x, i) => ({ n: String(i + 1).padStart(3, '0'), t: x[0], x: (i / (ST.length - 1) * 100).toFixed(3) + '%', cls: 'trk_st' + (i < CUR ? ' is-done' : i === CUR ? ' is-cur' : ''), cur: i === CUR ? 'step' : 'false' })),
-      fillW: ((CUR + (submitted ? .9 : pct / 100 * .9)) / (ST.length - 1) * 100).toFixed(2) + '%',
-      etaLine: 'Stage 3 of 8 / started [Oct 14]',
+      fillW: ((CUR + (onFin ? (submitted ? .9 : pct / 100 * .9) : .5)) / (ST.length - 1) * 100).toFixed(2) + '%',
+      etaLine: 'Stage ' + (CUR + 1) + ' of 8 / started [' + (['', '', 'Oct 21', 'Nov 6', 'Nov 19', 'Dec 1', 'Dec 8', 'Feb 10'][CUR]) + ']',
       cur: { num: CUR + 1, t: ST[CUR][0], d: ST[CUR][1] },
-      ctaLabel: submitted ? 'View stage 3' : nTodo + nFix > 0 ? 'Continue stage 3' : 'Review and send',
+      ctaLabel: onFin ? (submitted ? 'View financials' : nTodo + nFix > 0 ? 'Continue financials' : 'Review and send') : card && card.cta ? card.cta : 'Message Tyler',
+      ctaGo: onFin ? go('stage') : card ? card.go : noop,
       pct, pct100: pct + '%', recv, total, nOk, nRev, nFix, nTodo,
-      cardK: submitted ? 'With Tyler' : 'Stage 3 progress',
-      cardH: submitted ? 'Sent for review' : nFix ? nFix + ' file needs changes' : nTodo ? nTodo + ' items to go' : 'Ready to send',
-      cardS: submitted ? 'Stage 4, Operations, unlocks when Tyler approves.' : 'Stage 4, Operations, unlocks when this stage is approved.',
-      attn, attnCount: (nTodo + nFix) + ' open',
-      feed: [['Today', 'Tyler approved Payroll register 2025'], ['Today', 'Tyler asked for changes on P&L 2024'], ['Yesterday', 'You uploaded Leases, all locations'], ['Oct 21', 'Stage 2, NDA, complete'], ['Oct 14', 'Welcome to the portal']].map((f) => ({ w: f[0], t: f[1] })),
+      cardK: onFin ? (submitted ? 'With Tyler' : 'Financials') : card ? card.k : '',
+      cardH: onFin ? (submitted ? 'Sent for review' : nFix ? nFix + ' file needs changes' : nTodo ? nTodo + ' to go' : 'Ready to send') : card ? card.h : '',
+      cardS: onFin ? 'Stage 4, your pro forma call with Preston, unlocks when all six are approved.' : card ? card.s : '',
+      attn: onFin ? attn : ATTN[CUR] || [], attnCount: onFin ? (nTodo + nFix) + ' open' : (ATTN[CUR] || []).filter((a) => a.dot !== 'dot is-ok').length + ' open',
+      feed: feedL.map((f) => ({ w: f[0], t: f[1] })),
       profPct: '40%',
       groups, canSubmit, cantSubmit: !canSubmit && !submitted, submitted, submit: () => set({ sent: true }),
       submitHint: nFix ? 'Fix ' + nFix + ' file first.' : nTodo ? nTodo + ' items still to upload.' : 'Finishing uploads.',

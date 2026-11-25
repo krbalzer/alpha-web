@@ -1010,6 +1010,219 @@ def university_engine(e):
     return e
 
 
+
+# ---------- Partner portal (design/boards/Portal.dc.html), wired to the lead behind /portal/[token] ----------
+def _sub1(b, pat, new, flags=re.S):
+    out, n = re.subn(pat, lambda m: new, b, count=1, flags=flags)
+    assert n == 1, 'portal: missing ' + pat[:70]
+    return out
+
+
+def portal_markup(b):
+    # demo bar -> test-lead strip; sign-in view goes (the private link is the key for now)
+    b = _sub1(b, r'<!-- ============ DEMO BAR.*?(?=<sc-if value="\{\{ vApp \}\}")',
+              '<sc-if value="{{ isTest }}"><div class="pdemo"><div class="wrap"><span class="k" style="color: #9B978E">Test lead / made-up practice</span>'
+              '<span class="pdemo_r"><i class="pdraft">Uploads here never reach Smartsheet, Dropbox or notifications</i></span></div></div></sc-if>\n')
+    b = _sub1(b, r'<span class="pnav_av">HS</span><span><b>Harbor Skin Co\.</b><em>Jordan Ellis</em></span>',
+              '<span class="pnav_av">{{ who.ini }}</span><span><b>{{ who.practice }}</b><em>{{ who.name }}</em></span>')
+    b = _sub1(b, r'<div class="guide_ctas">.*?</div>',
+              '<div class="guide_ctas"><sc-if value="{{ g.book }}"><a class="btn" href="{{ g.book }}">Book 30 minutes</a></sc-if>'
+              '<sc-if value="{{ g.email }}"><a class="btn" href="{{ g.mail }}">Message {{ g.first }}</a></sc-if></div>')
+    b = _sub1(b, r'<a class="btn" href="[^"]*">Open the data room ↗</a>', '')
+    # profile card + preview: the lead's own names; nothing is filled in yet
+    b = b.replace('<span class="pmini_pill">PTR 0[17]</span><b>Harbor Skin Co.</b>', '<span class="pmini_pill">Draft</span><b>{{ who.practice }}</b>')
+    b = _sub1(b, r'<span class="pmini_meta">\[Address\] / Jordan Ellis, NP-C / Injectables Lasers Skincare</span>', '<span class="pmini_meta">{{ who.name }} / {{ svcLine }}</span>')
+    b = _sub1(b, r'<span class="pmini_meta">\[Address\] / Jordan Ellis, MSN, NP-C / \{\{ svcLine \}\}</span>', '<span class="pmini_meta">{{ who.name }} / {{ svcLine }}</span>')
+    b = _sub1(b, r'<div class="pmini_rows">.*?</div>',
+              '<div class="pmini_rows"><span>Practice story</span><em class="is-miss">To do</em><span>Founder photo</span><em class="is-miss">To do</em>'
+              '<span>Location photos</span><em class="is-miss">To do</em><span>Why Alpha</span><em class="is-miss">To do</em></div>')
+    b = _sub1(b, r'<div class="pmini_body"><span class="pmini_k">The practice</span><p>\[Started\. Two sentences in\.\]</p></div>',
+              '<div class="pmini_body"><span class="pmini_k">The practice</span><p>Your story goes here, in your words.</p></div>')
+    b = _sub1(b, r'value="Harbor Skin Co\."', 'value="{{ who.practice }}"')
+    b = _sub1(b, r'value="2017"', 'value=""')
+    b = _sub1(b, r'value="Jordan Ellis"', 'value="{{ who.name }}"')
+    b = _sub1(b, r'value="MSN, NP-C"', 'value=""')
+    b = _sub1(b, r'<textarea id="p5">\[Started\. Two sentences in\.\]</textarea>', '<textarea id="p5"></textarea>')
+    b = _sub1(b, r'<div class="pf_locs">.*?<button class="pf_add">', '<div class="pf_locs"><button class="pf_add">')
+    b = _sub1(b, r'Saved as you type\. Last saved \[just now\]\.', 'A preview for now. Profile editing saves once your guide opens it up.')
+    # checklist: upload errors, honest hand-off line
+    b = _sub1(b, r'(<sc-if value="\{\{ it\.note \}\}"[^>]*><p class="cl_note"><em>Tyler</em>\{\{ it\.note \}\}</p></sc-if>)',
+              '<sc-if value="{{ it.note }}" hint-placeholder-val="{{ false }}"><p class="cl_note"><em>{{ g.first }}</em>{{ it.note }}</p></sc-if>'
+              '<sc-if value="{{ it.err }}" hint-placeholder-val="{{ false }}"><p class="cl_note"><em>Upload</em>{{ it.err }}</p></sc-if>')
+    b = b.replace('Send financials to Tyler', 'Send financials to {{ g.first }}')
+    b = _sub1(b, r"<p class=\"st_done\"><b>Sent to Tyler\.</b>.*?</p>",
+              '<p class="st_done"><b>Sent to {{ g.first }}.</b> Each file gets a look from a person. When all six are approved, Preston starts your pro forma.</p>')
+    b = b.replace('<span class="ph">Financials walkthrough / Tyler, 2 min / Cloudflare Stream</span>', '<span class="ph">Financials walkthrough / 2 min</span>')
+    b = b.replace('<span class="ph">Founder interview clip / Cloudflare Stream, loads on play</span>', '<span class="ph">Founder interview clip</span>')
+    # footer: confidentiality with their name, no sign-out (no session yet)
+    b = _sub1(b, r'<footer class="pfoot">.*?</footer>',
+              '<footer class="pfoot"><div class="wrap pfoot_in"><span>Confidential. Shared under NDA between {{ who.practice }} and Alpha Aesthetics Partners.</span>'
+              '<span><a href="/legal/privacy">Privacy</a></span></div></footer>')
+    return '<div class="pt">' + b + '</div>'  # the board's dark root sits on the motion wrapper the porter strips
+
+
+def portal_jsx(j):
+    # uncontrolled form fields (profile preview)
+    return j.replace('<input id="p1" type="text" value=', '<input id="p1" type="text" defaultValue=').replace(
+        '<input id="p2" type="text" value=', '<input id="p2" type="text" defaultValue=').replace(
+        '<input id="p3" type="text" value=', '<input id="p3" type="text" defaultValue=').replace(
+        '<input id="p4" type="text" value=', '<input id="p4" type="text" defaultValue=')
+
+
+PORTAL_RV = r'''  renderVals() {
+    const s = this.state || {}, set = (o) => this.setState(o), d = this.props.d;
+    const view = s.view || 'dash';
+    const ST = PORTAL_STAGES, CUR = d.stageIx, fin = 2;
+    const ginfo = d.guide || { name: 'Tyler', role: 'New Partnerships' };
+    const first = ginfo.name;
+    /* financials: one row per report, status from the latest upload */
+    const MAP = { review: 'rev', ok: 'ok', fix: 'fix', todo: 'todo' };
+    const items = PORTAL_REPORTS.map((r, i) => {
+      const x = d.reports.find((y) => y.key === r.key) || { status: 'todo' };
+      const st = (s.up || {})[r.key] ? 'up' : MAP[x.status] || 'todo';
+      return { r, i, st, note: st === 'fix' ? x.feedback || 'This one needs another pass.' : '', file: x.file || '', err: (s.err || {})[r.key] || '' };
+    });
+    const upload = (it) => {
+      if (typeof document === 'undefined') return;
+      const inp = document.createElement('input');
+      inp.type = 'file'; inp.accept = it.r.pdf ? '.xlsx,.xls,.csv,.pdf' : '.xlsx,.xls,.csv';
+      inp.onchange = () => {
+        const f = inp.files && inp.files[0]; if (!f) return;
+        const st0 = this.state || {};
+        this.setState({ up: Object.assign({}, st0.up, { [it.r.key]: 1 }), err: Object.assign({}, st0.err, { [it.r.key]: '' }) });
+        const fd = new FormData(); fd.append('report', it.r.key); fd.append('file', f);
+        fetch('/portal/' + d.token + '/upload', { method: 'POST', body: fd })
+          .then((res) => res.json().catch(() => ({})).then((j) => { if (!res.ok || !j.ok) throw new Error(j.error || 'That upload did not go through. Try again.'); window.location.reload(); }))
+          .catch((e) => { const st1 = this.state || {}; this.setState({ up: Object.assign({}, st1.up, { [it.r.key]: 0 }), err: Object.assign({}, st1.err, { [it.r.key]: e.message || 'That upload did not go through. Try again.' }) }); });
+      };
+      inp.click();
+    };
+    const n = (k) => items.filter((x) => x.st === k).length;
+    const nOk = n('ok'), nRev = n('rev') + n('up'), nFix = n('fix'), nTodo = n('todo'), total = items.length, recv = total - nTodo - nFix;
+    const ready = nTodo === 0 && nFix === 0 && n('up') === 0;
+    const submitted = (d.sent || !!s.sent) && ready, canSubmit = !submitted && ready;
+    const submit = () => {
+      set({ sending: true });
+      fetch('/portal/' + d.token + '/submit', { method: 'POST' }).then((r) => { if (!r.ok) throw new Error(); set({ sent: true, sending: false }); }).catch(() => set({ sending: false }));
+    };
+    const LAB = { ok: 'Approved', rev: 'In review', fix: 'Needs changes', todo: 'To do', up: 'Uploading' };
+    const ACT = { todo: 'Upload', fix: 'Replace file', rev: 'Replace', ok: '', up: '' };
+    const groups = [];
+    items.forEach((it) => {
+      let g = groups.find((x) => x.t === it.r.g);
+      if (!g) { g = { t: it.r.g, items: [] }; groups.push(g); }
+      g.items.push({ t: it.r.t, sub: it.r.sub, note: it.note, err: it.err, fmt: (it.r.pdf ? 'Excel or PDF' : 'Excel') + (it.file ? ' / ' + it.file : ''), chk: '', tips: it.r.tips, tipOn: s.tip === it.i, tipL: s.tip === it.i ? 'Hide steps' : 'How do I pull this?', tipGo: () => set({ tip: s.tip === it.i ? null : it.i }), up: it.st === 'up', cls: 'cl_i is-' + it.st, dot: 'dot' + ({ ok: ' is-ok', rev: ' is-rev', fix: ' is-fix', up: ' is-up' }[it.st] || ''), label: LAB[it.st], act: ACT[it.st], go: () => { if (it.st !== 'up' && it.st !== 'ok') upload(it); } });
+    });
+    groups.forEach((g) => { const done = g.items.filter((x) => x.cls.indexOf('is-ok') > -1).length; g.c = done + ' / ' + g.items.length + ' approved'; });
+    const pct = Math.round(recv / total * 100);
+    const attnFin = items.filter((x) => x.st === 'fix' || x.st === 'todo').slice(0, 4).map((x) => ({ t: x.r.t, n: x.st === 'fix' ? 'Needs changes: ' + x.note : 'To do / ' + x.r.sub, dot: x.st === 'fix' ? 'dot is-fix' : 'dot' }));
+    const SVC = ['Injectables', 'Lasers', 'Facials', 'Skincare', 'Wellness', 'Weight loss', 'Hormone therapy', 'Body'];
+    const svcOn = s.svc || [];
+    const go = (v) => () => { set({ view: v }); if (typeof window !== 'undefined') window.scrollTo && window.scrollTo(0, 0); };
+    const noop = () => {};
+    /* per-stage dashboard card (everything but financials) */
+    const R = (t, v, k) => ({ t, s: v, cls: k ? 'is-' + k : '', dot: 'dot' + (k === 'ok' ? ' is-ok' : k === 'on' ? ' is-rev' : '') });
+    const CARDS = {
+      0: { k: 'Next', h: 'Your intro call', s: 'Thirty minutes with ' + first + ' about what you have built and what you want next.', rows: [R('Intro call', 'Next', 'on'), R('NDA', 'After the call', ''), R('Financials', 'After the NDA', '')] },
+      1: { k: 'NDA', h: 'Sign the mutual NDA', s: 'It comes by email to sign electronically. Your financials checklist opens here the moment it is signed.', rows: [R('Intro call', 'Done', 'ok'), R('NDA', 'To sign', 'on'), R('Financials', 'Next', '')] },
+      3: { k: 'Next', h: 'Pro forma call with Preston', s: 'About an hour on Zoom. Bring whoever knows your books. We will send a time.', rows: [R('Financials', 'Approved', 'ok'), R('Pro forma', 'In progress', 'on'), R('Walkthrough call', 'Next', '')] },
+      4: { k: 'With Alpha leadership', h: 'Your valuation is in review', s: 'Nothing to do on your side. We will call you as soon as there is news.', rows: [R('Pro forma call', 'Done', 'ok'), R('Leadership review', 'In progress', 'on'), R('Offer call', 'Next', '')] },
+      5: { k: 'Offer', h: 'Your offer call', s: 'With ' + first + ' and Preston. We walk through the offer together, on the call.', rows: [R('Valuation', 'Done', 'ok'), R('Offer call', 'Next', 'on'), R('Letter of intent', 'After the call', '')] },
+      6: { k: 'Diligence', h: 'Three workstreams, one tracker', s: 'Quality of earnings first, then legal, then insurance. Details below.', rows: [R('Letter of intent', 'Signed', 'ok'), R('Diligence', 'In progress', 'on'), R('Close', 'Next', '')] },
+      7: { k: 'Close', h: 'Signing day', s: 'Closing documents come to sign electronically. Your integration plan starts the week after.', rows: [R('Diligence', 'Complete', 'ok'), R('Closing documents', 'To sign', 'on'), R('Integration kickoff', 'Week after', '')] }
+    };
+    const card = CARDS[CUR] || null;
+    const ATTN = {
+      0: [{ t: 'Intro call', n: first + ' will reach out to set a time.', dot: 'dot' }],
+      1: [{ t: 'Sign the NDA', n: 'Check your email', dot: 'dot is-rev' }],
+      3: [{ t: 'Pro forma call', n: 'Preston / about an hour / time to come', dot: 'dot' }],
+      4: [{ t: 'Nothing needs you right now', n: 'We will reach out when leadership is done.', dot: 'dot is-ok' }],
+      5: [{ t: 'Offer call', n: 'With ' + first + ' and Preston', dot: 'dot' }],
+      6: [{ t: 'Diligence requests', n: 'They show up here as they come in.', dot: 'dot' }],
+      7: [{ t: 'Closing documents', n: 'To sign electronically', dot: 'dot is-rev' }]
+    };
+    const attnL = CUR === fin ? attnFin : ATTN[CUR] || [];
+    const NOTES = {
+      0: 'Looking forward to the call. Come with questions; there is no prep needed.',
+      1: 'Once the NDA is signed, your financials checklist opens right here.',
+      2: 'Most practices take two passes on financials, and that is normal. Start with the P&L. It unlocks everything else.',
+      3: 'A pro forma is your P&L as it would look inside Alpha. Nothing on the call is final, and changes happen live.',
+      4: 'Leadership reviews every model closely. A quiet week is normal.',
+      5: 'The offer is a starting point. Tell us how it really lands.',
+      6: 'Diligence is the longest stretch. Your attorney and accountant can work alongside our advisors.',
+      7: 'Almost there. We will walk you through signing day before it happens.'
+    };
+    const PRESTON = CUR === 3;
+    const gName = PRESTON ? 'Preston' : first, gRole = PRESTON ? 'Finance' : ginfo.role || 'New Partnerships';
+    const DIL = [
+      ['3A', 'Quality of earnings', 'Cherry Bekaert / your accountant', 'Trailing earnings, add-backs, working capital', CUR > 6 ? 100 : 30, CUR > 6 ? 'Complete' : 'In progress', 'Milestone 3a'],
+      ['3B', 'Legal', 'Alston & Bird / your attorney', 'Entity, contracts, leases, licensure', CUR > 6 ? 100 : 0, CUR > 6 ? 'Complete' : 'Next', 'Milestone 3b'],
+      ['03', 'Insurance', 'Gallagher', 'Coverage, malpractice, tail', CUR > 6 ? 100 : 0, CUR > 6 ? 'Complete' : 'Starts after legal', 'Before close']
+    ];
+    /* milestone moment: once per milestone, per browser */
+    const MS = {
+      m1: { n: '01', k: 'Milestone 1', t: 'Your financials are in.', s: 'All six approved. Preston starts your pro forma next.' },
+      m2: { n: '02', k: 'Milestone 2', t: 'Letter of intent signed.', s: 'Diligence starts now.' },
+      m4: { n: '04', k: 'Closed', t: 'Welcome to Alpha.', s: 'Signed. Your integration plan starts next week.' }
+    };
+    const MSO = ['m1', 'm2', 'm3a', 'm3b', 'm4'];
+    const msAt = CUR >= 7 ? 'm4' : CUR >= 6 ? 'm2' : CUR >= 3 ? 'm1' : null;
+    const msKey = 'alpha-portal-ms-' + d.token;
+    if (msAt && !this._msChecked && typeof window !== 'undefined') {
+      this._msChecked = true;
+      setTimeout(() => { let seen = ''; try { seen = localStorage.getItem(msKey) || ''; } catch (e) { seen = msAt; } if (seen !== msAt) this.setState({ ms: msAt }); }, 400);
+    }
+    const msK = s.ms && MS[s.ms] ? s.ms : null;
+    const onFin = CUR === fin;
+    const words = (d.name || '').trim().split(/\s+/).filter(Boolean);
+    const ini = ((d.practice || '').replace(/[^A-Za-z0-9 ]/g, '').split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('') || 'A').toUpperCase();
+    const navT = [['dash', 'Overview']].concat(CUR >= fin ? [['stage', 'Financials']] : []).concat([['profile', 'Profile']]);
+    return {
+      isTest: !!d.test, vApp: true,
+      who: { ini, practice: d.practice, name: d.name || words.join(' ') },
+      msOn: !!msK, ms: msK ? MS[msK] : MS.m1, msClose: () => { try { localStorage.setItem(msKey, msK || ''); } catch (e) { /* private mode */ } set({ ms: null }); },
+      msRays: Array.from({ length: 24 }, (_, i) => ({ r: (i * 15) + 'deg', d: ((i % 6) * 45) + 'ms' })),
+      msPips: MSO.map((k, i) => ({ cls: msK && i <= MSO.indexOf(msK) ? 'is-on' : '' })),
+      vRing: onFin, vList: !onFin && !!card, vDil: CUR >= 6,
+      cardRows: card ? card.rows : [], vCardCta: false, cardCta: '', cardGo: noop,
+      vResp: false, respQ: '', respBtns: [],
+      dil: DIL.map((x) => ({ n: x[0], t: x[1], who: x[2], what: x[3], pct: x[4] + '%', s: x[5], ms: x[6], cls: 'dil_r' + (x[4] === 100 ? ' is-ok' : x[4] > 0 ? ' is-on' : '') })),
+      g: { ini: gName.slice(0, 2).toUpperCase(), name: gName, role: gRole, first, msg: d.note || NOTES[CUR] || '', book: PRESTON ? '' : ginfo.book || '', email: PRESTON ? '' : ginfo.email || '', mail: ginfo.email ? 'mailto:' + ginfo.email : '' },
+      fin: { num: fin + 1, t: ST[fin].t, d: ST[fin].d },
+      vDash: view === 'dash', vStage: view === 'stage', vProfile: view === 'profile',
+      goDash: go('dash'), goStage: go('stage'), goProfile: go('profile'),
+      navItems: navT.map((t) => ({ label: t[1], cls: view === t[0] ? 'is-on' : '', go: go(t[0]) })),
+      stages: ST.map((x, i) => ({ n: String(i + 1).padStart(3, '0'), t: x.t, x: (i / (ST.length - 1) * 100).toFixed(3) + '%', cls: 'trk_st' + (i < CUR ? ' is-done' : i === CUR ? ' is-cur' : ''), cur: i === CUR ? 'step' : 'false' })),
+      fillW: ((CUR + (onFin ? (submitted ? .9 : pct / 100 * .9) : .5)) / (ST.length - 1) * 100).toFixed(2) + '%',
+      etaLine: 'Stage ' + (CUR + 1) + ' of ' + ST.length,
+      cur: { num: CUR + 1, t: ST[CUR].t, d: ST[CUR].d },
+      ctaLabel: onFin ? (submitted ? 'View financials' : nTodo + nFix > 0 ? 'Continue financials' : 'Review and send') : CUR > fin ? 'View financials' : 'Your Alpha profile',
+      ctaGo: onFin || CUR > fin ? go('stage') : go('profile'),
+      pct, pct100: pct + '%', recv, total, nOk, nRev, nFix, nTodo,
+      cardK: onFin ? (submitted ? 'With ' + first : 'Financials') : card ? card.k : '',
+      cardH: onFin ? (submitted ? 'Sent for review' : nFix ? nFix + (nFix === 1 ? ' file needs' : ' files need') + ' changes' : nTodo ? nTodo + ' to go' : 'Ready to send') : card ? card.h : '',
+      cardS: onFin ? 'Stage 4, your pro forma call with Preston, unlocks when all six are approved.' : card ? card.s : '',
+      attn: attnL, attnCount: attnL.filter((a) => a.dot !== 'dot is-ok').length + ' open',
+      feed: d.feed || [],
+      profPct: '0%',
+      groups, canSubmit: canSubmit && !s.sending, cantSubmit: !canSubmit && !submitted || !!s.sending, submitted, submit,
+      submitHint: s.sending ? 'Sending...' : nFix ? 'Fix ' + nFix + (nFix === 1 ? ' file' : ' files') + ' first.' : nTodo ? nTodo + ' still to upload.' : 'Finishing uploads.',
+      svc: SVC.map((c) => ({ t: c, cls: svcOn.indexOf(c) > -1 ? 'is-on' : '', go: () => set({ svc: svcOn.indexOf(c) > -1 ? svcOn.filter((x) => x !== c) : svcOn.concat([c]) }) })),
+      svcLine: svcOn.length ? svcOn.join(' ') : 'Services',
+      locs: []
+    };
+  }
+'''
+
+
+def portal_engine(e):
+    i, j = e.index('  renderVals() {'), e.rindex('}')
+    return e[:i] + PORTAL_RV + e[j:]
+
+
+PORTAL_CSS = 'body:has(.pg-portal) footer.foot{display:none}\n.pfoot_in a{color:inherit}\n'
+
+
 PAGES = {
     # name: route dir, board, options
     'About': dict(dir='about', board='About', markup=about_markup, engine=about_engine, css=IMG_CSS + '.ex_i{position:relative;overflow:hidden}'),
@@ -1034,6 +1247,7 @@ PAGES = {
     'Episode': dict(dir='podcasts/[show]/[episode]', board='Episode', markup=episode_markup, engine=episode_engine, imports=QUEUE_IMPORT + "import { EpisodeBar } from '@/components/site/EpisodeBar'\n", css=EPBAR_CSS + '.qb_lg{height:44px;padding:0 18px}\n.btn.qb.is-q{background:var(--ink);border-color:var(--ink);color:var(--bone)}\n.btn.qb.is-now{opacity:.55;cursor:default}\n' + IMG_CSS + '.vid_poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.82)}\n.vid .vid_btn{position:relative;z-index:1;border:0;cursor:pointer}\n.vid.is-on{aspect-ratio:16/9;background:#000}\n.vid_ifr{position:absolute;inset:0;width:100%;height:100%;border:0}\n' + '.tv_play{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 22px 0 18px;border-radius:999px;border:0;background:var(--ink);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:transform .3s var(--ease)}\n.tv_play:hover{transform:scale(1.04)}\n' + '.spk,.person_av{position:relative;overflow:hidden}\n.spk img,.person_av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}\n'),
     # 'Speaker': ported when the Speakers collection has people in it
     'University': dict(dir='training', board='University', data=False, markup=university_markup, engine=university_engine, css=IMG_CSS + UNI_CSS),
+    'Portal': dict(dir='portal/[token]', board='Portal', markup=portal_markup, engine=portal_engine, engine_imports="import { REPORTS as PORTAL_REPORTS, STAGES as PORTAL_STAGES } from '@/lib/portal'\n", jsx=portal_jsx, css=PORTAL_CSS),
     'Main': dict(dir='_home', board='Main', markup=main_markup, engine=main_engine, css=MAIN_CSS + REEL_CSS, imports=QUEUE_IMPORT + "import { HomeReel } from '@/components/site/HomeReel'\n"),
 }
 
@@ -1142,7 +1356,7 @@ def engine_for(name, js, cfg):
     e = e.replace('class Component extends DCLogic {', 'export class ' + cname + ' extends DCLogic {', 1)
     for bad in ('mnVals', 'ctaVals', 'moVals', 'moRoot'):
         assert bad not in e, name + ': leftover ' + bad
-    return "// @ts-nocheck\n/* Generated from design/boards/" + cfg['board'] + ".dc.html by tools/port/port_pages.py. */\nimport { DCLogic } from '@/lib/dc'\n\n" + e.strip() + '\n', cname
+    return "// @ts-nocheck\n/* Generated from design/boards/" + cfg['board'] + ".dc.html by tools/port/port_pages.py. */\nimport { DCLogic } from '@/lib/dc'\n" + cfg.get('engine_imports', '') + "\n" + e.strip() + '\n', cname
 
 
 def port(name):

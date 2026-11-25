@@ -1464,6 +1464,8 @@ export interface TrainingEvent {
   createdAt: string;
 }
 /**
+ * Every Let's talk submission. Partner inquiries get a private portal link; move the stage here to move their tracker.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "leads".
  */
@@ -1493,15 +1495,19 @@ export interface Lead {
   /**
    * Where they are on the path. Changing it moves their tracker.
    */
-  stage?: ('intro' | 'nda' | 'visit' | 'loi' | 'close') | null;
+  stage?: ('intro' | 'nda' | 'financials' | 'proforma' | 'valuation' | 'offer' | 'diligence' | 'close') | null;
   /**
    * First name shown as their guide.
    */
   guide?: string | null;
   /**
-   * Shown to the prospect on their portal, under the current stage. Optional.
+   * Shown to the prospect as their guide's note on the portal. Optional; a default note shows per stage.
    */
   stageNote?: string | null;
+  /**
+   * Set when the owner presses Send financials to Tyler.
+   */
+  finSentAt?: string | null;
   /**
    * Private link: /portal/<this>. Anyone with it can see this portal, so send it only to the owner.
    */
@@ -1527,7 +1533,7 @@ export interface Lead {
 export interface LeadFile {
   id: number;
   lead: number | Lead;
-  report: 'pl' | 'prov' | 'svc' | 'payroll' | 'dist' | 'bs';
+  report: 'pl' | 'svc' | 'prov' | 'payroll' | 'dist' | 'bs';
   status: 'review' | 'ok' | 'fix';
   /**
    * What to change. The prospect sees this.
@@ -2348,6 +2354,7 @@ export interface LeadsSelect<T extends boolean = true> {
   stage?: T;
   guide?: T;
   stageNote?: T;
+  finSentAt?: T;
   portalToken?: T;
   files?: T;
   test?: T;
