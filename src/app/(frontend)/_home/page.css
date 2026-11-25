@@ -470,9 +470,9 @@ html body .pg-main .th_stage>.th_arrow:last-child{right:8px}
 
 /* podcast covers: five covers span the content width exactly (the 5th ends on the content edge); the rail still bleeds right so the 6th peeks in. Sized off the wrap (container units), not the bleeding rail. */
 .pg-main #podcasts > .wrap{container-type:inline-size}
-.pg-main .rail.pcar{--pv:5}
+.pg-main .rail.pcar{--pv:3}
 .pg-main .rail.pcar .cover{flex:0 0 calc((100cqw - (var(--pv) - 1) * 8px) / var(--pv));min-width:0}
-@media (max-width:820px){.pg-main .rail.pcar{--pv:2}}
+@media (max-width:820px){.pg-main .rail.pcar{--pv:1}}
 
 /* Practice: photo background, white lockup, Exposure italic tag */
 @font-face{font-family:"Exposure";src:url(/fonts/exposure-30-italic.woff2) format("woff2");font-style:italic;font-weight:400;font-display:swap}
@@ -495,3 +495,10 @@ html body .pg-main .th_stage>.th_arrow:last-child{right:8px}
 @keyframes puScroll{to{transform:translateX(-50%)}}
 @media (prefers-reduced-motion:reduce){.pg-main .pu_track{animation:none}}
 @media (max-width:700px){.pg-main .practice_r{align-items:flex-start}.pg-main .practice{padding-bottom:90px}}
+
+/* show cards: hero photo + logo, wide (matches the shows pages) */
+.pg-main .cover_art.is-hero{aspect-ratio:1.45/1;transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
+.pg-main .cv_hero{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease)}
+.pg-main .cover_art:has(.cv_hero)::after{content:"";position:absolute;inset:0;background:linear-gradient(to top right,rgba(14,14,13,.62),rgba(14,14,13,0) 58%);pointer-events:none}
+.pg-main .cover:hover .cv_hero{transform:scale(1.04)}
+.pg-main .cv_logo{position:absolute;left:clamp(14px,1.4vw,22px);bottom:clamp(14px,1.4vw,22px);z-index:1;width:min(62%,calc(34% * var(--ar)));aspect-ratio:var(--ar);background:currentColor;-webkit-mask:var(--logo) left bottom/contain no-repeat;mask:var(--logo) left bottom/contain no-repeat}

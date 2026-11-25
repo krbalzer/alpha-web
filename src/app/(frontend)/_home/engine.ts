@@ -337,7 +337,7 @@ export class MainEngine extends DCLogic {
       /* partner marks, same files as the brand dock (brand.css .b-NNN); a name without a mark falls back to type */
       .map((x) => { const m = ({ 'RN Esthetics': ['ca83c659da266b70ecee710da39049b6', 1.4291], 'Esthetics Center': ['acd758d2c7d28315fa698dbe9ec586a4', 1.0], 'HTB': ['bf0cb09e099ffd08e157c7a2527b15d4', 4.1729], 'Williams Center': ['11fbe015cfb3fcfcd247c3ad2077da5b', 1.4658], 'Dontage': ['977a1e28842c7d0f1ceaf158d7508117', 1.0], 'CAMI': ['36bfaaba5b556cdc3a1bacb6332ec4e9', 3.3176], 'Privé': ['3338152bcddce0a2936289bcc6c757f6', 2.7449] })[x.brand]; return Object.assign({}, x, m ? { mark: { '--m': `url(/boards/${m[0]}.svg)`, '--ar': String(m[1]) } } : {}); });
     const narrow = typeof window !== 'undefined' && window.innerWidth <= 820
-    const sMax = Math.max(0, stories.length - (narrow ? 1 : 4)), si = Math.min(s.story ?? 0, sMax), podV = narrow ? 2 : 5, pMax = Math.max(0, (X.shows || []).length - podV), pdi = Math.min(s.pod ?? 0, pMax);
+    const sMax = Math.max(0, stories.length - (narrow ? 1 : 4)), si = Math.min(s.story ?? 0, sMax), podV = narrow ? 1 : 3, pMax = Math.max(0, (X.shows || []).length - podV), pdi = Math.min(s.pod ?? 0, pMax);
     const EP = X.eps || [];
     const playing = s.playing ?? -1;
     const eps = EP.map((e, i) => ({ ...e, btnCls: i === playing ? 'ep_play is-on' : 'ep_play', play: () => { set({ playing: i }); if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('alpha:play', { detail: e.ep })); } }));

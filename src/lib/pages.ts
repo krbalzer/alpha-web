@@ -386,7 +386,7 @@ export const getHome = cache(async () => {
   return {
     reel: HOME_REEL,
     net: { brands: String(net.brands), locations: String(net.locations), states: String(net.states) },
-    P, depts, eps, shows: shows.map(({ raw: _r, ...s }) => s),
+    P, depts, eps, shows: shows.map((s) => showCard(s, 0)),
   }
 })
 
