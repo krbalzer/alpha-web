@@ -157,6 +157,44 @@ const PASSES: Pass[] = [
       ],
     },
   },
+  {
+    ptr: 6, // Williams Center, reviewed Nov 25 2026. Three businesses in Latham (plastic surgery, Saratoga Hair, Rejuva Center), Rejuva also in Saratoga Springs. Surgeons unnamed (poaching).
+    was: 'A destination practice, by design.',
+    brand: {
+      intro: "The Williams Center in Latham, NY: plastic surgery for face and body, Saratoga Hair and the Rejuva Center under one roof, plus a Rejuva Center in Saratoga Springs.",
+      established: 1992, // "just about thirty one years ago" in the 2023 interview (MixPre-696 00:25); matches Webflow
+      insideTitle: 'The Capital Region, from Latham to Saratoga Springs',
+      practice: {
+        headline: 'The practice people travel to Albany for',
+        body: prose([
+          // williams2 01:09 to 02:42; MixPre-696 02:36
+          "The Williams Center is three practices in one building in Latham, New York. The plastic surgery practice covers the face and body, Saratoga Hair handles surgical hair restoration, and the Rejuva Center does non-surgical treatments, with a second Rejuva Center in Saratoga Springs. Surgery happens on site, in a surgery center approved and inspected by Medicare and New York State. Each practice is led by specialists who stay in their lane, the plan Dr. Edwin Williams built it around. The building sits beside the Albany airport so patients can fly in, and half or more of them come from out of town.",
+          // williams2 04:53 to 05:41, 06:02 to 07:15, 09:07, 11:34 to 12:17; MixPre-696 33:24
+          "Rejuva is a medical facility first, with physicians on site, a medical director involved in industry clinical trials, and facial plastic surgeons in the building to handle anything that comes up. At Saratoga Hair, a double board certified facial plastic surgeon is responsible for every graft, from the first to the last, where many centers hand that work to technicians. The reconstructive practice stays open, skin cancer and insurance cases included, because Dr. Williams calls it the practice's goodwill in the community. The doctors teach as well as operate: they speak at the major meetings, and the practice trains two facial plastic surgery fellows a year.",
+        ]),
+      },
+      quote: {
+        text: "I didn't work this hard to get where we're at to walk away from it.",
+        source: 'Dr. Edwin Williams, founder interview (MixPre-696) 00:32:00',
+      },
+      why: {
+        body: prose([
+          // MixPre-696 15:36, 16:48 to 17:06, 19:30 to 20:26, 20:54 to 21:38, 31:23; williams2 09:44
+          "Dr. Williams talked with plenty of partners before us. In his words, “I've probably kissed 20 toads.” One offered to take over all the management so he could just do surgery, which he didn't think was realistic. What he needed protected was his team, many of them family and some with him since the 1990s: “I wanna make sure we're taking care of our family as we grow with the Alpha family.” The name, the surgeons and the way each center runs stayed. With us he gets the time and capital for things he always knew were possible, from training more surgeons to do what he does to teaching what he's learned across the network.",
+        ]),
+      },
+    },
+    founder: {
+      name: 'Edwin F. Williams',
+      wasIncludes: 'Dr. Williams still does the facelift surgery he teaches',
+      bio: [
+        // MixPre-696 01:42, 03:54 to 04:31; williams2 01:36, 08:59 to 09:26
+        "A facial plastic surgeon for three decades and past president of the American Academy of Facial Plastic and Reconstructive Surgery, Dr. Williams started out when cosmetic dermatology wasn't yet a phrase and facial plastics meant surgery. He spent a couple of years trying to build his specialist model with a local hospital, got bogged down in bureaucracy, and built it himself at 38, beside the airport. He still does the facelift surgery he teaches, and insists his surgeons speak at the meetings they attend.",
+        // MixPre-696 33:24 to 34:56, 25:22, 31:23
+        "His fellowship, approved when he was 38, is one of about sixty in the country and now takes two fellows a year from roughly fifty applicants. The Williams Center is a family business, too: his daughter and son-in-law work there, alongside staff who have been with him since the 1990s.",
+      ],
+    },
+  },
 ]
 
 // lasercenter-denise1 02:22, 03:27, 08:19 to 08:36
@@ -187,6 +225,21 @@ async function lcmFounders(p: Payload) {
   p.logger.info('copy: PTR 5 founders joined')
 }
 
+/** Williams, Nov 25: place stories for both addresses (hair moved to Latham in Jan 2024; Saratoga Springs is the Rejuva Center). Each applies only over the old seeded text. */
+const WILLIAMS_PLACES = [
+  { slug: 'williams-center-latham-ny', was: 'Built by Dr. Williams at 38', not: 'all three practices', story: "Built by Dr. Williams at 38 beside Albany International Airport, the Latham building holds all three practices: plastic surgery with its own surgery center, Saratoga Hair since 2024, and the Rejuva Center. It's a family business in a family town: Albany, not Manhattan, where people put down roots and the same patients come back for decades." },
+  { slug: 'williams-center-saratoga-springs', was: 'Saratoga Hair Transplant Center, part of', name: 'Rejuva Center', story: "The Rejuva Center's own location in Saratoga Springs: the old hair center, remodeled and reopened in September 2025, with Sciton lasers since June 2026." },
+]
+async function williamsPlaces(p: Payload) {
+  for (const w of WILLIAMS_PLACES) {
+    const l = (await p.find({ collection: 'locations', where: { slug: { equals: w.slug } }, limit: 1, depth: 0, overrideAccess: true })).docs[0] as unknown as Record<string, any> | undefined
+    const t = plain(l?.story)
+    if (!l || !t.startsWith(w.was) || (w.not && t.includes(w.not))) continue
+    await p.update({ collection: 'locations', id: l.id, overrideAccess: true, data: { story: prose([w.story]), ...(w.name && !l.name ? { name: w.name } : {}) } as never })
+    p.logger.info(`copy: ${w.slug} story`)
+  }
+}
+
 /** Refined, Nov 25 follow-up: "Years in Leesburg" under Demand, for a database that already took the pass above. Skips once a person edits the stats. */
 async function refinedYears(p: Payload) {
   const b = (await p.find({ collection: 'brands', where: { ptr: { equals: 3 } }, limit: 1, depth: 0, overrideAccess: true })).docs[0] as unknown as Record<string, any> | undefined
@@ -200,6 +253,7 @@ export async function applyCopyPasses(p: Payload) {
   await refinedYears(p)
   await refinedWhyV3(p)
   await lcmFounders(p)
+  await williamsPlaces(p)
   for (const pass of PASSES) {
     const b = (await p.find({ collection: 'brands', where: { ptr: { equals: pass.ptr } }, limit: 1, depth: 0, overrideAccess: true })).docs[0] as unknown as Record<string, any> | undefined
     if (!b || b.practice?.headline !== pass.was) continue

@@ -1288,11 +1288,15 @@
     }
   },
   "williams-center": {
+    "quote": {
+      "text": "If we all get good training, then the boats come up. All the boats in the bay come up together.",
+      "source": "Dr. Edwin Williams / Williams Center founder"
+    },
     "milestones": [
       {
         "date": "Dec 2023",
         "title": "Joins Alpha as PTR 006",
-        "detail": "Williams Center keeps its surgeons, its team and both addresses, Latham and Saratoga."
+        "detail": "The Williams Center keeps its surgeons, its team and both addresses, Latham and Saratoga Springs. We take on the back office, training and marketing."
       },
       {
         "date": "Jan 2024",
@@ -1301,8 +1305,8 @@
       },
       {
         "date": "Sep 2025",
-        "title": "Rejuva at Saratoga opens",
-        "detail": "After a full remodel, the Saratoga space reopens as a med spa, with a new injector and esthetician."
+        "title": "The Rejuva Center opens in Saratoga Springs",
+        "detail": "After a full remodel, the old hair center reopens as a second Rejuva Center, with a new injector and esthetician."
       },
       {
         "date": "Mar 2026",
@@ -1313,6 +1317,11 @@
         "date": "Jun 2026",
         "title": "New lasers",
         "detail": "Sciton lasers arrive in Saratoga, then Latham in July. DiamondGlow follows in August."
+      },
+      {
+        "date": "Sep 2026",
+        "title": "Surgery at cami",
+        "detail": "Williams Center surgeons start seeing patients at cami in Huntersville, North Carolina."
       },
       {
         "date": "Now",
