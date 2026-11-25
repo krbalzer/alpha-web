@@ -20,6 +20,11 @@ type Pass = {
   founder?: { name: string; wasIncludes: string; bio: string[] }
 }
 
+const REFINED_WHY = [
+  "Sarah went into partnership to keep running Refined her way, with more behind it. We took on “a lot of the extra admin and, you know, monetary things,” and she started telling us her plans before the deal even closed. The second floor came out of those conversations.",
+  "Then came the part she had been teaching toward for years. Dr. Lynn Nieman, who founded Blossom Medical in Winchester, first learned to inject in Sarah's classes and never forgot what Sarah told her about collaboration over competition. Jackie Shank, one of Refined's own providers, lives in Winchester and drove an hour each way to Leesburg to work beside Sarah. Partnership let the two practices become one. Blossom became Refined at Blossom, Dr. Nieman and her team stayed, and Jackie now practices close to home.",
+]
+
 const PASSES: Pass[] = [
   {
     ptr: 3, // Refined Aesthetics, reviewed Nov 25 2026
@@ -41,10 +46,10 @@ const PASSES: Pass[] = [
       },
       why: {
         body: prose([
-          // ra3 01:54; refined3 09:23 to 09:32; refined4 00:26
-          'Sarah had heard plenty, good and bad, about what partnering with anyone would mean. The version she wanted no part of was the takeover: “They wanna change your name. They wanna change your brand. They wanna change your EMR.” Refined kept its name and the way it runs.',
-          // ra3 03:08, 06:41, 05:15
-          'She started telling us her plans before the deal even closed, and the second floor came out of those conversations. Day to day, we took on “a lot of the extra admin and, you know, monetary things,” so she could get back to the work.',
+          // refined4 00:26; ra3 03:08, 05:15, 06:41
+          REFINED_WHY[0],
+          // MSM 081 04:57 to 06:21, 08:06
+          REFINED_WHY[1],
         ]),
       },
       // Capacity / Demand / Depth. Google rating is added live from the location syncs. Botox units and treatment rooms wait on ops numbers.
@@ -154,6 +159,34 @@ const PASSES: Pass[] = [
   },
 ]
 
+// lasercenter-denise1 02:22, 03:27, 08:19 to 08:36
+const LCM_FOUNDERS_BIO = ["Kevin and Denise Jones opened the Laser Center of Marin in 2003. Kevin had spent twenty years in Silicon Valley tech and always wanted his own business; Denise, a Marin native, had spent thirty years as a nurse practitioner at a large hospital. He ran the business side and she ran the clinical side. Denise grew up in Marin and still calls it the most beautiful place in all the world."]
+
+/** Refined, Nov 25 v3: Why Alpha tells the Blossom story instead of the takeover line. Applies only over the v2 text. */
+async function refinedWhyV3(p: Payload) {
+  const b = (await p.find({ collection: 'brands', where: { ptr: { equals: 3 } }, limit: 1, depth: 0, overrideAccess: true })).docs[0] as unknown as Record<string, any> | undefined
+  if (!b || !plain(b.why?.body).startsWith('Sarah had heard plenty')) return
+  await p.update({ collection: 'brands', id: b.id, overrideAccess: true, data: { why: { ...b.why, body: prose(REFINED_WHY) } } as never })
+  p.logger.info('copy: PTR 3 Why Alpha v3')
+}
+
+/** LCM, Nov 25: one shared founder entry for Kevin and Denise Jones (both long exited), built from Denise's record so her quotes stay. */
+async function lcmFounders(p: Payload) {
+  const f = (await p.find({ collection: 'founders', where: { name: { equals: 'Denise Jones' } }, limit: 1, depth: 0, overrideAccess: true })).docs[0] as unknown as Record<string, any> | undefined
+  if (!f || !plain(f.bio).startsWith('A Marin native, Denise spent thirty years')) return
+  await p.update({ collection: 'founders', id: f.id, overrideAccess: true, data: {
+    name: 'Kevin and Denise Jones',
+    slug: 'kevin-and-denise-jones',
+    kind: 'business',
+    status: 'former',
+    credentials: null,
+    headline: 'Co-founders',
+    bio: prose(LCM_FOUNDERS_BIO),
+    milestones: [{ year: 2003, line: 'Open the Laser Center of Marin.' }],
+  } as never })
+  p.logger.info('copy: PTR 5 founders joined')
+}
+
 /** Refined, Nov 25 follow-up: "Years in Leesburg" under Demand, for a database that already took the pass above. Skips once a person edits the stats. */
 async function refinedYears(p: Payload) {
   const b = (await p.find({ collection: 'brands', where: { ptr: { equals: 3 } }, limit: 1, depth: 0, overrideAccess: true })).docs[0] as unknown as Record<string, any> | undefined
@@ -165,6 +198,8 @@ async function refinedYears(p: Payload) {
 
 export async function applyCopyPasses(p: Payload) {
   await refinedYears(p)
+  await refinedWhyV3(p)
+  await lcmFounders(p)
   for (const pass of PASSES) {
     const b = (await p.find({ collection: 'brands', where: { ptr: { equals: pass.ptr } }, limit: 1, depth: 0, overrideAccess: true })).docs[0] as unknown as Record<string, any> | undefined
     if (!b || b.practice?.headline !== pass.was) continue

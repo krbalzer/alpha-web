@@ -331,13 +331,12 @@
     },
     "founders": [
       {
-        "name": "Denise Jones",
-        "kind": "provider",
+        "name": "Kevin and Denise Jones",
+        "kind": "business",
         "status": "former",
-        "headline": "Co-founder",
-        "credentials": "NP",
+        "headline": "Co-founders",
         "bio": [
-          "A Marin native, Denise spent thirty years as a nurse practitioner at a large hospital before opening the practice with her family in 2003. She's never moved away: she grew up in Marin and still calls it the most beautiful place in all the world."
+          "Kevin and Denise Jones opened the Laser Center of Marin in 2003. Kevin had spent twenty years in Silicon Valley tech and always wanted his own business; Denise, a Marin native, had spent thirty years as a nurse practitioner at a large hospital. He ran the business side and she ran the clinical side. Denise grew up in Marin and still calls it the most beautiful place in all the world."
         ],
         "quotes": [
           {
@@ -353,7 +352,7 @@
         "milestones": [
           [
             2003,
-            "Co-founds the Laser Center of Marin."
+            "Open the Laser Center of Marin."
           ]
         ]
       }
@@ -366,7 +365,7 @@
       }
     },
     "flags": [
-      "Kevin and Denise are no longer involved; their founder records are set to former. Confirm you want them shown."
+      "Kevin and Denise are long exited: one shared founder entry, status former, past tense. Joint headshot pending."
     ]
   },
   "6": {
