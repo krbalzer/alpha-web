@@ -5,7 +5,7 @@
 export const STAGES = [
   { key: 'intro', t: 'Intro call', d: "Thirty minutes with our New Partnerships team about what you've built and what you want next." },
   { key: 'nda', t: 'NDA and numbers', d: 'We both sign an NDA. Then you share three years of financials and how the practice runs. This is the longest step, and every file is reviewed by a person.' },
-  { key: 'visit', t: 'Visit', d: "We come to you, and you spend time with the people you'd work with." },
+  { key: 'visit', t: 'Valuation and visit', d: "We value the practice from your numbers and walk you through it. Then we come to you, and you spend time with the people you'd work with." },
   { key: 'loi', t: 'Letter of intent', d: 'Terms in writing, walked through line by line.' },
   { key: 'close', t: 'Diligence and close', d: 'Our advisors confirm the details, then we sign and your integration plan starts.' },
 ] as const

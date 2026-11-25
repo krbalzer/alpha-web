@@ -9,7 +9,7 @@ import './page.css'
 const STAGES: { n: string; t: string; d: string; q?: string; who?: string; cta?: string }[] = [
   { n: '01 / Week 1', t: 'Intro call', d: "Thirty minutes with our New Partnerships team about what you've built and what you want next.", cta: '/talk', q: 'When they first came here to talk to me, they did a lot more listening than they did talking', who: 'Dr. Edwin Williams / Williams Center' },
   { n: '02', t: 'NDA and numbers', d: 'We both sign an NDA. Then you share three years of financials and how the practice runs. This is the longest step, and every file is reviewed by a person.', q: "I like it that they're straight shooters.", who: 'Becky McDonald / Privé Med Spa' },
-  { n: '03', t: 'Visit', d: "We come to you, and you spend time with the people you'd work with.", q: 'We were just blown away because we pictured, you know, guys in suits walking in and very corporate', who: 'Ali Oxton, NP / RN Esthetics' },
+  { n: '03', t: 'Valuation and visit', d: "We value the practice from your numbers and walk you through it. Then we come to you, and you spend time with the people you'd work with.", q: 'We were just blown away because we pictured, you know, guys in suits walking in and very corporate', who: 'Ali Oxton, NP / RN Esthetics' },
   { n: '04', t: 'Letter of intent', d: 'Terms in writing, walked through line by line.' },
   { n: '05 / Week 15', t: 'Diligence and close', d: 'Our advisors confirm the details, then we sign and your integration plan starts.', q: 'When I talked to John, I felt immediately I can trust this guy, and that that was more important than the numbers or anything.', who: 'Dr. Dean Bair' },
 ]
@@ -57,7 +57,7 @@ export default function PathwayView() {
             <div className="pw_ui_top"><span>Partner portal / Harbor Skin Co.</span><span>Example</span></div>
             <p className="pw_ui_t">Pathway to partnership</p>
             <div className="pw_mt"><div className="pw_fill"></div>
-              {['Intro call', 'NDA + numbers', 'Visit', 'LOI', 'Close'].map((l, i) => (<span key={l} className={'pw_d' + (i === 0 ? ' done' : i === 1 ? ' cur' : '')} style={{ left: `${i * 25}%` }}><em>{l}</em></span>))}
+              {['Intro call', 'NDA + numbers', 'Valuation', 'LOI', 'Close'].map((l, i) => (<span key={l} className={'pw_d' + (i === 0 ? ' done' : i === 1 ? ' cur' : '')} style={{ left: `${i * 25}%` }}><em>{l}</em></span>))}
             </div>
             <div className="pw_card"><div><b>Stage 2 / NDA and numbers</b><span>14 of 22 files received</span><div className="pw_bar"><i></i></div></div><span className="pw_pill">2 need changes</span></div>
             <div className="pw_guide"><span className="pw_av">NP</span><div><b>Your guide, New Partnerships</b><span>&ldquo;P&amp;L 2024 is annual. Can you export it monthly, by location?&rdquo;</span></div></div>
