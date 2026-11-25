@@ -1,6 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { useEffect, useRef } from 'react'
+import { PortalChip } from './PortalChip'
 import { fmt, useSite } from './SiteProvider'
 
 const DEPTS: [string, string][] = [
@@ -49,7 +50,7 @@ export function Menu() {
           <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" strokeWidth="1.4" /></svg>Close<em>Esc</em>
         </button>
         <Link className="nav_logo" href="/"><img src="/brand/alpha-paper.svg" alt="Alpha" /></Link>
-        <Link className="btn" href="/talk">Let&apos;s talk</Link>
+        {s.me ? <PortalChip me={s.me} className="on-dark" /> : <Link className="btn" href="/talk">Let&apos;s talk</Link>}
       </div>
       <div className="wrap mn_body">
         <nav className="mn_list" aria-label="Main">

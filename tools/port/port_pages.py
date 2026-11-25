@@ -1057,7 +1057,7 @@ def portal_markup(b):
     # footer: confidentiality with their name, no sign-out (no session yet)
     b = _sub1(b, r'<footer class="pfoot">.*?</footer>',
               '<footer class="pfoot"><div class="wrap pfoot_in"><span>Confidential. Shared under NDA between {{ who.practice }} and Alpha Aesthetics Partners.</span>'
-              '<span><a href="/legal/privacy">Privacy</a></span></div></footer>')
+              '<span><a href="/legal/privacy">Privacy</a> · <a href="/portal/forget" data-native="">Forget this device</a></span></div></footer>')
     return '<div class="pt">' + b + '</div>'  # the board's dark root sits on the motion wrapper the porter strips
 
 
@@ -1168,6 +1168,8 @@ PORTAL_RV = r'''  renderVals() {
     const MSO = ['m1', 'm2', 'm3a', 'm3b', 'm4'];
     const msAt = CUR >= 7 ? 'm4' : CUR >= 6 ? 'm2' : CUR >= 3 ? 'm1' : null;
     const msKey = 'alpha-portal-ms-' + d.token;
+    /* remember this device so the site menu can link back here */
+    if (!this._remembered && typeof window !== 'undefined') { this._remembered = true; fetch('/portal/' + d.token + '/remember', { method: 'POST' }).catch(() => {}); }
     if (msAt && !this._msChecked && typeof window !== 'undefined') {
       this._msChecked = true;
       setTimeout(() => { let seen = ''; try { seen = localStorage.getItem(msKey) || ''; } catch (e) { seen = msAt; } if (seen !== msAt) this.setState({ ms: msAt }); }, 400);

@@ -165,7 +165,7 @@ export default function PortalView(props: any) {
 </div></section>
 </>) : null}
 
-<footer className="pfoot"><div className="wrap pfoot_in"><span>Confidential. Shared under NDA between {v.who.practice} and Alpha Aesthetics Partners.</span><span><a href="/legal/privacy">Privacy</a></span></div></footer>
+<footer className="pfoot"><div className="wrap pfoot_in"><span>Confidential. Shared under NDA between {v.who.practice} and Alpha Aesthetics Partners.</span><span><a href="/legal/privacy">Privacy</a> · <a href="/portal/forget" data-native="">Forget this device</a></span></div></footer>
 </>) : null}
 
 {/* ============ MILESTONE MOMENT ============ */}

@@ -23,7 +23,10 @@ export type Ep = {
 
 export type NetworkNums = { brands: number; locations: number; states: number }
 
+export type PortalMe = { practice: string; ini: string; stage: string }
 type Site = {
+  /** The partner remembered on this device (their portal), if any */
+  me: PortalMe | null
   menuOpen: boolean
   setMenu: (o: boolean) => void
   net: NetworkNums
@@ -67,6 +70,13 @@ export function SiteProvider({ children, net, latest }: { children: React.ReactN
   const [rate, setRate] = useState(1)
   const [queue, setQueue] = useState<Ep[]>([])
   const path = usePathname()
+  const [me, setMe] = useState<PortalMe | null>(null)
+
+  // a device that has opened a partner portal links back to it from the nav and menu; everyone else never asks
+  useEffect(() => {
+    if (!/(?:^|;\s*)alpha_portal_hint=1/.test(document.cookie)) return
+    fetch('/portal/me', { cache: 'no-store' }).then((r) => r.json()).then((j) => setMe(j.me || null)).catch(() => {})
+  }, [])
 
   // close the menu on navigation, lock scroll while open
   useEffect(() => setMenuOpen(false), [path])
@@ -168,10 +178,10 @@ export function SiteProvider({ children, net, latest }: { children: React.ReactN
   useEffect(() => { document.body.classList.toggle('has-mpp', !!ep) }, [ep])
 
   const value = useMemo<Site>(() => ({
-    menuOpen, setMenu: setMenuOpen, net, latest,
+    me, menuOpen, setMenu: setMenuOpen, net, latest,
     ep, playing, t, rate, queue, play, toggle, seek, skip, cycleRate, close, enqueue, dequeue,
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }), [menuOpen, net, latest, ep, playing, t, rate, queue, toggle])
+  }), [me, menuOpen, net, latest, ep, playing, t, rate, queue, toggle])
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>
 }

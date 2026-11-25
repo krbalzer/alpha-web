@@ -104,6 +104,8 @@ export class PortalEngine extends DCLogic {
     const MSO = ['m1', 'm2', 'm3a', 'm3b', 'm4'];
     const msAt = CUR >= 7 ? 'm4' : CUR >= 6 ? 'm2' : CUR >= 3 ? 'm1' : null;
     const msKey = 'alpha-portal-ms-' + d.token;
+    /* remember this device so the site menu can link back here */
+    if (!this._remembered && typeof window !== 'undefined') { this._remembered = true; fetch('/portal/' + d.token + '/remember', { method: 'POST' }).catch(() => {}); }
     if (msAt && !this._msChecked && typeof window !== 'undefined') {
       this._msChecked = true;
       setTimeout(() => { let seen = ''; try { seen = localStorage.getItem(msKey) || ''; } catch (e) { seen = msAt; } if (seen !== msAt) this.setState({ ms: msAt }); }, 400);
